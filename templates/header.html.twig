@@ -1,0 +1,52 @@
+<div class="sidebar-toggle-box">
+	<div class="fa fa-bars tooltips" data-placement="right" data-original-title="Toggle Navigation"></div>
+</div>
+<!-- LOGO -->
+<a href="\" class="logo">
+	<b>Aksam<span>V2</span>
+	</b>
+</a>
+<!-- END LOGO -->
+<div
+	class="nav notify-row" id="top_menu">
+	<!-- NOTIFICATION START -->
+	<ul
+		class="nav top-menu">
+
+
+		<!-- NOTIFICATION DROPDOWN -->
+		<li id="header_notification_bar" class="dropdown">
+			{% if app.user is not null %}
+
+
+				{% if app.request.get('_route') == 'newprospect_index' or app.request.get('_route')  == 'prospect_search' or app.request.get('_route')  == 'relancejour_index' or app.request.get('_route')  == 'app_unjoinable' or app.request.get('_route')  == 'notrait_index' %}
+					<a data-toggle="dropdown" class="dropdown-toggle" href="{{path('app_table_liste')}}">
+						<i class="fa fa-shopping-cart"></i>
+						<span class="badge bg-warning fs-4">{{ prospects|length }}</span>
+					</a>
+
+				{% elseif app.request.get('_route') == 'prospect_search' %}
+					<span class="badge bg-warning fs-4"></span>
+
+				{% endif %}
+
+
+			{% endif %}
+		</li>
+		<!-- END NOTIFICATION DROPDOWN -->
+	</li>
+</ul>
+<!-- END NOTIFICATION START --></div><div class="top-menu">
+<ul class="nav pull-right top-menu">
+	{% if app.user %}
+		<li>
+			<a class="logout" href="#">Se déconnecter</a>
+		</li>
+
+	{% else %}
+		<li>
+			<a class="logout" href="#">Connectez vous</a>
+		</li>
+
+	{% endif %}
+</ul></div>
