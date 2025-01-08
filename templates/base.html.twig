@@ -17,14 +17,14 @@
 		</title>
 		{# Run `composer require symfony/webpack-encore-bundle` to start using Symfony UX #}
 		{% block stylesheets %}
+			{{ encore_entry_link_tags('app') }}
+			{{ encore_entry_link_tags('css/app') }}
 			{# {{ encore_entry_link_tags('app') }} #}
-			<link rel="shortcut icon" href="{{ asset('images/aksamLogo.jpeg') }}">
-			<link rel="stylesheet" href="{{ asset('css/bootstrap.min.css') }}">
-			<link rel="stylesheet" href="{{ asset('fonts/css/font-awesome.css') }}">
-			<link rel="stylesheet" href="{{ asset('css/style.css') }}">
-			<link rel="stylesheet" href="{{ asset('css/style-responsive.css') }}">
-
-			<script src="{{ asset('js/Chart.js') }}"></script>
+			<link rel="shortcut icon" href="{{ asset('images/aksamLogo.jpeg') }}">{# <link rel="stylesheet" href="{{ asset('css/bootstrap.min.css') }}"> #}
+			{# <link
+																					rel="stylesheet" href="{{ asset('fonts/css/font-awesome.css') }}"> #}
+			{# <link rel="stylesheet" href="{{ asset('css/style.css') }}"> #}{{ encore_entry_link_tags('app') }}
+			{# <link rel="stylesheet" href="{{ asset('css/style-responsive.css') }}"> #}<script src="{{ asset('js/Chart.js') }}"> </script>
 			<link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.min.css">
 			<link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
 
@@ -87,9 +87,11 @@
 			<script src="{{ asset('js/sparkline-chart.js') }}"></script>
 
 
-			<script src="{{ asset('js/main.js') }}"></script>
-			{# {{ encore_entry_script_tags('app') }} #}
+			{# <script src="{{ asset('js/main.js') }}"></script> #}
+
 			{% block javascripts %}
+				{{ encore_entry_script_tags('app') }}
+
 
 				<script>
 
