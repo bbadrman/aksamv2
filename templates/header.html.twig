@@ -3,7 +3,8 @@
 </div>
 <!-- LOGO -->
 <a href="\" class="logo">
-	<b>Aksam<span>V2</span>
+	<b>Aksam<span>
+			V2</span>
 	</b>
 </a>
 <!-- END LOGO -->
@@ -13,17 +14,18 @@
 	<ul
 		class="nav top-menu">
 
-
 		<!-- NOTIFICATION DROPDOWN -->
 		<li id="header_notification_bar" class="dropdown">
 
 			{% if app.user is not null %}
-
-
 				{% if app.request.get('_route') == 'newprospect_index' or app.request.get('_route')  == 'prospect_search' or app.request.get('_route')  == 'relancejour_index' or app.request.get('_route')  == 'app_unjoinable' or app.request.get('_route')  == 'notrait_index' %}
 					<a data-toggle="dropdown" class="dropdown-toggle" href="{{path('app_table_liste')}}">
 						<i class="fa fa-shopping-cart"></i>
 						<span class="badge bg-warning fs-4">{{ prospects|length }}</span>
+					</a>
+					<a data-toggle="dropdown" class="dropdown-toggle" href="#">
+						<i class=" fa fa-shopping-cart"></i>
+						<span class="badge bg-warning fs-4">{{ contrats|length }}</span>
 					</a>
 
 				{% elseif app.request.get('_route') == 'prospect_search' %}
@@ -34,20 +36,17 @@
 
 			{% endif %}
 		</li>
-		<!-- END NOTIFICATION DROPDOWN -->
-	</li>
-</ul>
-<!-- END NOTIFICATION START --></div><div class="top-menu">
-<ul class="nav pull-right top-menu">
-	{% if app.user %}
-		<li>
-			<a class="logout" href="#">Se déconnecter</a>
-		</li>
+	</ul>
+	<!-- END NOTIFICATION START -->
+</div>
 
-	{% else %}
-		<li>
-			<a class="logout" href="#">Connectez vous</a>
-		</li>
 
-	{% endif %}
-</ul></div>
+<div class="top-menu">
+	<ul class="nav pull-right top-menu">
+		<li>
+			<a class="logout" href="/{{app.user ? 'logout' : 'login'}}" @click="isOpen = false">
+				{{ app.user ? 'Se déconnecter' : 'Connectez vous' }}
+			</a>
+		</li>
+	</ul>
+</div>

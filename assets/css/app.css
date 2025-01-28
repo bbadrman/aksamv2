@@ -12,7 +12,7 @@ Website: http://Alvarez.is/
 */
 
 /* Import fonts */
-/* @import url(../css/bootstrap.min.css); */
+/* @import url(../css/font-awesome.min.css); */
 
 @import url(../css/fonts.google.ruda.css);
 
@@ -474,6 +474,8 @@ ul.sidebar-menu li a.active i {
     /* background: url("../images/bzckjlij.png") ; */
     background-color: #002E5B;
     border-bottom: 1px solid #393d46;
+    text-align: right;
+
 }
 
 .wrapper {
@@ -513,6 +515,10 @@ a.logo span {
 #top_menu .nav>li,
 ul.top-menu>li {
     float: left;
+}
+
+ul.top-menu>li>a {
+    float: right;
 }
 
 .notify-row {

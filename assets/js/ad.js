@@ -8,7 +8,7 @@ window.onload = () => {
 		bouton.addEventListener("click", function () {
 			let xmlhttp = new XMLHttpRequest;
 
-			xmlhttp.open("get", `/utilisateurs/activer/${this.dataset.id}`)
+			xmlhttp.open("get", `/user/activer/${this.dataset.id}`)
 			xmlhttp.send();
 
 		})

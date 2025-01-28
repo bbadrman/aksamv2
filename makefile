@@ -58,7 +58,8 @@ cache-prod:
 	php bin/console cache:clear --env=prod
 
 generer-htac:
-    composer require symfony/apache-pack
+		php bin/console cache:clear --env=prod 
+		
 generer-env:
 	composer dump-env prod
 

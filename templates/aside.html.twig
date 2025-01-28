@@ -4,44 +4,34 @@
 
 
 	<p class="centered">
-
-		<a href="{% if app.user is not null %} {{ path('user_show', {'id':app.user.id }) }}{% else %} {{ asset('images/no-image.png') }}{% endif %}">
-
-			<img src="
-																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																										{% if app.user is not null %}
-																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																											{{ asset('images/aksamLogo.jpeg') }}
-																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																									 	{% else %}
-																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																											{{ asset('images/no-image.png') }}
-																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																										{% endif %}" class="img-circle" width="80" alt="">
+		<a href="#">
+			<img src=" {{ asset('../images/newLogo.jpg') }}" class="img-circle" width="80" alt="">
 		</a>
-
 	</p>
 
 	<h5 class="centered">{{ app.user.username  }}</h5>
 	<h5 class="centered">
 		{% if is_granted('IS_AUTHENTICATED_FULLY') %}
-			{% set user = app.user %}
-			{% set fonctions = user.getFonctions() %}
-			{% if fonctions is not empty %}
-				{% for fonction in fonctions %}
-					<p>
-						{{  fonction }}
+			{% if app.user.fonction is not empty %}
 
-					</p>
-				{% endfor %}
+				<p>
+					{{  app.user.fonction }}
+
+				</p>
+
 			{% endif %}
 		{% endif %}
 
 	</h5>
 
-	{% for team in user.teams %}
-		<h5 class="centered">{{  team  }}</h5>
-	{% endfor %}
+	{# {% for team in user.teams %}
+																																												<h5 class="centered">{{  team  }}</h5>
+																																											{% endfor %} #}
 	<!-- DASHBOARD -->
 
 
 	<li class="sub-menu">
-		<a class="nav-link " href="{{ path('contratstat_mont') }}">
+		<a class="nav-link " href="#">
 			<i class="fa fa-dashboard"></i>
 			<span>Dashboard
 			</span>
@@ -55,7 +45,7 @@
 	{% if is_granted('ROLE_AFFECT') or is_granted('ROLE_PROS') or is_granted('ROLE_ADD_PROS') or is_granted('ROLE_TEAM') or is_granted('ROLE_ADMIN') or is_granted('ROLE_EDIT_PROS') == true %}
 
 		<li class="sub-menu">
-			<a class="nav-link " href="{{ path('app_table_liste') }}">
+			<a class="nav-link " href="#">
 				<i class="fa fa-diamond "></i>
 				<span>Traitement
 				</span>
@@ -74,7 +64,7 @@
 			<ul class="sub">
 				{% if is_granted('ROLE_ADMIN') == true %}
 					<li>
-						<a class="nav-link " href="{{ path('prospects_calandri') }}">
+						<a class="nav-link " href="#">
 							<i class="fa fa-calendar" aria-hidden="true"></i>
 							<span>Stat Génerale
 							</span>
@@ -82,7 +72,7 @@
 					</li>
 				{% endif %}
 				<li>
-					<a class="nav-link " href="{{ path('dashboard') }}">
+					<a class="nav-link " href="{{ path('app_home') }}">
 						<i class="fa fa-line-chart" aria-hidden="true"></i>
 						<span>Stat du jour
 						</span>
@@ -125,7 +115,7 @@
 	{% if is_granted('ROLE_AFFECT') or is_granted('ROLE_PROS') or is_granted('ROLE_ADD_PROS') or is_granted('ROLE_TEAM') or is_granted('ROLE_ADMIN') or is_granted('ROLE_EDIT_PROS') == true %}
 
 		<li class="sub-menu">
-			<a class="nav-link " href="{{ path('client_index') }}">
+			<a class="nav-link " href="#">
 				<i class="fa fa-diamond "></i>
 				<span>Clients
 				</span>
@@ -159,55 +149,53 @@
 
 					<ul class="sub">
 						<li>
-							<a href="{{ path('user_new') }}">Ajouter un user</a>
+							<a href="{{ path('app_user_new') }}">Ajouter un user</a>
 						</li>
 						<li>
-							<a href="{{ path('user_index') }}">Gérer les Users</a>
+							<a href="{{ path('app_user_index') }}">Gérer les Users</a>
 						</li>
-						<li>
-							<a href="{{ path('user_acces') }}">Gérer les Sessions</a>
-						</li>
+						{# <li>
+																															<a href="{{ path('user_acces') }}">Gérer les Sessions</a>
+																														</li> #}
 					</ul>
 				</li>
 				<!-- END USERS -->
 
 
 				<!--fonction-->
-				<li class="sub-menu">
-
-					<a class="nav-link {% if page in ['fonction_index', 'fonction_new', 'fonction_show', 'fonction_edit'  ] %}active{% endif %}" href="javascript:;">
-						<i class="fa fa-tags"></i>
-						<span>Fonction</span>
-					</a>
-
-					<ul class="sub">
-
-						<li>
-							<a href="{{ path('fonction_new') }}">Ajouter une fonction</a>
-
-						</li>
-
-						<li>
-							<a href="{{ path('fonction_index') }}">Gérer les fonction</a>
-						</li>
-					</ul>
-				</li>
+				{# <li class="sub-menu">
+								
+													<a class="nav-link {% if page in ['fonction_index', 'fonction_new', 'fonction_show', 'fonction_edit'  ] %}active{% endif %}" href="javascript:;">
+														<i class="fa fa-tags"></i>
+														<span>Fonction</span>
+													</a>
+								
+													<ul class="sub">
+								
+														<li>
+															<a href="{{ path('fonction_new') }}">Ajouter une fonction</a>
+								
+														</li>
+								
+														<li>
+															<a href="{{ path('fonction_index') }}">Gérer les fonction</a>
+														</li>
+													</ul>
+												</li> #}
 				<!-- END fonction -->
 
 				<!-- Produits -->
-				<li class="sub-menu">
-
-					<a class="nav-link {% if page in ['app_product_index', 'app_product_new', 'app_product_show', 'app_product_edit'] %}active{% endif %}" href="javascript:;">
+					<li class="sub-menu"> <a class="nav-link {% if page in ['app_product_index', 'app_product_new', 'app_product_show', 'app_product_edit'] %}active{% endif %}" href="javascript:;">
 						<i class="fa fa-product-hunt"></i>
 						<span>Produits</span>
 					</a>
 
 					<ul class="sub">
 						<li>
-							<a href="{{path('app_product_new')}}">Ajouter un Produit</a>
+							<a href="#">Ajouter un Produit</a>
 						</li>
 						<li>
-							<a href="{{path('app_product_index')}}">Gérer les Produits</a>
+							<a href="#">Gérer les Produits</a>
 						</li>
 					</ul>
 				</li>
@@ -222,22 +210,22 @@
 
 					<ul class="sub">
 						<li>
-							<a href="{{path('app_team_new')}}">Ajouter un Equipe</a>
+							<a href="#">Ajouter un Equipe</a>
 						</li>
 						<li>
-							<a href="{{path('app_team_index')}}">Gérer les Equipes</a>
+							<a href="#">Gérer les Equipes</a>
 						</li>
 					</ul>
 				</li>
 				<!-- END Equipe -->
 
 				<!-- Ringover -->
-				<li class="sub-menu">
-					<a class="nav-link " href="{{ path('ringover-api') }}">
-						<i class="fa fa-upload" aria-hidden="true"></i>
-						<span>Appels
-						</span>
-					</a>
+				<li
+					class="sub-menu">{# <a class="nav-link " href="{{ path('ringover-api') }}">
+												<i class="fa fa-upload" aria-hidden="true"></i>
+												<span>Appels
+												</span>
+											</a> #}
 				</li>
 				<!-- END Ringover -->
 
@@ -257,7 +245,7 @@
 		<ul class="sub">
 
 			<li>
-				<a class="nav-link " href="{{ path('red_bebltq') }}">
+				<a class="nav-link " href="#">
 					<i class="fa fa-book" aria-hidden="true"></i>
 					<span>Règles souscription
 					</span>
@@ -265,7 +253,7 @@
 			</li>
 
 			<li class="sub-menu">
-				<a href="{{ path('aide_show') }}">
+				<a href="#">
 					<i class="fa fa-question-circle" aria-hidden="true" style="font-size: 20px;"></i>
 					<span>Aide</span>
 				</a>
