@@ -77,6 +77,9 @@ class Prospect
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $activites = null;
 
+    #[ORM\ManyToOne(inversedBy: 'prospects')]
+    private ?User $comrcl = null;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -330,6 +333,18 @@ class Prospect
     public function setActivites(?string $activites): static
     {
         $this->activites = $activites;
+
+        return $this;
+    }
+
+    public function getComrcl(): ?User
+    {
+        return $this->comrcl;
+    }
+
+    public function setComrcl(?User $comrcl): static
+    {
+        $this->comrcl = $comrcl;
 
         return $this;
     }

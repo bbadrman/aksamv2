@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\UserRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
@@ -56,6 +58,45 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column(type: Types::DATETIME_MUTABLE, nullable: true)]
     private ?\DateTimeInterface $creatAt = null;
 
+    /**
+     * @var Collection<int, Permission>
+     */
+    #[ORM\ManyToMany(targetEntity: Permission::class, inversedBy: 'users')]
+    private Collection $permissions;
+
+    /**
+     * @var Collection<int, Product>
+     */
+    #[ORM\ManyToMany(targetEntity: Product::class, inversedBy: 'users')]
+    private Collection $products;
+
+    /**
+     * @var Collection<int, Team>
+     */
+    #[ORM\ManyToMany(targetEntity: Team::class, inversedBy: 'users')]
+    private Collection $teams;
+
+    /**
+     * @var Collection<int, Contrat>
+     */
+    #[ORM\OneToMany(targetEntity: Contrat::class, mappedBy: 'user')]
+    private Collection $contrats;
+
+    /**
+     * @var Collection<int, Prospect>
+     */
+    #[ORM\OneToMany(targetEntity: Prospect::class, mappedBy: 'comrcl')]
+    private Collection $prospects;
+
+    public function __construct()
+    {
+        $this->permissions = new ArrayCollection();
+        $this->products = new ArrayCollection();
+        $this->teams = new ArrayCollection();
+        $this->contrats = new ArrayCollection();
+        $this->prospects = new ArrayCollection();
+    }
+
 
     #[ORM\PrePersist]
     public function prePersist(): void
@@ -99,9 +140,14 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      */
     public function getRoles(): array
     {
-        $roles = $this->roles;
-        // guarantee every user at least has ROLE_USER
+        //return les role de la table permission se form de chaine caractaire
+        $roles = $this->permissions->map(function ($role) {
+            return $role->getnom();
+        })->toArray();
+
         $roles[] = 'ROLE_USER';
+        // guarantee every user at least has ROLE_USER
+        // $roles[] = 'ROLE_USER';
 
         return array_unique($roles);
     }
@@ -220,6 +266,138 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function setCreatAt(?\DateTimeInterface $creatAt): static
     {
         $this->creatAt = $creatAt;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Permission>
+     */
+    public function getPermissions(): Collection
+    {
+        return $this->permissions;
+    }
+
+    public function addPermission(Permission $permission): static
+    {
+        if (!$this->permissions->contains($permission)) {
+            $this->permissions->add($permission);
+        }
+
+        return $this;
+    }
+
+    public function removePermission(Permission $permission): static
+    {
+        $this->permissions->removeElement($permission);
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Product>
+     */
+    public function getProducts(): Collection
+    {
+        return $this->products;
+    }
+
+    public function addProduct(Product $product): static
+    {
+        if (!$this->products->contains($product)) {
+            $this->products->add($product);
+        }
+
+        return $this;
+    }
+
+    public function removeProduct(Product $product): static
+    {
+        $this->products->removeElement($product);
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Team>
+     */
+    public function getTeams(): Collection
+    {
+        return $this->teams;
+    }
+
+    public function addTeam(Team $team): static
+    {
+        if (!$this->teams->contains($team)) {
+            $this->teams->add($team);
+        }
+
+        return $this;
+    }
+
+    public function removeTeam(Team $team): static
+    {
+        $this->teams->removeElement($team);
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Contrat>
+     */
+    public function getContrats(): Collection
+    {
+        return $this->contrats;
+    }
+
+    public function addContrat(Contrat $contrat): static
+    {
+        if (!$this->contrats->contains($contrat)) {
+            $this->contrats->add($contrat);
+            $contrat->setUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeContrat(Contrat $contrat): static
+    {
+        if ($this->contrats->removeElement($contrat)) {
+            // set the owning side to null (unless already changed)
+            if ($contrat->getUser() === $this) {
+                $contrat->setUser(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Prospect>
+     */
+    public function getProspects(): Collection
+    {
+        return $this->prospects;
+    }
+
+    public function addProspect(Prospect $prospect): static
+    {
+        if (!$this->prospects->contains($prospect)) {
+            $this->prospects->add($prospect);
+            $prospect->setComrcl($this);
+        }
+
+        return $this;
+    }
+
+    public function removeProspect(Prospect $prospect): static
+    {
+        if ($this->prospects->removeElement($prospect)) {
+            // set the owning side to null (unless already changed)
+            if ($prospect->getComrcl() === $this) {
+                $prospect->setComrcl(null);
+            }
+        }
 
         return $this;
     }

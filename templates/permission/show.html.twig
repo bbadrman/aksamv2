@@ -1,0 +1,26 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Permission{% endblock %}
+
+{% block body %}
+    <h1>Permission</h1>
+
+    <table class="table">
+        <tbody>
+            <tr>
+                <th>Id</th>
+                <td>{{ permission.id }}</td>
+            </tr>
+            <tr>
+                <th>Nom</th>
+                <td>{{ permission.nom }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <a href="{{ path('app_permission_index') }}">back to list</a>
+
+    <a href="{{ path('app_permission_edit', {'id': permission.id}) }}">edit</a>
+
+    {{ include('permission/_delete_form.html.twig') }}
+{% endblock %}
