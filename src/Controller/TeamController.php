@@ -46,9 +46,6 @@ final class TeamController extends AbstractController
     }
 
     #[Route('/new-team', name: 'app_team_new_user', methods: ['GET', 'POST'])]
-    /**
-     * @Route("/new-team", name="team_new", methods={"GET", "POST"})
-     */
     public function add(Request $request, ValidatorInterface $validator): JsonResponse
     {
         $team = new Team();
