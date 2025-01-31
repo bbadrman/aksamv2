@@ -7,13 +7,16 @@ use App\Form\TeamType;
 use App\Repository\TeamRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
+use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 #[Route('/team')]
 final class TeamController extends AbstractController
 {
+    public function __construct(private EntityManagerInterface $entityManager) {}
     #[Route(name: 'app_team_index', methods: ['GET'])]
     public function index(TeamRepository $teamRepository): Response
     {
@@ -40,6 +43,41 @@ final class TeamController extends AbstractController
             'team' => $team,
             'form' => $form,
         ]);
+    }
+
+    #[Route('/new-team', name: 'app_team_new_user', methods: ['GET', 'POST'])]
+    /**
+     * @Route("/new-team", name="team_new", methods={"GET", "POST"})
+     */
+    public function add(Request $request, ValidatorInterface $validator): JsonResponse
+    {
+        $team = new Team();
+
+        $team->setName($request->get('name'));
+
+        $team->setDescription($request->get('description'));
+
+        $errors = $validator->validate($team);
+
+        $errorMessages = array();
+
+        if (count($errors) > 0) {
+            foreach ($errors as $error) {
+                $errorMessages[] = $error->getMessage();
+            }
+            return $this->json([
+                'status' => 400,
+                'errors' => $errorMessages,
+            ]);
+        } else {
+            $this->entityManager->persist($team);
+            $this->entityManager->flush();
+
+            return $this->json([
+                'status' => 200,
+                'message' => 'Equipe a bien été ajouté',
+            ]);
+        }
     }
 
     #[Route('/{id}', name: 'app_team_show', methods: ['GET'])]
@@ -71,7 +109,7 @@ final class TeamController extends AbstractController
     #[Route('/{id}', name: 'app_team_delete', methods: ['POST'])]
     public function delete(Request $request, Team $team, EntityManagerInterface $entityManager): Response
     {
-        if ($this->isCsrfTokenValid('delete'.$team->getId(), $request->getPayload()->getString('_token'))) {
+        if ($this->isCsrfTokenValid('delete' . $team->getId(), $request->getPayload()->getString('_token'))) {
             $entityManager->remove($team);
             $entityManager->flush();
         }

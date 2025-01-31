@@ -91,13 +91,7 @@ class UserType extends AbstractType
                 'multiple' => true,
                 'expanded' => true,
             ])
-            ->add('teams', EntityType::class, [
-                'class' => Team::class,
-                //getName
-                'choice_label' => 'nom',
-                'multiple' => true,
-                'expanded' => true,
-            ])
+            ->add('teams')
         ;
     }
 

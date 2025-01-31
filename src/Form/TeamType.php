@@ -21,11 +21,13 @@ class TeamType extends AbstractType
                 'class' => UniteTravail::class,
                 'choice_label' => 'id',
                 'multiple' => true,
+                'required' => false,
             ])
             ->add('users', EntityType::class, [
                 'class' => User::class,
                 'choice_label' => 'id',
                 'multiple' => true,
+                'required' => false,
             ])
         ;
     }
