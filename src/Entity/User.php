@@ -8,13 +8,14 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 
 #[ORM\Entity(repositoryClass: UserRepository::class)]
 #[ORM\HasLifecycleCallbacks]
 #[ORM\UniqueConstraint(name: 'UNIQ_IDENTIFIER_USERNAME', fields: ['username'])]
-#[UniqueEntity(fields: ['username'], message: 'There is already an account with this username')]
+#[UniqueEntity(fields: ['username'], message: "Ce nom d'utilisateur a déjà été utilisé!")]
 class User implements UserInterface, PasswordAuthenticatedUserInterface
 {
     #[ORM\Id]
@@ -22,6 +23,17 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column]
     private ?int $id = null;
 
+    #[Assert\NotBlank(message: "Le nom d'utilisateur est obligatoire")]
+    #[Assert\Length(
+        min: 4,
+        max: 15,
+        minMessage: "Le nom d'utilisateur doit contenir au moins quatre caractères",
+        maxMessage: "Le nom d'utilisateur doit contenir au maximum quinze caractères"
+    )]
+    #[Assert\Regex(
+        pattern: "/^[a-z0-9_-]{3,15}$/",
+        message: "Votre prénom ne doit pas contenir d'espaces, de virgules, de points-virgules ou de deux-points"
+    )]
     #[ORM\Column(length: 180)]
     private ?string $username = null;
 
@@ -36,6 +48,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      */
     #[ORM\Column]
     private ?string $password = null;
+
 
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $firstname = null;

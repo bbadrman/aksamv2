@@ -17,15 +17,19 @@
 		</title>
 		{# Run `composer require symfony/webpack-encore-bundle` to start using Symfony UX #}
 		{% block stylesheets %}
-			{# {{ encore_entry_link_tags('app') }} #}
+
 			{{ encore_entry_link_tags('css/app') }}
 
-			<link rel="stylesheet" href="{{ asset('fonts/css/font-awesome.css') }}">
+			{# <link rel="stylesheet" href="{{ asset('../css/app.css') }}"> #}
+			<link rel="stylesheet" href="{{ asset('../css/bootstrap.min.css') }}">
+			<link rel="stylesheet" href="{{ asset('../css/font-awesome.css') }}">
+			<link rel="stylesheet" href="{{ asset('../css/style-responsive.css') }}">
 			<link rel="icon" type="image/x-icon" href="{{ asset('images/newLogo.jpg') }}">
 
 			<script src="{{ asset('js/Chart.js') }}"></script>
-			<link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.min.css">
-			<link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+			<link
+			rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.min.css">
+		{# <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet"> #}
 
 
 		{% endblock %}

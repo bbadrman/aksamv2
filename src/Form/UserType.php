@@ -3,6 +3,8 @@
 namespace App\Form;
 
 use App\Entity\Permission;
+use App\Entity\Product;
+use App\Entity\Team;
 use App\Entity\User;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
@@ -38,7 +40,7 @@ class UserType extends AbstractType
                     'error_bubbling' => true
                 ],
                 'second_options' => [
-                    'label' => 'Confirmez votre mot de passe',
+                    'label' => 'Confirmez mot de passe',
                     'attr' => [
                         'placeholder' => 'Merci de confirmez votre mot de passe'
                     ],
@@ -56,10 +58,41 @@ class UserType extends AbstractType
                 'widget' => 'single_text',
             ])
             ->add('remuneration')
-            ->add('fonction')
+            ->add('fonction', ChoiceType::class, [
+                'label' => 'Type Produit',
+                'required' => true,
+                'disabled' => false,
+                'choices' => [
+                    'Directeur' =>  'directeur',
+                    'COMERCIAL' =>  'comercial',
+                    'CHEF EQUIPE' => 'chef',
+                    'MANAGER' =>  'manager',
+                    'SUPORT' => 'suport',
+                    'DIVELOPPER' => 'divlopper',
+                    'TECH' => 'tech',
+                    'AUTRE' => 'autre',
+                ],
+                'expanded' => false,
+                'multiple' => false,
+
+            ])
             ->add('status')
             ->add('permissions', EntityType::class, [
                 'class' => Permission::class,
+                //getName
+                'choice_label' => 'nom',
+                'multiple' => true,
+                'expanded' => true,
+            ])
+            ->add('products', EntityType::class, [
+                'class' => Product::class,
+                //getName
+                'choice_label' => 'nom',
+                'multiple' => true,
+                'expanded' => true,
+            ])
+            ->add('teams', EntityType::class, [
+                'class' => Team::class,
                 //getName
                 'choice_label' => 'nom',
                 'multiple' => true,

@@ -1,11 +1,68 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}New User{% endblock %}
+{% block title %}Ajouter un utilisateur - Aksam
+{% endblock %}
 
 {% block body %}
-    <h1>Create new User</h1>
+	<div class="container">
+		<section class="content-header ">
+			<h1>
+				Utilisateurs
+				<small>Gestion</small>
+			</h1>
+			<ol class="breadcrumb">
+				<li>
+					<a href="{{ path('app_user_index') }}">
+						<i class="fa fa-users"></i>
+						Tous les utilisateurs</a>
+				</li>
+				<li class="active">Ajouter un utilisateur</li>
+			</ol>
+		</section>
 
-    {{ include('user/_form.html.twig') }}
+		<!-- FORM -->
+		{% block form %}
+			<div class></div>
+			<div class="row mt ">
+				<div class="col-lg-12">
+					{{ include('user/_form.html.twig') }}
+				</div>
+			</div>
+		{% endblock %}
+	</div>
+	<!-- END FORM -->
+{% endblock %}
 
-    <a href="{{ path('app_user_index') }}">back to list</a>
+{% block stylesheets %}
+	{{ parent() }}
+
+{% endblock %}
+
+{% block javascripts %}
+
+	{{ parent() }}
+
+
+	<script src='/js/ad.js'></script>
+
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.5/js/select2.min.js"></script>
+
+	<script>
+		// select par id prisise
+
+// $('#user_fonctions').select2();
+// $('#user_roles').select2();
+
+// pour select multiple en seul class
+$('.selectchoice').select2();
+// let $user_fonctions = $('#user_fonctions')
+// $user_fonctions.click(e => {
+// e.preventDefault()
+// $('#user_fonctions').slideDown();
+// $user_fonctions.slideUp();
+// })
+
+	</script>
+
+
 {% endblock %}

@@ -15,7 +15,11 @@ Website: http://Alvarez.is/
 /* @import url(../css/font-awesome.min.css); */
 
 @import url(../css/fonts.google.ruda.css);
-
+/* Importation des bibliothèques */
+@import url("bootstrap/dist/css/bootstrap.min.css");
+@import url("bootstrap");
+/* @import url("/css/font-awesome.css");
+@import url("/css/style-responsive.css"); */
 
 /* BASIC THEME CONFIGURATION */
 body {
@@ -280,7 +284,7 @@ ul.top-menu>li>.logout {
     height: 100%;
     position: fixed;
     background-color: #002E5B;
-    /* background: url("../images/bzckjlij.png")  ; */
+    /* background-image: url("/images/bzckjlij.png"); */
 
 }
 
@@ -306,7 +310,7 @@ ul.top-menu>li>.logout {
     height: 17px;
     width: 17px;
     display: inline-block;
-    /* background: url("../assets/images/nav-expand.png") no-repeat top; */
+    background-image: url("/assets/images/nav-expand.png") no-repeat top;
     border-radius: 3px;
     -moz-border-radius: 3px;
     -webkit-border-radius: 3px;
@@ -316,7 +320,7 @@ ul.top-menu>li>.logout {
 }
 
 .active .dcjq-icon {
-    /* background: url("../assets/images/nav-expand.png") no-repeat bottom; */
+    background-image: url("/assets/images/nav-expand.png") no-repeat bottom;
     border-radius: 3px;
     -moz-border-radius: 3px;
     -webkit-border-radius: 3px;
@@ -471,7 +475,7 @@ ul.sidebar-menu li a.active i {
 }
 
 .black-bg {
-    /* background: url("../images/bzckjlij.png") ; */
+    /* background-image: url("/images/bzckjlij.png"); */
     background-color: #002E5B;
     border-bottom: 1px solid #393d46;
     text-align: right;
@@ -768,7 +772,7 @@ ul.top-menu>li>a:focus {
 }
 
 .log-arrow-up {
-    /* background: url("../assets/images/arrow-up.png") no-repeat; */
+    background-image: url("/assets/images/arrow-up.png") no-repeat;
     width: 20px;
     height: 11px;
     position: absolute;
@@ -1439,7 +1443,7 @@ PANELS CONFIGURATIONS
 /* Soptify Panel */
 #spotify {
     margin-top: -15px;
-    /* background: url(../asstes/images/lorde.jpg) no-repeat center center; */
+    /* background-image: url(/asstes/images/lorde.jpg) no-repeat center center; */
     min-height: 220px;
     width: 100%;
     -webkit-background-size: 100%;
@@ -1486,7 +1490,7 @@ PANELS CONFIGURATIONS
 /* BLOG PANEL */
 #blog-bg {
     margin-top: -15px;
-    /* background: url(../assets/images/blog-bg.jpg) no-repeat center center; */
+    /* background-image: url(/assets/images/blog-bg.jpg) no-repeat center center; */
     min-height: 150px;
     width: 100%;
     -webkit-background-size: 100%;
@@ -1622,7 +1626,7 @@ PANELS CONFIGURATIONS
 /* Profile 01*/
 #profile-01 {
     margin-top: -15px;
-    /* background: url(../assets/images/profile-01.jpg) no-repeat center center; */
+    /* background-image: url(/assets/images/profile-01.jpg) no-repeat center center; */
     min-height: 150px;
     width: 100%;
     -webkit-background-size: 100%;
@@ -2348,7 +2352,7 @@ ul li {
 /* login-s3 */
 
 .login-bg {
-    /* background: url(../assets/images/bg/singin-bg.jpg) center/cover no-repeat; */
+    /* background-image: url(/assets/images/bg/singin-bg.jpg) center/cover no-repeat; */
     position: relative;
     z-index: 1;
 }
