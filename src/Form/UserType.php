@@ -54,8 +54,11 @@ class UserType extends AbstractType
             ])
             ->add('firstname')
             ->add('lastname')
-            ->add('embuchAt', null, [
+            ->add('embuchAt', Type\DateType::class, [
+                'label' => "Date d'embauche",
+
                 'widget' => 'single_text',
+
             ])
             ->add('remuneration')
             ->add('fonction', ChoiceType::class, [
@@ -76,11 +79,21 @@ class UserType extends AbstractType
                 'multiple' => false,
 
             ])
-            ->add('status')
+            ->add('status', Type\ChoiceType::class, [
+                'label' => 'Status',
+
+                'choices' => [
+                    'Active' => 1,
+                    'Desactive' => 0
+                ],
+                'expanded' => true,
+                'multiple' => false
+            ])
             ->add('permissions', EntityType::class, [
                 'class' => Permission::class,
-                //getName
-                'choice_label' => 'nom',
+                'choice_label' => function (Permission $permission) {
+                    return ucfirst(strtolower(str_replace('ROLE_', '', $permission->getNom())));
+                },
                 'multiple' => true,
                 'expanded' => true,
             ])

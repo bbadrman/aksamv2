@@ -1,6 +1,7 @@
 <div class="form-panel">
 	<h4 class="mb ">
-		<i class="fa fa-plus-square-o"></i>
+		<i class="fa fa-plus-square"></i>
+
 		{{ form_title|default('  Ajouter un utilisateur') }}
 	</h4>
 
@@ -95,10 +96,13 @@
                         </div>
 						<div class="col-sm-6">
                             <div class="input-group">
-                                {{ form_row(form.status, {
-                                    label: 'status:',
-                                    attr: { class: 'form-control' }
-                                }) }}
+                               {% for child in form.status %}
+						<div class="form-check form-switch">
+
+							{{- form_widget(child) -}}
+							{{- form_label(child, null) -}}
+						</div>
+					{% endfor %}
                                 
                             </div>
                         </div>
@@ -132,15 +136,16 @@
 		</div>
 
 	</div>
+	 
 	<div class="form-group">
 		<div class="form-group col-sm-12">
 			<label class="col-sm-12 control-label mb-2 text-center">
-				<h2>Les Permissions:</h2>
+				<h2>Les Permissions: </h2>
 			</label>
 			<div class="col-sm-12">
 				{% for child in form.permissions %}
 					<div class="col-md-3 mb-2">
-						<div class="form-check">
+						<div class="form-check form-switch">
 							{{ form_widget(child, { 'attr': {'class': 'form-check-input'} }) }}
 							{{ form_label(child, null, { 'attr': {'class': 'form-check-label'} }) }}
 						</div>
@@ -153,12 +158,12 @@
 	<div class="form-group  ">
 	<div class="form-group col-sm-6">
 		<div class="col-lg-offset-5 col-lg-12">
-			<button class="btn btn-info">{{ button_label|default('Ajouter Utilisateur') }}</button>
+			<button class="btn btn-success">{{ button_label|default('Enrengistrer') }}</button>
 		</div>
 		</div>
 	 <div class="form-group col-sm-6">
 		<div class="col-lg-offset-5 col-lg-12">
-			<button class="btn btn-theme" value="back" onclick="history.go(-1)">Retour</button>
+			<button class="btn btn-primary" value="back" onclick="history.go(-1)">Annuler</button>
 		</div>
 	</div>
 	</div>

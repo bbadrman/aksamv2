@@ -6,6 +6,9 @@
 {% block stylesheets %}
 	{{ parent()}}
 	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/axentix@0.5.3/dist/css/axentix.min.css">
+	<link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css" integrity="sha384-AYmEC3Yw5cVb3ZcuHtOA93w35dYTsvhLPVnYs9eStHfGJvOvKxVfELGroGkvsg+p" crossorigin="anonymous"/>
+
+
 {% endblock %}
 {% block body %}
 	{% for label,  messages in app.flashes  %}
@@ -75,12 +78,20 @@
 								</th>
 								<th>
 									<i class="fa fa-calendar"></i>
+									Produits
+								</th>
+								<th>
+									<i class="fa fa-regular fa-shield-check"></i>
+									Permissions
+								</th>
+								<th>
+									<i class="fa fa-calendar"></i>
 									Date d'Embuache
 								</th>
 
-
 								<th>
-									<i class="fa fa-check-square-o" aria-hidden="true"></i>
+									<i class="fa fa-user-check" aria-hidden="true"></i>
+
 									Status</th>
 								<th>
 									<i class="fa fa-tasks" aria-hidden="true"></i>
@@ -91,10 +102,7 @@
 									<i class="fa fa-users" aria-hidden="true"></i>
 									Equipe
 								</th>
-								<th>
-									<i class="fa fa-product-hunt" aria-hidden="true"></i>
-									Produits
-								</th>
+
 
 								<th>
 									<i class="fa fa-cogs"></i>
@@ -106,8 +114,8 @@
 
 							{% for user in users %}
 								{# {% set Oui = '<span class="label label-success">Active</span>' %}
-																																																																																																																																																																																																																																																																								                             {% set Non  = '<span class="label label-warning">Desactive</span>' %}
-																																																																																																																																																																																																																																																																																<tr> #}
+																																																																																																																																																																																																																																																																																																																																																																																																																																								                             {% set Non  = '<span class="label label-warning">Desactive</span>' %}
+																																																																																																																																																																																																																																																																																																																																																																																																																																																<tr> #}
 
 								{# <td>{{ user.roles ? user.roles|json_encode : '' }}</td> #}
 									<td>
@@ -119,6 +127,18 @@
 								</td>
 									<td>
 								{{ user.remuneration  }}
+								</td>
+
+
+									<td>
+										{% for prod in user.products %}
+									{{ prod  }}
+								{% endfor %}
+								</td>
+									<td>
+										{% for perm in user.permissions %}
+									{{ perm|replace({'ROLE_': ''})|lower|capitalize }}
+								{% endfor %}
 								</td>
 									<td>
 								{{ user.embuchAt ? user.embuchAt|date('Y-m-d H:i:s') : '' }}
@@ -136,6 +156,11 @@
 								</td>
 
 								<td>{{ user.fonction }}</td>
+								<td>
+									{% for team in user.teams %}
+										{{ team  }}
+									{% endfor %}
+								</td>
 
 
 								<td class="btn-toolbar">
@@ -149,7 +174,7 @@
 										{% if is_granted('ROLEs_ADMIN') == true %}
 
 											{# <a hreff="#" class="btn primary press modal-tigger" data-target="DeleteStoreModal" data-id="{{user.id}}"  data-title="{{user.firstname}}">open</a>
-																																																																																																																																																																																																																																																																																																																																																																																										 #}
+																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																						 #}
 											{% set form_title = '<i class="fa fa-trash-o"></i>' %}
 											{{ include('user/_delete_form.html.twig', {
                                                     'form_title': form_title
