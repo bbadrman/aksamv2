@@ -1,0 +1,30 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}UniteTravail{% endblock %}
+
+{% block body %}
+    <h1>UniteTravail</h1>
+
+    <table class="table">
+        <tbody>
+            <tr>
+                <th>Id</th>
+                <td>{{ unite_travail.id }}</td>
+            </tr>
+            <tr>
+                <th>Nom</th>
+                <td>{{ unite_travail.nom }}</td>
+            </tr>
+            <tr>
+                <th>Description</th>
+                <td>{{ unite_travail.description }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <a href="{{ path('app_unite_travail_index') }}">back to list</a>
+
+    <a href="{{ path('app_unite_travail_edit', {'id': unite_travail.id}) }}">edit</a>
+
+    {{ include('unite_travail/_delete_form.html.twig') }}
+{% endblock %}

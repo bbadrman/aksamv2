@@ -1,0 +1,45 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}UniteTravail index
+{% endblock %}
+
+{% block body %}
+	<h1>UniteTravail index</h1>
+
+	<table class="table">
+		<thead>
+			<tr>
+				<th>Id</th>
+				<th>Nom</th>
+				<th>Description</th>
+				<th>Equipes</th>
+				<th>actions</th>
+			</tr>
+		</thead>
+		<tbody>
+			{% for unite_travail in unite_travails %}
+				<tr>
+					<td>{{ unite_travail.id }}</td>
+					<td>{{ unite_travail.nom }}</td>
+					<td>{{ unite_travail.description }}</td>
+					<td>
+						{% for teams in unite_travail.teams %}
+							{{ teams }}
+							<br>
+						{% endfor %}
+					</td>
+					<td>
+						<a href="{{ path('app_unite_travail_show', {'id': unite_travail.id}) }}">show</a>
+						<a href="{{ path('app_unite_travail_edit', {'id': unite_travail.id}) }}">edit</a>
+					</td>
+				</tr>
+			{% else %}
+				<tr>
+					<td colspan="4">no records found</td>
+				</tr>
+			{% endfor %}
+		</tbody>
+	</table>
+
+	<a href="{{ path('app_unite_travail_new') }}">Create new</a>
+{% endblock %}

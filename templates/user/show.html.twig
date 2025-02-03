@@ -9,18 +9,18 @@
 	<table class="table">
 		<tbody>
 			{# <tr>
-							<th>Id</th>
-							<td>{{ user.id }}</td>
-						</tr> #}
+																			<th>Id</th>
+																			<td>{{ user.id }}</td>
+																		</tr> #}
 			<tr>
 				<th>Username</th>
 				<td>{{ user.username }}</td>
 			</tr>
 
 			{# <tr>
-										<th>Roles</th>
-										<td>{{ user.roles ? user.roles|json_encode : '' }}</td>
-									</tr> #}
+																						<th>Roles</th>
+																						<td>{{ user.roles ? user.roles|json_encode : '' }}</td>
+																					</tr> #}
 			<tr>
 				<th>Password</th>
 				<td>{{ user.password }}</td>
@@ -55,14 +55,33 @@
 			</tr>
 			<tr>
 				<th>Status</th>
-				<td>{{ user.status }}</td>
+				<td>
+					{% if user.status == 1 %}
+						<a href="{{ path('activer', {'id': user.id})}}"></a>
+						<span class="label label-success">Active</span>
+					{% else %}
+						<span class="label label-warning">Desactive</span>
+					{% endif %}
+				</td>
 			</tr>
 			<tr>
 				<th>Produits</th>
 				<td>
 					{% for prod in user.products %}
 						{{ prod  }}
+						<br>
 					{% endfor %}
+				</td>
+			</tr>
+			<tr>
+				<th>Date de creation
+				</th>
+				<td>
+					{% if user.creatAt is not empty %}
+						{{ user.creatAt |  date('d/m/Y, H:i:s')}}
+					{% else %}
+						Aucun
+					{% endif %}
 				</td>
 			</tr>
 			<tr>
@@ -70,6 +89,7 @@
 				<td>
 					{% for perm in user.permissions %}
 						{{ perm|replace({'ROLE_': ''})|lower|capitalize }}
+						<br>
 					{% endfor %}
 				</td>
 			</tr>

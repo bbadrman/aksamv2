@@ -33,6 +33,11 @@ final class TeamController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+
+            foreach ($team->getUniteTravails() as $unite) {
+                $unite->addTeam($team);
+            }
+
             $entityManager->persist($team);
             $entityManager->flush();
 
@@ -92,6 +97,9 @@ final class TeamController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            // foreach ($team->getUniteTravails() as $unite) {
+            //     $unite->addTeam($team);
+            // }
             $entityManager->flush();
 
             return $this->redirectToRoute('app_team_index', [], Response::HTTP_SEE_OTHER);
