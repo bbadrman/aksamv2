@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Entity\userHistory;
 use App\Entity\User;
 use App\Form\UserType;
 use App\Repository\UserRepository;
@@ -36,6 +37,16 @@ final class UserController extends AbstractController
             $password = $this->encoder->hashPassword($user, $user->getPassword());
             $user->setPassword($password);
 
+
+            foreach ($user->getTeams() as $team) {
+                $history = new userHistory();
+                $history->setUsers($user);
+                $history->setTeam($team);
+                $history->setAffectAt(new \DateTime());
+
+                $entityManager->persist($history);
+            }
+
             $entityManager->persist($user);
             $entityManager->flush();
 
@@ -68,6 +79,16 @@ final class UserController extends AbstractController
 
             $password = $this->encoder->hashPassword($user, $user->getPassword());
             $user->setPassword($password);
+
+            foreach ($user->getTeams() as $team) {
+                $history = new userHistory();
+                $history->setUsers($user);
+                $history->setTeam($team);
+                $history->setAffectAt(new \DateTime());
+
+                $entityManager->persist($history);
+            }
+
             $entityManager->flush();
 
             return $this->redirectToRoute('app_user_index', [], Response::HTTP_SEE_OTHER);

@@ -22,18 +22,18 @@ class TeamType extends AbstractType
                 'label' => "Description de la fonction",
                 'required' => false
             ])
-            ->add('uniteTravails', EntityType::class, [
-                'class' => UniteTravail::class,
-                'choice_label' => 'nom',
-                'multiple' => true,
-                'required' => false,
-            ])
-            ->add('users', EntityType::class, [
-                'class' => User::class,
-                'choice_label' => 'username',
-                'multiple' => true,
-                'required' => false,
-            ])
+            // ->add('uniteTravails', EntityType::class, [
+            //     'class' => UniteTravail::class,
+            //     'choice_label' => 'nom',
+            //     'multiple' => true,
+            //     'required' => false,
+            // ])
+            // ->add('users', EntityType::class, [
+            //     'class' => User::class,
+            //     'choice_label' => 'username',
+            //     'multiple' => true,
+            //     'required' => false,
+            // ])
         ;
     }
 

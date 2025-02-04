@@ -9,18 +9,18 @@
 	<table class="table">
 		<tbody>
 			{# <tr>
-																			<th>Id</th>
-																			<td>{{ user.id }}</td>
-																		</tr> #}
+																																																							<th>Id</th>
+																																																							<td>{{ user.id }}</td>
+																																																						</tr> #}
 			<tr>
 				<th>Username</th>
 				<td>{{ user.username }}</td>
 			</tr>
 
 			{# <tr>
-																						<th>Roles</th>
-																						<td>{{ user.roles ? user.roles|json_encode : '' }}</td>
-																					</tr> #}
+																																																										<th>Roles</th>
+																																																										<td>{{ user.roles ? user.roles|json_encode : '' }}</td>
+																																																									</tr> #}
 			<tr>
 				<th>Password</th>
 				<td>{{ user.password }}</td>
@@ -89,6 +89,19 @@
 				<td>
 					{% for perm in user.permissions %}
 						{{ perm|replace({'ROLE_': ''})|lower|capitalize }}
+						<br>
+					{% endfor %}
+				</td>
+			</tr>
+			<tr>
+				<th>Historique d'affectation
+				</th>
+				<td>
+					{% for hist in user.userHistories %}
+						Affecté au
+						{{ hist.team  }}
+						a la date
+						{{ hist.affectAt |  date('d/m/Y, H:i:s') }}
 						<br>
 					{% endfor %}
 				</td>

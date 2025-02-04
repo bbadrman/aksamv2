@@ -101,6 +101,12 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\OneToMany(targetEntity: Prospect::class, mappedBy: 'comrcl')]
     private Collection $prospects;
 
+    /**
+     * @var Collection<int, UserHistory>
+     */
+    #[ORM\OneToMany(targetEntity: UserHistory::class, mappedBy: 'users')]
+    private Collection $userHistories;
+
     public function __construct()
     {
         $this->permissions = new ArrayCollection();
@@ -108,6 +114,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         $this->teams = new ArrayCollection();
         $this->contrats = new ArrayCollection();
         $this->prospects = new ArrayCollection();
+        $this->userHistories = new ArrayCollection();
     }
 
 
@@ -417,5 +424,37 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function __toString()
     {
         return $this->getUserIdentifier();
+    }
+
+
+
+    /**
+     * @return Collection<int, UserHistory>
+     */
+    public function getUserHistories(): Collection
+    {
+        return $this->userHistories;
+    }
+
+    public function addUserHistory(UserHistory $userHistory): static
+    {
+        if (!$this->userHistories->contains($userHistory)) {
+            $this->userHistories->add($userHistory);
+            $userHistory->setUsers($this);
+        }
+
+        return $this;
+    }
+
+    public function removeUserHistory(UserHistory $userHistory): static
+    {
+        if ($this->userHistories->removeElement($userHistory)) {
+            // set the owning side to null (unless already changed)
+            if ($userHistory->getUsers() === $this) {
+                $userHistory->setUsers(null);
+            }
+        }
+
+        return $this;
     }
 }
