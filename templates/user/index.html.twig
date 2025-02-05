@@ -114,8 +114,8 @@
 
 							{% for user in users %}
 								{# {% set Oui = '<span class="label label-success">Active</span>' %}
-																																																																																																																																																																																																																																																																																																																																																																																																																																																                             {% set Non  = '<span class="label label-warning">Desactive</span>' %}
-																																																																																																																																																																																																																																																																																																																																																																																																																																																								<tr> #}
+																																																																																																																																																																																																																																																																																																																																																																																																																																																								                             {% set Non  = '<span class="label label-warning">Desactive</span>' %}
+																																																																																																																																																																																																																																																																																																																																																																																																																																																																<tr> #}
 
 								{# <td>{{ user.roles ? user.roles|json_encode : '' }}</td> #}
 									<td>
@@ -177,7 +177,7 @@
 										{% if is_granted('ROLEs_ADMIN') == true %}
 
 											{# <a hreff="#" class="btn primary press modal-tigger" data-target="DeleteStoreModal" data-id="{{user.id}}"  data-title="{{user.firstname}}">open</a>
-																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																	 #}
+																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																												 #}
 											{% set form_title = '<i class="fa fa-trash-o"></i>' %}
 											{{ include('user/_delete_form.html.twig', {
                                                     'form_title': form_title

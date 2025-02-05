@@ -1,0 +1,13 @@
+api_platform:
+    title: 'Mon API'
+    description: 'Description de mon API'
+    version: '1.0.0'
+    formats:
+        jsonld: ['application/ld+json']
+        json: ['application/json']
+        html: ['text/html']
+    swagger:
+        api_keys:
+            apiKey:
+                name: 'Authorization'
+                type: 'header'
