@@ -1,0 +1,13 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Edit Prospect{% endblock %}
+
+{% block body %}
+    <h1>Edit Prospect</h1>
+
+    {{ include('prospect/_form.html.twig', {'button_label': 'Update'}) }}
+
+    <a href="{{ path('app_prospect_index') }}">back to list</a>
+
+    {{ include('prospect/_delete_form.html.twig') }}
+{% endblock %}

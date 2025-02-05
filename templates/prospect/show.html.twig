@@ -1,0 +1,106 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Prospect{% endblock %}
+
+{% block body %}
+    <h1>Prospect</h1>
+
+    <table class="table">
+        <tbody>
+            <tr>
+                <th>Id</th>
+                <td>{{ prospect.id }}</td>
+            </tr>
+            <tr>
+                <th>Nom</th>
+                <td>{{ prospect.nom }}</td>
+            </tr>
+            <tr>
+                <th>Prenom</th>
+                <td>{{ prospect.prenom }}</td>
+            </tr>
+            <tr>
+                <th>Phone</th>
+                <td>{{ prospect.phone }}</td>
+            </tr>
+            <tr>
+                <th>Email</th>
+                <td>{{ prospect.email }}</td>
+            </tr>
+            <tr>
+                <th>Gender</th>
+                <td>{{ prospect.gender }}</td>
+            </tr>
+            <tr>
+                <th>City</th>
+                <td>{{ prospect.city }}</td>
+            </tr>
+            <tr>
+                <th>Adress</th>
+                <td>{{ prospect.adress }}</td>
+            </tr>
+            <tr>
+                <th>BrithAt</th>
+                <td>{{ prospect.brithAt ? prospect.brithAt|date('Y-m-d H:i:s') : '' }}</td>
+            </tr>
+            <tr>
+                <th>Source</th>
+                <td>{{ prospect.source }}</td>
+            </tr>
+            <tr>
+                <th>TypeProspect</th>
+                <td>{{ prospect.typeProspect }}</td>
+            </tr>
+            <tr>
+                <th>RaisonSociale</th>
+                <td>{{ prospect.raisonSociale }}</td>
+            </tr>
+            <tr>
+                <th>CodePost</th>
+                <td>{{ prospect.codePost }}</td>
+            </tr>
+            <tr>
+                <th>Gsm</th>
+                <td>{{ prospect.gsm }}</td>
+            </tr>
+            <tr>
+                <th>Assurer</th>
+                <td>{{ prospect.assurer }}</td>
+            </tr>
+            <tr>
+                <th>LastAssure</th>
+                <td>{{ prospect.lastAssure }}</td>
+            </tr>
+            <tr>
+                <th>MotifResil</th>
+                <td>{{ prospect.motifResil }}</td>
+            </tr>
+            <tr>
+                <th>MotifSaise</th>
+                <td>{{ prospect.motifSaise }}</td>
+            </tr>
+            <tr>
+                <th>Url</th>
+                <td>{{ prospect.url }}</td>
+            </tr>
+            <tr>
+                <th>SecdEmail</th>
+                <td>{{ prospect.secdEmail }}</td>
+            </tr>
+            <tr>
+                <th>CreatAt</th>
+                <td>{{ prospect.creatAt ? prospect.creatAt|date('Y-m-d H:i:s') : '' }}</td>
+            </tr>
+            <tr>
+                <th>Activites</th>
+                <td>{{ prospect.activites }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <a href="{{ path('app_prospect_index') }}">back to list</a>
+
+    <a href="{{ path('app_prospect_edit', {'id': prospect.id}) }}">edit</a>
+
+    {{ include('prospect/_delete_form.html.twig') }}
+{% endblock %}

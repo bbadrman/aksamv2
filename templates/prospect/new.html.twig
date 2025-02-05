@@ -1,0 +1,11 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}New Prospect{% endblock %}
+
+{% block body %}
+    <h1>Create new Prospect</h1>
+
+    {{ include('prospect/_form.html.twig') }}
+
+    <a href="{{ path('app_prospect_index') }}">back to list</a>
+{% endblock %}

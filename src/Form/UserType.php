@@ -3,9 +3,8 @@
 namespace App\Form;
 
 use App\Entity\Permission;
-use App\Entity\Product;
-use App\Entity\Team;
 use App\Entity\User;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
@@ -16,6 +15,7 @@ use Symfony\Component\Form\Extension\Core\Type as Type;
 
 class UserType extends AbstractType
 {
+    public function __construct(private EntityManagerInterface $em) {}
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
@@ -96,6 +96,7 @@ class UserType extends AbstractType
                 },
                 'multiple' => true,
                 'expanded' => true,
+                'choices' => $this->getSortedPermissionsAlphabetically(),
             ])
             ->add('products')
             ->add('teams')
@@ -107,5 +108,17 @@ class UserType extends AbstractType
         $resolver->setDefaults([
             'data_class' => User::class,
         ]);
+    }
+    private function getSortedPermissionsAlphabetically(): array
+    {
+        $permissions = $this->em->getRepository(Permission::class)->findAll();
+
+        usort($permissions, function (Permission $a, Permission $b) {
+            $labelA = strtolower(str_replace('ROLE_', '', $a->getNom()));
+            $labelB = strtolower(str_replace('ROLE_', '', $b->getNom()));
+            return strcmp($labelA, $labelB);
+        });
+
+        return $permissions;
     }
 }
