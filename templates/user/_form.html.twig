@@ -8,9 +8,9 @@
 	{{ form_start(form, {'attr': {'class': 'form-horizontal style-form'}}) }}
 
 	<div class="col-sm-2 col-sm-2 control-label"></div>
-	<div class="col-sm-8">
+	<div class="col-sm-8 ">
 		{% if not form.vars.valid %}
-			<ul class="alert-danger">
+			<ul class="btn btn-danger">
 				{% for child in form.children %}
 					{% if child.vars.errors is defined %}
 						{% for error in child.vars.errors %}
@@ -24,51 +24,51 @@
 
 
 	{# Form Sections #}
-	<div class="form-group">
-		<div class=" col-sm-6">
+
+	<div class="form-group row d-flex justify-content-center text-center">
+		<div class=" col-sm-6 text-center">
 			{{ form_row(form.username, {
                                 label: 'Username: *',
                                 attr: { class: 'form-control' }
                             }) }}
 		</div>
-
 	</div>
-
-	<div class="form-group">
-		<div class="col-sm-6">
-			{{ form_row(form.password.first, {
+	<div class="col-sm-12">
+		<div class="form-group row">
+			<div class="col-sm-6">
+				{{ form_row(form.password.first, {
                                 label: 'Mot de passe: *',
                                 attr: { class: 'form-control' }
                             }) }}
-		</div>
-		<div class="col-sm-6">
-			{{ form_row(form.password.second, {
+			</div>
+			<div class="col-sm-6">
+				{{ form_row(form.password.second, {
                                 label: 'Confirmez le mot de passe: *',
                                 attr: { class: 'form-control' }
                             }) }}
+			</div>
 		</div>
-	</div>
 
-	{# Personal Info #}
-	<div class="form-group">
-		<div class="col-sm-6">
-			{{ form_row(form.firstname, {
+		{# Personal Info #}
+		<div class="form-group row">
+			<div class="col-sm-6">
+				{{ form_row(form.firstname, {
                                 label: 'Prénom: *',
                                 attr: { class: 'form-control' }
                             }) }}
-		</div>
-		<div class="col-sm-6">
-			{{ form_row(form.lastname, {
+			</div>
+			<div class="col-sm-6">
+				{{ form_row(form.lastname, {
                                 label: 'Nom: *',
                                 attr: { class: 'form-control' }
                             }) }}
+			</div>
 		</div>
-	</div>
 
-	{# Professional Info #}
-	<div class="form-group">
-		<div class="col-sm-6">
-			{{ form_row(form.embuchAt, {
+		{# Professional Info #}
+		<div class="form-group row">
+			<div class="col-sm-6">
+				{{ form_row(form.embuchAt, {
                                 label: 'Date d\'embauche:',
                                 attr: { class: 'form-control' }
                             }) }}
@@ -82,18 +82,18 @@
                     </div>
 
                     {# Associations #}
-                    <div class="form-group">
+                   <div class="form-group row">
                         <div class="col-sm-6">
-                            <div class="input-group">
+                             
                                 {{ form_row(form.fonction, {
                                     label: 'Fonctions:',
                                     attr: { class: 'form-control' }
                                 }) }}
                                 
-                            </div>
+                            
                         </div>
 						<div class="col-sm-6">
-                            <div class="input-group">
+                             
                                {% for child in form.status %}
 						<div class="form-check form-switch">
 
@@ -101,75 +101,69 @@
 							{{- form_label(child, null) -}}
 						</div>
 					{% endfor %}
+                               
+                        </div> 
+                    </div> 
+	<div class="form-group row">
+                        <div class="col-sm-6">
+
+						 {{ form_row(form.teams, {
+                                    label: 'Équipes:',
+                                    attr: { class: 'form-control' }
+                                }) }}
                                 
-                            </div>
-                        </div>
-						   
-                    </div>
-
-	 
-	<div class="form-group">
-
-		<div class="form-group col-sm-6">
-			<label class="col-sm-4 col-sm-4 control-label">
-				  Équipes:
-			</label>
-			<div class="col-sm-5">
-				{{ form_widget(form.teams, {'attr': {'class': 'form-control'}}) }}
+			 
 				
-			</div>
-			<a href="#" class="btn btn-primary" data-toggle="modal" data-target="#AddGroupeModal">+</a>
-
+			 <a href="#" class="btn btn-primary" data-toggle="modal" data-target="#AddGroupeModal">+</a>
+             
 		</div>
-		<div class="form-group col-sm-6">
-			<label class="col-sm-4 col-sm-4 control-label">
-				  Produits:
-			</label>
-			<div class="col-sm-5">
-				{{ form_widget(form.products, {'attr': {'class': 'form-control'}}) }}
-				
-			</div>
+		<div class="col-sm-6">
+
+						 {{ form_row(form.products, {
+                                    label: 'Produits:',
+                                    attr: { class: 'form-control' }
+                                }) }}
+                       
 			<a href="#" class="btn btn-primary" data-toggle="modal" data-target="#AddProductModal">+</a>
-
-		</div>
-
+		</div> 
 	</div>
 	 
-	<div class="form-group">
+	<div class="form-group row">
 		<div class="form-group col-sm-12">
 			<label class="col-sm-12 control-label mb-2 text-center">
 				<h2>Les Permissions: </h2>
 			</label>
 			<div class="col-sm-12">
+			<div class="row"> 
 				{% for child in form.permissions %}
-					<div class="col-md-3 mb-2">
-						<div class="form-check form-switch">
+					 <div class="col-md-3 col-sm-6 mb-2">
+						<div class="form-check form-switch ">
 							{{ form_widget(child, { 'attr': {'class': 'form-check-input'} }) }}
 							{{ form_label(child, null, { 'attr': {'class': 'form-check-label'} }) }}
 						</div>
 					</div>
 				{% endfor %}
+				</div>
 			</div>
 		</div>
 	</div>
 
-	<div class="form-group  ">
-	<div class="form-group col-sm-6">
-		<div class="col-lg-offset-5 col-lg-12">
+	<div class="form-group row">
+	  <div class=" col-sm-12 text-center">
 			<button class="btn btn-success">{{ button_label|default('Enrengistrer') }}</button>
-		</div>
-		</div>
-	 <div class="form-group col-sm-6">
+	  </div>
+	 </div>
+	 <div class="form-group col-sm-12 text-center">
 		<div class="col-lg-offset-5 col-lg-12">
 			<button class="btn btn-primary" value="back" onclick="history.go(-1)">Annuler</button>
 		</div>
-	</div>
-	</div>
+	</div> </div>
 {{ form_rest(form) }}
 {{ form_end(form) }}
-</div>
-
+ 
+ 
 {# # AddGroupeModal # #}
+
 	<div class="modal fade" id="AddGroupeModal" tabindex="-1" role="dialog" aria-hidden="true">
 		<div class="modal-dialog" role="document">
 			<div class="modal-content">
@@ -278,6 +272,7 @@
 				</div>
 			</div>
 		</div>
-	</div>
-
+	</div> 
 	{# # END- AddProductModal # #}
+</div>
+</div>

@@ -41,8 +41,8 @@
 </div>
 
 
-<div class="top-menu">
-	<ul class="nav pull-right top-menu">
+<div class="top-menu d-flex justify-content-end">
+	<ul class="nav pull top-menu">
 		<li>
 			<a class="logout" href="/{{app.user ? 'logout' : 'login'}}" @click="isOpen = false">
 				{{ app.user ? 'Se déconnecter' : 'Connectez vous' }}

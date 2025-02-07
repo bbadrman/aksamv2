@@ -25,8 +25,8 @@
 	</h5>
 
 	{# {% for team in user.teams %}
-																																														<h5 class="centered">{{  team  }}</h5>
-																																													{% endfor %} #}
+																																																																			<h5 class="centered">{{  team  }}</h5>
+																																																																		{% endfor %} #}
 	<!-- DASHBOARD -->
 
 
@@ -42,7 +42,7 @@
 
 
 	<!-- Traitement Prospect -->
-	{% if is_granted('ROLE_AFFECT') or is_granted('ROLE_PROS') or is_granted('ROLE_ADD_PROS') or is_granted('ROLE_TEAM') or is_granted('ROLE_ADMIN') or is_granted('ROLE_EDIT_PROS') == true %}
+	{% if is_granted('ROLE_TRAITEMENT') == true %}
 
 		<li class="sub-menu">
 			<a class="nav-link " href="#">
@@ -55,22 +55,22 @@
 	<!-- END Traitement Prospect -->
 
 	<!--  Stat -->
-	{% if is_granted('ROLE_TEAM')  == true %}
+	{% if is_granted('ROLE_STATIQUE')  == true %}
 		<li class="sub-menu">
 			<a class="nav-link {% if page in ['dashboard', 'prospects_calandri' ] %}active{% endif %}" href="javascript:;">
 				<i class="fa fa-pie-chart" aria-hidden="true"></i>
 				<span>Statistique</span>
 			</a>
 			<ul class="sub">
-				{% if is_granted('ROLE_ADMIN') == true %}
-					<li>
-						<a class="nav-link " href="#">
-							<i class="fa fa-calendar" aria-hidden="true"></i>
-							<span>Stat Génerale
-							</span>
-						</a>
-					</li>
-				{% endif %}
+
+				<li>
+					<a class="nav-link " href="#">
+						<i class="fa fa-calendar" aria-hidden="true"></i>
+						<span>Stat Génerale
+						</span>
+					</a>
+				</li>
+
 				<li>
 					<a class="nav-link " href="{{ path('app_home') }}">
 						<i class="fa fa-line-chart" aria-hidden="true"></i>
@@ -84,7 +84,7 @@
 	<!-- END  Stat -->
 
 	<!-- RH< -->
-	{% if is_granted("ROLE_RH") or is_granted('ROLE_ADD_RH') or is_granted('ROLE_EDIT_RH')  == true %}
+	{% if is_granted("ROLE_RH") == true %}
 		<li class="sub-menu">
 			<a class="nav-link {% if page in ['attributte_index', 'attributte_new', '#', '#'] %}active{% endif %}" href="javascript:;">
 				<i class="fa fa-address-card"></i>
@@ -112,7 +112,7 @@
 
 	<!-- Clients -->
 
-	{% if is_granted('ROLE_AFFECT') or is_granted('ROLE_PROS') or is_granted('ROLE_ADD_PROS') or is_granted('ROLE_TEAM') or is_granted('ROLE_ADMIN') or is_granted('ROLE_EDIT_PROS') == true %}
+	{% if is_granted('ROLE_CLIENT')  == true %}
 
 		<li class="sub-menu">
 			<a class="nav-link " href="#">
@@ -128,7 +128,7 @@
 
 	<!-- Pramétres -->
 
-	{% if is_granted('ROLE_ADMIN')  == true %}
+	{% if is_granted('ROLE_PARAMETTRE')  == true %}
 		<li class="sub-menu">
 
 			<a class="nav-link {% if page in ['user_index', 'user_new', 'user_edit', 'user_show', 'app_team_new', 'app_team_index', 'app_team_show', 'app_team_edit', 'fonction_index', 'fonction_new', 'fonction_show', 'fonction_edit','app_product_index', 'app_product_new', 'app_product_show', 'app_product_edit'] %}active{% endif %}" href="javascript:;">
@@ -136,78 +136,74 @@
 				<span>Paramettre</span>
 			</a>
 
-			<ul
-				class="sub">
+			<ul class="sub">
+				{% if is_granted('ROLE_GESTION_USER')  == true %}
+					<!-- USERS -->
+					<li class="sub-menu">
 
-				<!-- USERS -->
-				<li class="sub-menu">
+						<a class="nav-link {% if page in ['app_user_index', 'app_user_new', 'user_edit', 'user_show'] %}active{% endif %}" href="javascript:;">
+							<i class="fa fa-user-circle"></i>
+							<span>Utilisateurs</span>
+						</a>
 
-					<a class="nav-link {% if page in ['user_index', 'user_new', 'user_edit', 'user_show'] %}active{% endif %}" href="javascript:;">
-						<i class="fa fa-user-circle"></i>
-						<span>Utilisateurs</span>
-					</a>
+						<ul class="sub">
+							{% if is_granted('ROLE_AJOUT_USER')  == true %}
+								<li>
+									<a href="{{ path('app_user_new') }}">Ajouter un user</a>
+								</li>
+							{% endif %}
+							<li>
+								<a href="{{ path('app_user_index') }}">Gérer les Users</a>
+							</li>
+							{# <li>
+																																																																																																																																																																																										<a href="{{ path('user_acces') }}">Gérer les Sessions</a>
+																																																																																																																																																																																									</li> #}
+						</ul>
+					</li>
+					<!-- END USERS -->
+				{% endif %}
+				{% if is_granted('ROLE_PRODUIT')  == true %}
+					<!-- Produits -->
+					<li class="sub-menu">
+						<a class="nav-link {% if page in ['app_product_index', 'app_product_new', 'app_product_show', 'app_product_edit'] %}active{% endif %}" href="javascript:;">
+							<i class="fa fa-product-hunt"></i>
+							<span>Produits</span>
+						</a>
 
-					<ul class="sub">
-						<li>
-							<a href="{{ path('app_user_new') }}">Ajouter un user</a>
-						</li>
-						<li>
-							<a href="{{ path('app_user_index') }}">Gérer les Users</a>
-						</li>
-						{# <li>
-																																											<a href="{{ path('user_acces') }}">Gérer les Sessions</a>
-																																										</li> #}
-					</ul>
-				</li>
-				<!-- END USERS -->
+						<ul class="sub">
+							{% if is_granted('ROLE_AJOUT_PRODUIT')  == true %}
+								<li>
+									<a href="{{ path('app_product_new') }}">Ajouter un Produit</a>
+								</li>
+							{% endif %}
+							<li>
+								<a href="{{ path('app_product_index') }} ">Gérer les Produits</a>
+							</li>
+						</ul>
+					</li>
+					<!-- END Produits -->
+				{% endif %}
+				{% if is_granted('ROLE_EQUIPE')  == true %}
+					<!-- Equipe -->
+					<li class="sub-menu">
+						<a class="nav-link {% if page in ['app_team_new', 'app_team_index', 'app_team_show', 'app_team_edit'] %}active{% endif %}" href="javascript:;">
+							<i class="fa fa-users"></i>
+							<span>Equipe</span>
+						</a>
 
-
-				<!-- Produits -->
-				<li class="sub-menu">
-					<a class="nav-link {% if page in ['app_product_index', 'app_product_new', 'app_product_show', 'app_product_edit'] %}active{% endif %}" href="javascript:;">
-						<i class="fa fa-product-hunt"></i>
-						<span>Produits</span>
-					</a>
-
-					<ul class="sub">
-						<li>
-							<a href="#">Ajouter un Produit</a>
-						</li>
-						<li>
-							<a href="#">Gérer les Produits</a>
-						</li>
-					</ul>
-				</li>
-				<!-- END Produits -->
-
-				<!-- Equipe -->
-				<li class="sub-menu">
-					<a class="nav-link {% if page in ['app_team_new', 'app_team_index', 'app_team_show', 'app_team_edit'] %}active{% endif %}" href="javascript:;">
-						<i class="fa fa-users"></i>
-						<span>Equipe</span>
-					</a>
-
-					<ul class="sub">
-						<li>
-							<a href="#">Ajouter un Equipe</a>
-						</li>
-						<li>
-							<a href="#">Gérer les Equipes</a>
-						</li>
-					</ul>
-				</li>
-				<!-- END Equipe -->
-
-				<!-- Ringover -->
-				<li
-					class="sub-menu">{# <a class="nav-link " href="{{ path('ringover-api') }}">
-																								<i class="fa fa-upload" aria-hidden="true"></i>
-																								<span>Appels
-																								</span>
-																							</a> #}
-				</li>
-				<!-- END Ringover -->
-
+						<ul class="sub">
+							{% if is_granted('ROLE_AJOUT_EQUIPE')  == true %}
+								<li>
+									<a href="{{ path('app_team_new') }}">Ajouter un Equipe</a>
+								</li>
+							{% endif %}
+							<li>
+								<a href="{{ path('app_team_index') }}">Gérer les Equipes</a>
+							</li>
+						</ul>
+					</li>
+					<!-- END Equipe -->
+				{% endif %}
 			</ul>
 		</li>
 	{% endif %}

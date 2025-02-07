@@ -98,9 +98,9 @@ $(document).on('click', '.product_new', function (e) {
 	e.preventDefault();
 
 	const data = {
-		'name': $('#product_name').val(),
+		'nom': $('#product_nom').val(),
 
-		'descrption': $('.descrption').val()
+		'description': $('.description').val()
 	};
 
 	let AddProductModal = $('#AddProductModal');
@@ -119,12 +119,17 @@ $(document).on('click', '.product_new', function (e) {
 			} else {
 				$('#saveform_errList').html("").removeClass('alert alert-danger');
 				$('#success_message').addClass('alert alert-success').text(response.message);
-				$('#user_products').append('<option value="1" selected="selected">' + $('#product_name').val() + '</option>');
-				AddProductModal.modal('hide').find('#product_name').val("").find('#product_descrption').val("");
-
+				$('#user_products').append('<option value="1" selected="selected">' + $('#product_nom').val() + '</option>');
+				AddProductModal.modal('hide').find('#product_nom').val("").find('#product_description').val("");
+				fetchGroups();
 			}
-		}
+
+
+		},
+
+
 	})
+
 });
 
 // END adding a Product //

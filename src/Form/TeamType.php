@@ -28,12 +28,13 @@ class TeamType extends AbstractType
             //     'multiple' => true,
             //     'required' => false,
             // ])
-            // ->add('users', EntityType::class, [
-            //     'class' => User::class,
-            //     'choice_label' => 'username',
-            //     'multiple' => true,
-            //     'required' => false,
-            // ])
+            ->add('users', EntityType::class, [
+                'class' => User::class,
+                'label' => "Attacher des utilisateurs",
+                'choice_label' => 'username',
+                'multiple' => true,
+                'required' => false,
+            ])
         ;
     }
 
