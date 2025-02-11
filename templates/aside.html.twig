@@ -1,4 +1,4 @@
-{% if app.user is not null %}
+{% if is_granted('IS_AUTHENTICATED_FULLY') %}
 
 	{% set page = app.request.get('_route') %}
 
@@ -11,24 +11,23 @@
 
 	<h5 class="centered">{{ app.user.username  }}</h5>
 	<h5 class="centered">
-		{% if is_granted('IS_AUTHENTICATED_FULLY') %}
-			{% if app.user.fonction is not empty %}
 
-				<p>
-					{{  app.user.fonction }}
+		{% if app.user.fonction is not empty %}
 
-				</p>
+			<p>
+				{{  app.user.fonction }}
 
-			{% endif %}
+			</p>
+
 		{% endif %}
+
 
 	</h5>
 
 	{# {% for team in user.teams %}
-																																																																			<h5 class="centered">{{  team  }}</h5>
-																																																																		{% endfor %} #}
+																																																																															<h5 class="centered">{{  team  }}</h5>
+																																																																														{% endfor %} #}
 	<!-- DASHBOARD -->
-
 
 	<li class="sub-menu">
 		<a class="nav-link " href="#">
@@ -45,8 +44,8 @@
 	{% if is_granted('ROLE_TRAITEMENT') == true %}
 
 		<li class="sub-menu">
-			<a class="nav-link " href="#">
-				<i class="fa fa-diamond "></i>
+			<a class="nav-link " href="{{ path('app_traitement') }} ">
+				<i class="fa-regular fa-gem"></i>
 				<span>Traitement
 				</span>
 			</a>
@@ -136,9 +135,11 @@
 				<span>Paramettre</span>
 			</a>
 
-			<ul class="sub">
+			<ul
+				class="sub">
+
+				<!-- USERS -->
 				{% if is_granted('ROLE_GESTION_USER')  == true %}
-					<!-- USERS -->
 					<li class="sub-menu">
 
 						<a class="nav-link {% if page in ['app_user_index', 'app_user_new', 'user_edit', 'user_show'] %}active{% endif %}" href="javascript:;">
@@ -156,14 +157,16 @@
 								<a href="{{ path('app_user_index') }}">Gérer les Users</a>
 							</li>
 							{# <li>
-																																																																																																																																																																																										<a href="{{ path('user_acces') }}">Gérer les Sessions</a>
-																																																																																																																																																																																									</li> #}
+																																																																																																																																																																																																																																																																														<a href="{{ path('user_acces') }}">Gérer les Sessions</a>
+																																																																																																																																																																																																																																																																													</li> #}
 						</ul>
 					</li>
-					<!-- END USERS -->
+
 				{% endif %}
+				<!-- END USERS -->
+
+				<!-- Produits -->
 				{% if is_granted('ROLE_PRODUIT')  == true %}
-					<!-- Produits -->
 					<li class="sub-menu">
 						<a class="nav-link {% if page in ['app_product_index', 'app_product_new', 'app_product_show', 'app_product_edit'] %}active{% endif %}" href="javascript:;">
 							<i class="fa fa-product-hunt"></i>
@@ -181,10 +184,38 @@
 							</li>
 						</ul>
 					</li>
-					<!-- END Produits -->
 				{% endif %}
+				<!-- END Produits -->
+
+				<!-- USERS -->
+				{% if is_granted('ROLE_UNITE')  == true %}
+					<li class="sub-menu">
+
+						<a class="nav-link {% if page in ['app_user_index', 'app_user_new', 'user_edit', 'user_show'] %}active{% endif %}" href="javascript:;">
+							<i class="fa fa-user-circle"></i>
+							<span>Unite</span>
+						</a>
+
+						<ul class="sub">
+							{% if is_granted('ROLE_AJOUT_UNITE')  == true %}
+								<li>
+									<a href="{{ path('app_unite_travail_new') }}">Ajouter unite
+									</a>
+								</li>
+							{% endif %}
+							<li>
+								<a href="{{ path('app_unite_travail_index') }}">Gérer les Unites</a>
+							</li>
+							{# <li>
+																																																																																																																																																																																																																																																																														<a href="{{ path('user_acces') }}">Gérer les Sessions</a>
+																																																																																																																																																																																																																																																																													</li> #}
+						</ul>
+					</li>
+				{% endif %}
+				<!-- END USERS -->
+
+				<!-- Equipe -->
 				{% if is_granted('ROLE_EQUIPE')  == true %}
-					<!-- Equipe -->
 					<li class="sub-menu">
 						<a class="nav-link {% if page in ['app_team_new', 'app_team_index', 'app_team_show', 'app_team_edit'] %}active{% endif %}" href="javascript:;">
 							<i class="fa fa-users"></i>
@@ -202,8 +233,8 @@
 							</li>
 						</ul>
 					</li>
-					<!-- END Equipe -->
 				{% endif %}
+				<!-- END Equipe -->
 			</ul>
 		</li>
 	{% endif %}

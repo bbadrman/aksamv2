@@ -68,10 +68,11 @@ final class ProspectController extends AbstractController
         ]);
     }
 
+
     #[Route('/{id}', name: 'app_prospect_delete', methods: ['POST'])]
     public function delete(Request $request, Prospect $prospect, EntityManagerInterface $entityManager): Response
     {
-        if ($this->isCsrfTokenValid('delete'.$prospect->getId(), $request->getPayload()->getString('_token'))) {
+        if ($this->isCsrfTokenValid('delete' . $prospect->getId(), $request->getPayload()->getString('_token'))) {
             $entityManager->remove($prospect);
             $entityManager->flush();
         }

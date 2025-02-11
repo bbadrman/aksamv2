@@ -1,11 +1,34 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}New UniteTravail{% endblock %}
+{% block title %}New UniteTravail
+{% endblock %}
 
 {% block body %}
-    <h1>Create new UniteTravail</h1>
+	<section class="content-header ">
+		<h1>
+			Unites
+			<small>Gestion</small>
+		</h1>
+		<ol class="breadcrumb">
+			<li>
+				<a href="{{ path('app_home') }}">
+					<i class="fa fa-dashboard"></i>
+					Tableau de bord</a>
+			</li>
+			<li>
+				<a href="{{ path('app_unite_travail_index') }}">
+					<i class="fa fa-users"></i>
+					Tous les unites</a>
+			</li>
+			<li class="active">Ajouter unite</li>
+		</ol>
+	</section>
 
-    {{ include('unite_travail/_form.html.twig') }}
+	<div class="container">
+		<div class="row mt ">
+			{{ include('unite_travail/_form.html.twig') }}
+		</div>
+		<a href="{{ path('app_unite_travail_index') }}">Retour</a>
+	</div>
 
-    <a href="{{ path('app_unite_travail_index') }}">back to list</a>
 {% endblock %}

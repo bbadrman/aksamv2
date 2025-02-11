@@ -16,12 +16,12 @@ class UniteTravailType extends AbstractType
         $builder
             ->add('nom')
             ->add('description')
-            // ->add('teams', EntityType::class, [
-            //     'class' => Team::class,
-            //     'choice_label' => 'name',
-            //     'multiple' => true,
-            //     'required' => false,
-            // ])
+            ->add('teams', EntityType::class, [
+                'class' => Team::class,
+                'choice_label' => 'name',
+                'multiple' => true,
+                'required' => false,
+            ])
         ;
     }
 

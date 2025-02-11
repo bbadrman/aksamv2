@@ -1082,6 +1082,10 @@ PANELS CONFIGURATIONS
 .green-panel {
     text-align: center;
     background: #4ECDC4;
+    border-radius: 15px;
+    overflow: hidden;
+    border: 1px solid #ddd;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
 .red-panel {
@@ -1090,9 +1094,14 @@ PANELS CONFIGURATIONS
 }
 
 .green-panel .green-header {
-    background: #43b1a9;
+
     padding: 2px;
     margin-bottom: 15px;
+    border-top-right-radius: 15px;
+    background-color: #4CAF50;
+    color: white;
+    padding: 10px;
+    text-align: center;
 }
 
 .red-panel .green-header {
