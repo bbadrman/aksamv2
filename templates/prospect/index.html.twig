@@ -70,8 +70,11 @@
 								<td>{{ prospect.email }}</td>
 								<td>{{ prospect.relance }}</td>
 								<td class="btn-toolbar">
-									<a href="{{ path('app_prospect_show', {'id': prospect.id}) }}" class="btn btn-success btn-xs">
+									<a href="{{ path('app_prospect_show', {'id': prospect.id}) }}" class="btn btn-info btn-xs">
 										<i class="fa fa-eye"></i>
+									</a>
+									<a href="{{ path('app_prospect_show', {'id': prospect.id}) }}" class="btn btn-success btn-xs">
+										<i class="fa fa-paper-plane" aria-hidden="true"></i>
 									</a>
 
 									{{ render(controller('App\\Controller\\ProspectController::affect',{'id':prospect.id}))}}

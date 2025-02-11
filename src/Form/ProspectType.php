@@ -190,7 +190,8 @@ class ProspectType extends AbstractType
                     'Ancienne contrat' => '4',
                     'Propre site' => '5',
                     'Revendeur' => '6',
-                    'Test' => '7',
+                    'Hors cible' => '7',
+                    'Test' => '8',
                 ],
                 'expanded' => false,
                 'multiple' => false

@@ -1,79 +1,111 @@
-<h4 class="mb">
-	<i class="fa fa-plus-square-o"></i>
-	{{ form_title|default('  Ajouter une prospect') }}
-</h4>
+<div class="card p-4">
 
-<div class="col-sm-2 col-sm-2 control-label"></div>
-<div class="col-sm-8">
-	{% if not form.vars.valid %}
-		<ul class="alert-danger">
-			{% for child in form.children %}
-				{% if child.vars.errors is defined %}
-					{% for error in child.vars.errors %}
-						<li>{{ error.message }}</li>
-					{% endfor %}
-				{% endif %}
-			{% endfor %}
-		</ul>
-	{% endif %}
-</div>
+	<h4 class="mb ">
+		<i class="fa fa-plus-square"></i>
 
-{{ form_start(form) }}
-
-
-<div class="form-group">
-	<div class="form-group col-sm-3">
-		<div class="alert alert-light">
-			{{ form_row(form.nom) }}
-			{{ form_row(form.prenom) }}
-			{{ form_row(form.brithAt) }}
-			{{ form_row(form.phone) }}
-			{{ form_row(form.gender) }}
-		</div>
+		{{ form_title|default('  Ajouter une prospect') }}
+	</h4>
+	<div class="col-sm-2 col-sm-2 control-label"></div>
+	<div class="col-sm-8">
+		{% if not form.vars.valid %}
+			<ul class="alert-danger">
+				{% for child in form.children %}
+					{% if child.vars.errors is defined %}
+						{% for error in child.vars.errors %}
+							<li>{{ error.message }}</li>
+						{% endfor %}
+					{% endif %}
+				{% endfor %}
+			</ul>
+		{% endif %}
 	</div>
-</div>
 
-<div class="form-group">
-	<div class="form-group col-sm-3">
+	{{ form_start(form) }}
 
-		<div class="alert alert-light">
-
-			{{ form_row(form.gsm) }}
-			{{ form_row(form.email) }}
-			{{ form_row(form.codePost) }}
-			{{ form_row(form.city) }}
-			{{ form_row(form.adress) }}
+	<!-- Ligne 1 -->
+	<div class="form-group row">
+		<div class="col-sm-2">
+			{{ form_row(form.nom, {'attr': {'class': 'form-control'}}) }}
 		</div>
-
-	</div>
-</div>
-
-<div class="form-group">
-	<div class="form-group col-sm-6">
-
-		<div class="alert alert-light">
-
-			{{ form_row(form.motifSaise) }}
-			{# {{ form_row(form.source) }} #}
-			{{ form_row(form.typeProspect) }}
-			{{ form_row(form.raisonSociale) }}
-			{{ form_row(form.activites) }}
-			{{ form_row(form.assurer) }}
-			{{ form_row(form.lastAssure) }}
-			{{ form_row(form.motifResil) }}
-			{{ form_row(form.comrcl) }}
+		<div class="col-sm-2">
+			{{ form_row(form.prenom, {'attr': {'class': 'form-control'}}) }}
+		</div>
+		<div class="col-sm-2">
+			{{ form_row(form.phone, {'attr': {'class': 'form-control'}}) }}
+		</div>
+		<div class="col-sm-2">
+			{{ form_row(form.gsm, {'attr': {'class': 'form-control'}}) }}
+		</div>
+		<div class="col-sm-4">
+			{{ form_row(form.email, {'attr': {'class': 'form-control'}}) }}
 		</div>
 
 	</div>
 
+	<!-- Ligne 2 -->
+	<div class="form-group row">
+
+		<div class="col-sm-2">
+			{{ form_row(form.brithAt, {'attr': {'class': 'form-control'}}) }}
+		</div>
+		<div class="col-sm-2">
+			{{ form_row(form.gender, {'attr': {'class': 'form-control'}}) }}
+		</div>
+		<div class="col-sm-2">
+			{{ form_row(form.codePost, {'attr': {'class': 'form-control'}}) }}
+		</div>
+		<div class="col-sm-1">
+			{{ form_row(form.city, {'attr': {'class': 'form-control'}}) }}
+		</div>
+		<div class="col-sm-5">
+			{{ form_row(form.adress, {'attr': {'class': 'form-control'}}) }}
+		</div>
+
+	</div>
+
+	<!-- Autres champs -->
+	<div class="form-group row">
+		<div class="col-sm-3">
+			{{ form_row(form.typeProspect, {'attr': {'class': 'form-control'}}) }}
+		</div>
+
+		<div class="col-sm-3">
+			{{ form_row(form.motifSaise, {'attr': {'class': 'form-control'}}) }}
+		</div>
+		<div class="col-sm-3">
+			{{ form_row(form.raisonSociale, {'attr': {'class': 'form-control'}}) }}
+		</div>
+		<div class="col-sm-3">
+			{{ form_row(form.activites, {'attr': {'class': 'form-control'}}) }}
+		</div>
+	</div>
+
+
+	<div class="form-group row">
+
+
+		<div class="col-sm-3">
+			{{ form_row(form.assurer, {'attr': {'class': 'form-control'}}) }}
+		</div>
+
+		<div class="col-sm-3">
+			{{ form_row(form.lastAssure, {'attr': {'class': 'form-control'}}) }}
+		</div>
+		<div class="col-sm-3">
+			{{ form_row(form.motifResil, {'attr': {'class': 'form-control'}}) }}
+		</div>
+		<div class="col-sm-3">
+			{{ form_row(form.comrcl, {'attr': {'class': 'form-control'}}) }}
+		</div>
+	</div>
+
+	<!-- Boutons de soumission -->
+	<div class="form-group col-sm-12 text-center">
+		<button class="btn btn-primary">{{ button_label|default('Save') }}</button>
+		<a href="{{ path('app_prospect_index') }}">
+			<button type="button" class="btn btn-theme">Retour à la liste</button>
+		</a>
+	</div>
+
+	{{ form_end(form) }}
 </div>
-<div class="form-group col-sm-12 text-center">
-	<button class="btn btn-primary">{{ button_label|default('Save') }}</button>
-
-	<a href="{{ path('app_prospect_index') }}">
-		<button class="btn btn-theme">Retour au liste</button>
-	</a>
-
-
-</div>
-{{ form_end(form) }}
