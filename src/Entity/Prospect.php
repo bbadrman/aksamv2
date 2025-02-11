@@ -82,6 +82,12 @@ class Prospect
     #[ORM\ManyToOne(inversedBy: 'prospects')]
     private ?User $comrcl = null;
 
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $relance = null;
+
+    #[ORM\Column(nullable: true)]
+    private ?\DateTimeImmutable $relanceAt = null;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -347,6 +353,30 @@ class Prospect
     public function setComrcl(?User $comrcl): static
     {
         $this->comrcl = $comrcl;
+
+        return $this;
+    }
+
+    public function getRelance(): ?string
+    {
+        return $this->relance;
+    }
+
+    public function setRelance(?string $relance): static
+    {
+        $this->relance = $relance;
+
+        return $this;
+    }
+
+    public function getRelanceAt(): ?\DateTimeImmutable
+    {
+        return $this->relanceAt;
+    }
+
+    public function setRelanceAt(?\DateTimeImmutable $relanceAt): static
+    {
+        $this->relanceAt = $relanceAt;
 
         return $this;
     }

@@ -9,7 +9,7 @@ use Symfony\Component\Routing\Attribute\Route;
 
 final class TraitementController extends AbstractController
 {
-    public function __construct(private StatsService $statsService) {}
+
     #[Route('/traitement', name: 'app_traitement')]
     public function index(): Response
     {

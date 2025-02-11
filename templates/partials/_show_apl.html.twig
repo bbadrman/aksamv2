@@ -1,0 +1,61 @@
+<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal{{ prospects.id }}">
+	<i class="fa fa-reply-all" aria-hidden="true"></i>
+</button>
+
+{# fin button affectation #}
+<!-- Modal pour affictation team or cmrcl -->
+<div class="modal fade" id="exampleModal{{ prospect.id }}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+	<div class="modal-dialog" role="document">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h5 class="modal-title" id="exampleModalLabel">Prospect du Mr:
+					{{ prospect.name }}</h5>
+
+			</div>
+		</div>
+		{# table statiqueProspect #}
+		<div class="modal-dialog" role="document">
+			<table class="table table-striped table-advance table-hover">
+				<thead>
+
+					<tr style="text-align: left; font-size:20px;">
+
+						<th>User</th>
+						<th>Appelant</th>
+						<th>Appelé</th>
+						<th>Début d'appel</th>
+
+					</tr>
+
+				</thead>
+				<tbody>
+
+					{% for apl in appel %}
+						{% if apl.toNumber == prospect.phone or apl.toNumber == prospect.gsm %}
+							<tr>
+								<td style="color:red">{{ apl.contactName }}</td>
+								<td>{{ apl.fromNumber|replace({'33': '0'}) }}</td>
+
+								<td>{{ apl.toNumber |replace({'33': '0'}) }}</td>
+								<td>{{ apl.startTime|date_modify('+1 hour')|date('Y-m-d H:i') }}</td>
+								{# <td>{{ apl.startTime|date('Y-m-d H:i') }}</td> #}
+
+								<td>{{ (apl.duration / 60) | round(2, 'floor') | number_format(2, '.', ',') }}</td>
+
+
+								{% if is_granted('ROLE_ADMIN') %}
+
+									<td>
+										<audio audio controls style='width: 150px; height: 20px;  ' src="{{ apl.recordUrl }}"></audio>
+									</td>
+								{% endif %}
+							</tr>
+						{% endif %}
+					{% endfor %}
+				</tbody>
+
+			</tbody>
+		</table>
+
+	</div>
+</div>

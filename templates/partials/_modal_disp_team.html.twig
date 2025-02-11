@@ -1,0 +1,152 @@
+<button type="button" class='btn btn' style="background-color:#7a96ea;" data-toggle="modal" data-target="#AddFonctionModal{{ team.id }}">
+	{{ team.name }}
+</button>
+
+
+{# #  Modal display team info on dashboard # #}
+<div class="modal" id="AddFonctionModal{{ team.id }}" tabindex="-1" role="dialog" aria-hidden="true">
+	<div class="modal-dialog modal-xl">
+		<div class="modal-content">
+			<div class="modal-header modal-header-info">
+				<h3 class="modal-title" id="exampleModalLabel">
+					<i class="fa fa-plus-square-o"></i>
+					Statique d'{{ team.name }}
+				</h3>
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+					<span aria-hidden="true">×</span>
+				</button>
+			</div>
+
+			<div class="modal-body">
+				<table class="table">
+					<thead>
+						<tr>
+
+							{# <th>Name</th> #}
+							{# <th>Affecte</th> #}
+							{# <th>En cour</th> #}
+								<th>
+							Utilisateur
+							</th>
+								<th>
+							Nombre
+							</th>
+								<th>
+							Parrainage
+							</th>
+								<th>
+							Appel
+							</th>
+								<th>
+							Avenant
+							</th>
+								<th>
+							Ancienne
+							</th>
+								<th>
+							site
+							</th>
+								<th>
+							Revendeur
+						</th>
+					</tr>
+					</thead>
+						<tbody>
+							<tr>
+
+
+							{# <td>{{ team.name }}</td> #}
+
+
+							{# <td>  {{ team.prospects|length }}   </td> #}
+
+
+								{# <td>  {{ team.prospects|filter(p => p.comrcl is null  )| length  }}    </td> #}
+
+									<td>
+									{% for user in team.users %}
+								{{  user  }}
+							<br>
+							{% endfor %}
+								</td>
+
+									<td>
+									{% for user in team.users %}{# {{  user.prospections | length   }} #}
+									{# {{ " %02d"|format(user.prospections|filter(p => p.creatAt|date('Y-m-d') == 'now'|date('Y-m-d'))|length) }} #}
+									{{ " %02d"|format(user.prospections|filter(p =>  p.histories | filter(h => h.actionDate|date('Y-m-d') == "now"|date('Y-m-d')) | length > 0) |length ) }}
+
+								<br>
+							{% endfor %}
+							</td>
+
+								<td>
+									{% for user in team.users %}
+									{# {{ user.prospections|filter(p => p.motifSaise == 1 )| length }} #}
+									{# {{ " %02d"|format(user.prospections|filter(p => p.motifSaise == 1 and p.creatAt|date('Y-m-d') == 'now'|date('Y-m-d') )| length) }} #}
+									{{ " %02d"|format(user.prospections|filter(p => p.motifSaise == 1 and p.histories | filter(h => h.actionDate|date('Y-m-d') == "now"|date('Y-m-d')) | length > 0) |length ) }}
+
+
+								<br>
+							{% endfor %}
+							</td>
+
+								<td>
+									{% for user in team.users %}
+									{# {{ user.prospections|filter(p => p.motifSaise == 2 )| length }} #}
+									{{ " %02d"|format(user.prospections|filter(p => p.motifSaise == 2 and p.histories | filter(h => h.actionDate|date('Y-m-d') == "now"|date('Y-m-d')) | length > 0) |length ) }}
+
+
+								<br>
+							{% endfor %}
+							</td>
+
+								<td>
+									{% for user in team.users %}
+									{{ " %02d"|format(user.prospections|filter(p => p.motifSaise == 3 and p.histories | filter(h => h.actionDate|date('Y-m-d') == "now"|date('Y-m-d')) | length > 0) |length ) }}
+
+
+								<br>
+							{% endfor %}
+							</td>
+
+								<td>
+									{% for user in team.users %}
+									{# {{ user.prospections|filter(p => p.motifSaise == 4 )| length }} #}
+									{{ " %02d"|format(user.prospections|filter(p => p.motifSaise == 4 and p.histories | filter(h => h.actionDate|date('Y-m-d') == "now"|date('Y-m-d')) | length > 0) |length ) }}
+
+
+								<br>
+							{% endfor %}
+							</td>
+
+								<td>
+									{% for user in team.users %}
+									{# {{ user.prospections|filter(p => p.motifSaise is null and p.source == 'Propre site')| length }} #}
+									{{ " %02d"|format(user.prospections|filter(p => p.motifSaise is null and p.source == 'Propre site' and p.creatAt|date('Y-m-d') == 'now'|date('Y-m-d'))| length)  }}
+
+
+								<br>
+							{% endfor %}
+							</td>
+
+								<td>
+									{% for user in team.users %}
+									{# {{ user.prospections|filter(p => p.motifSaise is null and p.source == 'Revendeur' )| length }} #}
+									{{ " %02d"|format(user.prospections|filter(p => p.motifSaise is null and p.source == 'Revendeur' and p.histories | filter(h => h.actionDate|date('Y-m-d') == "now"|date('Y-m-d')) | length > 0) |length ) }}
+
+
+								<br>
+							{% endfor %}
+						</td>
+					</tr>
+
+				</tbody>
+			</table>
+
+			</div>
+				<div class="modal-footer"> <button type="button" class="btn btn-secondary" data-dismiss="modal">Fermer</button>
+
+			</div>
+		</div>
+	</div>
+</div></div>{# # END- AddFonctioModal # #}
