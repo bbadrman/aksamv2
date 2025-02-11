@@ -40,11 +40,18 @@ class Team
     #[ORM\OneToMany(targetEntity: UserHistory::class, mappedBy: 'team')]
     private Collection $userHistories;
 
+    /**
+     * @var Collection<int, Prospect>
+     */
+    #[ORM\OneToMany(targetEntity: Prospect::class, mappedBy: 'team')]
+    private Collection $prospects;
+
     public function __construct()
     {
         $this->uniteTravails = new ArrayCollection();
         $this->users = new ArrayCollection();
         $this->userHistories = new ArrayCollection();
+        $this->prospects = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -160,6 +167,36 @@ class Team
             // set the owning side to null (unless already changed)
             if ($userHistory->getTeam() === $this) {
                 $userHistory->setTeam(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Prospect>
+     */
+    public function getProspects(): Collection
+    {
+        return $this->prospects;
+    }
+
+    public function addProspect(Prospect $prospect): static
+    {
+        if (!$this->prospects->contains($prospect)) {
+            $this->prospects->add($prospect);
+            $prospect->setTeam($this);
+        }
+
+        return $this;
+    }
+
+    public function removeProspect(Prospect $prospect): static
+    {
+        if ($this->prospects->removeElement($prospect)) {
+            // set the owning side to null (unless already changed)
+            if ($prospect->getTeam() === $this) {
+                $prospect->setTeam(null);
             }
         }
 

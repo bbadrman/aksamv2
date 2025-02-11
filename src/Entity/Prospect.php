@@ -88,6 +88,9 @@ class Prospect
     #[ORM\Column(nullable: true)]
     private ?\DateTimeImmutable $relanceAt = null;
 
+    #[ORM\ManyToOne(inversedBy: 'prospects')]
+    private ?Team $team = null;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -377,6 +380,18 @@ class Prospect
     public function setRelanceAt(?\DateTimeImmutable $relanceAt): static
     {
         $this->relanceAt = $relanceAt;
+
+        return $this;
+    }
+
+    public function getTeam(): ?Team
+    {
+        return $this->team;
+    }
+
+    public function setTeam(?Team $team): static
+    {
+        $this->team = $team;
 
         return $this;
     }
