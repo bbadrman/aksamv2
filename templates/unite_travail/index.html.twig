@@ -75,9 +75,18 @@
 										<br>
 									{% endfor %}
 								</td>
-								<td>
-									<a href="{{ path('app_unite_travail_show', {'id': unite_travail.id}) }}">show</a>
-									<a href="{{ path('app_unite_travail_edit', {'id': unite_travail.id}) }}">edit</a>
+								<td class="btn-toolbar">
+									<a href="{{ path('app_unite_travail_show', {'id': unite_travail.id}) }}" class="btn btn-success btn-xs">
+										<i class="fa fa-eye"></i>
+									</a>
+									<a href="{{ path('app_unite_travail_edit', {'id': unite_travail.id}) }}" class="btn btn-primary btn-xs">
+										<i class="fa fa-pencil fa-xs"></i>
+									</a>
+									{% set form_title = '<i class="fa fa-trash"></i>' %}
+									{{ include('unite_travail/_delete_form.html.twig', {
+                                                    'form_title': form_title
+                                                                           }) }}
+
 								</td>
 							</tr>
 						{% else %}

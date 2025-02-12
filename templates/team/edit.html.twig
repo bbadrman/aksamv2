@@ -1,13 +1,35 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Edit Team{% endblock %}
+{% block title %}Edit Team
+{% endblock %}
 
 {% block body %}
-    <h1>Edit Team</h1>
+	<div class="container">
+		<section class="content-header">
+			<h1>
+				Equipes
+				<small>Gestion</small>
+			</h1>
+			<ol class="breadcrumb">
+				<li>
+					<a href="{{ path('app_team_index') }}">
+						<i class="fa fa-users"></i>
+						Tous les equipes</a>
+				</li>
+				<li class="active">{{ team.name }}</li>
+			</ol>
+		</section>
+		{% block form %}
+			{% set form_title = 'Modifier ' ~ team.name %}
+			<div class="row mt">
+				<div class="col-lg-12">
 
-    {{ include('team/_form.html.twig', {'button_label': 'Update'}) }}
+					{{ include('team/_form.html.twig', {'button_label': 'Modifier',
+                    'form_title': form_title}) }}
 
-    <a href="{{ path('app_team_index') }}">back to list</a>
-
-    {{ include('team/_delete_form.html.twig') }}
-{% endblock %}
+					<a href="{{ path('app_team_index') }}">back to list</a>
+				</div>
+			</div>
+		{% endblock %}
+		{{ include('team/_delete_form.html.twig') }}
+	{% endblock %}

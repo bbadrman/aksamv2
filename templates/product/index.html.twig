@@ -76,14 +76,18 @@
 											<br>
 										{% endfor %}
 									</td>
-									<td>
-										<a href="{{ path('app_product_show', {'id': product.id}) }}">show</a>
-										<a href="{{ path('app_product_edit', {'id': product.id}) }}">edit</a>
-										<button>
-											{% set form_title = '<i class="fa fa-trash"></i>' %}
-											{{ include('product/_delete_form.html.twig', {
+									<td class="btn-toolbar">
+										<a href="{{ path('app_product_show', {'id': product.id}) }}" class="btn btn-success btn-xs">
+											<i class="fa fa-eye"></i>
+										</a>
+										<a href="{{ path('app_product_edit', {'id': product.id}) }}" class="btn btn-primary btn-xs">
+											<i class="fa fa-pencil fa-xs"></i>
+										</a>
+
+										{% set form_title = '<i class="fa fa-trash"></i>' %}
+										{{ include('product/_delete_form.html.twig', {
                                                     'form_title': form_title
-                                                                           }) }}</button>
+                                                                           }) }}
 									</td>
 								</tr>
 							{% else %}

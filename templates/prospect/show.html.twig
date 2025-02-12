@@ -6,17 +6,18 @@
 {% endblock %}
 
 {% block body %}
-	{% for label,  messages in app.flashes  %}
-		<div class="container">
-			<div class="alert alert-{{ label }}">
-				{% for message in messages %}
-					{{ message | raw }}
-				{% endfor %}
+	<div class="row">
+		{% for label,  messages in app.flashes  %}
+			<div class="container">
+				<div class="alert alert-{{ label }}">
+					{% for message in messages %}
+						{{ message | raw }}
+					{% endfor %}
 
+				</div>
 			</div>
-		</div>
-	{% endfor %}
-	<div class="col-lg-12">
+		{% endfor %}
+
 		<section class="content-header">
 			<h1>
 				Prospect du
@@ -159,10 +160,10 @@
 				</div>
 			</div>
 		</div>
+	</div>
+	{# <a href="{{ path('app_prospect_index') }}">back to list</a>
+																																																																		
+																																																																				<a href="{{ path('app_prospect_edit', {'id': prospect.id}) }}">edit</a> #}
 
-		{# <a href="{{ path('app_prospect_index') }}">back to list</a>
-																																																															
-																																																																	<a href="{{ path('app_prospect_edit', {'id': prospect.id}) }}">edit</a> #}
 
-
-	{% endblock %}
+{% endblock %}

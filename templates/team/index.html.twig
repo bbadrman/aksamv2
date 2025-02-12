@@ -71,11 +71,11 @@
 									<td>{{ team.name }}</td>
 									<td>{{ team.description }}</td>
 									{# <td>
-																																																																																{% for unite in team.uniteTravails %}
-																																																																																	{{ unite }}
-																																																																																	<br>
-																																																																																{% endfor %}
-																																																																															</td> #}
+																																																																																																																																															{% for unite in team.uniteTravails %}
+																																																																																																																																																{{ unite }}
+																																																																																																																																																<br>
+																																																																																																																																															{% endfor %}
+																																																																																																																																														</td> #}
 									<td>
 
 										{% for userteam in team.users %}
@@ -83,14 +83,18 @@
 											<br>
 										{% endfor %}
 									</td>
-									<td>
-										<a href="{{ path('app_team_show', {'id': team.id}) }}">show</a>
-										<a href="{{ path('app_team_edit', {'id': team.id}) }}">edit</a>
-										<button>
-											{% set form_title = '<i class="fa fa-trash"></i>' %}
-											{{ include('team/_delete_form.html.twig', {
+									<td class="btn-toolbar">
+										<a href="{{ path('app_team_show', {'id': team.id}) }}" class="btn btn-success btn-xs">
+											<i class="fa fa-eye"></i>
+										</a>
+										<a href="{{ path('app_team_edit', {'id': team.id}) }}" class="btn btn-primary btn-xs">
+											<i class="fa fa-pencil fa-xs"></i>
+										</a>
+
+										{% set form_title = '<i class="fa fa-trash"></i>' %}
+										{{ include('team/_delete_form.html.twig', {
                                                     'form_title': form_title
-                                                                           }) }}</button>
+                                                                           }) }}
 
 									</td>
 								</tr>

@@ -1,13 +1,36 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Edit UniteTravail{% endblock %}
+{% block title %}Edit UniteTravail
+{% endblock %}
 
 {% block body %}
-    <h1>Edit UniteTravail</h1>
+	<div class="container">
 
-    {{ include('unite_travail/_form.html.twig', {'button_label': 'Update'}) }}
+		<section class="content-header">
+			<h1>
+				Produits
+				<small>Gestion</small>
+			</h1>
+			<ol class="breadcrumb">
+				<li>
+					<a href="{{ path('app_team_index') }}">
+						<i class="fa fa-users"></i>
+						Tous les produits</a>
+				</li>
+				<li class="active">{{ unite_travail.nom }}</li>
+			</ol>
+		</section>
+		{% block form %}
+			{% set form_title = 'Modifier ' ~ unite_travail.nom %}
+			<div class="row mt">
+				<div class="col-lg-12">
 
-    <a href="{{ path('app_unite_travail_index') }}">back to list</a>
+					{{ include('unite_travail/_form.html.twig',  {'button_label': 'Modifier',
+                    'form_title': form_title}) }}
 
-    {{ include('unite_travail/_delete_form.html.twig') }}
-{% endblock %}
+					<a href="{{ path('app_unite_travail_index') }}">back to list</a>
+				</div>
+			</div>
+		{% endblock %}
+		{{ include('unite_travail/_delete_form.html.twig') }}
+	{% endblock %}

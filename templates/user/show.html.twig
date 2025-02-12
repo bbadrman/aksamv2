@@ -4,108 +4,98 @@
 {% endblock %}
 
 {% block body %}
-	<h1>User</h1>
 
-	<table class="table">
-		<tbody>
-			{# <tr>
-																																																							<th>Id</th>
-																																																							<td>{{ user.id }}</td>
-																																																						</tr> #}
-			<tr>
-				<th>Username</th>
-				<td>{{ user.username }}</td>
-			</tr>
+<h1>User</h1>
 
-			{# <tr>
-																																																										<th>Roles</th>
-																																																										<td>{{ user.roles ? user.roles|json_encode : '' }}</td>
-																																																									</tr> #}
-			<tr>
-				<th>Password</th>
-				<td>{{ user.password }}</td>
-			</tr>
-			<tr>
-				<th>Firstname</th>
-				<td>{{ user.firstname }}</td>
-			</tr>
-			<tr>
-				<th>Lastname</th>
-				<td>{{ user.lastname }}</td>
-			</tr>
-			<tr>
-				<th>EmbuchAt</th>
-				<td>{{ user.embuchAt ? user.embuchAt|date('Y-m-d H:i:s') : '' }}</td>
-			</tr>
-			<tr>
-				<th>Remuneration</th>
-				<td>{{ user.remuneration }}</td>
-			</tr>
-			<tr>
-				<th>Equipe</th>
-				<td>
-					{% for team in  user.teams %}
-						{{ team  }}
-					{% endfor %}
-				</td>
-			</tr>
-			<tr>
-				<th>Fonction</th>
-				<td>{{ user.fonction }}</td>
-			</tr>
-			<tr>
-				<th>Status</th>
-				<td>
-					{% if user.status == 1 %}
-						<a href="{{ path('activer', {'id': user.id})}}"></a>
-						<span class="label label-success">Active</span>
-					{% else %}
-						<span class="label label-warning">Desactive</span>
-					{% endif %}
-				</td>
-			</tr>
-			<tr>
-				<th>Produits</th>
-				<td>
-					{% for prod in user.products %}
-						{{ prod  }}
-						<br>
-					{% endfor %}
-				</td>
-			</tr>
-			<tr>
-				<th>Date de creation
-				</th>
-				<td>
-					{% if user.creatAt is not empty %}
-						{{ user.creatAt |  date('d/m/Y, H:i:s')}}
-					{% else %}
-						Aucun
-					{% endif %}
-				</td>
-			</tr>
-			<tr>
-				<th>Permissions</th>
-				<td>
-					{% for perm in user.permissions %}
-						{{ perm|replace({'ROLE_': ''})|lower|capitalize }}
-						<br>
-					{% endfor %}
-				</td>
-			</tr>
-			<tr>
-				<th>Historique d'affectation
-				</th>
-				<td>
-					{% for hist in user.userHistories %}
-						Affecté au
-						{{ hist.team  }}
-						a la date
-						{{ hist.affectAt |  date('d/m/Y, H:i:s') }}
-						<br>
-					{% endfor %}
-				</td>
-			</tr>
-		</tbody>
-	</td>
-</tr></tbody></table><a href="{{ path('app_user_index') }}">back to list</a><br><a href="{{ path('app_user_edit', {'id': user.id}) }}">edit</a>{% endblock %}
+<table class="table">
+	<tbody>
+		<tr>
+			<th>Username</th>
+			<td>{{ user.username }}</td>
+		</tr>
+
+		<tr>
+			<th>Firstname</th>
+			<td>{{ user.firstname }}</td>
+		</tr>
+		<tr>
+			<th>Lastname</th>
+			<td>{{ user.lastname }}</td>
+		</tr>
+		<tr>
+			<th>EmbuchAt</th>
+			<td>{{ user.embuchAt ? user.embuchAt|date('Y-m-d H:i:s') : '' }}</td>
+		</tr>
+		<tr>
+			<th>Remuneration</th>
+			<td>{{ user.remuneration }}</td>
+		</tr>
+		<tr>
+			<th>Equipe</th>
+			<td>
+				{% for team in  user.teams %}
+					{{ team  }}
+				{% endfor %}
+			</td>
+		</tr>
+		<tr>
+			<th>Fonction</th>
+			<td>{{ user.fonction }}</td>
+		</tr>
+		<tr>
+			<th>Status</th>
+			<td>
+				{% if user.status == 1 %}
+					<a href="{{ path('activer', {'id': user.id})}}"></a>
+					<span class="label label-success">Active</span>
+				{% else %}
+					<span class="label label-warning">Desactive</span>
+				{% endif %}
+			</td>
+		</tr>
+		<tr>
+			<th>Produits</th>
+			<td>
+				{% for prod in user.products %}
+					{{ prod  }}
+					<br>
+				{% endfor %}
+			</td>
+		</tr>
+		<tr>
+			<th>Date de creation
+			</th>
+			<td>
+				{% if user.creatAt is not empty %}
+					{{ user.creatAt |  date('d/m/Y, H:i:s')}}
+				{% else %}
+					Aucun
+				{% endif %}
+			</td>
+		</tr>
+		<tr>
+			<th>Permissions</th>
+			<td>
+				{% for perm in user.permissions %}
+					{{ perm|replace({'ROLE_': ''})|lower|capitalize }}
+					||
+				{% endfor %}
+			</td>
+		</tr>
+		<tr>
+			<th>Historique d'affectation
+			</th>
+			<td>
+				{% for hist in user.userHistories %}
+					Affecté au
+					{{ hist.team  }}
+					a la date
+					{{ hist.affectAt |  date('d/m/Y, H:i:s') }}
+					<br>
+				{% endfor %}
+			</td>
+		</tr>
+	</tbody>
+</table>
+<a href="{{ path('app_user_index') }}">
+	<<-Retour</a> {% endblock %}
