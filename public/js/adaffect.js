@@ -2,7 +2,7 @@
 //Select Dynamique with API  
 
 $(document).ready(function () {
-	handleTeamChange('#prospect_team, #prospect_affect_team', '#prospect_comrcl, #prospect_affect_comrcl');
+	handleTeamChange('#prospect_team, #affect_prospect_team', '#prospect_comrcl, #affect_prospect_comrcl');
 
 	function handleTeamChange(teamId, comercialId) {
 		const prospectTeam = $(teamId);

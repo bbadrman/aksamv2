@@ -50,6 +50,39 @@ final class TeamController extends AbstractController
         ]);
     }
 
+
+    #[Route('/teams-api', name: 'teams_api', methods: ['GET'])]
+    public function testuserTesApi(TeamRepository $teamRepository): Response
+    {
+        // Récupérer toutes les équipes avec leurs commerciaux
+        $teams = $teamRepository->findAll();
+
+        // Préparer les données à retourner
+        $jsonData = [];
+        foreach ($teams as $team) {
+            $commercials = [];
+            foreach ($team->getUsers() as $commercial) {
+                if ($commercial->getStatus() === 1) {
+                    $commercials[] = [
+                        'id' => $commercial->getId(),
+                        'username' => $commercial->getUsername(),
+                        'status' => $commercial->getStatus(),
+                        // Ajoutez d'autres propriétés de l'utilisateur que vous souhaitez inclure
+                    ];
+                }
+            }
+            $jsonData[] = [
+                'id' => $team->getId(),
+                'name' => $team->getName(),
+                'commercials' => $commercials,
+            ];
+        }
+
+        // Retourner les données au format JSON
+        return $this->json($jsonData, Response::HTTP_OK);
+    }
+
+
     #[Route('/new-team', name: 'app_team_new_user', methods: ['GET', 'POST'])]
     public function add(Request $request, ValidatorInterface $validator): JsonResponse
     {
@@ -110,6 +143,8 @@ final class TeamController extends AbstractController
             'form' => $form,
         ]);
     }
+
+
 
     #[Route('/{id}', name: 'app_team_delete', methods: ['POST'])]
     public function delete(Request $request, Team $team, EntityManagerInterface $entityManager): Response

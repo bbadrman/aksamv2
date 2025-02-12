@@ -1,10 +1,9 @@
 <!-- Modal pour affictation team or cmrcl -->
-<button type="button" class="btn btn-danger" data-toggle="modal" data-target="#exampleModalR{{ prospect.id }}">
+<button type="button" class="btn btn-success" data-toggle="modal" data-target="#exampleModal{{ prospect.id }}">
 
-
-	<i class="fa fa-paper-plane" aria-hidden="true"></i>
+	<i class="fa-regular fa-calendar-check"></i>
 </button>
-<div class="modal fade" id="exampleModalR{{ prospect.id }}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+<div class="modal fade" id="exampleModal{{ prospect.id }}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
 	<div class="modal-dialog" role="document">
 		<div class="modal-content">
 			<div class="modal-header">
@@ -14,16 +13,10 @@
 					<span aria-hidden="true">&times;</span>
 				</button>
 			</div>
-			{% set url = path('app_affect_edit', {'id': prospect.id}) %}
+			{% set url = path('app_relance_edit', {'id': prospect.id}) %}
 			{{ form_start(form, {'action':url}) }}
 
-			<div class="modal-body">
-				{{ form_row(form.team, {'attr': {'class': 'prospect_team'}}) }}
-
-			</div>
-			<div class="modal-body">
-				{{ form_row(form.comrcl, {'attr': {'class': 'prospect_comrcl'}}) }}
-			</div>
+			{{ form_row(form ) }}
 			<div class="modal-footer">
 				<button type="button" class="btn btn-secondary" data-dismiss="modal">Annuler</button>
 				<button class="btn btn-primary">{{ button_label|default('Save') }}</button>

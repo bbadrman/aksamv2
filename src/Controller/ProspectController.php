@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Entity\Prospect;
 use App\Form\AffectProspectType;
+use App\Form\AffectRelanceType;
 use App\Form\ProspectType;
 use App\Repository\ProspectRepository;
 use Doctrine\ORM\EntityManagerInterface;
@@ -76,7 +77,7 @@ final class ProspectController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            dump($form->getErrors(true));
+
             $entityManager->flush();
 
             return $this->redirectToRoute('app_prospect_index', [], Response::HTTP_SEE_OTHER);
@@ -88,6 +89,25 @@ final class ProspectController extends AbstractController
         ]);
     }
 
+
+    #[Route('/{id}/relance', name: 'app_relance_edit', methods: ['GET', 'POST'])]
+    public function relance(Request $request, Prospect $prospect, EntityManagerInterface $entityManager): Response
+    {
+        $form = $this->createForm(AffectRelanceType::class, $prospect);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            dump($form->getErrors(true));
+            $entityManager->flush();
+
+            return $this->redirectToRoute('app_prospect_index', [], Response::HTTP_SEE_OTHER);
+        }
+
+        return $this->render('partials/_relance_modal.html.twig', [
+            'prospect' => $prospect,
+            'form' => $form->createView(),
+        ]);
+    }
 
 
     #[Route('/{id}', name: 'app_prospect_delete', methods: ['POST'])]
