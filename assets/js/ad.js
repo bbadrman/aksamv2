@@ -344,19 +344,19 @@ $('document').ready(function () {
 
 
 // form prospect  select 
-function setupDisplayControl(fieldId, containerId, targetValue) {
-	var field = document.getElementById(fieldId);
-	var container = document.getElementById(containerId);
-	if (field !== null && container !== null) {
-		field.addEventListener('change', function () {
-			container.style.display = field.value === targetValue ? 'block' : 'none';
-		});
-	}
-}
+// function setupDisplayControl(fieldId, containerId, targetValue) {
+// 	var field = document.getElementById(fieldId);
+// 	var container = document.getElementById(containerId);
+// 	if (field !== null && container !== null) {
+// 		field.addEventListener('change', function () {
+// 			container.style.display = field.value === targetValue ? 'block' : 'none';
+// 		});
+// 	}
+// }
 
-// Configuration des différents champs de formulaire
-setupDisplayControl('prospect_typeProspect', 'subcategory-container', '2');
-setupDisplayControl('prospect_lastAssure', 'subResil-container', 'Oui');
+// // Configuration des différents champs de formulaire
+// setupDisplayControl('prospect_typeProspect', 'subcategory-container', '2');
+// setupDisplayControl('prospect_lastAssure', 'subResil-container', 'Oui');
 
 
 

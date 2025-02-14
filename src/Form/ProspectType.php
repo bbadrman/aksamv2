@@ -227,6 +227,8 @@ class ProspectType extends AbstractType
                 ]
             )
             // ->add('products')
+            ->add('product')
+            ->add('team')
             ->add('comrcl')
         ;
     }

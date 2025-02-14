@@ -91,6 +91,9 @@ class Prospect
     #[ORM\ManyToOne(inversedBy: 'prospects')]
     private ?Team $team = null;
 
+    #[ORM\ManyToOne(inversedBy: 'prospects')]
+    private ?Product $product = null;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -392,6 +395,18 @@ class Prospect
     public function setTeam(?Team $team): static
     {
         $this->team = $team;
+
+        return $this;
+    }
+
+    public function getProduct(): ?Product
+    {
+        return $this->product;
+    }
+
+    public function setProduct(?Product $product): static
+    {
+        $this->product = $product;
 
         return $this;
     }

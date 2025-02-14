@@ -60,50 +60,51 @@
 		<div class="col-sm-5">
 			{{ form_row(form.adress, {'attr': {'class': 'form-control'}}) }}
 		</div>
-
 	</div>
 
 	<!-- Autres champs -->
 	<div class="form-group row">
 		<div class="col-sm-3">
-			{{ form_row(form.typeProspect, {'attr': {'class': 'form-control'}}) }}
+			{{ form_row(form.product, {'attr': {'class': 'form-control', 'id': 'product'}}) }}
+		</div>
+		<div class="col-sm-3">
+			{{ form_row(form.typeProspect, {'attr': {'class': 'form-control', 'id': 'typeProspect'}}) }}
+		</div>
+		<div class="col-sm-3" id="subcategory-activite" style="display: none">
+			{{ form_row(form.activites, {'attr': {'class': 'form-control', 'id': 'activites'}}) }}
+		</div>
+		<div class="col-sm-3" id="subcategory-container" style="display: none">
+			{{ form_row(form.raisonSociale, {'attr': {'class': 'form-control', 'id': 'raisonSociale'}}) }}
 		</div>
 
 		<div class="col-sm-3">
-			{{ form_row(form.motifSaise, {'attr': {'class': 'form-control'}}) }}
+			{{ form_row(form.motifSaise, {'attr': {'class': 'form-control', 'id': 'motifSaise'}}) }}
 		</div>
 		<div class="col-sm-3">
-			{{ form_row(form.raisonSociale, {'attr': {'class': 'form-control'}}) }}
+			{{ form_row(form.assurer, {'attr': {'class': 'form-control', 'id': 'assurer'}}) }}
 		</div>
 		<div class="col-sm-3">
-			{{ form_row(form.activites, {'attr': {'class': 'form-control'}}) }}
+			{{ form_row(form.lastAssure, {'attr': {'class': 'form-control', 'id': 'lastAssure'}}) }}
 		</div>
+		<div class="col-sm-3" id="subcategory-motif" style="display: none">
+			{{ form_row(form.motifResil, {'attr': {'class': 'form-control', 'id': 'motifResil'}}) }}
+		</div>
+		<div class="col-sm-3">
+			{{ form_row(form.team, {'attr': {'class': 'form-control', 'id': 'team'}}) }}
+		</div>
+		<div class="col-sm-3">
+			{{ form_row(form.comrcl, {'attr': {'class': 'form-control', 'id': 'comrcl'}}) }}
+		</div>
+
 	</div>
 
-
-	<div class="form-group row">
-
-
-		<div class="col-sm-3">
-			{{ form_row(form.assurer, {'attr': {'class': 'form-control'}}) }}
-		</div>
-
-		<div class="col-sm-3">
-			{{ form_row(form.lastAssure, {'attr': {'class': 'form-control'}}) }}
-		</div>
-		<div class="col-sm-3">
-			{{ form_row(form.motifResil, {'attr': {'class': 'form-control'}}) }}
-		</div>
-		<div class="col-sm-3">
-			{{ form_row(form.comrcl, {'attr': {'class': 'form-control'}}) }}
-		</div>
-	</div>
 
 	<!-- Boutons de soumission -->
 	<div class="form-group col-sm-12 text-center">
 		<button class="btn btn-primary">{{ button_label|default('Enregistrer') }}</button>
 		<a href="{{ path('app_prospect_index') }}">
-			<button type="button" class="btn btn-theme">Retour à la liste</button>
+			<button type="button" class="btn btn-info">Retour
+			</button>
 		</a>
 	</div>
 
