@@ -1,0 +1,127 @@
+{{ form_start(search_form) }}
+
+<div class="row align-items-center">
+	{% if app.request.get('_route') != 'app_client' %}
+		<div class="col-md-1" style="padding-right: 1px;padding-left: 8px; ">
+			{{ form_row(search_form.d) }}
+		</div>
+
+		<div class="col-md-1" style="padding-right: 1px;padding-left: 8px; ">
+			{{ form_row(search_form.dd) }}
+		</div>
+
+	{% else %}
+		{{ form_widget(search_form.d, { 'attr': { 'style': 'display:none' } }) }}
+		{{ form_widget(search_form.dd, { 'attr': { 'style': 'display:none' } }) }}
+	{% endif %}
+
+	{% if app.request.get('_route') != 'newprospect_index' and app.request.get('_route') != 'newprospectchef_index' %}
+
+		<div class="col-md-1" style="padding-right: 2px;padding-left: 2px;">
+
+			{{ form_row(search_form.q) }}
+		</div>
+		<div class="col-md-1" style="padding-right: 2px;padding-left: 2px;">
+
+			{{ form_row(search_form.m) }}
+		</div>
+		<div class="col-md-1" style="padding-right: 2px;padding-left: 2px;">
+
+			{{ form_row(search_form.s) }}
+		</div>
+
+		<div class="col-md-1" style="padding-right: 2px;padding-left: 2px;">
+
+			{{ form_row(search_form.g) }}
+		</div>
+		<div class="col-md-1" style="padding-right: 2px;padding-left: 2px;">
+
+			{{ form_row(search_form.l) }}
+		</div>
+	{% else %}
+		{{ form_widget(search_form.q, { 'attr': { 'style': 'display:none' } }) }}
+		{{ form_widget(search_form.m, { 'attr': { 'style': 'display:none' } }) }}
+		{{ form_widget(search_form.g, { 'attr': { 'style': 'display:none' } }) }}
+		{{ form_widget(search_form.c, { 'attr': { 'style': 'display:none' } }) }}
+		{{ form_widget(search_form.l, { 'attr': { 'style': 'display:none' } }) }}
+		{{ form_widget(search_form.s, { 'attr': { 'style': 'display:none' } }) }}
+		{{ form_widget(search_form.source, { 'attr': { 'style': 'display:none' } }) }}
+		{{ form_widget(search_form.team, { 'attr': { 'style': 'display:none' } }) }}
+		{{ form_widget(search_form.r, { 'attr': { 'style': 'display:none' } }) }}
+	{% endif %}
+
+
+	<div class="col-md-1 text-center" style="padding-right: 2px;padding-left: 2px;">
+		<h1>
+			<button class="btn btn-primary btn search-btn" type="submit" target="_blank" title="Rechercher ">
+				<i class="fa fa-search" aria-hidden="true"></i>
+			</button>
+			<button class="btn btn-theme" value="back" onclick="history.go(-1)" target="_blank" title="Retour ">
+				<i class="fa fa-undo" aria-hidden="true"></i>
+			</button>
+
+			<button class="btn btn-primary" type="reset" id="reset-button" target="_blank" title="Vider champs ">
+				<i class="fa fa-refresh" aria-hidden="true"></i>
+			</button>
+		</h1>
+	</div>
+</div>
+
+<div class="row align-items-center">
+	{% if app.request.get('_route') != 'newprospect_index' and app.request.get('_route') != 'newprospectchef_index' %}
+
+		{% if is_granted('ROLE_ADMIN') or  is_granted('ROLE_TEAM') == true %}
+			<div class="col-md-1 " style="padding-right: 2px;padding-left: 2px;">
+				{{ form_row(search_form.c) }}
+			</div>
+			<div class="col-md-1 " style="padding-right: 2px;padding-left: 2px;">
+				{{ form_row(search_form.r) }}
+			</div>
+			<div class="col-md-1 " style="padding-right: 2px;padding-left: 2px;">
+				{{ form_row(search_form.team) }}
+			</div>
+			<div class="col-md-1  " style="padding-right: 2px;padding-left: 2px;">
+				{{ form_row(search_form.source) }}
+			</div>
+		{% else %}
+			{{ form_row(search_form.c, {'label': false, 'attr': { 'style': 'display: none' } }) }}
+			{{form_row(search_form.r, {'label': false, 'attr' : { 'style':'display:none'} }) }}
+			{{ form_row(search_form.team, {'label': false, 'attr': { 'style': 'display: none' } }) }}
+			{{ form_row(search_form.source, {'label': false, 'attr': { 'style': 'display: none' } }) }}
+		{% endif %}
+	{% endif %}
+
+
+	{% if app.request.get('_route') == 'prospect_search' or app.request.get('_route') == 'avenir_index' or app.request.get('_route') == 'relancenotraite_index'%}
+		<div class="col-md-1 " style="padding-right: 1px;padding-left: 2px;">
+			{{ form_row(search_form.dr) }}
+		</div>
+		<div class="col-md-1  " style="padding-right: 1px;padding-left: 2px;">
+			{{ form_row(search_form.ddr) }}
+		</div>
+		<div class="col-md-1  " style="padding-right: 1px;padding-left: 2px;">
+			{{ form_row(search_form.motifRelanced) }}
+		</div>
+
+		{% if is_granted('ROLE_ADMIN')  == true %}
+			<div class="col-md-1 " style="padding-right: 1px;padding-left: 2px;">
+				{{ form_row(search_form.u) }}
+			</div>
+		{% else %}
+			{{ form_widget(search_form.u, { 'attr': { 'style': 'display:none' } }) }}
+		{% endif %}
+
+	{% else %}
+		{{ form_widget(search_form.dr, { 'attr': { 'style': 'display:none' } }) }}
+		{{ form_widget(search_form.ddr, { 'attr': { 'style': 'display:none' } }) }}
+		{{ form_widget(search_form.motifRelanced, { 'attr': { 'style': 'display:none' } }) }}
+		{{ form_widget(search_form.u, { 'attr': { 'style': 'display:none' } }) }}
+
+	{% endif %}
+</div>
+
+{{ form_end(search_form) }}<script>
+	document.getElementById("reset-button").addEventListener("click", function () { // Réinitialisez les paramètres de l'URL à vide
+window.location.href = window.location.pathname;
+});
+</script>

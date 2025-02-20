@@ -35,6 +35,10 @@
 		<a href="{{ path('app_prospect_new') }}" class="btn btn-primary">Ajouter prospect</a>
 	</section>
 
+	<div class="row" style="margin-right: 10px;">
+		{% include 'prospect/_search_form.html.twig' with {search_form: search_form} only %}
+	</div>
+
 	<div class="row mt">
 		<div class="col-lg-12">
 			<div class="content-panel">
@@ -50,8 +54,8 @@
 							<th>Raison Sociale</th>
 							<th>Téléphone</th>
 							<th>Email</th>
-							<th>relance</th>
-							<th>actions</th>
+							<th>Relance</th>
+							<th>Actions</th>
 						</tr>
 					</thead>
 					<tbody>
@@ -68,7 +72,41 @@
 
 								<td>{{ prospect.phone }}</td>
 								<td>{{ prospect.email }}</td>
-								<td>{{ prospect.relance }}</td>
+								<td>
+									<a class='btn btn-primary'>
+										{% if prospect.relance is null %}
+
+											Pas encore relancer
+										{% elseif  prospect.relance == 1 %}
+											Rendez-vous
+										{% elseif prospect.relance == 2 %}
+											Injoignable
+										{% elseif prospect.relance == 3 %}
+											Attente DOC
+										{% elseif prospect.relance == 4 %}
+											Tarification
+										{% elseif prospect.relance == 5 %}
+											Prise de Décision
+										{% elseif prospect.relance == 6 %}
+											Faux Fiche
+										{% elseif prospect.relance == 7 %}
+											Doublon
+										{% elseif prospect.relance == 8 %}
+											Passage Concurrent
+										{% elseif prospect.relance == 9 %}
+											Passage Client
+										{% elseif prospect.relance == 10 %}
+											Déjà Souscrit
+										{% elseif prospect.relance == 11 %}
+											Toujour Injoignable
+										{% elseif prospect.relance == 12 %}
+											Hors Cible
+										{% elseif prospect.relance == 13 %}
+											Test
+										{% endif %}
+									</a>
+								</td>
+
 								<td class="btn-toolbar">
 									<a href="{{ path('app_prospect_show', {'id': prospect.id}) }}" class="btn btn-info btn-xs">
 										<i class="fa fa-eye"></i>

@@ -3,16 +3,18 @@
 namespace App\Controller;
 
 use App\Entity\Prospect;
-use App\Form\AffectProspectType;
-use App\Form\AffectRelanceType;
 use App\Form\ProspectType;
+use App\Form\AffectRelanceType;
+use App\Form\AffectProspectType;
 use App\Repository\ProspectRepository;
 use Doctrine\ORM\EntityManagerInterface;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
+use Symfony\Component\Security\Http\Attribute\IsGranted;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
+#[IsGranted('IS_AUTHENTICATED')]
 #[Route('/prospect')]
 final class ProspectController extends AbstractController
 {

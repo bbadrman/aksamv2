@@ -19,14 +19,14 @@
 
 			{% if app.user is not null %}
 				{% if app.request.get('_route') == 'newprospect_index' or app.request.get('_route')  == 'prospect_search' or app.request.get('_route')  == 'relancejour_index' or app.request.get('_route')  == 'app_unjoinable' or app.request.get('_route')  == 'notrait_index' %}
-					<a data-toggle="dropdown" class="dropdown-toggle" href="{{path('app_table_liste')}}">
+					<a data-toggle="dropdown" class="dropdown-toggle" href="{{path('app_traitement')}}">
 						<i class="fa fa-shopping-cart"></i>
 						<span class="badge bg-warning fs-4">{{ prospects|length }}</span>
 					</a>
-					<a data-toggle="dropdown" class="dropdown-toggle" href="#">
-						<i class=" fa fa-shopping-cart"></i>
-						<span class="badge bg-warning fs-4">{{ contrats|length }}</span>
-					</a>
+					{# <a data-toggle="dropdown" class="dropdown-toggle" href="#">
+																<i class=" fa fa-shopping-cart"></i>
+																<span class="badge bg-warning fs-4">{{ contrats|length }}</span>
+															</a> #}
 
 				{% elseif app.request.get('_route') == 'prospect_search' %}
 					<span class="badge bg-warning fs-4"></span>

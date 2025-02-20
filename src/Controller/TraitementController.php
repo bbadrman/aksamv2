@@ -2,13 +2,26 @@
 
 namespace App\Controller;
 
+use App\Form\SearchProspectType;
+use App\Repository\ProspectRepository;
+use App\Search\SearchProspect;
 use App\Service\StatsService;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
+use Symfony\Component\Security\Http\Attribute\IsGranted;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Bundle\SecurityBundle\Security;
+use Symfony\Component\HttpFoundation\RequestStack;
 
 final class TraitementController extends AbstractController
 {
+    public function __construct(
+
+        private RequestStack $requestStack,
+        private ProspectRepository $prospectRepository,
+        private Security $security,
+    ) {}
 
     #[Route('/traitement', name: 'app_traitement')]
     public function index(): Response
@@ -16,6 +29,46 @@ final class TraitementController extends AbstractController
         // $stats    = $this->statsService->getStats();
         return $this->render('traitement/table.html.twig', [
             // 'stats'    => $stats
+        ]);
+    }
+
+    /**
+     * afficher les prospect no traiter   
+     */
+    #[Route('/notrait', name: 'notrait_index', methods: ['GET', 'POST'])]
+    #[IsGranted('IS_AUTHENTICATED')]
+    public function notrait(Request $request): Response
+
+    {
+
+        $data = new SearchProspect();
+        $data->page = $request->query->get('page', 1);
+        $form = $this->createForm(SearchProspectType::class, $data);
+        $form->handleRequest($this->requestStack->getCurrentRequest());
+
+
+        $user = $this->security->getUser();
+        $roles = $user->getRoles();
+
+        $prospect = [];
+
+
+        if (in_array('ROLE_SUPER_ADMIN', $roles, true) || in_array('ROLE_ADMIN', $roles, true) || in_array('ROLE_AFFECT', $roles, true)) {
+            // admi peut voire toutes les no traite
+            $prospect =  $this->prospectRepository->findProspectNonTraiter($data, null);
+        } else if (in_array('ROLE_TEAM', $roles, true)) {
+            // chef peut voire toutes les no traite atacher a leur equipe
+            $prospect =  $this->prospectRepository->findProspectNonTraiterChef($data, $user, null);
+        } else {
+            // cmrcl peut voire seulement les no traite  atacher a lui
+            $prospect =  $this->prospectRepository->findProspectNonTraiterCmrcl($data, $user, null);
+        }
+
+
+
+        return $this->render('prospect/index.html.twig', [
+            'prospects' => $prospect,
+            'search_form' => $form->createView()
         ]);
     }
 }

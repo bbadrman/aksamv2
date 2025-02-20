@@ -52,6 +52,9 @@
             "migrations/.gitignore"
         ]
     },
+    "knplabs/knp-paginator-bundle": {
+        "version": "v6.6.1"
+    },
     "nelmio/cors-bundle": {
         "version": "2.5",
         "recipe": {

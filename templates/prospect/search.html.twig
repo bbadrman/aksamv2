@@ -1,0 +1,70 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Recherche Prospect
+{% endblock %}
+
+{% block body %}
+
+	{% for label,  messages in app.flashes  %}
+		<div class="container">
+			<div class="alert alert-{{ label }}">
+				{% for message in messages %}
+					{{ message | raw }}
+				{% endfor %}
+			</div>
+		</div>
+	{% endfor %}
+	<section class="content-header">
+		{% if app.request.get('_route') == 'newprospect_index' %}
+			<h2>Recherche dans les nouveaux prospects</h2>
+
+		{% elseif app.request.get('_route') == 'prospect_search' %}
+			<h2>Recherche dans tous Prospects</h2>
+
+		{% elseif app.request.get('_route') == 'relancejour_index' %}
+			<h2>Recherche dans Relances du Jour</h2>
+
+		{% elseif app.request.get('_route') == 'avenir_index' %}
+			<h2>Recherche dans Relances à venir</h2>
+
+		{% elseif app.request.get('_route') == 'relancenotraite_index' %}
+			<h2>Recherche dans Relances Non Traitées</h2>
+
+		{% elseif app.request.get('_route') == 'app_unjoinable' %}
+			<h2>Recherche dans injoignables</h2>
+
+		{% elseif app.request.get('_route') == 'notrait_index' %}
+			<h2>Recherche dans Prospects Non Traités</h2>
+
+		{% endif %}
+		<ol class="breadcrumb">
+			<li>
+				<a href="{{ path('dashboard') }}">
+					<i class="fa fa-dashboard"></i>
+					Tableau de bord</a>
+			</li>
+			<li class="active">
+				<a href="{{ path('app_table_liste') }}">
+					<i class="fa fa-users"></i>
+					Tous les Prospects</a>
+			</li>
+			<!-- NOTIFICATION DROPDOWN -->
+			<li id="header_notification_bar" class="dropdown">
+				<a data-toggle="dropdown" class="dropdown-toggle" href="#">
+					<i class="fa fa-shopping-cart"></i>
+					<span class="badge bg-warning">{{ prospects|length }}
+					</span>
+				</li>
+			</li>
+		</a>
+
+	</li>
+	<!-- END NOTIFICATION DROPDOWN -->
+</ol>
+<br>
+{# {% if is_granted('ROLE_ADMIN') or is_granted('ROLE_TEAM')  == true %}
+		<a href="{{ path('app_prospect_new') }}" class="btn btn-primary">Ajouter Prospect</a>
+          	{% endif %} #}</section><div class="col-xs-10" style="float: right !important;">
+<div class="row" style="margin-right: 10px;">
+	{{ include('prospect/_search_form.html.twig')  }}
+</div></div>{% endblock %}
