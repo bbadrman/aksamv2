@@ -2,11 +2,14 @@
 
 namespace App\Controller;
 
+use App\Entity\History;
 use App\Entity\Prospect;
 use App\Form\ProspectType;
 use App\Form\AffectRelanceType;
 use App\Form\AffectProspectType;
+use App\Repository\HistoryRepository;
 use App\Repository\ProspectRepository;
+use App\Repository\TeamRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -18,6 +21,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 #[Route('/prospect')]
 final class ProspectController extends AbstractController
 {
+    public function __construct(private EntityManagerInterface $entityManager) {}
     #[Route(name: 'app_prospect_index', methods: ['GET', 'POST'])]
     public function index(ProspectRepository $prospectRepository): Response
     {
@@ -47,10 +51,12 @@ final class ProspectController extends AbstractController
     }
 
     #[Route('/{id}', name: 'app_prospect_show', methods: ['GET'])]
-    public function show(Prospect $prospect): Response
+    public function show(Prospect $prospect, HistoryRepository $historyRepository): Response
     {
+        $teamHistory = $historyRepository->findBy(['prospect' => $prospect]);
         return $this->render('prospect/show.html.twig', [
             'prospect' => $prospect,
+            'teamHistory' => $teamHistory,
         ]);
     }
 
@@ -73,16 +79,37 @@ final class ProspectController extends AbstractController
     }
 
     #[Route('/{id}/affect', name: 'app_affect_edit', methods: ['GET', 'POST'])]
-    public function affect(Request $request, Prospect $prospect, EntityManagerInterface $entityManager): Response
+    public function affect(Request $request, Prospect $prospect, TeamRepository $teamRepository): Response
     {
         $form = $this->createForm(AffectProspectType::class, $prospect);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            $timezone = new \DateTimeZone('Europe/Paris');
+            $prospect->setAffectAt(new \DateTimeImmutable('now', $timezone));
 
-            $entityManager->flush();
+            $teamHistory = new History();
+            $teamHistory->setProspect($prospect); // $prospect est votre instance de Prospect 
 
-            return $this->redirectToRoute('app_prospect_index', [], Response::HTTP_SEE_OTHER);
+            if ($prospect->getTeam() !== null && $prospect->getComrcl() !== null) {
+                $actionType =  $prospect->getTeam()->getName() . ' => ' . $prospect->getComrcl()->getUserIdentifier(); // Les deux sont associés
+            } elseif ($prospect->getTeam() !== null) {
+                $actionType =  $prospect->getTeam()->getName(); // Seulement associé à l'équipe
+            } elseif ($prospect->getComrcl() !== null) {
+                $actionType =  $prospect->getComrcl()->getUserIdentifier(); // Seulement associé au commercial
+            } else {
+                $actionType = 'None'; // Aucune association
+            }
+
+            $teamHistory->setActionType($actionType);
+
+            $teamHistory->setActionDate(new \DateTime('now', $timezone));
+
+            $this->entityManager->persist($teamHistory);
+            $this->entityManager->flush();
+
+            $this->addFlash('info', 'Votre Prospect a été affecté avec succès!');
+            return $this->redirect($request->headers->get('referer'));
         }
 
         return $this->render('partials/_affect_modal.html.twig', [

@@ -157,13 +157,41 @@
 					<h4 class="text-center">
 						<strong>Historique</strong>
 					</4>
+
+
+					<table class="table table-striped table-advance table-hover">
+						<thead>
+
+							<tr style="text-align: left; font-size:20px;">
+
+								<th>Option</th>
+								<th>Date</th>
+
+							</tr>
+
+						</thead>
+						<tbody>
+							{% for histor in teamHistory %}
+								<tr>
+									<td>
+										Affecté au
+										{{ histor.actionType }}</td>
+
+									<td>{{ histor.actionDate|date('Y-m-d H:i:s') }}</td>
+
+								</tr>
+							{% endfor %}
+						</tbody>
+					</table>
+
 				</div>
 			</div>
 		</div>
 	</div>
-	{# <a href="{{ path('app_prospect_index') }}">back to list</a>
-																																																																		
-																																																																				<a href="{{ path('app_prospect_edit', {'id': prospect.id}) }}">edit</a> #}
 
+	<a href="{{ path('app_prospect_index') }}">back to list</a>
+	{% if is_granted('ROLE_TRAITEMENT') %}
+		<a href="{{ path('app_prospect_edit', {'id': prospect.id}) }}">edit</a>
+	{% endif %}
 
 {% endblock %}

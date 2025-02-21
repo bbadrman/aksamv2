@@ -4,6 +4,8 @@ namespace App\Entity;
 
 use ApiPlatform\Metadata\ApiResource;
 use App\Repository\ProspectRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
@@ -93,6 +95,30 @@ class Prospect
 
     #[ORM\ManyToOne(inversedBy: 'prospects')]
     private ?Product $product = null;
+
+    #[ORM\Column(nullable: true)]
+    private ?\DateTimeImmutable $AffectAt = null;
+
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $motifAffect = null;
+
+    /**
+     * @var Collection<int, History>
+     */
+    #[ORM\OneToMany(targetEntity: History::class, mappedBy: 'prospect')]
+    private Collection $histories;
+
+    /**
+     * @var Collection<int, RelanceHistory>
+     */
+    #[ORM\OneToMany(targetEntity: RelanceHistory::class, mappedBy: 'prospect')]
+    private Collection $relanceHistories;
+
+    public function __construct()
+    {
+        $this->histories = new ArrayCollection();
+        $this->relanceHistories = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -407,6 +433,90 @@ class Prospect
     public function setProduct(?Product $product): static
     {
         $this->product = $product;
+
+        return $this;
+    }
+
+    public function getAffectAt(): ?\DateTimeImmutable
+    {
+        return $this->AffectAt;
+    }
+
+    public function setAffectAt(?\DateTimeImmutable $AffectAt): static
+    {
+        $this->AffectAt = $AffectAt;
+
+        return $this;
+    }
+
+    public function getMotifAffect(): ?string
+    {
+        return $this->motifAffect;
+    }
+
+    public function setMotifAffect(?string $motifAffect): static
+    {
+        $this->motifAffect = $motifAffect;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, History>
+     */
+    public function getHistories(): Collection
+    {
+        return $this->histories;
+    }
+
+    public function addHistory(History $history): static
+    {
+        if (!$this->histories->contains($history)) {
+            $this->histories->add($history);
+            $history->setProspect($this);
+        }
+
+        return $this;
+    }
+
+    public function removeHistory(History $history): static
+    {
+        if ($this->histories->removeElement($history)) {
+            // set the owning side to null (unless already changed)
+            if ($history->getProspect() === $this) {
+                $history->setProspect(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, RelanceHistory>
+     */
+    public function getRelanceHistories(): Collection
+    {
+        return $this->relanceHistories;
+    }
+
+    public function addRelanceHistory(RelanceHistory $relanceHistory): static
+    {
+        if (!$this->relanceHistories->contains($relanceHistory)) {
+            $this->relanceHistories->add($relanceHistory);
+            $relanceHistory->setProspect($this);
+        }
+
+        return $this;
+    }
+
+    public function removeRelanceHistory(RelanceHistory $relanceHistory): static
+    {
+        if ($this->relanceHistories->removeElement($relanceHistory)) {
+            // set the owning side to null (unless already changed)
+            if ($relanceHistory->getProspect() === $this) {
+                $relanceHistory->setProspect(null);
+            }
+        }
 
         return $this;
     }
