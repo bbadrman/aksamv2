@@ -185,4 +185,51 @@ final class TraitementController extends AbstractController
             'search_form' => $form->createView()
         ]);
     }
+
+    /**
+     * les Relances à venir 
+     */
+    #[Route('/avenir', name: 'avenir_index', methods: ['GET', 'POST'])]
+
+    public function avenir(Request $request,    Security $security): Response
+
+    {
+
+        $data = new SearchProspect();
+        $data->page = $request->query->get('page', 1);
+        $form = $this->createForm(SearchProspectType::class, $data);
+        $form->handleRequest($this->requestStack->getCurrentRequest());
+
+        $user = $this->security->getUser();
+        $roles = $user->getRoles();
+
+
+        $prospect = [];
+        if ($form->isSubmitted() && $form->isValid() && !$form->isEmpty()) {
+
+            $user = $security->getUser();
+            if (in_array('ROLE_SUPER_ADMIN', $roles, true) || in_array('ROLE_ADMIN', $roles, true)) {
+                // admi peut voire toutes les no traite
+                $prospect =  $this->prospectRepository->findAvenir($data, null);
+            } else if (in_array('ROLE_TEAM', $roles, true)) {
+                // chef peut voire toutes les no traite atacher a leur equipe
+                $prospect =  $this->prospectRepository->findAvenirChef($data, $user, null);
+            } else {
+                // cmrcl peut voire seulement les no traite  atacher a lui
+                $prospect =  $this->prospectRepository->findAvenirCmrcl($data, $user, null);
+            }
+
+
+            return $this->render('prospect/index.html.twig', [
+                'prospects' => $prospect,
+                'search_form' => $form->createView()
+            ]);
+        }
+
+
+        return $this->render('prospect/search.html.twig', [
+            'prospects' => $prospect,
+            'search_form' => $form->createView(),
+        ]);
+    }
 }

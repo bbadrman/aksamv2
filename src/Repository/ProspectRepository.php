@@ -100,6 +100,39 @@ class ProspectRepository extends ServiceEntityRepository
     }
 
     /**
+     * affichier les prospect avenir pour admin
+     * je doit modifie cet fn afin de disparer prospc quand an faire une action
+     * dans ce cas il dispare demain
+     * Find list a prospect Relanced
+     * @param SearchProspect $search
+     * @return PaginationInterface
+     */
+    public function findAvenir(SearchProspect $search): PaginationInterface
+    {
+
+
+        $tomorrow = new \DateTime('tomorrow');
+        $tomorrow->setTime(0, 0, 0);
+
+
+        $query = $this->createQueryBuilder('p')
+
+            ->select('p, t, f')
+            ->leftJoin('p.team', 't')
+            ->leftJoin('p.comrcl', 'f')
+            ->Where('p.relanceAt > :tomorrow')
+            ->setParameter('tomorrow', $tomorrow)
+            ->orderBy('p.relanceAt', 'ASC');
+
+        $query = $this->applySearchFilters($query, $search);
+
+        return $this->paginator->paginate(
+            $query,
+            $search->page,
+            10
+        );
+    }
+    /**
      * Find list a prospect no traite (qui sont pas de motifrelance et dejat affecter au team et cmrcl)
      * @param SearchProspect $search
      * @return PaginationInterface
@@ -145,7 +178,6 @@ class ProspectRepository extends ServiceEntityRepository
 
             ->leftJoin('p.comrcl', 'f')
 
-            // ->leftJoin('u.relanceds', 'h')
 
             ->orderBy('p.id', 'DESC');
 
