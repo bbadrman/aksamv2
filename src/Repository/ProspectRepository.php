@@ -58,7 +58,46 @@ class ProspectRepository extends ServiceEntityRepository
             10
         );
     }
+    //-------------Les Relances du Jour-------//
+    /**
+     * Find list a prospect Relanced jour
+     * @param SearchProspect $search
+     * @return PaginationInterface
+     */
+    public function findRelancedJour(SearchProspect $search): PaginationInterface
+    {
 
+        $today = new \DateTime();
+
+        $today->setTime(0, 0, 0);
+        $endOfDay = clone $today;
+        $endOfDay->setTime(23, 59, 59);
+
+        $query = $this->createQueryBuilder('p')
+            ->select('p, t, f')
+
+            ->leftJoin('p.team', 't')
+            ->leftJoin('p.comrcl', 'f')
+            // ->leftJoin('p.clotures', 'c')
+            // ->Where('c.motifCloture is NULL')
+
+            // ->andWhere('p.relance NOT IN (:motifs)')
+            ->andwhere('p.relanceAt BETWEEN :startOfDay AND :endOfDay')
+            ->setParameter('startOfDay', $today)
+            ->setParameter('endOfDay', $endOfDay)
+            //en instant d enleve quand en enleve ces motif  on db
+            // ->setParameter('motifs', [2, 3, 7, 8, 9, 10, 11])
+
+            ->orderBy('p.relanceAt', 'ASC');
+
+        $query = $this->applySearchFilters($query, $search);
+
+        return $this->paginator->paginate(
+            $query,
+            $search->page,
+            10
+        );
+    }
 
     /**
      * Find list a prospect no traite (qui sont pas de motifrelance et dejat affecter au team et cmrcl)

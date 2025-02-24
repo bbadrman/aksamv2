@@ -14,6 +14,9 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\HttpFoundation\RequestStack;
 
+
+#[IsGranted('IS_AUTHENTICATED')]
+#[Route('/traitement')]
 final class TraitementController extends AbstractController
 {
     public function __construct(
@@ -23,8 +26,8 @@ final class TraitementController extends AbstractController
         private Security $security,
     ) {}
 
-    #[IsGranted('IS_AUTHENTICATED')]
-    #[Route('/traitement', name: 'app_traitement')]
+
+    #[Route('/', name: 'app_traitement')]
     public function index(): Response
     {
         // $stats    = $this->statsService->getStats();
@@ -139,6 +142,47 @@ final class TraitementController extends AbstractController
         return $this->render('prospect/search.html.twig', [
             'prospects' => $prospect,
             'search_form' => $form->createView(),
+        ]);
+    }
+
+    /**
+     * afficher les relance du jour 
+     */
+    #[Route('/relancejour', name: 'relancejour_index', methods: ['GET', 'POST'])]
+
+    public function relancejour(Request $request,): Response
+
+    {
+
+        $data = new SearchProspect();
+        $data->page = $request->query->get('page', 1);
+        $form = $this->createForm(SearchProspectType::class, $data);
+        $form->handleRequest($this->requestStack->getCurrentRequest());
+
+        $user = $this->security->getUser();
+        $roles = $user->getRoles();
+
+        $prospect = [];
+
+
+        if (in_array('ROLE_SUPER_ADMIN',  $roles, true) || in_array('ROLE_ADMIN',  $roles, true)) {
+            // admi peut voire toutes les relance du jour
+            $prospect =  $this->prospectRepository->findRelancedJour($data, null);
+        } else if (in_array('ROLE_TEAM',  $roles, true)) {
+            // chef peut voire toutes les relance du jour atacher a leur equipe
+            $prospect =  $this->prospectRepository->findRelancedJourChef($data, $user, null);
+        } else {
+            // cmrcl peut voire seulement les relance du jour  atacher a lui
+            $prospect =  $this->prospectRepository->findRelancedJourCmrcl($data, $user, null);
+        }
+
+
+        return $this->render('prospect/index.html.twig', [
+            'prospects' => $prospect,
+
+            'now' => new \DateTime('+1 hour'),
+
+            'search_form' => $form->createView()
         ]);
     }
 }
