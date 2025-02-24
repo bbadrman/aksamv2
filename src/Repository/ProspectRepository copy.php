@@ -22,6 +22,9 @@ class ProspectRepository extends ServiceEntityRepository
         parent::__construct($registry, Prospect::class);
     }
 
+
+
+
     /**
      * Applique les filtres de recherche à la requête.
      *
@@ -196,12 +199,67 @@ class ProspectRepository extends ServiceEntityRepository
             ->setParameter('endOfYesterday', $yesterday)
             ->orderBy('p.id', 'DESC');
 
-        $query = $this->applySearchFilters($query, $search);
+        $this->applyFilters($query, $search);
 
-        return $this->paginator->paginate(
-            $query,
-            $search->page,
-            10
-        );
+        return $this->paginate($query, $search->page);
+    }
+
+    /**
+     * Applique les filtres de recherche sur la requête
+     */
+    private function applyFilters(QueryBuilder $query, SearchProspect $search): void
+    {
+        $filters = [
+            'q' => ['p.nom', 'LIKE'],
+            'm' => ['p.prenom', 'LIKE'],
+            'r' => ['f.username', 'LIKE'],
+            'g' => ['p.email', 'LIKE'],
+            'team' => ['t.name', 'LIKE'],
+            'l' => [['p.phone', 'LIKE'], ['p.gsm', 'LIKE']],
+            'c' => ['p.city', 'LIKE'],
+            's' => ['p.raisonSociale', 'LIKE'],
+            'source' => ['p.source', '='],
+        ];
+
+        foreach ($filters as $key => $conditions) {
+            $value = $search->{$key};
+            if (!empty($value)) {
+                if (is_array($conditions[0])) {
+                    $query->andWhere(
+                        $query->expr()->orX(...array_map(fn($c) => $c[0] . ' ' . $c[1] . ' :' . $key, $conditions))
+                    );
+                } else {
+                    [$field, $operator] = $conditions;
+                    $query->andWhere("$field $operator :$key");
+                }
+                $query->setParameter($key, $operator === 'LIKE' ? "%$value%" : $value);
+            }
+        }
+
+        if (!empty($search->d) && $search->d instanceof \DateTime) {
+            $query->andWhere('p.creatAt >= :d')->setParameter('d', $search->d);
+        }
+
+        if (!empty($search->dd) && $search->dd instanceof \DateTime) {
+            $search->dd->setTime(23, 59, 59);
+            $query->andWhere('p.creatAt <= :dd')->setParameter('dd', $search->dd);
+        }
+    }
+
+
+    /**
+     * Récupère la date d'hier à 23:59:59
+     */
+    private function getYesterday(): \DateTime
+    {
+        return (new \DateTime())->modify('-1 day')->setTime(23, 59, 59);
+    }
+
+    /**
+     * Gère la pagination
+     */
+    private function paginate(QueryBuilder $query, int $page): PaginationInterface
+    {
+        return $this->paginator->paginate($query, $page, 10);
     }
 }

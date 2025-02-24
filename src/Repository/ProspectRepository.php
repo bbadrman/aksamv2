@@ -23,6 +23,43 @@ class ProspectRepository extends ServiceEntityRepository
     {
         parent::__construct($registry, Prospect::class);
     }
+
+
+    /**
+     *  afficher les prospects qui n ont pas du team et cmrcl pour admin
+     * @return Prospect[] Returns an array of Prospect objects
+     * 
+     * @param SearchProspect $search
+     * @return PaginationInterface 
+     */
+    public function findByAdminNewProsp(SearchProspect $search): PaginationInterface
+    {
+
+        // get selement les prospects qui n'as pas encors affectter a un user
+        $query = $this->createQueryBuilder('p')
+            ->select('p', 't', 'f')
+            ->leftJoin('p.team', 't')
+            ->leftJoin('p.comrcl', 'f')
+
+            ->where('p.comrcl IS NULL')
+            ->andWhere('p.team IS NULL')
+            ->andWhere('p.relance IS NULL')
+
+            // ->leftJoin('p.relanceds', 'r')
+            // ->andWhere('r.motifRelanced is null')
+
+            ->orderBy('p.id', 'DESC');
+
+        $query = $this->applySearchFilters($query, $search);
+
+        return $this->paginator->paginate(
+            $query,
+            $search->page,
+            10
+        );
+    }
+
+
     /**
      * Find list a prospect no traite (qui sont pas de motifrelance et dejat affecter au team et cmrcl)
      * @param SearchProspect $search
@@ -44,9 +81,13 @@ class ProspectRepository extends ServiceEntityRepository
             ->andWhere('p.AffectAt <= :yesterday')
             ->setParameter('yesterday', $yesterday);
 
-        $this->applyFilters($query, $search);
+        $query = $this->applySearchFilters($query, $search);
 
-        return $this->paginate($query, $search->page);
+        return $this->paginator->paginate(
+            $query,
+            $search->page,
+            10
+        );
     }
 
     /**
@@ -251,62 +292,86 @@ class ProspectRepository extends ServiceEntityRepository
             10
         );
     }
-    /**
-     * Applique les filtres de recherche sur la requête
-     */
-    private function applyFilters(QueryBuilder $query, SearchProspect $search): void
-    {
-        $filters = [
-            'q' => ['p.nom', 'LIKE'],
-            'm' => ['p.prenom', 'LIKE'],
-            'r' => ['f.username', 'LIKE'],
-            'g' => ['p.email', 'LIKE'],
-            'team' => ['t.name', 'LIKE'],
-            'l' => [['p.phone', 'LIKE'], ['p.gsm', 'LIKE']],
-            'c' => ['p.city', 'LIKE'],
-            's' => ['p.raisonSociale', 'LIKE'],
-            'source' => ['p.source', '='],
-        ];
 
-        foreach ($filters as $key => $conditions) {
-            $value = $search->{$key};
-            if (!empty($value)) {
-                if (is_array($conditions[0])) {
-                    $query->andWhere(
-                        $query->expr()->orX(...array_map(fn($c) => $c[0] . ' ' . $c[1] . ' :' . $key, $conditions))
-                    );
-                } else {
-                    [$field, $operator] = $conditions;
-                    $query->andWhere("$field $operator :$key");
-                }
-                $query->setParameter($key, $operator === 'LIKE' ? "%$value%" : $value);
-            }
+
+
+    /**
+     * Applique les filtres de recherche à la requête.
+     *
+     * @param QueryBuilder $query
+     * @param SearchProspect $search
+     * @return QueryBuilder
+     */
+    private function applySearchFilters(QueryBuilder $query, SearchProspect $search): QueryBuilder
+    {
+        if (!empty($search->q)) {
+            $query = $query
+                ->andWhere('p.name LIKE :q')
+                ->setParameter('q', "%{$search->q}%");
+        }
+
+        if (!empty($search->m)) {
+            $query = $query
+                ->andWhere('p.lastname LIKE :m')
+                ->setParameter('m', "%{$search->m}%");
+        }
+
+        if (!empty($search->r)) {
+            $query = $query
+                ->andWhere('f.username LIKE :r')
+                ->setParameter('r', "%{$search->r}%");
+        }
+
+        if (!empty($search->g)) {
+            $query = $query
+                ->andWhere('p.email LIKE :g')
+                ->setParameter('g', "%{$search->g}%");
+        }
+
+        if (!empty($search->team)) {
+            $query = $query
+                ->andWhere('t.name LIKE :team')
+                ->setParameter('team', "%{$search->team}%");
+        }
+
+        if (!empty($search->l)) {
+            $query = $query
+                ->andWhere('p.phone LIKE :l')
+                ->orWhere('p.gsm LIKE :l')
+                ->setParameter('l', "%{$search->l}%");
+        }
+
+        if (!empty($search->c)) {
+            $query = $query
+                ->andWhere('p.city LIKE :c')
+                ->setParameter('c', "%{$search->c}%");
         }
 
         if (!empty($search->d) && $search->d instanceof \DateTime) {
-            $query->andWhere('p.creatAt >= :d')->setParameter('d', $search->d);
+            $query = $query
+                ->andWhere('p.creatAt >= :d')
+                ->setParameter('d', $search->d);
         }
 
         if (!empty($search->dd) && $search->dd instanceof \DateTime) {
             $search->dd->setTime(23, 59, 59);
-            $query->andWhere('p.creatAt <= :dd')->setParameter('dd', $search->dd);
+            $query = $query
+                ->andWhere('p.creatAt <= :dd')
+                ->setParameter('dd', $search->dd);
         }
-    }
 
+        if (!empty($search->s)) {
+            $query = $query
+                ->andWhere('p.raisonSociale LIKE :s')
+                ->setParameter('s', "%{$search->s}%");
+        }
 
-    /**
-     * Récupère la date d'hier à 23:59:59
-     */
-    private function getYesterday(): \DateTime
-    {
-        return (new \DateTime())->modify('-1 day')->setTime(23, 59, 59);
-    }
+        if (!empty($search->source)) {
+            $query = $query
+                ->andWhere('p.source = :source')
+                ->setParameter('source', $search->source);
+        }
 
-    /**
-     * Gère la pagination
-     */
-    private function paginate(QueryBuilder $query, int $page): PaginationInterface
-    {
-        return $this->paginator->paginate($query, $page, 10);
+        return $query;
     }
 }

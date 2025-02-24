@@ -27,6 +27,7 @@ final class ProspectController extends AbstractController
     #[Route(name: 'app_prospect_index', methods: ['GET', 'POST'])]
     public function index(ProspectRepository $prospectRepository): Response
     {
+
         return $this->render('prospect/index.html.twig', [
             'prospects' => $prospectRepository->findAll(),
         ]);

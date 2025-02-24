@@ -35,9 +35,9 @@
 		<a href="{{ path('app_prospect_new') }}" class="btn btn-primary">Ajouter prospect</a>
 	</section>
 
-	{# <div class="row" style="margin-right: 10px;">
-					{% include 'prospect/_search_form.html.twig' with {search_form: search_form} only %}
-				</div> #}
+	<div class="row" style="margin-right: 10px;">
+		{% include 'prospect/_search_form.html.twig' with {search_form: search_form} only %}
+	</div>
 
 	<div class="row mt">
 		<div class="col-lg-12">
@@ -137,6 +137,13 @@
 							</tr>
 						{% endfor %}
 					</tbody>
+					<tfoot class="text-right">
+						<tr>
+							<td colspan="9">
+								{{ knp_pagination_render(prospects, 'pagination.html.twig') }}
+							</td>
+						</tr>
+					</tfoot>
 				</table>
 			</div>
 		</div>

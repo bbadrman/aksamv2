@@ -32,6 +32,34 @@ final class TraitementController extends AbstractController
         ]);
     }
 
+    #[Route('/newprospect', name: 'app_prospect_index', methods: ['GET', 'POST'])]
+    public function newprospect(Request $request): Response
+    {
+        $data = new SearchProspect();
+        $data->page = $request->query->get('page', 1);
+        $form = $this->createForm(SearchProspectType::class, $data);
+        $form->handleRequest($this->requestStack->getCurrentRequest());
+
+        $user = $this->security->getUser();
+        $roles = $user->getRoles();
+        $prospects = [];
+
+        if (in_array('ROLE_SUPER_ADMIN', $roles, true) || in_array('ROLE_ADMIN', $roles, true) || in_array('ROLE_AFFECT', $roles, true)) {
+            $prospects = $this->prospectRepository->findByAdminNewProsp($data);
+        } elseif (in_array('ROLE_TEAMALL', $roles, true)) {
+            $prospects = $this->prospectRepository->findByChefAllNewProsp($data, $user);
+        } elseif (in_array('ROLE_TEAM', $roles, true)) {
+            $prospects = $this->prospectRepository->findByChefNewProsp($data, $user);
+        } else {
+            $prospects = $this->prospectRepository->findByCmrclNewProsp($data, $user);
+        }
+
+        return $this->render('prospect/index.html.twig', [
+            'prospects' => $prospects,
+            'search_form' => $form->createView()
+        ]);
+    }
+
     /**
      * afficher les prospect no traiter   
      */
