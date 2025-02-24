@@ -160,7 +160,6 @@ class SearchProspectType extends AbstractType
 
                 'widget' => 'single_text',
 
-
                 'attr' => [
                     'placeholder' => "date format: yyyy-mm-dd."
                 ],

@@ -32,13 +32,15 @@
 			</li>
 		</ol>
 		<br>
-		<a href="{{ path('app_prospect_new') }}" class="btn btn-primary">Ajouter prospect</a>
+		{# <a href="{{ path('app_prospect_new') }}" class="btn btn-primary">Ajouter prospect</a> #}
 	</section>
+	<div class="col-xs-12 mx-auto d-flex justify-content-center">
 
-	<div class="row" style="margin-right: 10px;">
-		{% include 'prospect/_search_form.html.twig' with {search_form: search_form} only %}
+		<div class="row" style="margin-right: 12px;  ">
+
+			{% include 'prospect/_search_form.html.twig' with {search_form: search_form} only %}
+		</div>
 	</div>
-
 	<div class="row mt">
 		<div class="col-lg-12">
 			<div class="content-panel">
