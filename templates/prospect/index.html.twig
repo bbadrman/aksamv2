@@ -36,8 +36,8 @@
 	</section>
 
 	{# <div class="row" style="margin-right: 10px;">
-			{% include 'prospect/_search_form.html.twig' with {search_form: search_form} only %}
-		</div> #}
+					{% include 'prospect/_search_form.html.twig' with {search_form: search_form} only %}
+				</div> #}
 
 	<div class="row mt">
 		<div class="col-lg-12">
@@ -64,7 +64,7 @@
 								<td>{{ prospect.source }}</td>
 								<td>{{ prospect.activites }}</td>
 								<td>{{ prospect.typeProspect }}</td>
-								<td>{{ prospect.creatAt ? prospect.creatAt|date('Y-m-d H') : '' }}</td>
+								<td>{{ prospect.creatAt ? prospect.creatAt|date('Y-m-d H:i') : '' }}</td>
 
 								<td>{{ prospect.nom }}</td>
 								<td>{{ prospect.prenom }}</td>

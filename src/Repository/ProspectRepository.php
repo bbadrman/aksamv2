@@ -40,7 +40,8 @@ class ProspectRepository extends ServiceEntityRepository
             ->andWhere('p.team IS NOT NULL')  // deja Affecté à une équipe  
             ->andWhere('p.relance IS NULL')  // n'est pas encor relancer 
             // il faut changer creatAt par affectAt 
-            ->andWhere('p.creatAt <= :yesterday')
+
+            ->andWhere('p.AffectAt <= :yesterday')
             ->setParameter('yesterday', $yesterday);
 
         $this->applyFilters($query, $search);

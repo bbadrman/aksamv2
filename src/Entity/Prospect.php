@@ -9,8 +9,12 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
+
 #[ORM\Entity(repositoryClass: ProspectRepository::class)]
 #[ApiResource()]
+#[ORM\HasLifecycleCallbacks]
+#[ORM\Table(name: "prospect")]
+
 class Prospect
 {
     #[ORM\Id]
@@ -119,6 +123,19 @@ class Prospect
         $this->histories = new ArrayCollection();
         $this->relanceHistories = new ArrayCollection();
     }
+
+    #[ORM\PrePersist]
+    public function prePersist(): void
+    {
+
+
+        if (empty($this->creatAt)) {
+            $timezone = new \DateTimeZone('Europe/Paris'); // Remplacez par le fuseau horaire approprié pour +1 heur
+            $this->creatAt = new \DateTimeImmutable('now', $timezone);
+        }
+    }
+
+
 
     public function getId(): ?int
     {
@@ -353,12 +370,14 @@ class Prospect
         return $this;
     }
 
+
+
     public function getCreatAt(): ?\DateTimeInterface
     {
         return $this->creatAt;
     }
 
-    public function setCreatAt(?\DateTimeInterface $creatAt): static
+    public function setCreatAt(?\DateTimeInterface  $creatAt): static
     {
         $this->creatAt = $creatAt;
 

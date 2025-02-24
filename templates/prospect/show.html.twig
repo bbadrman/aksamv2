@@ -148,6 +148,65 @@
 					<h4 class="text-center">
 						<strong>Relances</strong>
 					</4>
+
+					<table class="table table-striped table-advance table-hover">
+						<thead>
+
+							<tr style="text-align: left; font-size:20px;">
+
+								<th>Option</th>
+								<th>Date</th>
+
+							</tr>
+
+						</thead>
+						<tbody>
+
+
+							{% for relance in relanceHistory|sort((a, b) => b.relancedAt <=> a.relancedAt)  %}
+								<tr>
+									<td>
+
+										{% if relance.motifRelance is null %}
+
+											Pas encore relancer
+										{% elseif  relance.motifRelance == 1 %}
+											Rendez-vous
+										{% elseif relance.motifRelance == 2 %}
+											Injoignable
+										{% elseif relance.motifRelance == 3 %}
+											Attente DOC
+										{% elseif relance.motifRelance == 4 %}
+											Tarification
+										{% elseif relance.motifRelance == 5 %}
+											Prise de Décision
+										{% elseif relance.motifRelance == 6 %}
+											Faux Fiche
+										{% elseif relance.motifRelance == 7 %}
+											Doublon
+										{% elseif relance.motifRelance == 8 %}
+											Passage Concurrent
+										{% elseif relance.motifRelance == 9 %}
+											Passage Client
+										{% elseif relance.motifRelance == 10 %}
+											Déjà Souscrit
+										{% elseif relance.motifRelance == 11 %}
+											Toujour Injoignable
+										{% elseif relance.motifRelance == 12 %}
+											Hors Cible
+										{% elseif relance.motifRelance == 13 %}
+											Test
+										{% endif %}
+									</td>
+
+
+									<td>{{ relance.relancedAt ? relance.relancedAt|date('Y-m-d H:i') : '' }}</td>
+
+
+								</tr>
+							{% endfor %}
+						</tbody>
+					</table>
 				</div>
 			</div>
 		</div>

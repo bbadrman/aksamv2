@@ -4,11 +4,13 @@ namespace App\Controller;
 
 use App\Entity\History;
 use App\Entity\Prospect;
+use App\Entity\RelanceHistory;
 use App\Form\ProspectType;
 use App\Form\AffectRelanceType;
 use App\Form\AffectProspectType;
 use App\Repository\HistoryRepository;
 use App\Repository\ProspectRepository;
+use App\Repository\RelanceHistoryRepository;
 use App\Repository\TeamRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
@@ -38,6 +40,8 @@ final class ProspectController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+
+
             $entityManager->persist($prospect);
             $entityManager->flush();
 
@@ -51,12 +55,14 @@ final class ProspectController extends AbstractController
     }
 
     #[Route('/{id}', name: 'app_prospect_show', methods: ['GET'])]
-    public function show(Prospect $prospect, HistoryRepository $historyRepository): Response
+    public function show(Prospect $prospect, HistoryRepository $historyRepository, RelanceHistoryRepository $relanceHistory): Response
     {
         $teamHistory = $historyRepository->findBy(['prospect' => $prospect]);
+        $relanceHistory = $relanceHistory->findBy(['prospect' => $prospect]);
         return $this->render('prospect/show.html.twig', [
             'prospect' => $prospect,
             'teamHistory' => $teamHistory,
+            'relanceHistory' => $relanceHistory,
         ]);
     }
 
@@ -126,7 +132,12 @@ final class ProspectController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            dump($form->getErrors(true));
+
+            $history = new RelanceHistory();
+            $history->setProspect($prospect);
+            $history->setMotifRelance($prospect->getRelance());
+            $history->setRelancedAt($prospect->getRelanceAt());
+            $this->entityManager->persist($history);
             $entityManager->flush();
 
             return $this->redirectToRoute('app_prospect_index', [], Response::HTTP_SEE_OTHER);

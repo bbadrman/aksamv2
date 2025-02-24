@@ -1081,7 +1081,7 @@ PANELS CONFIGURATIONS
 /*Green Panel*/
 .green-panel {
     text-align: center;
-    background: #4ECDC4;
+    background: #BDD1EE;
     border-radius: 15px;
     overflow: hidden;
     border: 1px solid #ddd;
@@ -1098,7 +1098,7 @@ PANELS CONFIGURATIONS
     padding: 2px;
     margin-bottom: 15px;
     border-top-right-radius: 15px;
-    background-color: #4CAF50;
+    background-color: #002E5B;
     color: white;
     padding: 10px;
     text-align: center;
