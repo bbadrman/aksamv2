@@ -190,7 +190,6 @@ final class TraitementController extends AbstractController
      * les Relances à venir 
      */
     #[Route('/avenir', name: 'avenir_index', methods: ['GET', 'POST'])]
-
     public function avenir(Request $request,    Security $security): Response
 
     {
@@ -227,6 +226,50 @@ final class TraitementController extends AbstractController
         }
 
 
+        return $this->render('prospect/search.html.twig', [
+            'prospects' => $prospect,
+            'search_form' => $form->createView(),
+        ]);
+    }
+
+
+    /**
+     * afficher les relances no traiter  
+     */
+    #[Route('/relancenotraite', name: 'relancenotraite_index', methods: ['GET', 'POST'])]
+    public function relancenotraite(Request $request): Response
+
+    {
+        // $this->denyAccessUnlessGrantedAuthorizedRoles();
+
+        $data = new SearchProspect();
+        $data->page = $request->query->get('page', 1);
+        $form = $this->createForm(SearchProspectType::class, $data);
+        $form->handleRequest($this->requestStack->getCurrentRequest());
+        $user = $this->security->getUser();
+        $roles = $user->getRoles();
+        $prospect = [];
+
+        if ($form->isSubmitted() && $form->isValid() && !$form->isEmpty()) {
+            if (in_array('ROLE_SUPER_ADMIN', $roles, true) || in_array('ROLE_ADMIN', $roles, true)  || in_array('ROLE_AFFECT', $roles, true)) {
+                // admi peut voire toutes les relance du jour
+                $prospect =  $this->prospectRepository->findRelancesNonTraitees($data, null);
+                // $numberOfProspects = count($prospect);
+                // dd($numberOfProspects);
+            } else if (in_array('ROLE_TEAM', $roles, true)) {
+                // chef peut voire toutes les relance du jour atacher a leur equipe
+                $prospect =   $this->prospectRepository->RelancesNonTraiteesChef($data, $user, null);
+            } else {
+                // cmrcl peut voire seulement les relance du jour  atacher a lui
+                $prospect =   $this->prospectRepository->RelancesNonTraiteesCmrcl($data, $user, null);
+            }
+
+
+            return $this->render('prospect/index.html.twig', [
+                'prospects' => $prospect,
+                'search_form' => $form->createView()
+            ]);
+        }
         return $this->render('prospect/search.html.twig', [
             'prospects' => $prospect,
             'search_form' => $form->createView(),

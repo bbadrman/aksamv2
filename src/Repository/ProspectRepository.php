@@ -112,8 +112,9 @@ class ProspectRepository extends ServiceEntityRepository
 
 
         $tomorrow = new \DateTime('tomorrow');
-        $tomorrow->setTime(0, 0, 0);
-
+        // dd($tomorrow);  //2025-02-26 00:00:00.0 UTC (+00:00)
+        // $tomorrow->setTime(0, 0, 0);
+        // dd($tomorrow);   //2025-02-26 00:00:00.0 UTC (+00:00)
 
         $query = $this->createQueryBuilder('p')
 
@@ -189,6 +190,50 @@ class ProspectRepository extends ServiceEntityRepository
             10
         );
     }
+
+    /**
+     * Find list a prospect Relanced no traités pour admin--modifie-- 
+     * @param SearchProspect $search
+     * @return PaginationInterface
+     */
+    public function findRelancesNonTraitees(SearchProspect $search): PaginationInterface
+    {
+
+        $yesterday = (new \DateTime('yesterday'))->setTime(23, 59, 59);
+        // dd($yesterday); //2025-03-13 23:59:59
+        // $dayBeforeYesterday = (clone $yesterday)->modify('-9 year');
+        // dd($dayBeforeYesterday); // 2016-03-13 23:59:59.
+
+        $query = $this->createQueryBuilder('p')
+
+            ->select('p, t, f ')
+            ->leftJoin('p.team', 't')
+            ->leftJoin('p.comrcl', 'f')
+
+            // les dates de relance plus que 1 un apartir d hier
+            // ->andWhere('p.relanceAt BETWEEN :dayBeforeYesterday AND :yesterday')
+            // ->setParameter('dayBeforeYesterday', $dayBeforeYesterday)
+            // ->setParameter('yesterday', $yesterday)
+
+            ->andWhere('p.comrcl is NOT NULL')
+            ->andWhere('p.team is NOT NULL')
+            //les dates de relance ne doit pas plus que date d'hier (les prospers qui ont la date de relaced haujourdhui et plus, n'afficher pas )
+            ->andWhere('p.relanceAt <= :endOfYesterday')
+            ->setParameter('endOfYesterday', $yesterday)
+
+
+            ->orderBy('p.relanceAt', 'desc');
+
+
+        $query = $this->applySearchFilters($query, $search);
+
+        return $this->paginator->paginate(
+            $query,
+            $search->page,
+            10
+        );
+    }
+
     /**
      * Find list a prospect no traite (qui sont pas de motirelance et dejat affecter au team et cmrcl)
      * @param SearchProspect $search
