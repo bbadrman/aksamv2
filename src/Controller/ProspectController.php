@@ -42,8 +42,26 @@ final class ProspectController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
 
+            $prospect->setAutor($this->getUser());
+            $this->entityManager->persist($prospect);
+            $teamHistory = new History();
+            $teamHistory->setProspect($prospect); // $prospect est votre instance de Prospect 
 
-            $entityManager->persist($prospect);
+            if ($prospect->getTeam() !== null && $prospect->getComrcl() !== null) {
+                $actionType =  $prospect->getTeam()->getName() . ' et commercial ' . $prospect->getComrcl()->getUserIdentifier(); // Les deux sont associés
+            } elseif ($prospect->getTeam() !== null) {
+                $actionType =  $prospect->getTeam()->getName(); // Seulement associé à l'équipe
+            } elseif ($prospect->getComrcl() !== null) {
+                $actionType =  $prospect->getComrcl()->getUserIdentifier(); // Seulement associé au commercial
+            } else {
+                $actionType = 'None'; // Aucune association
+            }
+
+            $teamHistory->setActionType($actionType);
+
+            $teamHistory->setActionDate(new \DateTime());
+
+            $this->entityManager->persist($teamHistory);
             $entityManager->flush();
 
             return $this->redirectToRoute('app_prospect_index', [], Response::HTTP_SEE_OTHER);

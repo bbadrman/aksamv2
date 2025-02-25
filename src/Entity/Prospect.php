@@ -118,6 +118,9 @@ class Prospect
     #[ORM\OneToMany(targetEntity: RelanceHistory::class, mappedBy: 'prospect')]
     private Collection $relanceHistories;
 
+    #[ORM\ManyToOne(inversedBy: 'prospectAutor')]
+    private ?User $autor = null;
+
     public function __construct()
     {
         $this->histories = new ArrayCollection();
@@ -536,6 +539,18 @@ class Prospect
                 $relanceHistory->setProspect(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getAutor(): ?User
+    {
+        return $this->autor;
+    }
+
+    public function setAutor(?User $autor): static
+    {
+        $this->autor = $autor;
 
         return $this;
     }

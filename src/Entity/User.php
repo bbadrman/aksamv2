@@ -109,6 +109,12 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\OneToMany(targetEntity: UserHistory::class, mappedBy: 'users')]
     private Collection $userHistories;
 
+    /**
+     * @var Collection<int, Prospect>
+     */
+    #[ORM\OneToMany(targetEntity: Prospect::class, mappedBy: 'autor')]
+    private Collection $prospectAutor;
+
     public function __construct()
     {
         $this->permissions = new ArrayCollection();
@@ -117,6 +123,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         $this->contrats = new ArrayCollection();
         $this->prospects = new ArrayCollection();
         $this->userHistories = new ArrayCollection();
+        $this->prospectAutor = new ArrayCollection();
     }
 
 
@@ -454,6 +461,36 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
             // set the owning side to null (unless already changed)
             if ($userHistory->getUsers() === $this) {
                 $userHistory->setUsers(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Prospect>
+     */
+    public function getProspectAutor(): Collection
+    {
+        return $this->prospectAutor;
+    }
+
+    public function addProspectAutor(Prospect $prospectAutor): static
+    {
+        if (!$this->prospectAutor->contains($prospectAutor)) {
+            $this->prospectAutor->add($prospectAutor);
+            $prospectAutor->setAutor($this);
+        }
+
+        return $this;
+    }
+
+    public function removeProspectAutor(Prospect $prospectAutor): static
+    {
+        if ($this->prospectAutor->removeElement($prospectAutor)) {
+            // set the owning side to null (unless already changed)
+            if ($prospectAutor->getAutor() === $this) {
+                $prospectAutor->setAutor(null);
             }
         }
 
