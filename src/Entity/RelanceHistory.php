@@ -22,7 +22,7 @@ class RelanceHistory
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $comment = null;
 
-    #[ORM\ManyToOne(inversedBy: 'relanceHistories')]
+    #[ORM\ManyToOne(inversedBy: 'relanceHistories', cascade: ["remove"])]
     private ?Prospect $prospect = null;
 
     public function getId(): ?int

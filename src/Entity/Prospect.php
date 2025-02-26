@@ -109,13 +109,14 @@ class Prospect
     /**
      * @var Collection<int, History>
      */
-    #[ORM\OneToMany(targetEntity: History::class, mappedBy: 'prospect')]
+
+    #[ORM\OneToMany(targetEntity: History::class, mappedBy: 'prospect', cascade: ['remove'])]
     private Collection $histories;
 
     /**
      * @var Collection<int, RelanceHistory>
      */
-    #[ORM\OneToMany(targetEntity: RelanceHistory::class, mappedBy: 'prospect')]
+    #[ORM\OneToMany(targetEntity: RelanceHistory::class, mappedBy: 'prospect', cascade: ['remove'])]
     private Collection $relanceHistories;
 
     #[ORM\ManyToOne(inversedBy: 'prospectAutor')]
@@ -136,6 +137,11 @@ class Prospect
             $timezone = new \DateTimeZone('Europe/Paris'); // Remplacez par le fuseau horaire approprié pour +1 heur
             $this->creatAt = new \DateTimeImmutable('now', $timezone);
         }
+
+        // if (empty($this->relanceAt)) {
+        //     $timezone = new \DateTimeZone('Europe/Paris');
+        //     $this->setRelanceAt(new \DateTimeImmutable('now', $timezone));
+        // }
     }
 
 

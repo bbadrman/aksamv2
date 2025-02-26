@@ -295,4 +295,44 @@ final class TraitementController extends AbstractController
             'search_form' => $form->createView(),
         ]);
     }
+
+
+    /**
+     * afficher les prospects injoiniable  
+     * 
+     */
+    #[Route('/unjoinable', name: 'app_unjoinable', methods: ['GET', 'POST'])]
+
+    public function unjoinable(Request $request): Response
+
+    {
+        // $this->denyAccessUnlessGrantedAuthorizedRoles();
+
+        $data = new SearchProspect();
+        $data->page = $request->query->get('page', 1);
+        $form = $this->createForm(SearchProspectType::class, $data);
+        $form->handleRequest($this->requestStack->getCurrentRequest());
+
+        $user = $this->security->getUser();
+        $roles = $user->getRoles();
+        $prospect = [];
+
+
+        if (in_array('ROLE_SUPER_ADMIN', $roles, true) || in_array('ROLE_ADMIN', $roles, true)) {
+            // admi peut voire toutes les nouveaux prospects
+            $prospect =  $this->prospectRepository->findUnjoing($data, null);
+        } else if (in_array('ROLE_TEAM', $roles, true)) {
+            // chef peut voire toutes les nouveaux prospects atacher a leur equipe
+            $prospect =  $this->prospectRepository->findUnjoingChef($data,  $user, null);
+        } else {
+            // cmrcl peut voire seulement les nouveaux prospects atacher a lui
+            $prospect =  $this->prospectRepository->findUnjoingCmrcl($data, $user, null);
+        }
+
+
+        return $this->render('prospect/index.html.twig', [
+            'prospects' => $prospect,
+            'search_form' => $form->createView()
+        ]);
+    }
 }

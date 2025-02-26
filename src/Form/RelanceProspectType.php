@@ -3,15 +3,13 @@
 namespace App\Form;
 
 use App\Entity\Prospect;
-use App\Entity\User;
-use Doctrine\DBAL\Types\DateTimeType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\Extension\Core\Type as Type;
 use Symfony\Component\Form\Extension\Core\Type\DateTimeType as TypeDateTimeType;
 
-class AffectRelanceType extends AbstractType
+class RelanceProspectType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {

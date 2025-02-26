@@ -81,13 +81,12 @@ class ProspectRepository extends ServiceEntityRepository
             // ->leftJoin('p.clotures', 'c')
             // ->Where('c.motifCloture is NULL')
 
-            // ->andWhere('p.relance NOT IN (:motifs)')
+            ->andWhere('p.relance NOT IN (:motifs)')
             ->andwhere('p.relanceAt BETWEEN :startOfDay AND :endOfDay')
             ->setParameter('startOfDay', $today)
             ->setParameter('endOfDay', $endOfDay)
-            //en instant d enleve quand en enleve ces motif  on db
-            // ->setParameter('motifs', [2, 3, 7, 8, 9, 10, 11])
 
+            ->setParameter('motifs', [6, 7, 8, 9, 10, 11, 12, 13])
             ->orderBy('p.relanceAt', 'ASC');
 
         $query = $this->applySearchFilters($query, $search);
@@ -277,6 +276,33 @@ class ProspectRepository extends ServiceEntityRepository
         );
     }
 
+    //-----------Les Injoignables--------------//
+
+    /**
+     * Find list a prospect Unjoinable
+     * @return Prospect[] 
+     * @param SearchProspect $search
+     * @return PaginationInterface 
+     */
+    public function findUnjoing(SearchProspect $search): PaginationInterface
+    {
+
+        $query = $this->createQueryBuilder('p')
+            ->select('p, t, f')
+            ->where('p.relance = 11')
+            ->leftJoin('p.team', 't')
+            ->leftJoin('p.comrcl', 'f')
+            ->orderBy('p.relanceAt', 'desc');
+
+        $query = $this->applySearchFilters($query, $search);
+
+        return $this->paginator->paginate(
+            $query,
+            $search->page,
+            10
+        );
+    }
+
     /**
      * Find list a prospect no traite (qui sont pas de motirelance et dejat affecter au team et cmrcl)
      * @param SearchProspect $search
@@ -292,7 +318,6 @@ class ProspectRepository extends ServiceEntityRepository
 
         $query = $this->createQueryBuilder('p')
             ->select('p,   r')
-
             ->andWhere('p.comrcl = :val')
             ->setParameter('val', $id)
 

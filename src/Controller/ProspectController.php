@@ -6,8 +6,8 @@ use App\Entity\History;
 use App\Entity\Prospect;
 use App\Entity\RelanceHistory;
 use App\Form\ProspectType;
-use App\Form\AffectRelanceType;
 use App\Form\AffectProspectType;
+use App\Form\RelanceProspectType;
 use App\Repository\HistoryRepository;
 use App\Repository\ProspectRepository;
 use App\Repository\RelanceHistoryRepository;
@@ -154,10 +154,15 @@ final class ProspectController extends AbstractController
     #[Route('/{id}/relance', name: 'app_relance_edit', methods: ['GET', 'POST'])]
     public function relance(Request $request, Prospect $prospect, EntityManagerInterface $entityManager): Response
     {
-        $form = $this->createForm(AffectRelanceType::class, $prospect);
+        $form = $this->createForm(RelanceProspectType::class, $prospect);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            if ($prospect->getRelanceAt() === null) {
+                $timezone = new \DateTimeZone('Europe/Paris');
+                $prospect->setRelanceAt(new \DateTimeImmutable('now', $timezone));
+            }
+
 
             $history = new RelanceHistory();
             $history->setProspect($prospect);
@@ -165,8 +170,8 @@ final class ProspectController extends AbstractController
             $history->setRelancedAt($prospect->getRelanceAt());
             $this->entityManager->persist($history);
             $entityManager->flush();
-
-            return $this->redirectToRoute('app_prospect_index', [], Response::HTTP_SEE_OTHER);
+            $this->addFlash('info', 'Votre Prospect a été traité avec succès!');
+            return $this->redirect($request->headers->get('referer'));
         }
 
         return $this->render('partials/_relance_modal.html.twig', [
