@@ -4263,7 +4263,7 @@ ul.chat-available-user li a:hover {
 
 
 .date-passee {
-    color: red;
+    color: rgb(0, 72, 255);
     font-weight: bold;
     animation: blink 1s infinite;
 }

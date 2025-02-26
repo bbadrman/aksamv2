@@ -23,19 +23,25 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 #[Route('/prospect')]
 final class ProspectController extends AbstractController
 {
-    public function __construct(private EntityManagerInterface $entityManager) {}
+    public function __construct(private EntityManagerInterface $entityManager, private ProspectRepository $prospectRepository) {}
     #[Route(name: 'app_prospect_index', methods: ['GET', 'POST'])]
-    public function index(ProspectRepository $prospectRepository): Response
+    public function index(Request $request): Response
     {
+        $prospects = $this->prospectRepository->findAll();
+
 
         return $this->render('prospect/index.html.twig', [
-            'prospects' => $prospectRepository->findAll(),
+            'prospects' => $prospects,
+
+
         ]);
     }
 
     #[Route('/new', name: 'app_prospect_new', methods: ['GET', 'POST'])]
     public function new(Request $request, EntityManagerInterface $entityManager): Response
     {
+
+
         $prospect = new Prospect();
         $form = $this->createForm(ProspectType::class, $prospect);
         $form->handleRequest($request);
@@ -70,6 +76,7 @@ final class ProspectController extends AbstractController
         return $this->render('prospect/new.html.twig', [
             'prospect' => $prospect,
             'form' => $form,
+
         ]);
     }
 

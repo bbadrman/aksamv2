@@ -16,25 +16,25 @@
 	{% endfor %}
 	<section class="content-header">
 		{% if app.request.get('_route') == 'newprospect_index' %}
-			<h2>Recherche dans les nouveaux prospects</h2>
+			<h2>Rechercher dans les nouveaux prospects</h2>
 
 		{% elseif app.request.get('_route') == 'prospect_search' %}
-			<h2>Recherche dans tous Prospects</h2>
+			<h2>Rechercher dans tous les Prospects</h2>
 
 		{% elseif app.request.get('_route') == 'relancejour_index' %}
-			<h2>Recherche dans Relances du Jour</h2>
+			<h2>Rechercher dans les Relances du Jour</h2>
 
 		{% elseif app.request.get('_route') == 'avenir_index' %}
-			<h2>Recherche dans Relances à venir</h2>
+			<h2>Rechercher dans les Relances à venir</h2>
 
 		{% elseif app.request.get('_route') == 'relancenotraite_index' %}
-			<h2>Recherche dans Relances Non Traitées</h2>
+			<h2>Rechercher dans les Relances Non Traitées</h2>
 
 		{% elseif app.request.get('_route') == 'app_unjoinable' %}
-			<h2>Recherche dans injoignables</h2>
+			<h2>Rechercher dans les injoignables</h2>
 
 		{% elseif app.request.get('_route') == 'notrait_index' %}
-			<h2>Recherche dans Prospects Non Traités</h2>
+			<h2>Rechercher dans les Prospects Non Traités</h2>
 
 		{% endif %}
 		<ol class="breadcrumb">

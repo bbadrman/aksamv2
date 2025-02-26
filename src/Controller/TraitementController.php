@@ -47,6 +47,10 @@ final class TraitementController extends AbstractController
         $user = $this->security->getUser();
         $roles = $user->getRoles();
         $prospects = [];
+        $duplicates = [
+            'emails' => [],
+            'phones' => [],
+        ];
 
         if (in_array('ROLE_SUPER_ADMIN', $roles, true) || in_array('ROLE_ADMIN', $roles, true) || in_array('ROLE_AFFECT', $roles, true)) {
             $prospects = $this->prospectRepository->findByAdminNewProsp($data);
@@ -57,8 +61,24 @@ final class TraitementController extends AbstractController
         } else {
             $prospects = $this->prospectRepository->findByCmrclNewProsp($data, $user);
         }
+        foreach ($prospects as $prospect) {
+            $email = $prospect->getEmail();
+            $phone = $prospect->getPhone(); // Assurez-vous que la méthode `getPhone()` existe.
 
+            // Vérifier les doublons par email
+            $existingEmailProspect = $this->prospectRepository->findOneBy(['email' => $email]);
+            $isEmailDuplicate = $existingEmailProspect !== null && $existingEmailProspect->getId() !== $prospect->getId();
+            $duplicates['emails'][$email] = $isEmailDuplicate;
+
+            // Vérifier les doublons par téléphone
+            if ($phone) { // Vérifier que le numéro de téléphone existe
+                $existingPhoneProspect = $this->prospectRepository->findOneBy(['phone' => $phone]);
+                $isPhoneDuplicate = $existingPhoneProspect !== null && $existingPhoneProspect->getId() !== $prospect->getId();
+                $duplicates['phones'][$phone] = $isPhoneDuplicate;
+            }
+        }
         return $this->render('prospect/index.html.twig', [
+            'duplicates' => $duplicates,
             'prospects' => $prospects,
             'search_form' => $form->createView()
         ]);
