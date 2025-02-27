@@ -364,7 +364,7 @@ $('document').ready(function () {
 
 //select motiveRelanced pour afficher la ajouter client quand on click sur pasage contart
 //select motiveRelanced pour afficher la calandrie et comment quand on click sur rndv
-var resilField = document.getElementById('relanced_motifRelanced');
+var resilField = document.getElementById('relance_prospect_relance');
 var commentField = document.getElementById('MotivRelcoment-container'); // Changer l'ID ici
 var buttonField = document.getElementById('SubmitRelance-container');
 var subresilContainer1 = document.getElementById('subMotivRelc-container');
@@ -372,13 +372,13 @@ var subresilContainer2 = document.getElementById('subMotivContrat-container');
 
 if (resilField !== null) {
 	resilField.addEventListener('change', function () {
-		if (resilField.value === '1' || resilField.value === '4' || resilField.value === '5' || resilField.value === '6' || resilField.value === '12') {
+		if (resilField.value === '1' || resilField.value === '2' || resilField.value === '3' || resilField.value === '4' || resilField.value === '5') {
 			subresilContainer1.style.display = 'block';     // Afficher le champ date
 			subresilContainer2.style.display = 'none';     // cacher le champ client
 			commentField.style.display = 'block';
 			buttonField.style.display = 'block';         // Afficher le champ comment
 			//click sur passage en contart il faut affichier les champ des contart et comment cache du date 
-		} else if (resilField.value === '2' || resilField.value === '3' || resilField.value === '7' || resilField.value === '8' || resilField.value === '9' || resilField.value === '11') {
+		} else if (resilField.value === '6' || resilField.value === '7' || resilField.value === '8' || resilField.value === '10' || resilField.value === '11' || resilField.value === '12' || resilField.value === '13') {
 			//pour rederct to rout 
 			//window.location.href = "/client/new-client";
 			// pour manipilie les champs
@@ -386,7 +386,7 @@ if (resilField !== null) {
 			subresilContainer2.style.display = 'none';
 			commentField.style.display = 'block'; // Cacher le champ comment
 			buttonField.style.display = 'block';
-		} else if (resilField.value === '10') {
+		} else if (resilField.value === '9') {
 			//pour rederct to rout 
 			//window.location.href = "/client/new-client";
 			// pour manipilie les champs

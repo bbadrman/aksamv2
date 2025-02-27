@@ -1,9 +1,20 @@
 <!-- Modal pour affictation team or cmrcl -->
-<button type="button" class="btn btn-danger" data-toggle="modal" data-target="#exampleModalR{{ prospect.id }}">
 
+{% if prospect.comrcl and prospect.team is not empty %}
+	{# clore du butto affichie pour chef si comrcl et team is null #}
+	<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal{{ prospect.id }}">
+		<i class="fa fa-reply-all" aria-hidden="true"></i>
+	</button>
+{% elseif prospect.comrcl is  empty and prospect.team is not empty  %}
+	<button type="button" class="btn btn-success" data-toggle="modal" data-target="#exampleModal{{ prospect.id }}">
 
-	<i class="fa fa-paper-plane" aria-hidden="true"></i>
-</button>
+		<i class="fa fa-paper-plane" aria-hidden="true"></i>
+	</button>
+{% else %}
+	<button type="button" class="btn btn-danger" data-toggle="modal" data-target="#exampleModal{{ prospect.id }}">
+		<i class="fa fa-paper-plane" aria-hidden="true"></i>
+	</button>
+{% endif %}
 <div class="modal fade" id="exampleModalR{{ prospect.id }}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
 	<div class="modal-dialog" role="document">
 		<div class="modal-content">
@@ -32,5 +43,4 @@
 			{{form_end(form)}}
 		</div>
 	</div>
-
 </div>

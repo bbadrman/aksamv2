@@ -122,6 +122,9 @@ class Prospect
     #[ORM\ManyToOne(inversedBy: 'prospectAutor')]
     private ?User $autor = null;
 
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $comment = null;
+
     public function __construct()
     {
         $this->histories = new ArrayCollection();
@@ -557,6 +560,18 @@ class Prospect
     public function setAutor(?User $autor): static
     {
         $this->autor = $autor;
+
+        return $this;
+    }
+
+    public function getComment(): ?string
+    {
+        return $this->comment;
+    }
+
+    public function setComment(?string $comment): static
+    {
+        $this->comment = $comment;
 
         return $this;
     }

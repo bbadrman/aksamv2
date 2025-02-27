@@ -168,6 +168,7 @@ final class ProspectController extends AbstractController
             $history->setProspect($prospect);
             $history->setMotifRelance($prospect->getRelance());
             $history->setRelancedAt($prospect->getRelanceAt());
+            $history->setComment($prospect->getComment());
             $this->entityManager->persist($history);
             $entityManager->flush();
             $this->addFlash('info', 'Votre Prospect a été traité avec succès!');

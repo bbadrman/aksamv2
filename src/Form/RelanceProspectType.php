@@ -8,6 +8,7 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\Extension\Core\Type as Type;
 use Symfony\Component\Form\Extension\Core\Type\DateTimeType as TypeDateTimeType;
+use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 
 class RelanceProspectType extends AbstractType
 {
@@ -41,6 +42,11 @@ class RelanceProspectType extends AbstractType
                 ],
                 'expanded' => false,
                 'multiple' => false,
+            ])
+            ->add('comment', TextareaType::class, [
+                'attr' => ['class' => 'tinymce'],
+                'label' => "Remarque",
+                'required' => false,
             ])
             ->add('relanceAt', TypeDateTimeType::class, [
                 'label' => 'Date de Relance *',

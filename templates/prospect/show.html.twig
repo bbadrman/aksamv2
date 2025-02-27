@@ -156,6 +156,7 @@
 
 								<th>Option</th>
 								<th>Date</th>
+								<th>Commentaire</th>
 
 							</tr>
 
@@ -202,7 +203,7 @@
 
 									<td>{{ relance.relancedAt ? relance.relancedAt|date('Y-m-d H:i') : '' }}</td>
 
-
+									<td>{{ relance.comment }}</td>
 								</tr>
 							{% endfor %}
 						</tbody>
@@ -225,6 +226,7 @@
 
 								<th>Option</th>
 								<th>Date</th>
+								<th>Comantaire</th>
 
 							</tr>
 
@@ -237,6 +239,7 @@
 										{{ histor.actionType }}</td>
 
 									<td>{{ histor.actionDate|date('Y-m-d H:i:s') }}</td>
+									<td>{{ histor.comment }}</td>
 
 								</tr>
 							{% endfor %}
