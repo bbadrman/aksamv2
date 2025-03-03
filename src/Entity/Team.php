@@ -33,10 +33,32 @@ class Team
     #[ORM\ManyToMany(targetEntity: User::class, mappedBy: 'teams')]
     private Collection $users;
 
+
+    /**
+     * @var Collection<int, UserHistory>
+     */
+    #[ORM\OneToMany(targetEntity: UserHistory::class, mappedBy: 'team')]
+    private Collection $userHistories;
+
+    /**
+     * @var Collection<int, Prospect>
+     */
+    #[ORM\OneToMany(targetEntity: Prospect::class, mappedBy: 'team')]
+    private Collection $prospects;
+
+    /**
+     * @var Collection<int, History>
+     */
+    #[ORM\OneToMany(targetEntity: History::class, mappedBy: 'team')]
+    private Collection $histories;
+
     public function __construct()
     {
         $this->uniteTravails = new ArrayCollection();
         $this->users = new ArrayCollection();
+        $this->userHistories = new ArrayCollection();
+        $this->prospects = new ArrayCollection();
+        $this->histories = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -124,5 +146,97 @@ class Team
     public function __toString()
     {
         return $this->getName();
+    }
+
+
+
+    /**
+     * @return Collection<int, UserHistory>
+     */
+    public function getUserHistories(): Collection
+    {
+        return $this->userHistories;
+    }
+
+    public function addUserHistory(UserHistory $userHistory): static
+    {
+        if (!$this->userHistories->contains($userHistory)) {
+            $this->userHistories->add($userHistory);
+            $userHistory->setTeam($this);
+        }
+
+        return $this;
+    }
+
+    public function removeUserHistory(UserHistory $userHistory): static
+    {
+        if ($this->userHistories->removeElement($userHistory)) {
+            // set the owning side to null (unless already changed)
+            if ($userHistory->getTeam() === $this) {
+                $userHistory->setTeam(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Prospect>
+     */
+    public function getProspects(): Collection
+    {
+        return $this->prospects;
+    }
+
+    public function addProspect(Prospect $prospect): static
+    {
+        if (!$this->prospects->contains($prospect)) {
+            $this->prospects->add($prospect);
+            $prospect->setTeam($this);
+        }
+
+        return $this;
+    }
+
+    public function removeProspect(Prospect $prospect): static
+    {
+        if ($this->prospects->removeElement($prospect)) {
+            // set the owning side to null (unless already changed)
+            if ($prospect->getTeam() === $this) {
+                $prospect->setTeam(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, History>
+     */
+    public function getHistories(): Collection
+    {
+        return $this->histories;
+    }
+
+    public function addHistory(History $history): static
+    {
+        if (!$this->histories->contains($history)) {
+            $this->histories->add($history);
+            $history->setTeam($this);
+        }
+
+        return $this;
+    }
+
+    public function removeHistory(History $history): static
+    {
+        if ($this->histories->removeElement($history)) {
+            // set the owning side to null (unless already changed)
+            if ($history->getTeam() === $this) {
+                $history->setTeam(null);
+            }
+        }
+
+        return $this;
     }
 }

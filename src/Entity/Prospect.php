@@ -2,11 +2,19 @@
 
 namespace App\Entity;
 
+use ApiPlatform\Metadata\ApiResource;
 use App\Repository\ProspectRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
+
 #[ORM\Entity(repositoryClass: ProspectRepository::class)]
+#[ApiResource()]
+#[ORM\HasLifecycleCallbacks]
+#[ORM\Table(name: "prospect")]
+
 class Prospect
 {
     #[ORM\Id]
@@ -79,6 +87,67 @@ class Prospect
 
     #[ORM\ManyToOne(inversedBy: 'prospects')]
     private ?User $comrcl = null;
+
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $relance = null;
+
+    #[ORM\Column(nullable: true)]
+    private ?\DateTimeImmutable $relanceAt = null;
+
+    #[ORM\ManyToOne(inversedBy: 'prospects')]
+    private ?Team $team = null;
+
+    #[ORM\ManyToOne(inversedBy: 'prospects')]
+    private ?Product $product = null;
+
+    #[ORM\Column(nullable: true)]
+    private ?\DateTimeImmutable $AffectAt = null;
+
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $motifAffect = null;
+
+    /**
+     * @var Collection<int, History>
+     */
+
+    #[ORM\OneToMany(targetEntity: History::class, mappedBy: 'prospect', cascade: ['remove'])]
+    private Collection $histories;
+
+    /**
+     * @var Collection<int, RelanceHistory>
+     */
+    #[ORM\OneToMany(targetEntity: RelanceHistory::class, mappedBy: 'prospect', cascade: ['remove'])]
+    private Collection $relanceHistories;
+
+    #[ORM\ManyToOne(inversedBy: 'prospectAutor')]
+    private ?User $autor = null;
+
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $comment = null;
+
+    public function __construct()
+    {
+        $this->histories = new ArrayCollection();
+        $this->relanceHistories = new ArrayCollection();
+    }
+
+    #[ORM\PrePersist]
+    public function prePersist(): void
+    {
+
+
+        if (empty($this->creatAt)) {
+            $timezone = new \DateTimeZone('Europe/Paris'); // Remplacez par le fuseau horaire approprié pour +1 heur
+            $this->creatAt = new \DateTimeImmutable('now', $timezone);
+        }
+
+        // if (empty($this->relanceAt)) {
+        //     $timezone = new \DateTimeZone('Europe/Paris');
+        //     $this->setRelanceAt(new \DateTimeImmutable('now', $timezone));
+        // }
+    }
+
+
 
     public function getId(): ?int
     {
@@ -313,12 +382,14 @@ class Prospect
         return $this;
     }
 
+
+
     public function getCreatAt(): ?\DateTimeInterface
     {
         return $this->creatAt;
     }
 
-    public function setCreatAt(?\DateTimeInterface $creatAt): static
+    public function setCreatAt(?\DateTimeInterface  $creatAt): static
     {
         $this->creatAt = $creatAt;
 
@@ -345,6 +416,162 @@ class Prospect
     public function setComrcl(?User $comrcl): static
     {
         $this->comrcl = $comrcl;
+
+        return $this;
+    }
+
+    public function getRelance(): ?string
+    {
+        return $this->relance;
+    }
+
+    public function setRelance(?string $relance): static
+    {
+        $this->relance = $relance;
+
+        return $this;
+    }
+
+    public function getRelanceAt(): ?\DateTimeImmutable
+    {
+        return $this->relanceAt;
+    }
+
+    public function setRelanceAt(?\DateTimeImmutable $relanceAt): static
+    {
+        $this->relanceAt = $relanceAt;
+
+        return $this;
+    }
+
+    public function getTeam(): ?Team
+    {
+        return $this->team;
+    }
+
+    public function setTeam(?Team $team): static
+    {
+        $this->team = $team;
+
+        return $this;
+    }
+
+    public function getProduct(): ?Product
+    {
+        return $this->product;
+    }
+
+    public function setProduct(?Product $product): static
+    {
+        $this->product = $product;
+
+        return $this;
+    }
+
+    public function getAffectAt(): ?\DateTimeImmutable
+    {
+        return $this->AffectAt;
+    }
+
+    public function setAffectAt(?\DateTimeImmutable $AffectAt): static
+    {
+        $this->AffectAt = $AffectAt;
+
+        return $this;
+    }
+
+    public function getMotifAffect(): ?string
+    {
+        return $this->motifAffect;
+    }
+
+    public function setMotifAffect(?string $motifAffect): static
+    {
+        $this->motifAffect = $motifAffect;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, History>
+     */
+    public function getHistories(): Collection
+    {
+        return $this->histories;
+    }
+
+    public function addHistory(History $history): static
+    {
+        if (!$this->histories->contains($history)) {
+            $this->histories->add($history);
+            $history->setProspect($this);
+        }
+
+        return $this;
+    }
+
+    public function removeHistory(History $history): static
+    {
+        if ($this->histories->removeElement($history)) {
+            // set the owning side to null (unless already changed)
+            if ($history->getProspect() === $this) {
+                $history->setProspect(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, RelanceHistory>
+     */
+    public function getRelanceHistories(): Collection
+    {
+        return $this->relanceHistories;
+    }
+
+    public function addRelanceHistory(RelanceHistory $relanceHistory): static
+    {
+        if (!$this->relanceHistories->contains($relanceHistory)) {
+            $this->relanceHistories->add($relanceHistory);
+            $relanceHistory->setProspect($this);
+        }
+
+        return $this;
+    }
+
+    public function removeRelanceHistory(RelanceHistory $relanceHistory): static
+    {
+        if ($this->relanceHistories->removeElement($relanceHistory)) {
+            // set the owning side to null (unless already changed)
+            if ($relanceHistory->getProspect() === $this) {
+                $relanceHistory->setProspect(null);
+            }
+        }
+
+        return $this;
+    }
+
+    public function getAutor(): ?User
+    {
+        return $this->autor;
+    }
+
+    public function setAutor(?User $autor): static
+    {
+        $this->autor = $autor;
+
+        return $this;
+    }
+
+    public function getComment(): ?string
+    {
+        return $this->comment;
+    }
+
+    public function setComment(?string $comment): static
+    {
+        $this->comment = $comment;
 
         return $this;
     }

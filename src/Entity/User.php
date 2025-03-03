@@ -2,17 +2,19 @@
 
 namespace App\Entity;
 
-use App\Repository\UserRepository;
-use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
-use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use App\Repository\UserRepository;
+use ApiPlatform\Metadata\ApiResource;
+use Doctrine\Common\Collections\Collection;
+use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Component\Validator\Constraints as Assert;
-use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 
 #[ORM\Entity(repositoryClass: UserRepository::class)]
+#[ApiResource()]
 #[ORM\HasLifecycleCallbacks]
 #[ORM\UniqueConstraint(name: 'UNIQ_IDENTIFIER_USERNAME', fields: ['username'])]
 #[UniqueEntity(fields: ['username'], message: "Ce nom d'utilisateur a déjà été utilisé!")]
@@ -101,6 +103,18 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\OneToMany(targetEntity: Prospect::class, mappedBy: 'comrcl')]
     private Collection $prospects;
 
+    /**
+     * @var Collection<int, UserHistory>
+     */
+    #[ORM\OneToMany(targetEntity: UserHistory::class, mappedBy: 'users')]
+    private Collection $userHistories;
+
+    /**
+     * @var Collection<int, Prospect>
+     */
+    #[ORM\OneToMany(targetEntity: Prospect::class, mappedBy: 'autor')]
+    private Collection $prospectAutor;
+
     public function __construct()
     {
         $this->permissions = new ArrayCollection();
@@ -108,6 +122,8 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         $this->teams = new ArrayCollection();
         $this->contrats = new ArrayCollection();
         $this->prospects = new ArrayCollection();
+        $this->userHistories = new ArrayCollection();
+        $this->prospectAutor = new ArrayCollection();
     }
 
 
@@ -409,6 +425,72 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
             // set the owning side to null (unless already changed)
             if ($prospect->getComrcl() === $this) {
                 $prospect->setComrcl(null);
+            }
+        }
+
+        return $this;
+    }
+    public function __toString()
+    {
+        return $this->getUserIdentifier();
+    }
+
+
+
+    /**
+     * @return Collection<int, UserHistory>
+     */
+    public function getUserHistories(): Collection
+    {
+        return $this->userHistories;
+    }
+
+    public function addUserHistory(UserHistory $userHistory): static
+    {
+        if (!$this->userHistories->contains($userHistory)) {
+            $this->userHistories->add($userHistory);
+            $userHistory->setUsers($this);
+        }
+
+        return $this;
+    }
+
+    public function removeUserHistory(UserHistory $userHistory): static
+    {
+        if ($this->userHistories->removeElement($userHistory)) {
+            // set the owning side to null (unless already changed)
+            if ($userHistory->getUsers() === $this) {
+                $userHistory->setUsers(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Prospect>
+     */
+    public function getProspectAutor(): Collection
+    {
+        return $this->prospectAutor;
+    }
+
+    public function addProspectAutor(Prospect $prospectAutor): static
+    {
+        if (!$this->prospectAutor->contains($prospectAutor)) {
+            $this->prospectAutor->add($prospectAutor);
+            $prospectAutor->setAutor($this);
+        }
+
+        return $this;
+    }
+
+    public function removeProspectAutor(Prospect $prospectAutor): static
+    {
+        if ($this->prospectAutor->removeElement($prospectAutor)) {
+            // set the owning side to null (unless already changed)
+            if ($prospectAutor->getAutor() === $this) {
+                $prospectAutor->setAutor(null);
             }
         }
 

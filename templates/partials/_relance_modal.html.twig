@@ -1,0 +1,51 @@
+<!-- Modal pour affictation team or cmrcl -->
+<button type="button" class="btn btn-success" data-toggle="modal" data-target="#exampleModal{{ prospect.id }}">
+
+	<i class="fa-regular fa-calendar-check"></i>
+</button>
+<div class="modal fade" id="exampleModal{{ prospect.id }}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+	<div class="modal-dialog" role="document">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h5 class="modal-title" id="exampleModalLabel">Prospect du Mr:
+					{{ prospect.nom }}</h5>
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+					<span aria-hidden="true">&times;</span>
+				</button>
+			</div>
+			<h2 class="text-center">Relancer</h2>
+			{% set url = path('app_relance_edit', {'id': prospect.id}) %}
+			{{ form_start(form, {'action':url}) }}
+
+			{{ form_row(form.relance ) }}
+			<div id="subMotivRelc-container" style="display: none">
+				{{ form_row(form.relanceAt) }}
+			</div>
+			<div id="MotivRelcoment-container" style="display: none">
+				{{ form_row(form.comment) }}
+			</div>
+
+
+			<div class="modal-footer">
+				<button type="button" class="btn btn-secondary" data-dismiss="modal">Annuler</button>
+				<button class="btn btn-primary">{{ button_label|default('Save') }}</button>
+
+			</div>
+			{{form_end(form)}}
+
+
+			<div id="subMotivContrat-container" style="display: none">
+				<h1 class="text-center">Client</h1>
+				<h2>Ajouter client</h2>
+				{# {{ form_start(clientForm, { 'attr': {'id': 'client-form'} }) }} #}
+
+				{# {{ form_row(clientForm) }} #}
+				<button type="submit" id="client-submit" class="btn btn-primary">Ajouter Client</button>
+				{# {{ form_end(clientForm) }} #}
+			</div>
+		</div>
+
+
+	</div>
+
+</div>

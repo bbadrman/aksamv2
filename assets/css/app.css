@@ -16,8 +16,8 @@ Website: http://Alvarez.is/
 
 @import url(../css/fonts.google.ruda.css);
 /* Importation des bibliothèques */
-@import url("bootstrap/dist/css/bootstrap.min.css");
-@import url("bootstrap");
+/* @import url("bootstrap/dist/css/bootstrap.min.css");
+@import url("bootstrap"); */
 /* @import url("/css/font-awesome.css");
 @import url("/css/style-responsive.css"); */
 
@@ -1081,7 +1081,11 @@ PANELS CONFIGURATIONS
 /*Green Panel*/
 .green-panel {
     text-align: center;
-    background: #4ECDC4;
+    background: #BDD1EE;
+    border-radius: 15px;
+    overflow: hidden;
+    border: 1px solid #ddd;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
 .red-panel {
@@ -1090,9 +1094,14 @@ PANELS CONFIGURATIONS
 }
 
 .green-panel .green-header {
-    background: #43b1a9;
+
     padding: 2px;
     margin-bottom: 15px;
+    border-top-right-radius: 15px;
+    background-color: #002E5B;
+    color: white;
+    padding: 10px;
+    text-align: center;
 }
 
 .red-panel .green-header {
@@ -4254,7 +4263,7 @@ ul.chat-available-user li a:hover {
 
 
 .date-passee {
-    color: red;
+    color: rgb(0, 72, 255);
     font-weight: bold;
     animation: blink 1s infinite;
 }

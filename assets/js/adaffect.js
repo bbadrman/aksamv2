@@ -2,18 +2,19 @@
 //Select Dynamique with API  
 
 $(document).ready(function () {
-	handleTeamChange('#prospect_team, #prospect_affect_team', '#prospect_comrcl, #prospect_affect_comrcl');
+	handleTeamChange('.prospect_team', '.prospect_comrcl');
 
-	function handleTeamChange(teamId, comercialId) {
-		const prospectTeam = $(teamId);
-		const prospectCommercial = $(comercialId);
+	function handleTeamChange(teamSelector, commercialSelector) {
+		const prospectTeam = $(teamSelector);
+		const prospectCommercial = $(commercialSelector);
+
 		if (prospectTeam.length && prospectCommercial.length) {
 			if (!prospectTeam.val().length) {
 				prospectCommercial.parent().hide();
-
 			} else {
 				loadCommercials();
 			}
+
 			function loadCommercials() {
 				const currentValue = prospectTeam.val();
 				const commercialvalue = prospectCommercial.val();
@@ -21,31 +22,37 @@ $(document).ready(function () {
 				if (!currentValue.length) {
 					return;
 				}
-				$.ajax({
-					url: "/team/teams-api", success: function (result) {
-						prospectCommercial.empty()
-						const options = result.find(function (item) {
-							return item.id == currentValue;
-						});
-						prospectCommercial.append(new Option());
 
-						options?.commercials?.map(function (item) {
-							prospectCommercial.append(new Option(item.username, item.id));
-						})
-						prospectCommercial.val(commercialvalue).change();
-						prospectCommercial.parent().show();
-						console.log('RESULT', options);
+				$.ajax({
+					url: "/team/teams-api",
+					method: "GET",
+					dataType: "json",
+					success: function (result) {
+						prospectCommercial.empty();
+						const options = result.filter(item => item.id == currentValue)[0];
+
+						if (options && options.commercials.length > 0) {
+							prospectCommercial.append(new Option('-- Sélectionnez un commercial --', ''));
+							options.commercials.forEach(function (item) {
+								prospectCommercial.append(new Option(item.username, item.id));
+							});
+
+							prospectCommercial.val(commercialvalue).change();
+							prospectCommercial.parent().show(); // Assurer l'affichage
+						} else {
+							prospectCommercial.parent().hide();
+						}
 					}
 				});
 			}
+
 			prospectTeam.change(function () {
 				loadCommercials();
-			})
-			console.log('HEre im 2')
-
+			});
 		}
 	}
-})
+});
+
 
 
 //table statistique des team comrcl sous du affectation
@@ -237,9 +244,9 @@ if (typeCondField !== null) {
 }
 
 // databale: 
-$(document).ready(function () {
-	$('#table-datatables').DataTable();
-});
+// $(document).ready(function () {
+// 	$('#table-datatables').DataTable();
+// });
 
 
 // $(document).ready(function () {

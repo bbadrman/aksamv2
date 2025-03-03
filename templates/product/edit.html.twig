@@ -1,13 +1,37 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Edit Product{% endblock %}
+{% block title %}Edit Product
+{% endblock %}
 
 {% block body %}
-    <h1>Edit Product</h1>
+	<div class="container">
 
-    {{ include('product/_form.html.twig', {'button_label': 'Update'}) }}
+		<section class="content-header">
+			<h1>
+				Produits
+				<small>Gestion</small>
+			</h1>
+			<ol class="breadcrumb">
+				<li>
+					<a href="{{ path('app_team_index') }}">
+						<i class="fa fa-users"></i>
+						Tous les produits</a>
+				</li>
+				<li class="active">{{ product.nom }}</li>
+			</ol>
+		</section>
+		{% block form %}
+			{% set form_title = 'Modifier ' ~ product.nom %}
+			<div class="row mt">
+				<div class="col-lg-12">
+					{{ include('product/_form.html.twig',  {'button_label': 'Modifier',
+                    'form_title': form_title}) }}
 
-    <a href="{{ path('app_product_index') }}">back to list</a>
 
-    {{ include('product/_delete_form.html.twig') }}
+					<a href="{{ path('app_product_index') }}">back to list</a>
+				</div>
+			</div>
+		{% endblock %}
+		{{ include('product/_delete_form.html.twig') }}
+	</div>
 {% endblock %}

@@ -27,9 +27,16 @@ class Product
     #[ORM\ManyToMany(targetEntity: User::class, mappedBy: 'products')]
     private Collection $users;
 
+    /**
+     * @var Collection<int, Prospect>
+     */
+    #[ORM\OneToMany(targetEntity: Prospect::class, mappedBy: 'product')]
+    private Collection $prospects;
+
     public function __construct()
     {
         $this->users = new ArrayCollection();
+        $this->prospects = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -90,5 +97,35 @@ class Product
     public function __toString()
     {
         return $this->getNom() ?? '';
+    }
+
+    /**
+     * @return Collection<int, Prospect>
+     */
+    public function getProspects(): Collection
+    {
+        return $this->prospects;
+    }
+
+    public function addProspect(Prospect $prospect): static
+    {
+        if (!$this->prospects->contains($prospect)) {
+            $this->prospects->add($prospect);
+            $prospect->setProduct($this);
+        }
+
+        return $this;
+    }
+
+    public function removeProspect(Prospect $prospect): static
+    {
+        if ($this->prospects->removeElement($prospect)) {
+            // set the owning side to null (unless already changed)
+            if ($prospect->getProduct() === $this) {
+                $prospect->setProduct(null);
+            }
+        }
+
+        return $this;
     }
 }

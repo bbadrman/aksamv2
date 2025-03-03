@@ -1,11 +1,49 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}New Product{% endblock %}
+{% block title %}New Product
+{% endblock %}
 
 {% block body %}
-    <h1>Create new Product</h1>
+	{% for label,  messages in app.flashes  %}
+		<div class="container">
+			<div class="alert alert-{{ label }}">
+				{% for message in messages %}
+					{{ message | raw }}
+				{% endfor %}
 
-    {{ include('product/_form.html.twig') }}
+			</div>
+		</div>
+	{% endfor %}
 
-    <a href="{{ path('app_product_index') }}">back to list</a>
+	<section class="content-header ">
+		<h1>
+			Produits
+			<small>Ajouter</small>
+		</h1>
+		<ol class="breadcrumb">
+			<li>
+				<a href="{{ path('app_home') }}">
+					<i class="fa fa-dashboard"></i>
+					Tableau de bord</a>
+			</li>
+			<li>
+				<a href="{{ path('app_product_index') }}">
+					<i class="fa fa-users"></i>
+					Tous les Produits</a>
+			</li>
+			<li class="active">Ajouter un Prospect</li>
+		</ol>
+	</section>
+	<!-- FORM -->
+	{% block form %}
+		<div class="container">
+			<div class="row mt ">
+				<div class="col-lg-12">
+					{{ include('product/_form.html.twig') }}
+				</div>
+			</div>
+			<a href="{{ path('app_product_index') }}">back to list</a>
+		</div>
+	{% endblock %}
+	<!-- END FORM -->
 {% endblock %}
