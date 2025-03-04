@@ -39,7 +39,7 @@ class SearchProspectType extends AbstractType
 
             if (in_array('ROLE_SUPER_ADMIN', $user->getRoles(), true) || in_array('ROLE_ADMIN', $user->getRoles(), true)) {
                 $comrclsForTeam = $this->userRepository->findAll();
-            } else if (in_array('ROLE_TEAM', $user->getRoles(), true) && $team) {
+            } else if (in_array('ROLE_CHEF', $user->getRoles(), true) && $team) {
                 $comrclsForTeam = $team === null ? [] :  $this->userRepository->findComrclByteamOrderedByAscName($user);
             } else {
                 // cmrcl peut voir seulement les non traités attachés à lui

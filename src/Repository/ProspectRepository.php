@@ -96,41 +96,6 @@ class ProspectRepository extends ServiceEntityRepository
             10
         );
     }
-    /**
-     * return prospect affect aux equipes du chef ou bien au chef meme teet peut voire aussi panier du admin
-     * @return Prospect[] Returns an array of Prospect objects
-     * 
-     * @param SearchProspect $search
-     * @return PaginationInterface 
-     */
-    public function findByCmrclNewProsp(SearchProspect $search, $id): PaginationInterface
-    {
-        $startOfToday = new \DateTime('today');
-
-        // La fin de la journée d'hier 
-        // get selement les prospects qui n'as pas encors affectter a un user
-        $query = $this->createQueryBuilder('p')
-            ->select('p',  'f')
-
-            ->leftJoin('p.comrcl', 'f')
-            ->andwhere('p.comrcl = :val')
-
-            ->setParameter('val', $id)
-
-            ->andWhere('p.relance IS NULL')
-
-            ->andWhere('p.AffectAt >= :endOfYesterday') // les prospects affect h'Aujourduit 
-            ->setParameter('endOfYesterday', $startOfToday)
-
-            ->orderBy('p.id', 'DESC');
-        $query = $this->applySearchFilters($query, $search);
-
-        return $this->paginator->paginate(
-            $query,
-            $search->page,
-            10
-        );
-    }
 
 
     /**
@@ -169,6 +134,40 @@ class ProspectRepository extends ServiceEntityRepository
             10
         );
     }
+
+    /**
+     * return prospect affect aux equipes du chef ou bien au chef meme teet peut voire aussi panier du admin
+     * @return Prospect[] Returns an array of Prospect objects
+     * 
+     * @param SearchProspect $search
+     * @return PaginationInterface 
+     */
+    public function findByCmrclNewProsp(SearchProspect $search, $id): PaginationInterface
+    {
+        $startOfToday = new \DateTime('today');
+
+        // La fin de la journée d'hier 
+        // get selement les prospects qui n'as pas encors affectter a un user
+        $query = $this->createQueryBuilder('p')
+
+            ->andwhere('p.comrcl = :val')
+            ->setParameter('val', $id)
+
+            ->andWhere('p.relance IS NULL')
+
+            ->andWhere('p.AffectAt >= :endOfYesterday') // les prospects affect h'Aujourduit 
+            ->setParameter('endOfYesterday', $startOfToday)
+
+            ->orderBy('p.id', 'DESC');
+        $query = $this->applySearchFilters($query, $search);
+
+        return $this->paginator->paginate(
+            $query,
+            $search->page,
+            10
+        );
+    }
+
 
     //-------------Les Relances du Jour-------//
     /**
@@ -232,7 +231,6 @@ class ProspectRepository extends ServiceEntityRepository
 
         $query = $this->createQueryBuilder('p')
             ->select('p, t, f')
-
             ->leftJoin('p.team', 't')
             ->leftJoin('p.comrcl', 'f')
 
@@ -272,10 +270,7 @@ class ProspectRepository extends ServiceEntityRepository
         $endOfDay->setTime(23, 59, 59);
 
         $query = $this->createQueryBuilder('p')
-            ->select('p, t, f')
 
-            ->leftJoin('p.team', 't')
-            ->leftJoin('p.comrcl', 'f')
 
             ->andWhere('p.comrcl = :val')
             ->setParameter('val', $id)
@@ -380,10 +375,7 @@ class ProspectRepository extends ServiceEntityRepository
 
         $query = $this->createQueryBuilder('p')
 
-            ->select('p, t, f')
-            ->leftJoin('p.team', 't')
-            ->leftJoin('p.comrcl', 'f')
-            ->andWhere('p.relanceAt >== :tomorrow')
+            ->andWhere('p.relanceAt >= :tomorrow')
             ->andWhere('p.comrcl = :val')
             ->setParameter('val', $id)
 
@@ -449,7 +441,9 @@ class ProspectRepository extends ServiceEntityRepository
         }
 
         $query = $this->createQueryBuilder('p')
-            ->select('p, f ')
+            ->select('p, t, f')
+            ->leftJoin('p.team', 't')
+            ->leftJoin('p.comrcl', 'f')
             ->where('p.team IN (:teams)')
             ->setParameter('teams', $teams)
 
@@ -459,7 +453,7 @@ class ProspectRepository extends ServiceEntityRepository
             ->andWhere('p.AffectAt <= :endOfYesterday') // Filtre par date d'action de l'historique si actiondate=23/06  <= 24/06 = yesterday alors aujourduit 25/06
             ->setParameter('endOfYesterday', $yesterday)
 
-            ->leftJoin('p.comrcl', 'f')
+
             ->orderBy('p.id', 'DESC');
 
         $query = $this->applySearchFilters($query, $search);
@@ -487,7 +481,7 @@ class ProspectRepository extends ServiceEntityRepository
 
 
         $query = $this->createQueryBuilder('p')
-            ->select('p ')
+
             ->where('p.comrcl = :val')
             ->setParameter('val', $id)
 
@@ -555,10 +549,11 @@ class ProspectRepository extends ServiceEntityRepository
 
         $query = $this
             ->createQueryBuilder('p')
-            ->select('p, f')
+            ->select('p, t, f')
             ->where('p.team IN (:teams)')
-            ->leftJoin('p.comrcl', 'f')
             ->leftJoin('p.team', 't')
+            ->leftJoin('p.comrcl', 'f')
+
             ->setParameter('teams', $teams)
             ->orderBy('p.id', 'DESC');
 
@@ -654,7 +649,8 @@ class ProspectRepository extends ServiceEntityRepository
         $yesterday = (new \DateTime('yesterday'))->setTime(23, 59, 59);
         $query = $this->createQueryBuilder('p')
 
-            ->select('p, f ')
+            ->select('p, t, f')
+            ->leftJoin('p.team', 't')
             ->leftJoin('p.comrcl', 'f')
             ->andwhere('p.team IN (:teams)')
             ->setParameter('teams', $teams)
@@ -754,7 +750,8 @@ class ProspectRepository extends ServiceEntityRepository
             return $this->paginator->paginate([], 1, 10);
         }
         $query = $this->createQueryBuilder('p')
-            ->select('p, f')
+            ->select('p, t, f')
+            ->leftJoin('p.team', 't')
             ->where('p.relance = 11')
 
             ->leftJoin('p.comrcl', 'f')
