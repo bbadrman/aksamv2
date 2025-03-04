@@ -15,7 +15,7 @@ use Doctrine\ORM\QueryBuilder;
 /**
  * @extends ServiceEntityRepository<Prospect>
  */
-class ProspectRepository extends ServiceEntityRepository
+class ProspectTestRepository extends ServiceEntityRepository
 {
     public function __construct(ManagerRegistry $registry, private PaginatorInterface $paginator, private EntityManagerInterface $manager)
     {
@@ -192,8 +192,7 @@ class ProspectRepository extends ServiceEntityRepository
             ->select('p, r')
             ->andWhere('p.comrcl = :val')
             ->setParameter('val', $id)
-            ->leftJoin('p.relanceds', 'r')
-            ->andWhere('r.prospect IS NULL')
+            ->andWhere('p.relance IS NULL')
             ->leftJoin('p.histories', 'h')
             ->andWhere('h.actionDate <= :endOfYesterday')
             ->setParameter('endOfYesterday', $yesterday)

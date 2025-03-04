@@ -364,47 +364,40 @@ $('document').ready(function () {
 
 //select motiveRelanced pour afficher la ajouter client quand on click sur pasage contart
 //select motiveRelanced pour afficher la calandrie et comment quand on click sur rndv
-var resilField = document.getElementById('relance_prospect_relance');
-var commentField = document.getElementById('MotivRelcoment-container'); // Changer l'ID ici
-var buttonField = document.getElementById('SubmitRelance-container');
-var subresilContainer1 = document.getElementById('subMotivRelc-container');
-var subresilContainer2 = document.getElementById('subMotivContrat-container');
+$(document).ready(function () {
+	$('.modal').on('shown.bs.modal', function () {
+		var resilField = $(this).find('.relance_prospect_relance');
+		var commentField = $(this).find('.MotivRelcoment-container');
+		var buttonField = $(this).find('.SubmitRelance-container');
+		var subresilContainer1 = $(this).find('.subMotivRelc-container');
+		var subresilContainer2 = $(this).find('.subMotivContrat-container');
 
-if (resilField !== null) {
-	resilField.addEventListener('change', function () {
-		if (resilField.value === '1' || resilField.value === '2' || resilField.value === '3' || resilField.value === '4' || resilField.value === '5') {
-			subresilContainer1.style.display = 'block';     // Afficher le champ date
-			subresilContainer2.style.display = 'none';     // cacher le champ client
-			commentField.style.display = 'block';
-			buttonField.style.display = 'block';         // Afficher le champ comment
-			//click sur passage en contart il faut affichier les champ des contart et comment cache du date 
-		} else if (resilField.value === '6' || resilField.value === '7' || resilField.value === '8' || resilField.value === '10' || resilField.value === '11' || resilField.value === '12' || resilField.value === '13') {
-			//pour rederct to rout 
-			//window.location.href = "/client/new-client";
-			// pour manipilie les champs
-			subresilContainer1.style.display = 'none';   // cacher date
-			subresilContainer2.style.display = 'none';
-			commentField.style.display = 'block'; // Cacher le champ comment
-			buttonField.style.display = 'block';
-		} else if (resilField.value === '9') {
-			//pour rederct to rout 
-			//window.location.href = "/client/new-client";
-			// pour manipilie les champs
-			subresilContainer1.style.display = 'none';   // cacher date
-			subresilContainer2.style.display = 'block';
-			commentField.style.display = 'none'; // Cacher le champ comment
-			buttonField.style.display = 'none';
-		}
-		else {
-			subresilContainer1.style.display = 'none';
-			subresilContainer2.style.display = 'none';
-			commentField.style.display = 'none'; // Cacher le champ comment
-			buttonField.style.display = 'block';
-
-		}
+		resilField.change(function () {
+			var value = $(this).val();
+			if (value === '1' || value === '2' || value === '3' || value === '4' || value === '5') {
+				subresilContainer1.show();
+				subresilContainer2.hide();
+				commentField.show();
+				buttonField.show();
+			} else if (value === '6' || value === '7' || value === '8' || value === '10' || value === '11' || value === '12' || value === '13') {
+				subresilContainer1.hide();
+				subresilContainer2.hide();
+				commentField.show();
+				buttonField.show();
+			} else if (value === '9') {
+				subresilContainer1.hide();
+				subresilContainer2.show();
+				commentField.hide();
+				buttonField.hide();
+			} else {
+				subresilContainer1.hide();
+				subresilContainer2.hide();
+				commentField.hide();
+				buttonField.show();
+			}
+		});
 	});
-
-}
+});
 
 
 // Select du Transaction

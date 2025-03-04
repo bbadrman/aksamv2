@@ -175,31 +175,33 @@ class SearchProspectType extends AbstractType
                 ],
                 'required' => false
             ])
-            ->add('motifRelanced', Type\ChoiceType::class, [
+            ->add('relance', Type\ChoiceType::class, [
                 'label' => 'Motif Relance ',
                 'required' => false,
-                'placeholder' => '--Selectie-- ',
+                'placeholder' => '       ',
                 'choices' => [
                     'Prise de Contact' => [
                         'Rendez-vous' => '1',
-                        'Injoignable' => '12',
+                        'Injoignable' => '2',
 
                     ],
-                    'Attente DOC' => '4',
-                    'Tarification' => '5',
-                    'Prise de Décision ' => '6',
+                    'Attente DOC' => '3',
+                    'Tarification' => '4',
+                    'Prise de Décision ' => '5',
                     'Cloture ' => [
-                        'Faux Fiche' => '7',
-                        'Doublon' => '8',
-                        'Passage Concurrent ' => '9',
-                        'Passage Client ' => '10',
-                        'Déjà Souscrit' => '3',
-                        'Test' => '11',
-                        'Toujour Injoignable' => '2',
+                        'Faux Fiche' => '6',
+                        'Doublon' => '7',
+                        'Passage Concurrent ' => '8',
+                        'Passage Client ' => '9',
+                        'Déjà Souscrit' => '10',
+                        'Toujour Injoignable' => '11',
+                        'Hors Cible' => '12',
+                        'Test' => '13',
                     ],
+
                 ],
                 'expanded' => false,
-                'multiple' => false
+                'multiple' => false,
             ])
             ->add('u', Type\ChoiceType::class, [
                 'label' => 'Propre Site ',

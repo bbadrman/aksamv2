@@ -12,21 +12,17 @@
 	<h5 class="centered">{{ app.user.username  }}</h5>
 	<h5 class="centered">
 
-		{% if app.user.fonction is not empty %}
 
-			<p>
-				{{  app.user.fonction }}
+		<p>
+			{{ app.user.fonction  }}
 
-			</p>
-
-		{% endif %}
-
+		</p>
 
 	</h5>
 
-	{# {% for team in user.teams %}
-																																																																															<h5 class="centered">{{  team  }}</h5>
-																																																																														{% endfor %} #}
+	{% for team in app.user.teams %}
+		<h5 class="centered">{{  team  }}</h5>
+	{% endfor %}
 	<!-- DASHBOARD -->
 
 	<li class="sub-menu">
@@ -157,8 +153,8 @@
 								<a href="{{ path('app_user_index') }}">Gérer les Users</a>
 							</li>
 							{# <li>
-																																																																																																																																																																																																																																																																														<a href="{{ path('user_acces') }}">Gérer les Sessions</a>
-																																																																																																																																																																																																																																																																													</li> #}
+																																																																																																																																																																																																																																																																																																																																																											<a href="{{ path('user_acces') }}">Gérer les Sessions</a>
+																																																																																																																																																																																																																																																																																																																																																										</li> #}
 						</ul>
 					</li>
 
@@ -207,8 +203,8 @@
 								<a href="{{ path('app_unite_travail_index') }}">Gérer les Unites</a>
 							</li>
 							{# <li>
-																																																																																																																																																																																																																																																																														<a href="{{ path('user_acces') }}">Gérer les Sessions</a>
-																																																																																																																																																																																																																																																																													</li> #}
+																																																																																																																																																																																																																																																																																																																																																											<a href="{{ path('user_acces') }}">Gérer les Sessions</a>
+																																																																																																																																																																																																																																																																																																																																																										</li> #}
 						</ul>
 					</li>
 				{% endif %}

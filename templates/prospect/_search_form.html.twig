@@ -70,7 +70,7 @@
 <div class="row align-items-center">
 	{% if app.request.get('_route') != 'newprospect_index' and app.request.get('_route') != 'newprospectchef_index' %}
 
-		{% if is_granted('ROLE_ADMIN') or  is_granted('ROLE_TEAM') == true %}
+		{% if is_granted('ROLE_ADMIN') or  is_granted('ROLE_CHEF') == true %}
 			<div class="col-md-1 " style="padding-right: 2px;padding-left: 2px;">
 				{{ form_row(search_form.c) }}
 			</div>
@@ -100,7 +100,7 @@
 			{{ form_row(search_form.ddr) }}
 		</div>
 		<div class="col-md-1  " style="padding-right: 1px;padding-left: 2px;">
-			{{ form_row(search_form.motifRelanced) }}
+			{{ form_row(search_form.relance) }}
 		</div>
 
 		{% if is_granted('ROLE_ADMIN')  == true %}
@@ -114,7 +114,7 @@
 	{% else %}
 		{{ form_widget(search_form.dr, { 'attr': { 'style': 'display:none' } }) }}
 		{{ form_widget(search_form.ddr, { 'attr': { 'style': 'display:none' } }) }}
-		{{ form_widget(search_form.motifRelanced, { 'attr': { 'style': 'display:none' } }) }}
+		{{ form_widget(search_form.relance, { 'attr': { 'style': 'display:none' } }) }}
 		{{ form_widget(search_form.u, { 'attr': { 'style': 'display:none' } }) }}
 
 	{% endif %}

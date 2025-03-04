@@ -79,7 +79,7 @@ class SearchProspect
     /**
      * @var int
      */
-    public $motifRelanced;
+    public $relance;
     /**
      * @var int|null
      */

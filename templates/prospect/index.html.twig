@@ -74,7 +74,7 @@
 				<table class="table table-striped table-advance table-hover">
 					<thead>
 						<tr>
-							{% if is_granted('ROLE_ADMIN') or is_granted('ROLE_TEAM') or is_granted('ROLE_AFFECT') %}
+							{% if is_granted('ROLE_ADMIN')   or is_granted('ROLE_AFFECT') %}
 								<th>Source</th>
 								<th>Autor</th>
 								{% if app.request.get('_route') != 'newprospect_index' and app.request.get('_route') != 'newprospectchef_index' %}
@@ -104,125 +104,128 @@
 		<tbody>
 			{% for prospect in prospects %}
 				<tr>
-					<td>
-						{% if prospect.source  == 3 %}
-							{% if prospect.url  is null and prospect.source  == 3  %}
-								Autre Site
-							{% elseif prospect.url  is null and prospect.source == 1 %}
-								Saisie
+					{% if is_granted('ROLE_ADMIN')   or is_granted('ROLE_AFFECT') %}
+						<td>
+							{% if prospect.source  == 3 %}
+								{% if prospect.url  is null and prospect.source  == 3  %}
+									Autre Site
 
-							{% elseif prospect.url == 1 %}
-								<a href="https://www.assurance-des-vtc.fr" target="_blank" title="https://www.assurance-des-vtc.fr">des-vtc</a>
-							{% elseif prospect.url == 2 %}
-								<a href="https://www.assurance-garage-pro.fr" target="_blank" title="https://www.assurance-garage-pro.fr">garage-pro</a>
-							{% elseif prospect.url == 3 %}
-								<a href="https://www.assurance-pour-taxi.fr" target="_blank" title="https://www.assurance-pour-taxi.fr">pour-taxi</a>
-							{% elseif prospect.url == 4 %}
-								<a href="https://assurance-pour-vtc.fr/" target="_blank" title="https://assurance-pour-vtc.fr/">pour-vtc</a>
-							{% elseif prospect.url == 5 %}
-								<a href="https://lassurance-des-resilies.fr" target="_blank" title="https://lassurance-des-resilies.fr">des-resilies</a>
-							{% elseif prospect.url == 6 %}
-								<a href="https://lassurance-garantie-decennale.fr" target="_blank" title="https://lassurance-garantie-decennale.fr">decennale</a>
-							{% elseif prospect.url == 7 %}
-								<a href="https://comparez-en-ligne.fr" target="_blank" title="https://comparez-en-ligne.fr">comparez</a>
-							{% elseif prospect.url == 8 %}
-								<a href="https://assurance-pour-camion.fr" target="_blank" title="https://assurance-pour-camion.fr/">camion</a>
-							{% elseif prospect.url == 9 %}
-								<a href="https://assurance-flotte-entreprise.fr" target="_blank" title="https://assurance-flotte-entreprise.fr">flotte</a>
-							{% elseif prospect.url == 10 %}
-								<a href="https://assurance-vehicule-pro.fr" target="_blank" title="https://assurance-vehicule-pro.fr">vehicule-pro</a>
-							{% elseif prospect.url == 11 %}
-								<a href="https://lassurance-des-transporteurs.fr" target="_blank" title="https://lassurance-des-transporteurs.fr/">transporteurs</a>
-							{% elseif prospect.url == 12 %}
-								<a href="https://assurance-vehicules-professionnels.fr" target="_blank" title="https://assurance-vehicules-professionnels.fr">vehicules-prof</a>
-							{% elseif prospect.url == 13 %}
-								<a href="https://assurance-engins-chantier.fr" target="_blank" title="https://assurance-engins-chantier.fr">engins</a>
-							{% elseif prospect.url == 14 %}
-								<a href="https://assurance-professionnels-auto.fr" target="_blank" title="https://assurance-professionnels-auto.fr">prof-auto</a>
-							{% elseif prospect.url == 15 %}
-								<a href="https://assurance-professionnels-auto.fr/auto-ecole" target="_blank" title="https://assurance-professionnels-auto.fr">auto-ecole</a>
-							{% elseif prospect.url == 16 %}
-								<a href="https://assurance-professionnels-auto.fr/negociants-auto" target="_blank" title="https://assurance-professionnels-auto.fr/negociants-auto">negociants-auto</a>
-							{% elseif prospect.url == 17 %}
-								<a href="https://assurance-professionnels-auto.fr/negociants-auto" target="_blank" title="https://assurance-professionnels-auto.fr/garage-automobile">garage-auto</a>
+								{% elseif prospect.url == 1 %}
+									<a href="https://www.assurance-des-vtc.fr" target="_blank" title="https://www.assurance-des-vtc.fr">des-vtc</a>
+								{% elseif prospect.url == 2 %}
+									<a href="https://www.assurance-garage-pro.fr" target="_blank" title="https://www.assurance-garage-pro.fr">garage-pro</a>
+								{% elseif prospect.url == 3 %}
+									<a href="https://www.assurance-pour-taxi.fr" target="_blank" title="https://www.assurance-pour-taxi.fr">pour-taxi</a>
+								{% elseif prospect.url == 4 %}
+									<a href="https://assurance-pour-vtc.fr/" target="_blank" title="https://assurance-pour-vtc.fr/">pour-vtc</a>
+								{% elseif prospect.url == 5 %}
+									<a href="https://lassurance-des-resilies.fr" target="_blank" title="https://lassurance-des-resilies.fr">des-resilies</a>
+								{% elseif prospect.url == 6 %}
+									<a href="https://lassurance-garantie-decennale.fr" target="_blank" title="https://lassurance-garantie-decennale.fr">decennale</a>
+								{% elseif prospect.url == 7 %}
+									<a href="https://comparez-en-ligne.fr" target="_blank" title="https://comparez-en-ligne.fr">comparez</a>
+								{% elseif prospect.url == 8 %}
+									<a href="https://assurance-pour-camion.fr" target="_blank" title="https://assurance-pour-camion.fr/">camion</a>
+								{% elseif prospect.url == 9 %}
+									<a href="https://assurance-flotte-entreprise.fr" target="_blank" title="https://assurance-flotte-entreprise.fr">flotte</a>
+								{% elseif prospect.url == 10 %}
+									<a href="https://assurance-vehicule-pro.fr" target="_blank" title="https://assurance-vehicule-pro.fr">vehicule-pro</a>
+								{% elseif prospect.url == 11 %}
+									<a href="https://lassurance-des-transporteurs.fr" target="_blank" title="https://lassurance-des-transporteurs.fr/">transporteurs</a>
+								{% elseif prospect.url == 12 %}
+									<a href="https://assurance-vehicules-professionnels.fr" target="_blank" title="https://assurance-vehicules-professionnels.fr">vehicules-prof</a>
+								{% elseif prospect.url == 13 %}
+									<a href="https://assurance-engins-chantier.fr" target="_blank" title="https://assurance-engins-chantier.fr">engins</a>
+								{% elseif prospect.url == 14 %}
+									<a href="https://assurance-professionnels-auto.fr" target="_blank" title="https://assurance-professionnels-auto.fr">prof-auto</a>
+								{% elseif prospect.url == 15 %}
+									<a href="https://assurance-professionnels-auto.fr/auto-ecole" target="_blank" title="https://assurance-professionnels-auto.fr">auto-ecole</a>
+								{% elseif prospect.url == 16 %}
+									<a href="https://assurance-professionnels-auto.fr/negociants-auto" target="_blank" title="https://assurance-professionnels-auto.fr/negociants-auto">negociants-auto</a>
+								{% elseif prospect.url == 17 %}
+									<a href="https://assurance-professionnels-auto.fr/negociants-auto" target="_blank" title="https://assurance-professionnels-auto.fr/garage-automobile">garage-auto</a>
+								{% endif %}
 							{% endif %}
-						{% endif %}
-						{% if prospect.source == 2 %}
-							Revendeur
-						{% endif %}
-						{# si source est saisi maniale  #}
-						{% if prospect.source is null %}
-							{% if prospect.motifSaise is null %}
-								LEADS
-							{% endif %}
-							{% if prospect.motifSaise == 1 %}
-								Parrainage
-							{% endif %}
-							{% if prospect.motifSaise == 2 %}
-								Appel Entrant
-							{% endif %}
-							{% if prospect.motifSaise == 3 %}
-								Avenant
-							{% endif %}
-							{% if prospect.motifSaise == 4 %}
-								Ancienne Contrat
-							{% endif %}
-							{% if prospect.motifSaise == 5 %}
-								Propre site
-							{% endif %}
-							{% if prospect.motifSaise == 6 %}
+							{% if prospect.source == 2 %}
 								Revendeur
 							{% endif %}
-						{% endif %}
-					</td>
-					<td>
-						{% if prospect.autor  is not empty %}
-							<a href="#">
-								{{ prospect.autor }}
-							</a>
-						{% else %}
-							<a href="#">
-								Site
-							</a>
-						{% endif %}
-
-					</td>
-					<td>
-						{% if prospect.comrcl is not empty %}
-
-							{% if  app.user and app.user == prospect.comrcl %}
-								<a href="#" style="color:red">
-									{{ prospect.comrcl  }}</a>
-							{% else %}
-								<a href="#">{{ prospect.comrcl  }}</a>
-							{% endif %}
-
-						{% else %}
-							<a href="#">
-								En attend
-							</a>
-						{% endif %}
-					</td>
-					<td>
-						{% if prospect.team is not empty %}
-							{{ prospect.team }}
-						{% else %}
-							Aucun
-						{% endif %}
-
-					</td>
-					<td>
-						{% if prospect.comrcl and prospect.team is not empty %}
-							<button class="btn btn-primary">Commercial
-							</button>
-						{% elseif prospect.comrcl is  empty and prospect.team is not empty  %}
-							<button class="btn btn-info">Chef d'Equipe
-							{% else %}
-								<button class="btn btn-success">Nouveau
-								</button>
+							{# si source est saisi maniale  #}
+							{% if prospect.source is null %}
+								{% if prospect.motifSaise is null %}
+									LEADS
+								{% endif %}
+								{% if prospect.motifSaise == 1 %}
+									Parrainage
+								{% endif %}
+								{% if prospect.motifSaise == 2 %}
+									Appel Entrant
+								{% endif %}
+								{% if prospect.motifSaise == 3 %}
+									Avenant
+								{% endif %}
+								{% if prospect.motifSaise == 4 %}
+									Ancienne Contrat
+								{% endif %}
+								{% if prospect.motifSaise == 5 %}
+									Propre site
+								{% endif %}
+								{% if prospect.motifSaise == 6 %}
+									Revendeur
+								{% endif %}
 							{% endif %}
 						</td>
-					</td>
+						<td>
+							{% if prospect.autor  is not empty %}
+								<a href="#">
+									{{ prospect.autor }}
+								</a>
+							{% else %}
+								<a href="#">
+									Site
+								</a>
+							{% endif %}
+
+						</td>
+						{% if app.request.get('_route') != 'newprospect_index' and app.request.get('_route') != 'newprospectchef_index' %}
+
+							<td>
+								{% if prospect.comrcl is not empty %}
+
+									{% if  app.user and app.user == prospect.comrcl %}
+										<a href="#" style="color:red">
+											{{ prospect.comrcl  }}</a>
+									{% else %}
+										<a href="#">{{ prospect.comrcl  }}</a>
+									{% endif %}
+
+								{% else %}
+									<a href="#">
+										En attend
+									</a>
+								{% endif %}
+							</td>
+							<td>
+								{% if prospect.team is not empty %}
+									{{ prospect.team }}
+								{% else %}
+									Aucun
+								{% endif %}
+
+							</td>
+							<td>
+								{% if prospect.comrcl and prospect.team is not empty %}
+									<button class="btn btn-primary">Commercial
+									</button>
+								{% elseif prospect.comrcl is  empty and prospect.team is not empty  %}
+									<button class="btn btn-info">Chef d'Equipe
+									{% else %}
+										<button class="btn btn-success">Nouveau
+										</button>
+									{% endif %}
+								</td>
+							</td>
+						{% endif %}
+					{% endif %}
 					<td>
 						{% if prospect.product is not empty %}
 							{{ prospect.product }}

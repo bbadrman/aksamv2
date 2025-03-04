@@ -32,8 +32,6 @@ final class ProspectController extends AbstractController
 
         return $this->render('prospect/index.html.twig', [
             'prospects' => $prospects,
-
-
         ]);
     }
 
@@ -158,10 +156,10 @@ final class ProspectController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            if ($prospect->getRelanceAt() === null) {
-                $timezone = new \DateTimeZone('Europe/Paris');
-                $prospect->setRelanceAt(new \DateTimeImmutable('now', $timezone));
-            }
+
+            $timezone = new \DateTimeZone('Europe/Paris');
+            $prospect->setRelanceAt(new \DateTimeImmutable('now', $timezone));
+
 
 
             $history = new RelanceHistory();

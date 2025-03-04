@@ -52,11 +52,11 @@ final class TraitementController extends AbstractController
             'phones' => [],
         ];
 
-        if (in_array('ROLE_SUPER_ADMIN', $roles, true) || in_array('ROLE_ADMIN', $roles, true) || in_array('ROLE_AFFECT', $roles, true)) {
+        if (in_array('ROLE_SUPER_ADMIN', $roles, true) || in_array('ROLE_ADMIN', $roles, true)) {
             $prospects = $this->prospectRepository->findByAdminNewProsp($data);
-        } elseif (in_array('ROLE_TEAMALL', $roles, true)) {
+        } elseif (in_array('ROLE_m', $roles, true)) {
             $prospects = $this->prospectRepository->findByChefAllNewProsp($data, $user);
-        } elseif (in_array('ROLE_TEAM', $roles, true)) {
+        } elseif (in_array('ROLE_CHEF', $roles, true)) {
             $prospects = $this->prospectRepository->findByChefNewProsp($data, $user);
         } else {
             $prospects = $this->prospectRepository->findByCmrclNewProsp($data, $user);
@@ -83,7 +83,36 @@ final class TraitementController extends AbstractController
             'search_form' => $form->createView()
         ]);
     }
+    // afficher les nouveaux prospects 
+    #[Route('/newprospectchef', name: 'newprospectchef_index', methods: ['GET', 'POST'])]
 
+    public function newprospectchef(Request $request): Response
+
+    {
+        // $this->denyAccessUnlessGrantedAuthorizedRoles();
+
+        $data = new SearchProspect();
+        $data->page = $request->query->get('page', 1);
+        $form = $this->createForm(SearchProspectType::class, $data);
+        $form->handleRequest($this->requestStack->getCurrentRequest());
+
+
+
+        $user = $this->security->getUser();
+
+        $prospects = [];
+
+
+        $prospects = $this->prospectRepository->findByCmrclNewProsp($data, $user);
+
+
+
+        return $this->render('prospect/index.html.twig', [
+            'prospects' => $prospects,
+            // 'duplicates' => $duplicates,
+            'search_form' => $form->createView()
+        ]);
+    }
     /**
      * afficher les prospect no traiter   
      */
@@ -105,10 +134,10 @@ final class TraitementController extends AbstractController
         $prospect = [];
 
 
-        if (in_array('ROLE_SUPER_ADMIN', $roles, true) || in_array('ROLE_ADMIN', $roles, true) || in_array('ROLE_AFFECT', $roles, true)) {
+        if (in_array('ROLE_SUPER_ADMIN', $roles, true) || in_array('ROLE_ADMIN', $roles, true)) {
             // admi peut voire toutes les no traite
             $prospect =  $this->prospectRepository->findProspectNonTraiter($data, null);
-        } else if (in_array('ROLE_TEAM', $roles, true)) {
+        } else if (in_array('ROLE_CHEF', $roles, true)) {
             // chef peut voire toutes les no traite atacher a leur equipe
             $prospect =  $this->prospectRepository->findProspectNonTraiterChef($data, $user, null);
         } else {
@@ -143,10 +172,10 @@ final class TraitementController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid() && !$form->isEmpty()) {
 
-            if (in_array('ROLE_SUPER_ADMIN',  $roles, true) || in_array('ROLE_ADMIN',  $roles, true) || in_array('ROLE_AFFECT',  $roles, true)) {
+            if (in_array('ROLE_SUPER_ADMIN',  $roles, true) || in_array('ROLE_ADMIN',  $roles, true)) {
                 // admi peut chercher toutes les prospects
                 $prospect = $this->prospectRepository->findSearch($data, $user);
-            } else if (in_array('ROLE_TEAM',  $roles, true)) {
+            } else if (in_array('ROLE_CHEF',  $roles, true)) {
                 // chef peut chercher toutes les prospects atacher a leur equipe
                 $prospect = $this->prospectRepository->findAllChefSearch($data, $user);
             } elseif (in_array('ROLE_USER',  $roles, true)) {
@@ -188,7 +217,7 @@ final class TraitementController extends AbstractController
         if (in_array('ROLE_SUPER_ADMIN',  $roles, true) || in_array('ROLE_ADMIN',  $roles, true)) {
             // admi peut voire toutes les relance du jour
             $prospect =  $this->prospectRepository->findRelancedJour($data, null);
-        } else if (in_array('ROLE_TEAM',  $roles, true)) {
+        } else if (in_array('ROLE_CHEF',  $roles, true)) {
             // chef peut voire toutes les relance du jour atacher a leur equipe
             $prospect =  $this->prospectRepository->findRelancedJourChef($data, $user, null);
         } else {
@@ -228,13 +257,13 @@ final class TraitementController extends AbstractController
 
             $user = $security->getUser();
             if (in_array('ROLE_SUPER_ADMIN', $roles, true) || in_array('ROLE_ADMIN', $roles, true)) {
-                // admi peut voire toutes les no traite
+
                 $prospect =  $this->prospectRepository->findAvenir($data, null);
-            } else if (in_array('ROLE_TEAM', $roles, true)) {
-                // chef peut voire toutes les no traite atacher a leur equipe
+            } else if (in_array('ROLE_CHEF', $roles, true)) {
+
                 $prospect =  $this->prospectRepository->findAvenirChef($data, $user, null);
             } else {
-                // cmrcl peut voire seulement les no traite  atacher a lui
+
                 $prospect =  $this->prospectRepository->findAvenirCmrcl($data, $user, null);
             }
 
@@ -271,16 +300,16 @@ final class TraitementController extends AbstractController
         $prospect = [];
 
         if ($form->isSubmitted() && $form->isValid() && !$form->isEmpty()) {
-            if (in_array('ROLE_SUPER_ADMIN', $roles, true) || in_array('ROLE_ADMIN', $roles, true)  || in_array('ROLE_AFFECT', $roles, true)) {
-                // admi peut voire toutes les relance du jour
+            if (in_array('ROLE_SUPER_ADMIN', $roles, true) || in_array('ROLE_ADMIN', $roles, true)) {
+
                 $prospect =  $this->prospectRepository->findRelancesNonTraitees($data, null);
-                // $numberOfProspects = count($prospect);
-                // dd($numberOfProspects);
-            } else if (in_array('ROLE_TEAM', $roles, true)) {
-                // chef peut voire toutes les relance du jour atacher a leur equipe
+
+                // dd(count($prospect));
+            } else if (in_array('ROLE_CHEF', $roles, true)) {
+
                 $prospect =   $this->prospectRepository->RelancesNonTraiteesChef($data, $user, null);
             } else {
-                // cmrcl peut voire seulement les relance du jour  atacher a lui
+
                 $prospect =   $this->prospectRepository->RelancesNonTraiteesCmrcl($data, $user, null);
             }
 
@@ -319,13 +348,13 @@ final class TraitementController extends AbstractController
 
 
         if (in_array('ROLE_SUPER_ADMIN', $roles, true) || in_array('ROLE_ADMIN', $roles, true)) {
-            // admi peut voire toutes les nouveaux prospects
+
             $prospect =  $this->prospectRepository->findUnjoing($data, null);
-        } else if (in_array('ROLE_TEAM', $roles, true)) {
-            // chef peut voire toutes les nouveaux prospects atacher a leur equipe
+        } else if (in_array('ROLE_CHEF', $roles, true)) {
+
             $prospect =  $this->prospectRepository->findUnjoingChef($data,  $user, null);
         } else {
-            // cmrcl peut voire seulement les nouveaux prospects atacher a lui
+
             $prospect =  $this->prospectRepository->findUnjoingCmrcl($data, $user, null);
         }
 

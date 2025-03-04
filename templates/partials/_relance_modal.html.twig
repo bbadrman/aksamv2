@@ -17,12 +17,12 @@
 			{% set url = path('app_relance_edit', {'id': prospect.id}) %}
 			{{ form_start(form, {'action':url}) }}
 
-			{{ form_row(form.relance ) }}
-			<div id="subMotivRelc-container" style="display: none">
-				{{ form_row(form.relanceAt) }}
+			{{ form_row(form.relance, {'attr': {'class': 'relance_prospect_relance'}}) }}
+			<div class="subMotivRelc-container" style="display: none">
+				{{ form_row(form.relanceAt, {'attr': {'class': 'relanceAt'}}) }}
 			</div>
-			<div id="MotivRelcoment-container" style="display: none">
-				{{ form_row(form.comment) }}
+			<div class="MotivRelcoment-container" style="display: none">
+				{{ form_row(form.comment, {'attr': {'class': 'comment'}}) }}
 			</div>
 
 

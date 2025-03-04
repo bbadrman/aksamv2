@@ -2,20 +2,20 @@
 
 {% if prospect.comrcl and prospect.team is not empty %}
 	{# clore du butto affichie pour chef si comrcl et team is null #}
-	<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal{{ prospect.id }}">
+	<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#affectModal{{ prospect.id }}">
 		<i class="fa fa-reply-all" aria-hidden="true"></i>
 	</button>
 {% elseif prospect.comrcl is  empty and prospect.team is not empty  %}
-	<button type="button" class="btn btn-success" data-toggle="modal" data-target="#exampleModal{{ prospect.id }}">
+	<button type="button" class="btn btn-success" data-toggle="modal" data-target="#affectModal{{ prospect.id }}">
 
 		<i class="fa fa-paper-plane" aria-hidden="true"></i>
 	</button>
 {% else %}
-	<button type="button" class="btn btn-danger" data-toggle="modal" data-target="#exampleModal{{ prospect.id }}">
+	<button type="button" class="btn btn-danger" data-toggle="modal" data-target="#affectModal{{ prospect.id }}">
 		<i class="fa fa-paper-plane" aria-hidden="true"></i>
 	</button>
 {% endif %}
-<div class="modal fade" id="exampleModalR{{ prospect.id }}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+<div class="modal fade" id="affectModal{{ prospect.id }}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
 	<div class="modal-dialog" role="document">
 		<div class="modal-content">
 			<div class="modal-header">
@@ -28,19 +28,13 @@
 			{% set url = path('app_affect_edit', {'id': prospect.id}) %}
 			{{ form_start(form, {'action':url}) }}
 
-			<div class="modal-body">
-				{{ form_row(form.team, {'attr': {'class': 'prospect_team'}}) }}
-
-			</div>
-			<div class="modal-body">
-				{{ form_row(form.comrcl, {'attr': {'class': 'prospect_comrcl'}}) }}
-			</div>
+			{{ form_row(form.team, {'attr': {'class': 'prospect_team'}}) }}
+			{{ form_row(form.comrcl, {'attr': {'class': 'prospect_comrcl'}}) }}
 			<div class="modal-footer">
 				<button type="button" class="btn btn-secondary" data-dismiss="modal">Annuler</button>
 				<button class="btn btn-primary">{{ button_label|default('Save') }}</button>
-
 			</div>
-			{{form_end(form)}}
+			{{ form_end(form) }}
 		</div>
 	</div>
 </div>

@@ -1,21 +1,20 @@
 
 //Select Dynamique with API  
-
 $(document).ready(function () {
-	handleTeamChange('.prospect_team', '.prospect_comrcl');
+	$('.modal').on('shown.bs.modal', function () {
+		const modal = $(this);
+		handleTeamChange(modal.find('.prospect_team'), modal.find('.prospect_comrcl'));
+	});
 
-	function handleTeamChange(teamSelector, commercialSelector) {
-		const prospectTeam = $(teamSelector);
-		const prospectCommercial = $(commercialSelector);
-
+	function handleTeamChange(prospectTeam, prospectCommercial) {
 		if (prospectTeam.length && prospectCommercial.length) {
 			if (!prospectTeam.val().length) {
 				prospectCommercial.parent().hide();
 			} else {
-				loadCommercials();
+				loadCommercials(prospectTeam, prospectCommercial);
 			}
 
-			function loadCommercials() {
+			function loadCommercials(prospectTeam, prospectCommercial) {
 				const currentValue = prospectTeam.val();
 				const commercialvalue = prospectCommercial.val();
 
@@ -47,7 +46,7 @@ $(document).ready(function () {
 			}
 
 			prospectTeam.change(function () {
-				loadCommercials();
+				loadCommercials(prospectTeam, prospectCommercial);
 			});
 		}
 	}
