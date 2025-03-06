@@ -51,7 +51,7 @@
 		{{ form_widget(search_form.q, { 'attr': { 'style': 'display:none' } }) }}
 		{{ form_widget(search_form.m, { 'attr': { 'style': 'display:none' } }) }}
 		{{ form_widget(search_form.g, { 'attr': { 'style': 'display:none' } }) }}
-		{{ form_widget(search_form.c, { 'attr': { 'style': 'display:none' } }) }}
+
 		{{ form_widget(search_form.l, { 'attr': { 'style': 'display:none' } }) }}
 		{{ form_widget(search_form.s, { 'attr': { 'style': 'display:none' } }) }}
 		{{ form_widget(search_form.source, { 'attr': { 'style': 'display:none' } }) }}
@@ -90,11 +90,13 @@
 		{% endif %}
 
 	{% else %}
+
+		{{ form_widget(search_form.c, { 'attr': { 'style': 'display:none' } }) }}
 		{{ form_widget(search_form.dr, { 'attr': { 'style': 'display:none' } }) }}
 		{{ form_widget(search_form.ddr, { 'attr': { 'style': 'display:none' } }) }}
 		{{ form_widget(search_form.relance, { 'attr': { 'style': 'display:none' } }) }}
 		{{ form_widget(search_form.u, { 'attr': { 'style': 'display:none' } }) }}
-		{{ form_widget(search_form.c, { 'attr': { 'style': 'display:none' } }) }}
+
 
 	{% endif %}
 

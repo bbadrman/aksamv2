@@ -202,7 +202,10 @@
 
 									<td>{{ relance.relancedAt ? relance.relancedAt|date('Y-m-d H:i') : '' }}</td>
 
-									<td>{{ relance.comment }}</td>
+									<td class="truncated" onclick="showFullText(this)">
+										<span class="shortened">{{  relance.comment |slice(0, 50) }}</span>
+										<span class="fullText" style="display: none;">{{ relance.comment }}</span>
+									</td>
 								</tr>
 							{% endfor %}
 						</tbody>
@@ -254,4 +257,21 @@
 		<a href="{{ path('app_prospect_edit', {'id': prospect.id}) }}">edit</a>
 	{% endif %}
 
+{% endblock %}
+{% block javascripts %}
+	<script type="text/javascript">
+
+		// pour afficher comment onclick sur comment sur motifrelanced
+function showFullText(element) { // Récupère l'élément contenant le texte complet
+var fullText = element.querySelector('.fullText');
+// Change la visibilité du texte complet au clic
+if (fullText.style.display === 'none') {
+fullText.style.display = 'inline'; // Montre le texte complet
+element.querySelector('.shortened').style.display = 'none'; // Cache le texte raccourci
+} else {
+fullText.style.display = 'none'; // Cache le texte complet
+element.querySelector('.shortened').style.display = 'inline'; // Montre le texte raccourci
+}
+}
+	</script>
 {% endblock %}

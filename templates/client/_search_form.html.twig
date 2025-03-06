@@ -1,0 +1,79 @@
+{{ form_start(search_form) }}
+
+<div class="row align-items-center">
+
+	<div class="col-md-1" style="padding-right: 2px;padding-left: 8px;">
+		{{ form_row(search_form.f, {attr: {class: 'form-control', 'placeholder': ' Nom...'}}) }}
+	</div>
+	<div class="col-md-1" style="padding-right: 2px;padding-left: 8px;">
+		{{ form_row(search_form.l, {attr: {class: 'form-control', 'placeholder': ' Prénom...'}}) }}
+	</div>
+	<div class="col-md-1" style="padding-right: 2px;padding-left: 8px;">
+		{{ form_row(search_form.g, {attr: {class: 'form-control', 'placeholder': ' E-mail...'}}) }}
+	</div>
+
+	<div class="col-md-1" style="padding-right: 2px;padding-left: 8px;">
+		{{ form_row(search_form.t, {attr: {class: 'form-control', 'placeholder': ' Téléphone...'}}) }}
+	</div>
+	<div class="col-md-1" style="padding-right: 2px;padding-left: 8px;">
+		{{ form_row(search_form.r, {attr: {class: 'form-control', 'placeholder': ' Raison sociale...'}}) }}
+	</div>
+
+	{% if is_granted('ROLE_ADMIN') or is_granted('ROLE_CHEF')  == true %}
+
+		<div class="col-md-1" style="padding-right: 2px;padding-left: 8px;">
+			{{ form_row(search_form.k, {attr: {class: 'form-control', 'placeholder': ' Commercial...'}}) }}
+		</div>
+	{% else %}
+		<div style="display: none;">
+
+			{{ form_row(search_form.k) }}
+		</div>
+	{% endif %}
+	{% if is_granted('ROLE_ADMIN')  or is_granted('ROLE_CHEF')   == true %}
+		<div class="col-md-1" style="padding-right: 2px;padding-left: 8px;">
+			{{ form_row(search_form.team, {attr: {class: 'form-control', 'placeholder': ' Equipe...'}}) }}
+		</div>
+	{% else %}
+		<div style="display: none;">
+
+			{{ form_row(search_form.team) }}
+		</div>
+	{% endif %}
+
+	<div class="col-md-2 text-center" style="padding-right: 3px;padding-left: 3px;">
+		<h1>
+			<button class="btn btn-primary btn search-btn" type="submit" target="_blank" title="Rechercher ">
+				<i class="fa fa-search" aria-hidden="true"></i>
+			</button>
+			<button class="btn btn-theme" value="back" onclick="history.go(-1)" target="_blank" title="Retour ">
+				<i class="fa fa-undo" aria-hidden="true"></i>
+			</button>
+
+			<button class="btn btn-primary" type="reset" id="reset-button" target="_blank" title="Vider champs ">
+				<i class="fa fa-refresh" aria-hidden="true"></i>
+			</button>
+		</h1>
+	</div>
+</div>
+<div class="row align-items-center">
+	<div class="col-md-2" style="padding-right: 2px;padding-left: 8px;">
+		{{ form_row(search_form.d) }}
+	</div>
+	<div class="col-md-2" style="padding-right: 2px;padding-left: 8px;">
+		{{ form_row(search_form.dd) }}
+	</div>
+	<div class="col-md-2" style="padding-right: 2px;padding-left: 8px;">
+		{{ form_row(search_form.dr) }}
+	</div>
+	<div class="col-md-2" style="padding-right: 2px;padding-left: 8px;">
+		{{ form_row(search_form.ddr) }}
+	</div>
+
+</div>
+{{ form_end(search_form) }}
+<script>
+	document.getElementById("reset-button").addEventListener("click", function () { // Réinitialisez les paramètres de l'URL à vide
+window.location.href = window.location.pathname;
+});
+</script>

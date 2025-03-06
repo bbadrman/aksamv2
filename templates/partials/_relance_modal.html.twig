@@ -34,14 +34,16 @@
 			{{form_end(form)}}
 
 
-			<div id="subMotivContrat-container" style="display: none">
+			<div class="subMotivContrat-container" style="display: none">
 				<h1 class="text-center">Client</h1>
 				<h2>Ajouter client</h2>
-				{# {{ form_start(clientForm, { 'attr': {'id': 'client-form'} }) }} #}
+				{% set url = path('app_relance_edit', {'id': prospect.id}) %}
+				{{ form_start(clientForm, {'action':url}) }}
+				{{ form_row(clientForm) }}
 
-				{# {{ form_row(clientForm) }} #}
 				<button type="submit" id="client-submit" class="btn btn-primary">Ajouter Client</button>
-				{# {{ form_end(clientForm) }} #}
+				{{ form_end(clientForm) }}
+
 			</div>
 		</div>
 

@@ -2,11 +2,14 @@
 
 namespace App\Controller;
 
+use App\Entity\Client;
 use App\Entity\History;
 use App\Entity\Prospect;
 use App\Entity\RelanceHistory;
 use App\Form\ProspectType;
 use App\Form\AffectProspectType;
+use App\Form\ClientRelanceType;
+use App\Form\ClientType;
 use App\Form\RelanceProspectType;
 use App\Repository\HistoryRepository;
 use App\Repository\ProspectRepository;
@@ -169,13 +172,76 @@ final class ProspectController extends AbstractController
             $history->setComment($prospect->getComment());
             $this->entityManager->persist($history);
             $entityManager->flush();
-            $this->addFlash('info', 'Votre Prospect a été traité avec succès!');
             return $this->redirect($request->headers->get('referer'));
+            $this->addFlash('info', 'Votre Prospect a été traité avec succès!');
         }
+
+        //ajouter client apartir de crée client
+        $clientEntity = new Client();
+        $clientEntity->setNom($prospect->getNom());
+        $clientEntity->setPrenom($prospect->getPrenom());
+        $clientEntity->setPhone($prospect->getPhone());
+        $clientEntity->setEmail($prospect->getEmail());
+        $clientEntity->setRaisonSociale($prospect->getRaisonSociale());
+        $clientEntity->setTeam($prospect->getTeam());
+        $clientEntity->setCmrcl($prospect->getComrcl());
+        $clientEntity->setCreatAt(new \DateTime());
+        // Associer le prospect au client
+        $clientEntity->setProspect($prospect);
+
+
+        // Handle the Client form submission
+        $clientForm = $this->createForm(ClientRelanceType::class, $clientEntity);
+        $clientForm->handleRequest($request);
+
+        // Traitement du formulaire de client
+        if ($clientForm->isSubmitted()) {
+            if ($clientForm->isValid()) {
+                // Vérifier si le client existe déjà dans la base de données
+                $existingClient = $this->entityManager->getRepository(Client::class)->findOneBy([
+                    'nom' => $prospect->getNom(),
+                    'prenom' => $prospect->getPrenom(),
+                    'phone' => $prospect->getPhone(),
+                    'email' => $prospect->getEmail(),
+
+                ]);
+
+                if ($existingClient) {
+                    $this->addFlash('info', 'Un client avec les mêmes informations existe déjà.');
+                    return $this->redirect($request->headers->get('referer'));
+                }
+                // Récupérer les valeurs du formulaire
+                $commentValue = $clientForm->get('comment')->getData();
+                $relanceAtValue = new \DateTimeImmutable();
+
+                // Mettre à jour le prospect
+                $prospect->setRelance('9');
+                $prospect->setComment($commentValue);
+                $prospect->setRelanceAt($relanceAtValue);
+
+                // Créer un historique de relance
+                $history = new RelanceHistory();
+                $history->setProspect($prospect);
+                $history->setMotifRelance('9');
+                $history->setRelancedAt($relanceAtValue);
+                $history->setComment($commentValue);
+
+                // Persister les entités
+                $entityManager->persist($history);
+                $entityManager->persist($clientEntity);
+                $entityManager->flush();
+
+                // Rediriger avec un message de succès
+                $this->addFlash('success', 'Client ajouté avec succès!');
+                return $this->redirect($request->headers->get('referer'));
+            }
+        }
+
 
         return $this->render('partials/_relance_modal.html.twig', [
             'prospect' => $prospect,
             'form' => $form->createView(),
+            'clientForm' => $clientForm->createView(),
         ]);
     }
 

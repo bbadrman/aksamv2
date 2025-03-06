@@ -110,7 +110,7 @@
 	{% if is_granted('ROLE_CLIENT')  == true %}
 
 		<li class="sub-menu">
-			<a class="nav-link " href="#">
+			<a class="nav-link " href="{{path('client_index')}}">
 				<i class="fa fa-diamond "></i>
 				<span>Clients
 				</span>
@@ -153,8 +153,8 @@
 								<a href="{{ path('app_user_index') }}">Gérer les Users</a>
 							</li>
 							{# <li>
-																																																																																																																																																																																																																																																																																																																																																											<a href="{{ path('user_acces') }}">Gérer les Sessions</a>
-																																																																																																																																																																																																																																																																																																																																																										</li> #}
+																																																																																																																																																																																																																																																																																																																																																																																<a href="{{ path('user_acces') }}">Gérer les Sessions</a>
+																																																																																																																																																																																																																																																																																																																																																																															</li> #}
 						</ul>
 					</li>
 
@@ -203,8 +203,8 @@
 								<a href="{{ path('app_unite_travail_index') }}">Gérer les Unites</a>
 							</li>
 							{# <li>
-																																																																																																																																																																																																																																																																																																																																																											<a href="{{ path('user_acces') }}">Gérer les Sessions</a>
-																																																																																																																																																																																																																																																																																																																																																										</li> #}
+																																																																																																																																																																																																																																																																																																																																																																																<a href="{{ path('user_acces') }}">Gérer les Sessions</a>
+																																																																																																																																																																																																																																																																																																																																																																															</li> #}
 						</ul>
 					</li>
 				{% endif %}

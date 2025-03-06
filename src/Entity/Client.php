@@ -49,6 +49,18 @@ class Client
     #[ORM\Column(nullable: true)]
     private ?bool $isModifie = null;
 
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $forceJuridique = null;
+
+    #[ORM\ManyToOne(inversedBy: 'clients')]
+    private ?Team $team = null;
+
+    #[ORM\ManyToOne(inversedBy: 'clients')]
+    private ?User $cmrcl = null;
+
+    #[ORM\OneToOne(cascade: ['persist', 'remove'])]
+    private ?Prospect $prospect = null;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -182,6 +194,54 @@ class Client
     public function setModifie(?bool $isModifie): static
     {
         $this->isModifie = $isModifie;
+
+        return $this;
+    }
+
+    public function getForceJuridique(): ?string
+    {
+        return $this->forceJuridique;
+    }
+
+    public function setForceJuridique(?string $forceJuridique): static
+    {
+        $this->forceJuridique = $forceJuridique;
+
+        return $this;
+    }
+
+    public function getTeam(): ?Team
+    {
+        return $this->team;
+    }
+
+    public function setTeam(?Team $team): static
+    {
+        $this->team = $team;
+
+        return $this;
+    }
+
+    public function getCmrcl(): ?User
+    {
+        return $this->cmrcl;
+    }
+
+    public function setCmrcl(?User $cmrcl): static
+    {
+        $this->cmrcl = $cmrcl;
+
+        return $this;
+    }
+
+    public function getProspect(): ?Prospect
+    {
+        return $this->prospect;
+    }
+
+    public function setProspect(?Prospect $prospect): static
+    {
+        $this->prospect = $prospect;
 
         return $this;
     }

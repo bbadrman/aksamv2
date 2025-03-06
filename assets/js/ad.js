@@ -358,6 +358,47 @@ $('document').ready(function () {
 // setupDisplayControl('prospect_typeProspect', 'subcategory-container', '2');
 // setupDisplayControl('prospect_lastAssure', 'subResil-container', 'Oui');
 
+// var resilField = document.getElementById('relanced_motifRelanced');
+// var commentField = document.getElementById('MotivRelcoment-container'); // Changer l'ID ici
+// var buttonField = document.getElementById('SubmitRelance-container');
+// var subresilContainer1 = document.getElementById('subMotivRelc-container');
+// var subresilContainer2 = document.getElementById('subMotivContrat-container');
+
+// if (resilField !== null) {
+// 	resilField.addEventListener('change', function () {
+// 		if (resilField.value === '1' || resilField.value === '4' || resilField.value === '5' || resilField.value === '6' || resilField.value === '12') {
+// 			subresilContainer1.style.display = 'block';     // Afficher le champ date
+// 			subresilContainer2.style.display = 'none';     // cacher le champ client
+// 			commentField.style.display = 'block';
+// 			buttonField.style.display = 'block';         // Afficher le champ comment
+// 			//click sur passage en contart il faut affichier les champ des contart et comment cache du date 
+// 		} else if (resilField.value === '2' || resilField.value === '3' || resilField.value === '7' || resilField.value === '8' || resilField.value === '9' || resilField.value === '11') {
+// 			//pour rederct to rout 
+// 			//window.location.href = "/client/new-client";
+// 			// pour manipilie les champs
+// 			subresilContainer1.style.display = 'none';   // cacher date
+// 			subresilContainer2.style.display = 'none';
+// 			commentField.style.display = 'block'; // Cacher le champ comment
+// 			buttonField.style.display = 'block';
+// 		} else if (resilField.value === '9') {
+// 			//pour rederct to rout 
+// 			//window.location.href = "/client/new-client";
+// 			// pour manipilie les champs
+// 			subresilContainer1.style.display = 'none';   // cacher date
+// 			subresilContainer2.style.display = 'block';
+// 			commentField.style.display = 'none'; // Cacher le champ comment
+// 			buttonField.style.display = 'none';
+// 		}
+// 		else {
+// 			subresilContainer1.style.display = 'none';
+// 			subresilContainer2.style.display = 'none';
+// 			commentField.style.display = 'none'; // Cacher le champ comment
+// 			buttonField.style.display = 'block';
+
+// 		}
+// 	});
+
+// }
 
 
 
@@ -372,6 +413,7 @@ $(document).ready(function () {
 		var subresilContainer1 = $(this).find('.subMotivRelc-container');
 		var subresilContainer2 = $(this).find('.subMotivContrat-container');
 
+
 		resilField.change(function () {
 			var value = $(this).val();
 			if (value === '1' || value === '2' || value === '3' || value === '4' || value === '5') {
@@ -385,6 +427,7 @@ $(document).ready(function () {
 				commentField.show();
 				buttonField.show();
 			} else if (value === '9') {
+				console.log("Affichage du formulaire client");
 				subresilContainer1.hide();
 				subresilContainer2.show();
 				commentField.hide();

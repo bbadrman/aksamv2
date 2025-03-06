@@ -8,7 +8,8 @@
 		<div class="container">
 			<div class="alert alert-{{ label }}">
 				{% for message in messages %}
-					{{ message | raw }}
+					<h2>
+						{{ message | raw }}</h2>
 				{% endfor %}
 
 			</div>
