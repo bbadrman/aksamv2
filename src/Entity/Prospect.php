@@ -143,7 +143,7 @@ class Prospect
 
         // if (empty($this->relanceAt)) {
         //     $timezone = new \DateTimeZone('Europe/Paris');
-        //     $this->setRelanceAt(new \DateTimeImmutable('now', $timezone));
+        //     $this->relanceAt = new \DateTimeImmutable('now', $timezone);
         // }
     }
 

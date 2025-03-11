@@ -17,7 +17,7 @@ class RelanceProspectType extends AbstractType
         $builder
             ->add('relance', Type\ChoiceType::class, [
                 'label' => 'Motif Relance ',
-                'required' => false,
+                'required' => true,
                 'placeholder' => '       ',
                 'choices' => [
                     'Prise de Contact' => [
@@ -51,7 +51,8 @@ class RelanceProspectType extends AbstractType
             ->add('relanceAt', TypeDateTimeType::class, [
                 'label' => 'Date de Relance *',
                 'required' => false,
-                'widget' => 'single_text',
+                'widget' => 'single_text', // Utiliser un champ de saisie unique
+
                 'attr' => [
                     'min' => (new \DateTime())->format('Y-m-d H:i')
                 ]

@@ -83,8 +83,8 @@ class ProspectRepository extends ServiceEntityRepository
             ->andWhere('p.comrcl IS NULL')
             ->andWhere('p.relance IS NULL')
 
-            ->orwhere('p.team IN (:teams) ')  //  team peut etre null or attacher a mon equipe
-            ->setParameter('teams', $team)
+            // ->orwhere('p.team IN (:teams) ')
+            // ->setParameter('teams', $team)
 
 
             ->orderBy('p.id', 'DESC');
@@ -315,8 +315,10 @@ class ProspectRepository extends ServiceEntityRepository
             ->select('p, t, f')
             ->leftJoin('p.team', 't')
             ->leftJoin('p.comrcl', 'f')
+
             ->Where('p.relanceAt >= :tomorrow')
             ->setParameter('tomorrow', $tomorrow)
+
             ->orderBy('p.relanceAt', 'ASC');
 
         $query = $this->applySearchFilters($query, $search);

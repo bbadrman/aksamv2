@@ -427,7 +427,7 @@ $(document).ready(function () {
 				commentField.show();
 				buttonField.show();
 			} else if (value === '9') {
-				console.log("Affichage du formulaire client");
+
 				subresilContainer1.hide();
 				subresilContainer2.show();
 				commentField.hide();
@@ -442,7 +442,26 @@ $(document).ready(function () {
 	});
 });
 
+// $(document).ready(function () {
+// 	$('.modal').on('shown.bs.modal', function () {
+// 		const $resilField = $(this).find('.relance_prospect_relance');
+// 		const $relanceAtField = $(this).find('.relanceAt');
 
+// 		$resilField.change(function () {
+// 			const value = $(this).val();
+// 			const showRelanceAt = value >= 1 && value <= 5;
+
+// 			// Montre/cache le champ relanceAt
+// 			$relanceAtField.closest('.subMotivRelc-container').toggle(showRelanceAt);
+
+// 			// Si le champ est masqué, videz sa valeur
+// 			  if (!showRelanceAt) {
+//                 $relanceAtField.val('');
+//                 $resilField.val(''); // Ajoutez cette ligne
+//             }
+// 		});
+// 	});
+// });
 // Select du Transaction
 
 var motifField = document.getElementById('transaction_motif');

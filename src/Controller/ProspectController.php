@@ -9,7 +9,6 @@ use App\Entity\RelanceHistory;
 use App\Form\ProspectType;
 use App\Form\AffectProspectType;
 use App\Form\ClientRelanceType;
-use App\Form\ClientType;
 use App\Form\RelanceProspectType;
 use App\Repository\HistoryRepository;
 use App\Repository\ProspectRepository;
@@ -156,13 +155,16 @@ final class ProspectController extends AbstractController
     public function relance(Request $request, Prospect $prospect, EntityManagerInterface $entityManager): Response
     {
         $form = $this->createForm(RelanceProspectType::class, $prospect);
+
+
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
 
-            $timezone = new \DateTimeZone('Europe/Paris');
-            $prospect->setRelanceAt(new \DateTimeImmutable('now', $timezone));
-
+            // pour persister la date now en relance 6,7,8,10,11,12,13
+            if ($prospect->getRelance() == '6 ' || $prospect->getRelance() == '7' || $prospect->getRelance() == '8' || $prospect->getRelance() == '10' || $prospect->getRelance() == '11' || $prospect->getRelance() == '12' || $prospect->getRelance() == '13') {
+                $prospect->setRelanceAt(new \DateTimeImmutable());
+            }
 
 
             $history = new RelanceHistory();

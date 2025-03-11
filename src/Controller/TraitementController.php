@@ -28,11 +28,11 @@ final class TraitementController extends AbstractController
 
 
     #[Route('/', name: 'app_traitement')]
-    public function index(): Response
+    public function index(StatsService $statsService): Response
     {
-        // $stats    = $this->statsService->getStats();
+        $stats = $statsService->getStats();
         return $this->render('traitement/table.html.twig', [
-            // 'stats'    => $stats
+            'stats'    => $stats
         ]);
     }
 
@@ -52,10 +52,8 @@ final class TraitementController extends AbstractController
             'phones' => [],
         ];
 
-        if (in_array('ROLE_SUPER_ADMIN', $roles, true) || in_array('ROLE_ADMIN', $roles, true)) {
-            $prospects = $this->prospectRepository->findByAdminNewProsp($data);
-        } elseif (in_array('ROLE_m', $roles, true)) {
-            $prospects = $this->prospectRepository->findByChefAllNewProsp($data, $user);
+        if (in_array('ROLE_ADMIN', $roles, true) or in_array('ROLE_AFFECTALL', $roles, true)) {
+            $prospects = $this->prospectRepository->findByAdminNewProsp($data);  // team null  
         } elseif (in_array('ROLE_CHEF', $roles, true)) {
             $prospects = $this->prospectRepository->findByChefNewProsp($data, $user);
         } else {
