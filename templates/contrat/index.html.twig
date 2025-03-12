@@ -1,0 +1,121 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Contrat index{% endblock %}
+
+{% block body %}
+    <h1>Contrat index</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Nom</th>
+                <th>Prenom</th>
+                <th>RaisonSociale</th>
+                <th>DateSouscrpt</th>
+                <th>DateEffet</th>
+                <th>TypeContrat</th>
+                <th>Activite</th>
+                <th>Imatriclt</th>
+                <th>Partenaire</th>
+                <th>Compagnie</th>
+                <th>Formule</th>
+                <th>Fraction</th>
+                <th>Frais</th>
+                <th>Etat</th>
+                <th>TypeConducteur</th>
+                <th>Conducteur</th>
+                <th>DatePermis</th>
+                <th>Status</th>
+                <th>Comment</th>
+                <th>UpdatedAt</th>
+                <th>Cotisation</th>
+                <th>Acompte</th>
+                <th>FirstReglement</th>
+                <th>SecondReglement</th>
+                <th>JourPrelvm</th>
+                <th>TypeProduct</th>
+                <th>IsModif</th>
+                <th>DatePreleveAcompte</th>
+                <th>DateNaissance</th>
+                <th>DateAchat</th>
+                <th>DateMec</th>
+                <th>RisqueUsage</th>
+                <th>TypePermis</th>
+                <th>SuspensionPermis</th>
+                <th>DateSuspension</th>
+                <th>MotifSuspension</th>
+                <th>AnnulationPermis</th>
+                <th>DateAnnulation</th>
+                <th>MotifAnnulation</th>
+                <th>CrmActuel</th>
+                <th>CrmRetenu</th>
+                <th>Garanties</th>
+                <th>Facilite</th>
+                <th>NmbrReglement</th>
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for contrat in contrats %}
+            <tr>
+                <td>{{ contrat.id }}</td>
+                <td>{{ contrat.nom }}</td>
+                <td>{{ contrat.prenom }}</td>
+                <td>{{ contrat.raisonSociale }}</td>
+                <td>{{ contrat.dateSouscrpt }}</td>
+                <td>{{ contrat.dateEffet ? contrat.dateEffet|date('Y-m-d H:i:s') : '' }}</td>
+                <td>{{ contrat.typeContrat }}</td>
+                <td>{{ contrat.activite }}</td>
+                <td>{{ contrat.imatriclt }}</td>
+                <td>{{ contrat.partenaire }}</td>
+                <td>{{ contrat.compagnie }}</td>
+                <td>{{ contrat.formule }}</td>
+                <td>{{ contrat.fraction }}</td>
+                <td>{{ contrat.frais }}</td>
+                <td>{{ contrat.etat }}</td>
+                <td>{{ contrat.typeConducteur }}</td>
+                <td>{{ contrat.conducteur }}</td>
+                <td>{{ contrat.datePermis ? contrat.datePermis|date('Y-m-d H:i:s') : '' }}</td>
+                <td>{{ contrat.status }}</td>
+                <td>{{ contrat.comment }}</td>
+                <td>{{ contrat.updatedAt ? contrat.updatedAt|date('Y-m-d H:i:s') : '' }}</td>
+                <td>{{ contrat.cotisation }}</td>
+                <td>{{ contrat.acompte }}</td>
+                <td>{{ contrat.firstReglement }}</td>
+                <td>{{ contrat.secondReglement }}</td>
+                <td>{{ contrat.jourPrelvm }}</td>
+                <td>{{ contrat.typeProduct }}</td>
+                <td>{{ contrat.isModif ? 'Yes' : 'No' }}</td>
+                <td>{{ contrat.datePreleveAcompte ? contrat.datePreleveAcompte|date('Y-m-d H:i:s') : '' }}</td>
+                <td>{{ contrat.dateNaissance ? contrat.dateNaissance|date('Y-m-d') : '' }}</td>
+                <td>{{ contrat.dateAchat ? contrat.dateAchat|date('Y-m-d H:i:s') : '' }}</td>
+                <td>{{ contrat.dateMec ? contrat.dateMec|date('Y-m-d H:i:s') : '' }}</td>
+                <td>{{ contrat.risqueUsage }}</td>
+                <td>{{ contrat.typePermis }}</td>
+                <td>{{ contrat.suspensionPermis ? 'Yes' : 'No' }}</td>
+                <td>{{ contrat.dateSuspension ? contrat.dateSuspension|date('Y-m-d H:i:s') : '' }}</td>
+                <td>{{ contrat.motifSuspension }}</td>
+                <td>{{ contrat.annulationPermis ? 'Yes' : 'No' }}</td>
+                <td>{{ contrat.dateAnnulation ? contrat.dateAnnulation|date('Y-m-d H:i:s') : '' }}</td>
+                <td>{{ contrat.motifAnnulation }}</td>
+                <td>{{ contrat.crmActuel }}</td>
+                <td>{{ contrat.crmRetenu }}</td>
+                <td>{{ contrat.garanties }}</td>
+                <td>{{ contrat.facilite ? 'Yes' : 'No' }}</td>
+                <td>{{ contrat.NmbrReglement }}</td>
+                <td>
+                    <a href="{{ path('app_contrat_show', {'id': contrat.id}) }}">show</a>
+                    <a href="{{ path('app_contrat_edit', {'id': contrat.id}) }}">edit</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="46">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <a href="{{ path('app_contrat_new') }}">Create new</a>
+{% endblock %}

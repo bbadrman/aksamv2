@@ -1,0 +1,198 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Contrat{% endblock %}
+
+{% block body %}
+    <h1>Contrat</h1>
+
+    <table class="table">
+        <tbody>
+            <tr>
+                <th>Id</th>
+                <td>{{ contrat.id }}</td>
+            </tr>
+            <tr>
+                <th>Nom</th>
+                <td>{{ contrat.nom }}</td>
+            </tr>
+            <tr>
+                <th>Prenom</th>
+                <td>{{ contrat.prenom }}</td>
+            </tr>
+            <tr>
+                <th>RaisonSociale</th>
+                <td>{{ contrat.raisonSociale }}</td>
+            </tr>
+            <tr>
+                <th>DateSouscrpt</th>
+                <td>{{ contrat.dateSouscrpt }}</td>
+            </tr>
+            <tr>
+                <th>DateEffet</th>
+                <td>{{ contrat.dateEffet ? contrat.dateEffet|date('Y-m-d H:i:s') : '' }}</td>
+            </tr>
+            <tr>
+                <th>TypeContrat</th>
+                <td>{{ contrat.typeContrat }}</td>
+            </tr>
+            <tr>
+                <th>Activite</th>
+                <td>{{ contrat.activite }}</td>
+            </tr>
+            <tr>
+                <th>Imatriclt</th>
+                <td>{{ contrat.imatriclt }}</td>
+            </tr>
+            <tr>
+                <th>Partenaire</th>
+                <td>{{ contrat.partenaire }}</td>
+            </tr>
+            <tr>
+                <th>Compagnie</th>
+                <td>{{ contrat.compagnie }}</td>
+            </tr>
+            <tr>
+                <th>Formule</th>
+                <td>{{ contrat.formule }}</td>
+            </tr>
+            <tr>
+                <th>Fraction</th>
+                <td>{{ contrat.fraction }}</td>
+            </tr>
+            <tr>
+                <th>Frais</th>
+                <td>{{ contrat.frais }}</td>
+            </tr>
+            <tr>
+                <th>Etat</th>
+                <td>{{ contrat.etat }}</td>
+            </tr>
+            <tr>
+                <th>TypeConducteur</th>
+                <td>{{ contrat.typeConducteur }}</td>
+            </tr>
+            <tr>
+                <th>Conducteur</th>
+                <td>{{ contrat.conducteur }}</td>
+            </tr>
+            <tr>
+                <th>DatePermis</th>
+                <td>{{ contrat.datePermis ? contrat.datePermis|date('Y-m-d H:i:s') : '' }}</td>
+            </tr>
+            <tr>
+                <th>Status</th>
+                <td>{{ contrat.status }}</td>
+            </tr>
+            <tr>
+                <th>Comment</th>
+                <td>{{ contrat.comment }}</td>
+            </tr>
+            <tr>
+                <th>UpdatedAt</th>
+                <td>{{ contrat.updatedAt ? contrat.updatedAt|date('Y-m-d H:i:s') : '' }}</td>
+            </tr>
+            <tr>
+                <th>Cotisation</th>
+                <td>{{ contrat.cotisation }}</td>
+            </tr>
+            <tr>
+                <th>Acompte</th>
+                <td>{{ contrat.acompte }}</td>
+            </tr>
+            <tr>
+                <th>FirstReglement</th>
+                <td>{{ contrat.firstReglement }}</td>
+            </tr>
+            <tr>
+                <th>SecondReglement</th>
+                <td>{{ contrat.secondReglement }}</td>
+            </tr>
+            <tr>
+                <th>JourPrelvm</th>
+                <td>{{ contrat.jourPrelvm }}</td>
+            </tr>
+            <tr>
+                <th>TypeProduct</th>
+                <td>{{ contrat.typeProduct }}</td>
+            </tr>
+            <tr>
+                <th>IsModif</th>
+                <td>{{ contrat.isModif ? 'Yes' : 'No' }}</td>
+            </tr>
+            <tr>
+                <th>DatePreleveAcompte</th>
+                <td>{{ contrat.datePreleveAcompte ? contrat.datePreleveAcompte|date('Y-m-d H:i:s') : '' }}</td>
+            </tr>
+            <tr>
+                <th>DateNaissance</th>
+                <td>{{ contrat.dateNaissance ? contrat.dateNaissance|date('Y-m-d') : '' }}</td>
+            </tr>
+            <tr>
+                <th>DateAchat</th>
+                <td>{{ contrat.dateAchat ? contrat.dateAchat|date('Y-m-d H:i:s') : '' }}</td>
+            </tr>
+            <tr>
+                <th>DateMec</th>
+                <td>{{ contrat.dateMec ? contrat.dateMec|date('Y-m-d H:i:s') : '' }}</td>
+            </tr>
+            <tr>
+                <th>RisqueUsage</th>
+                <td>{{ contrat.risqueUsage }}</td>
+            </tr>
+            <tr>
+                <th>TypePermis</th>
+                <td>{{ contrat.typePermis }}</td>
+            </tr>
+            <tr>
+                <th>SuspensionPermis</th>
+                <td>{{ contrat.suspensionPermis ? 'Yes' : 'No' }}</td>
+            </tr>
+            <tr>
+                <th>DateSuspension</th>
+                <td>{{ contrat.dateSuspension ? contrat.dateSuspension|date('Y-m-d H:i:s') : '' }}</td>
+            </tr>
+            <tr>
+                <th>MotifSuspension</th>
+                <td>{{ contrat.motifSuspension }}</td>
+            </tr>
+            <tr>
+                <th>AnnulationPermis</th>
+                <td>{{ contrat.annulationPermis ? 'Yes' : 'No' }}</td>
+            </tr>
+            <tr>
+                <th>DateAnnulation</th>
+                <td>{{ contrat.dateAnnulation ? contrat.dateAnnulation|date('Y-m-d H:i:s') : '' }}</td>
+            </tr>
+            <tr>
+                <th>MotifAnnulation</th>
+                <td>{{ contrat.motifAnnulation }}</td>
+            </tr>
+            <tr>
+                <th>CrmActuel</th>
+                <td>{{ contrat.crmActuel }}</td>
+            </tr>
+            <tr>
+                <th>CrmRetenu</th>
+                <td>{{ contrat.crmRetenu }}</td>
+            </tr>
+            <tr>
+                <th>Garanties</th>
+                <td>{{ contrat.garanties }}</td>
+            </tr>
+            <tr>
+                <th>Facilite</th>
+                <td>{{ contrat.facilite ? 'Yes' : 'No' }}</td>
+            </tr>
+            <tr>
+                <th>NmbrReglement</th>
+                <td>{{ contrat.NmbrReglement }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <a href="{{ path('app_contrat_index') }}">back to list</a>
+
+    <a href="{{ path('app_contrat_edit', {'id': contrat.id}) }}">edit</a>
+
+    {{ include('contrat/_delete_form.html.twig') }}
+{% endblock %}

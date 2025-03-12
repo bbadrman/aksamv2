@@ -1,0 +1,106 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Ajouter Prospect
+{% endblock %}
+
+{% block body %}
+	{% for label,  messages in app.flashes  %}
+		<div class="container">
+			<div class="alert alert-{{ label }}">
+				{% for message in messages %}
+					{{ message | raw }}
+				{% endfor %}
+
+			</div>
+		</div>
+	{% endfor %}
+
+	<section class="content-header ">
+		<h1>
+			Prospects
+			<small>Ajouter</small>
+		</h1>
+		<ol class="breadcrumb">
+			<li>
+				<a href="{{ path('app_home') }}">
+					<i class="fa fa-dashboard"></i>
+					Tableau de bord</a>
+			</li>
+			<li>
+				<a href="{{ path('app_prospect_index') }}">
+					<i class="fa fa-users"></i>
+					Tous les Prospects</a>
+			</li>
+			<li class="active">Ajouter un Prospect</li>
+		</ol>
+	</section>
+
+	<!-- FORM -->
+	{% block form %}
+		<div class="row mt ">
+			<div class="col-lg-12">
+				{{ include('contrat/_form.html.twig') }}
+			</div>
+
+		</div>
+	{% endblock %}
+
+	<!-- END FORM -->
+{% endblock %}
+{% block javascripts %}
+	<script type="text/javascript">
+
+
+		document.addEventListener('DOMContentLoaded', function () {
+const reglementSelect = document.querySelector('[name="contrat[NmbrReglement]"]');
+const container = document.getElementById('reglements-container');
+
+reglementSelect.addEventListener('change', function (e) {
+const targetCount = parseInt(e.target.value);
+let currentCount = container.querySelectorAll('.reglement-item').length;
+
+// **💡 Étape 1 : Supprimer tous les éléments avant d'en ajouter des nouveaux**
+container.innerHTML = '';
+
+// **💡 Étape 2 : Ajouter uniquement le nombre requis**
+const prototype = container.dataset.prototype;
+container.dataset.index = 0; // Réinitialiser l'index
+
+for (let i = 0; i < targetCount; i++) {
+let newForm = prototype.replace(/__name__/g, container.dataset.index);
+let div = document.createElement('div');
+div.classList.add('reglement-item');
+div.innerHTML = newForm;
+container.appendChild(div);
+container.dataset.index ++;
+}
+});
+});
+
+// pour anticipe
+document.addEventListener('DOMContentLoaded', function () {
+const assureSelect = document.querySelector('[name="contrat[NmbrAssure]"]');
+const containerAssure = document.getElementById('antcdAssure-container');
+
+assureSelect.addEventListener('change', function (e) {
+const targetCount = parseInt(e.target.value);
+
+// **💡 Étape 1 : Supprimer tous les éléments avant d'en ajouter des nouveaux**
+containerAssure.innerHTML = '';
+
+// **💡 Étape 2 : Ajouter uniquement le nombre requis**
+const prototype = containerAssure.dataset.prototype;
+containerAssure.dataset.index = 0; // Réinitialiser l'index
+
+for (let i = 0; i < targetCount; i++) {
+let newForm = prototype.replace(/__name__/g, containerAssure.dataset.index);
+let div = document.createElement('div');
+div.classList.add('antcdAssure-item');
+div.innerHTML = newForm;
+containerAssure.appendChild(div);
+containerAssure.dataset.index ++;
+}
+});
+});
+	</script>
+{% endblock %}

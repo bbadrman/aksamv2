@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\ContratRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
@@ -82,12 +84,6 @@ class Contrat
     #[ORM\Column(type: Types::DECIMAL, precision: 10, scale: 2, nullable: true)]
     private ?string $acompte = null;
 
-    #[ORM\Column(type: Types::DECIMAL, precision: 10, scale: 2)]
-    private ?string $firstReglement = null;
-
-    #[ORM\Column(type: Types::DECIMAL, precision: 10, scale: 2, nullable: true)]
-    private ?string $secondReglement = null;
-
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $jourPrelvm = null;
 
@@ -102,6 +98,78 @@ class Contrat
 
     #[ORM\ManyToOne(inversedBy: 'contrats')]
     private ?User $user = null;
+
+    #[ORM\ManyToOne]
+    private ?Product $product = null;
+
+    #[ORM\Column(type: Types::DATE_MUTABLE, nullable: true)]
+    private ?\DateTimeInterface $dateNaissance = null;
+
+    #[ORM\Column(nullable: true)]
+    private ?\DateTimeImmutable $dateAchat = null;
+
+    #[ORM\Column(nullable: true)]
+    private ?\DateTimeImmutable $dateMec = null;
+
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $risqueUsage = null;
+
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $typePermis = null;
+
+    #[ORM\Column(nullable: true)]
+    private ?bool $suspensionPermis = null;
+
+    #[ORM\Column(nullable: true)]
+    private ?\DateTimeImmutable $dateSuspension = null;
+
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $motifSuspension = null;
+
+    #[ORM\Column(nullable: true)]
+    private ?bool $annulationPermis = null;
+
+    #[ORM\Column(nullable: true)]
+    private ?\DateTimeImmutable $dateAnnulation = null;
+
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $motifAnnulation = null;
+
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $crmActuel = null;
+
+    #[ORM\Column(type: Types::DECIMAL, precision: 10, scale: 2, nullable: true)]
+    private ?string $crmRetenu = null;
+
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $garanties = null;
+
+    #[ORM\Column(nullable: true)]
+    private ?bool $facilite = null;
+
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $NmbrReglement = null;
+
+    /**
+     * @var Collection<int, AntcdentAssurance>
+     */
+    #[ORM\OneToMany(targetEntity: AntcdentAssurance::class, mappedBy: 'contrat')]
+    private Collection $antcdAssure;
+
+    /**
+     * @var Collection<int, Regelement>
+     */
+    #[ORM\OneToMany(targetEntity: Regelement::class, mappedBy: 'contrat')]
+    private Collection $regelement;
+
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $NmbrAssure = null;
+
+    public function __construct()
+    {
+        $this->antcdAssure = new ArrayCollection();
+        $this->regelement = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -374,29 +442,7 @@ class Contrat
         return $this;
     }
 
-    public function getFirstReglement(): ?string
-    {
-        return $this->firstReglement;
-    }
 
-    public function setFirstReglement(string $firstReglement): static
-    {
-        $this->firstReglement = $firstReglement;
-
-        return $this;
-    }
-
-    public function getSecondReglement(): ?string
-    {
-        return $this->secondReglement;
-    }
-
-    public function setSecondReglement(?string $secondReglement): static
-    {
-        $this->secondReglement = $secondReglement;
-
-        return $this;
-    }
 
     public function getJourPrelvm(): ?string
     {
@@ -454,6 +500,284 @@ class Contrat
     public function setUser(?User $user): static
     {
         $this->user = $user;
+
+        return $this;
+    }
+
+    public function getProduct(): ?Product
+    {
+        return $this->product;
+    }
+
+    public function setProduct(?Product $product): static
+    {
+        $this->product = $product;
+
+        return $this;
+    }
+
+    public function getDateNaissance(): ?\DateTimeInterface
+    {
+        return $this->dateNaissance;
+    }
+
+    public function setDateNaissance(?\DateTimeInterface $dateNaissance): static
+    {
+        $this->dateNaissance = $dateNaissance;
+
+        return $this;
+    }
+
+    public function getDateAchat(): ?\DateTimeImmutable
+    {
+        return $this->dateAchat;
+    }
+
+    public function setDateAchat(?\DateTimeImmutable $dateAchat): static
+    {
+        $this->dateAchat = $dateAchat;
+
+        return $this;
+    }
+
+    public function getDateMec(): ?\DateTimeImmutable
+    {
+        return $this->dateMec;
+    }
+
+    public function setDateMec(?\DateTimeImmutable $dateMec): static
+    {
+        $this->dateMec = $dateMec;
+
+        return $this;
+    }
+
+    public function getRisqueUsage(): ?string
+    {
+        return $this->risqueUsage;
+    }
+
+    public function setRisqueUsage(?string $risqueUsage): static
+    {
+        $this->risqueUsage = $risqueUsage;
+
+        return $this;
+    }
+
+    public function getTypePermis(): ?string
+    {
+        return $this->typePermis;
+    }
+
+    public function setTypePermis(?string $typePermis): static
+    {
+        $this->typePermis = $typePermis;
+
+        return $this;
+    }
+
+    public function isSuspensionPermis(): ?bool
+    {
+        return $this->suspensionPermis;
+    }
+
+    public function setSuspensionPermis(?bool $suspensionPermis): static
+    {
+        $this->suspensionPermis = $suspensionPermis;
+
+        return $this;
+    }
+
+    public function getDateSuspension(): ?\DateTimeImmutable
+    {
+        return $this->dateSuspension;
+    }
+
+    public function setDateSuspension(?\DateTimeImmutable $dateSuspension): static
+    {
+        $this->dateSuspension = $dateSuspension;
+
+        return $this;
+    }
+
+    public function getMotifSuspension(): ?string
+    {
+        return $this->motifSuspension;
+    }
+
+    public function setMotifSuspension(?string $motifSuspension): static
+    {
+        $this->motifSuspension = $motifSuspension;
+
+        return $this;
+    }
+
+    public function isAnnulationPermis(): ?bool
+    {
+        return $this->annulationPermis;
+    }
+
+    public function setAnnulationPermis(?bool $annulationPermis): static
+    {
+        $this->annulationPermis = $annulationPermis;
+
+        return $this;
+    }
+
+    public function getDateAnnulation(): ?\DateTimeImmutable
+    {
+        return $this->dateAnnulation;
+    }
+
+    public function setDateAnnulation(?\DateTimeImmutable $dateAnnulation): static
+    {
+        $this->dateAnnulation = $dateAnnulation;
+
+        return $this;
+    }
+
+    public function getMotifAnnulation(): ?string
+    {
+        return $this->motifAnnulation;
+    }
+
+    public function setMotifAnnulation(?string $motifAnnulation): static
+    {
+        $this->motifAnnulation = $motifAnnulation;
+
+        return $this;
+    }
+
+    public function getCrmActuel(): ?string
+    {
+        return $this->crmActuel;
+    }
+
+    public function setCrmActuel(?string $crmActuel): static
+    {
+        $this->crmActuel = $crmActuel;
+
+        return $this;
+    }
+
+    public function getCrmRetenu(): ?string
+    {
+        return $this->crmRetenu;
+    }
+
+    public function setCrmRetenu(?string $crmRetenu): static
+    {
+        $this->crmRetenu = $crmRetenu;
+
+        return $this;
+    }
+
+    public function getGaranties(): ?string
+    {
+        return $this->garanties;
+    }
+
+    public function setGaranties(?string $garanties): static
+    {
+        $this->garanties = $garanties;
+
+        return $this;
+    }
+
+
+
+    public function isFacilite(): ?bool
+    {
+        return $this->facilite;
+    }
+
+    public function setFacilite(?bool $facilite): static
+    {
+        $this->facilite = $facilite;
+
+        return $this;
+    }
+
+    public function getNmbrReglement(): ?string
+    {
+        return $this->NmbrReglement;
+    }
+
+    public function setNmbrReglement(?string $NmbrReglement): static
+    {
+        $this->NmbrReglement = $NmbrReglement;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, AntcdentAssurance>
+     */
+    public function getAntcdAssure(): Collection
+    {
+        return $this->antcdAssure;
+    }
+
+    public function addAntcdAssure(AntcdentAssurance $antcdAssure): static
+    {
+        if (!$this->antcdAssure->contains($antcdAssure)) {
+            $this->antcdAssure->add($antcdAssure);
+            $antcdAssure->setContrat($this);
+        }
+
+        return $this;
+    }
+
+    public function removeAntcdAssure(AntcdentAssurance $antcdAssure): static
+    {
+        if ($this->antcdAssure->removeElement($antcdAssure)) {
+            // set the owning side to null (unless already changed)
+            if ($antcdAssure->getContrat() === $this) {
+                $antcdAssure->setContrat(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Regelement>
+     */
+    public function getRegelement(): Collection
+    {
+        return $this->regelement;
+    }
+
+    public function addRegelement(Regelement $regelement): static
+    {
+        if (!$this->regelement->contains($regelement)) {
+            $this->regelement->add($regelement);
+            $regelement->setContrat($this);
+        }
+
+        return $this;
+    }
+
+    public function removeRegelement(Regelement $regelement): static
+    {
+        if ($this->regelement->removeElement($regelement)) {
+            // set the owning side to null (unless already changed)
+            if ($regelement->getContrat() === $this) {
+                $regelement->setContrat(null);
+            }
+        }
+
+        return $this;
+    }
+
+    public function getNmbrAssure(): ?string
+    {
+        return $this->NmbrAssure;
+    }
+
+    public function setNmbrAssure(?string $NmbrAssure): static
+    {
+        $this->NmbrAssure = $NmbrAssure;
 
         return $this;
     }

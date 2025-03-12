@@ -4349,3 +4349,14 @@ ul.chat-available-user li a:hover {
     font-size: 16px;
     cursor: pointer;
 } */
+
+.reglement-item {
+    padding: 15px;
+    border: 1px solid #ddd;
+    margin-bottom: 10px;
+    transition: all 0.3s ease;
+}
+
+[data-reglement-status="removing"] {
+    background-color: #ffe6e6;
+}
