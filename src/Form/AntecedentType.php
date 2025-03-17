@@ -55,7 +55,7 @@ class AntecedentType extends AbstractType
                     'oui' => 'oui',
                     'non' => 'non'
                 ],
-                'expanded' => true,
+                'expanded' => false,
                 'multiple' => false
             ])
             ->add('nbrSinistre', Type\NumberType::class, ['label' => 'Nombre de sinistres'])
@@ -83,7 +83,7 @@ class AntecedentType extends AbstractType
                     'oui' => 'oui',
                     'non' => 'non'
                 ],
-                'expanded' => true,
+                'expanded' => false,
                 'multiple' => false
             ])
             ->add(
@@ -111,7 +111,7 @@ class AntecedentType extends AbstractType
                     'oui' => 'oui',
                     'non' => 'non'
                 ],
-                'expanded' => true,
+                'expanded' => false,
                 'multiple' => false
             ])
             ->add('volIncendie', Type\ChoiceType::class, [
@@ -121,7 +121,7 @@ class AntecedentType extends AbstractType
                     'oui' => 'oui',
                     'non' => 'non'
                 ],
-                'expanded' => true,
+                'expanded' => false,
                 'multiple' => false
             ])
             ->add('crmAct', Type\TextType::class, [

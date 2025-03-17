@@ -1,6 +1,6 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Ajouter Prospect
+{% block title %}Ajouter Contrat
 {% endblock %}
 
 {% block body %}
@@ -17,7 +17,7 @@
 
 	<section class="content-header ">
 		<h1>
-			Prospects
+			Contrats
 			<small>Ajouter</small>
 		</h1>
 		<ol class="breadcrumb">
@@ -29,9 +29,9 @@
 			<li>
 				<a href="{{ path('app_prospect_index') }}">
 					<i class="fa fa-users"></i>
-					Tous les Prospects</a>
+					Tous les Contrats</a>
 			</li>
-			<li class="active">Ajouter un Prospect</li>
+			<li class="active">Ajouter un Contrat</li>
 		</ol>
 	</section>
 
@@ -51,7 +51,8 @@
 	<script type="text/javascript">
 
 
-		document.addEventListener('DOMContentLoaded', function () {
+		// champ regelemen et anticip
+document.addEventListener('DOMContentLoaded', function () {
 const reglementSelect = document.querySelector('[name="contrat[NmbrReglement]"]');
 const container = document.getElementById('reglements-container');
 
@@ -101,6 +102,76 @@ containerAssure.appendChild(div);
 containerAssure.dataset.index ++;
 }
 });
+});
+
+// select dynamique des champs
+document.addEventListener("DOMContentLoaded", function () { // Récupérer les éléments du DOM
+var typeContratField = document.getElementById("{{ form.typeContrat.vars.id }}");
+var typeConducteurField = document.getElementById("{{ form.typeConducteur.vars.id }}");
+var productField = document.getElementById("{{ form.product.vars.id }}");
+
+var subcategoryContainer = document.getElementById("subcategory-container");
+var subcategoryActivites = document.getElementById("subcategory-activite");
+
+var subcategoryconducteur = document.getElementById("subcategory-conducteur");
+var subcategorytypePermis = document.getElementById("subcategory-typePermis");
+var subcategorydatePermis = document.getElementById("subcategory-datePermis");
+
+// Fonction pour gérer la visibilité des champs en fonction de typeContrat
+function handleTypeContratChange() {
+if (typeContratField.value === 'Particulier') {
+subcategoryContainer.style.display = "none"; // Masquer le champ
+subcategoryActivites.style.display = "none"; // Masquer le champ
+} else {
+subcategoryContainer.style.display = "block"; // Afficher le champ
+subcategoryActivites.style.display = "block"; // Afficher le champ
+}
+}
+
+// Fonction pour gérer la visibilité des champs en fonction de typeConducteur
+function handleTypeConducteurChange() {
+if (typeConducteurField.value === 'Multiconducteur') {
+subcategoryconducteur.style.display = "none"; // Masquer le champ
+subcategorytypePermis.style.display = "none"; // Masquer le champ
+subcategorydatePermis.style.display = "none"; // Masquer le champ
+} else {
+subcategoryconducteur.style.display = "block"; // Afficher le champ
+subcategorytypePermis.style.display = "block"; // Afficher le champ
+subcategorydatePermis.style.display = "block"; // Afficher le champ
+}
+}
+
+// Fonction pour gérer la visibilité des champs en fonction de Product
+function handleProductChange() {
+if (productField.value === '1' || productField.value === '22') {
+subcategoryconducteur.style.display = "none";
+subcategorytypePermis.style.display = "none";
+subcategorydatePermis.style.display = "none";
+} else {
+subcategoryconducteur.style.display = "block"; // Afficher le champ
+subcategorytypePermis.style.display = "block"; // Afficher le champ
+subcategorydatePermis.style.display = "block"; // Afficher le champ
+}
+}
+
+// Écouter les changements de typeContrat
+if (typeContratField) {
+typeContratField.addEventListener("change", handleTypeContratChange);
+}
+
+// Écouter les changements de typeConducteur
+if (typeConducteurField) {
+typeConducteurField.addEventListener("change", handleTypeConducteurChange);
+}
+// Écouter les changements de Product
+if (productField) {
+productField.addEventListener("change", handleProductChange);
+}
+
+// Appliquer les règles initiales au chargement de la page
+handleTypeContratChange();
+handleTypeConducteurChange();
+handleProductChange();
 });
 	</script>
 {% endblock %}

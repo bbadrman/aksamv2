@@ -24,13 +24,13 @@ class Product
     /**
      * @var Collection<int, User>
      */
-    #[ORM\ManyToMany(targetEntity: User::class, mappedBy: 'products')]
+    #[ORM\ManyToMany(targetEntity: User::class, mappedBy: 'products', cascade: ['remove'])]
     private Collection $users;
 
     /**
      * @var Collection<int, Prospect>
      */
-    #[ORM\OneToMany(targetEntity: Prospect::class, mappedBy: 'product')]
+    #[ORM\OneToMany(targetEntity: Prospect::class, mappedBy: 'product', cascade: ['remove'])]
     private Collection $prospects;
 
     public function __construct()

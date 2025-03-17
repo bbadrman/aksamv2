@@ -27,100 +27,60 @@
 			<u>Souscripteur:</u>
 		</h3>
 		<div class="col-sm-2">
+			{{ form_row(form.product, {'attr': {'class': 'form-control', 'id': 'product'}}) }}
+		</div>
+		<div class="col-sm-2">
+			{{ form_row(form.typeContrat, {'attr': {'class': 'form-control', 'id': 'typeContrat'}}) }}
+		</div>
+		<div class="col-sm-2">
+			{{ form_row(form.typeProduct, {'attr': {'class': 'form-control'}}) }}
+		</div>
+		<div id="subcategory-activite" class="col-sm-2" style="display: none">
+			{{ form_row(form.activite, {'attr': {'class': 'form-control', 'id': 'activite'}}) }}
+		</div>
+		<div id="subcategory-container" class="col-sm-2" style="display: none">
+			{{ form_row(form.raisonSociale, {'attr': {'class': 'form-control', 'id': 'raisonSociale'}}) }}
+		</div>
+		<div class="col-sm-2">
 			{{ form_row(form.nom, {'attr': {'class': 'form-control'}}) }}
 		</div>
 		<div class="col-sm-2">
 			{{ form_row(form.prenom, {'attr': {'class': 'form-control'}}) }}
 		</div>
 		<div class="col-sm-2">
-			{{ form_row(form.raisonSociale, {'attr': {'class': 'form-control'}}) }}
+			{{ form_row(form.dateNaissance, {'attr': {'class': 'form-control'}}) }}
 		</div>
+
 		<div class="col-sm-2">
 			{{ form_row(form.dateSouscrpt, {'attr': {'class': 'form-control'}}) }}
 		</div>
 		<div class="col-sm-2">
 			{{ form_row(form.dateEffet, {'attr': {'class': 'form-control'}}) }}
 		</div>
-		<div class="col-sm-2">
-			{{ form_row(form.activite, {'attr': {'class': 'form-control'}}) }}
-		</div>
+
 	</div>
 	<!-- Ligne 2 -->
-	<div class="form-group row">
-
-		<div class="col-sm-2">
-			{{ form_row(form.imatriclt, {'attr': {'class': 'form-control'}}) }}
-		</div>
-		<div class="col-sm-2">
-			{{ form_row(form.partenaire, {'attr': {'class': 'form-control'}}) }}
-		</div>
-		<div class="col-sm-2">
-			{{ form_row(form.compagnie, {'attr': {'class': 'form-control'}}) }}
-		</div>
-		<div class="col-sm-2">
-			{{ form_row(form.formule, {'attr': {'class': 'form-control'}}) }}
-		</div>
-		<div class="col-sm-2">
-			{{ form_row(form.fraction, {'attr': {'class': 'form-control'}}) }}
-		</div>
-		<div class="col-sm-2">
-			{{ form_row(form.frais, {'attr': {'class': 'form-control'}}) }}
-		</div>
-	</div>
-	<!-- Ligne 3 -->
 	<div class="form-group row">
 		<h3>
 			<u>Rique à assurer:</u>
 		</h3>
 		<div class="col-sm-2">
-			{{ form_row(form.etat, {'attr': {'class': 'form-control'}}) }}
+			{{ form_row(form.imatriclt, {'attr': {'class': 'form-control'}}) }}
 		</div>
 		<div class="col-sm-2">
-			{{ form_row(form.typeConducteur, {'attr': {'class': 'form-control'}}) }}
+			{{ form_row(form.typeConducteur, {'attr': {'class': 'form-control', 'id': 'typeConducteur'}}) }}
+		</div>
+		<div id="subcategory-conducteur" class="col-sm-2" style="display: none">
+			{{ form_row(form.conducteur, {'attr': {'class': 'form-control', 'id': 'conducteur'}}) }}
+		</div>
+		<div id="subcategory-typePermis" class="col-sm-2" style="display: none">
+			{{ form_row(form.typePermis, {'attr': {'class': 'form-control', 'id': 'typePermis'}}) }}
+		</div>
+		<div id="subcategory-datePermis" class="col-sm-2" style="display: none">
+			{{ form_row(form.datePermis, {'attr': {'class': 'form-control', 'id': 'datePermis'}}) }}
 		</div>
 		<div class="col-sm-2">
-			{{ form_row(form.conducteur, {'attr': {'class': 'form-control'}}) }}
-		</div>
-		<div class="col-sm-2">
-			{{ form_row(form.datePermis, {'attr': {'class': 'form-control'}}) }}
-		</div>
-		<div class="col-sm-2">
-			{{ form_row(form.comment, {'attr': {'class': 'form-control'}}) }}
-		</div>
-		<div class="col-sm-2">
-			{{ form_row(form.cotisation, {'attr': {'class': 'form-control'}}) }}
-		</div>
-	</div>
-	<!-- Ligne 4 -->
-	<div class="form-group row">
 
-
-		<div class="col-sm-2">
-			{{ form_row(form.acompte, {'attr': {'class': 'form-control'}}) }}
-		</div>
-		<div class="col-sm-2">
-			{{ form_row(form.jourPrelvm, {'attr': {'class': 'form-control'}}) }}
-		</div>
-		<div class="col-sm-2">
-			{{ form_row(form.typeProduct, {'attr': {'class': 'form-control'}}) }}
-		</div>
-		<div class="col-sm-2">
-			{{ form_row(form.datePreleveAcompte, {'attr': {'class': 'form-control'}}) }}
-		</div>
-		<div class="col-sm-2">
-			{{ form_row(form.product, {'attr': {'class': 'form-control'}}) }}
-		</div>
-		<div class="col-sm-2">
-			{{ form_row(form.dateNaissance, {'attr': {'class': 'form-control'}}) }}
-		</div>
-	</div>
-
-	<!-- Ligne 5 -->
-	<div class="form-group row">
-		<div class="col-sm-2">
-			<h3>
-				<u>Proposition:</u>
-			</h3>
 			{{ form_row(form.dateAchat, {'attr': {'class': 'form-control'}}) }}
 		</div>
 		<div class="col-sm-2">
@@ -129,18 +89,13 @@
 		<div class="col-sm-2">
 			{{ form_row(form.risqueUsage, {'attr': {'class': 'form-control'}}) }}
 		</div>
-		<div class="col-sm-2">
-			{{ form_row(form.typePermis, {'attr': {'class': 'form-control'}}) }}
-		</div>
+
 		<div class="col-sm-2">
 			{{ form_row(form.suspensionPermis, {'attr': {'class': 'form-control'}}) }}
 		</div>
 		<div class="col-sm-2">
 			{{ form_row(form.dateSuspension, {'attr': {'class': 'form-control'}}) }}
 		</div>
-	</div>
-	<!-- Ligne 6 -->
-	<div class="form-group row">
 		<div class="col-sm-2">
 			{{ form_row(form.motifSuspension, {'attr': {'class': 'form-control'}}) }}
 		</div>
@@ -156,109 +111,171 @@
 		<div class="col-sm-2">
 			{{ form_row(form.crmActuel, {'attr': {'class': 'form-control'}}) }}
 		</div>
-		<div class="col-sm-2">
-			{{ form_row(form.crmRetenu, {'attr': {'class': 'form-control'}}) }}
-		</div>
+
+
 	</div>
-	<!-- Ligne 8 -->
+	<!-- Ligne 3 -->
 	<div class="form-group row">
-
-		<div class="col-sm-2">
-			{{ form_row(form.garanties, {'attr': {'class': 'form-control'}}) }}
-		</div>
-		<div class="col-sm-2">
-			{{ form_row(form.facilite, {'attr': {'class': 'form-control'}}) }}
-		</div>
-
-		<div class="col-sm-2">
-			{{ form_row(form.typeContrat, {'attr': {'class': 'form-control'}}) }}
-		</div>
-		<div class="col-sm-2">
-			{{ form_row(form.status, {'attr': {'class': 'form-control'}}) }}
-		</div>
-		<div class="col-sm-2">
-			{{ form_row(form.NmbrReglement, {'attr': {'class': 'form-control', 'id': 'contrat-nombre-reglement'}}) }}
-
-		</div>
+		<h3>
+			<u>Antecedent d'assurances:</u>
+		</h3>
 		<div class="col-sm-2">
 			{{ form_row(form.NmbrAssure, {'attr': {'class': 'form-control', 'id': 'contrat-nombre-assureur'}}) }}
 
 		</div>
 
+		<!-- Conteneur pour les champs dynamiques d'assureur -->
+		<div id="antcdAssure-container" data-prototype="
+																																																																																																																																																																													{%- set prototype_assure = form.antcdAssure.vars.prototype %}
+																																																																																																																																																																													{%- set prototype_assureur = form_row(prototype_assure.assureur) %}
+																																																																																																																																																																													{%- set prototype_nbrMois = form_row(prototype_assure.nbrMois) %}
+																																																																																																																																																																													{%- set prototype_etatContrat = form_row(prototype_assure.etatContrat) %}
+																																																																																																																																																																													{%- set prototype_sinistres = form_row(prototype_assure.sinistres) %}
+																																																																																																																																																																													{%- set prototype_nbrSinistre = form_row(prototype_assure.nbrSinistre) %}
+																																																																																																																																																																													{%- set prototype_typeSinistre = form_row(prototype_assure.typeSinistre) %}
+																																																																																																																																																																													{%- set prototype_responsable = form_row(prototype_assure.responsable) %}
+																																																																																																																																																																													{%- set prototype_pourcentResp = form_row(prototype_assure.pourcentResp) %}
+																																																																																																																																																																													{%- set prototype_brisGlace = form_row(prototype_assure.brisGlace) %}
+																																																																																																																																																																													{%- set prototype_volIncendie = form_row(prototype_assure.volIncendie) %}
+																																																																																																																																																																													{%- set prototype_crmAct = form_row(prototype_assure.crmAct) %}
+																																																																																																																																																																													{%- set prototype_html %}
+			
+																																																																																																																																																																													<div class='form-group row antcdAssure-item'>
+																																																																																																																																																																														<div class='col-sm-2'>{{ prototype_assureur|raw }}</div>
+																																																																																																																																																																														<div class='col-sm-1'>{{ prototype_nbrMois|raw }}</div>
+																																																																																																																																																																														<div class='col-sm-2'>{{ prototype_etatContrat|raw }}</div>
+																																																																																																																																																																														<div class='col-sm-1'>{{ prototype_sinistres|raw }}</div>
+																																																																																																																																																																														<div class='col-sm-1'>{{ prototype_nbrSinistre|raw }}</div>
+																																																																																																																																																																														<div class='col-sm-2'>{{ prototype_typeSinistre|raw }}</div>
+																																																																																																																																																																														<div class='col-sm-1'>{{ prototype_responsable|raw }}</div>
+																																																																																																																																																																														<div class='col-sm-1'>{{ prototype_pourcentResp|raw }}</div>
+																																																																																																																																																																														<div class='col-sm-1'>{{ prototype_brisGlace|raw }}</div>
+																																																																																																																																																																														<div class='col-sm-1'>{{ prototype_volIncendie|raw }}</div>
+																																																																																																																																																																														<div class='col-sm-2'>{{ prototype_crmAct|raw }}</div>
+																																																																																																																																																																													</div>
+																																																																																																																																																																													{% endset -%}
+																																																																																																																																																																													{{ prototype_html|e('html_attr') }}" data-index="{{ form.antcdAssure|length }}">
+			{% for antcd in form.antcdAssure %}
+				<div class="form-group row antcdAssure-item">
+					<div class="col-sm-2">{{ form_row(antcd.assureur) }}</div>
+					<div class="col-sm-1">{{ form_row(antcd.nbrMois) }}</div>
+					<div class="col-sm-2">{{ form_row(antcd.etatContrat) }}</div>
+					<div class="col-sm-1">{{ form_row(antcd.sinistres) }}</div>
+					<div class="col-sm-1">{{ form_row(antcd.nbrSinistre) }}</div>
+					<div class="col-sm-2">{{ form_row(antcd.typeSinistre) }}</div>
+					<div class="col-sm-1">{{ form_row(antcd.responsable) }}</div>
+					<div class="col-sm-1">{{ form_row(antcd.pourcentResp) }}</div>
+					<div class="col-sm-1">{{ form_row(antcd.brisGlace) }}</div>
+					<div class="col-sm-1">{{ form_row(antcd.volIncendie) }}</div>
+					<div class="col-sm-2">{{ form_row(antcd.crmAct) }}</div>
+				</div>
+			{% endfor %}
+		</div>
+
+	</div>
+	<!-- Ligne 4 -->
+	<div class="form-group row">
+		<h3>
+			<u>Proposition:</u>
+		</h3>
+
+		<div class="col-sm-2">
+			{{ form_row(form.compagnie, {'attr': {'class': 'form-control'}}) }}
+		</div>
+		<div class="col-sm-2">
+			{{ form_row(form.partenaire, {'attr': {'class': 'form-control'}}) }}
+		</div>
+		<div class="col-sm-2">
+			{{ form_row(form.formule, {'attr': {'class': 'form-control'}}) }}
+		</div>
+		<div class="col-sm-1">
+			{{ form_row(form.cotisation, {'attr': {'class': 'form-control'}}) }}
+		</div>
+		<div class="col-sm-2">
+			{{ form_row(form.fraction, {'attr': {'class': 'form-control'}}) }}
+		</div>
+		<div class="col-sm-2">
+			{{ form_row(form.crmRetenu, {'attr': {'class': 'form-control'}}) }}
+		</div>
+		<div class="col-sm-1">
+			{{ form_row(form.garanties, {'attr': {'class': 'form-control'}}) }}
+		</div>
+
 	</div>
 
-	<!-- Conteneur pour les champs dynamiques de regelement -->
-	<div id="reglements-container" data-prototype="
-				{%- set prototype_regelement = form.regelement.vars.prototype %}
-				{%- set prototype_montant = form_row(prototype_regelement.montantReglement) %}
-				{%- set prototype_date = form_row(prototype_regelement.dateReglement) %}
-				{%- set prototype_transaction = form_row(prototype_regelement.transaction) %}
-				{%- set prototype_moyen = form_row(prototype_regelement.moyen) %}
-				{%- set prototype_html %}
-				<div class='form-group row reglement-item'>
-					<h3><u>Paiment:</u></h3>
-					<div class='col-sm-3'>{{ prototype_montant|raw }}</div>
-					<div class='col-sm-3'>{{ prototype_date|raw }}</div>
-					<div class='col-sm-3'>{{ prototype_transaction|raw }}</div>
-					<div class='col-sm-3'>{{ prototype_moyen|raw }}</div>
+	<!-- Ligne 5 -->
+	<div class="form-group row">
+		<h3>
+			<u>Paiment:</u>
+		</h3>
+		<div class="col-sm-2">
+			{{ form_row(form.acompte, {'attr': {'class': 'form-control'}}) }}
+		</div>
+		<div class="col-sm-2">
+			{{ form_row(form.datePreleveAcompte, {'attr': {'class': 'form-control'}}) }}
+		</div>
+		<div class="col-sm-2">
+			{{ form_row(form.jourPrelvm, {'attr': {'class': 'form-control'}}) }}
+		</div>
+		<div class="col-sm-2">
+			{{ form_row(form.frais, {'attr': {'class': 'form-control'}}) }}
+		</div>
+		<div class="col-sm-2">
+			{{ form_row(form.facilite, {'attr': {'class': 'form-control'}}) }}
+		</div>
+		<div class="col-sm-2">
+			{{ form_row(form.NmbrReglement, {'attr': {'class': 'form-control', 'id': 'contrat-nombre-reglement'}}) }}
+
+		</div>
+		<!-- Conteneur pour les champs dynamiques de regelement -->
+		<div id="reglements-container" data-prototype="
+																																																																																																																																																																														{%- set prototype_regelement = form.regelement.vars.prototype %}
+																																																																																																																																																																														{%- set prototype_montant = form_row(prototype_regelement.montantReglement) %}
+																																																																																																																																																																														{%- set prototype_date = form_row(prototype_regelement.dateReglement) %}
+																																																																																																																																																																														{%- set prototype_transaction = form_row(prototype_regelement.transaction) %}
+																																																																																																																																																																														{%- set prototype_moyen = form_row(prototype_regelement.moyen) %}
+																																																																																																																																																																														{%- set prototype_html %}
+																																																																																																																																																																														<div class='form-group row reglement-item'>
+			
+																																																																																																																																																																															<div class='col-sm-3'>{{ prototype_montant|raw }}</div>
+																																																																																																																																																																															<div class='col-sm-3'>{{ prototype_date|raw }}</div>
+																																																																																																																																																																															<div class='col-sm-3'>{{ prototype_transaction|raw }}</div>
+																																																																																																																																																																															<div class='col-sm-3'>{{ prototype_moyen|raw }}</div>
+																																																																																																																																																																														</div>
+																																																																																																																																																																														{% endset -%}
+																																																																																																																																																																														{{ prototype_html|e('html_attr') }}" data-index="{{ form.regelement|length }}">
+			{% for regelement in form.regelement %}
+				<div class="form-group row reglement-item">
+					<div class="col-sm-3">{{ form_row(regelement.montantReglement) }}</div>
+					<div class="col-sm-3">{{ form_row(regelement.dateReglement) }}</div>
+					<div class="col-sm-3">{{ form_row(regelement.transaction) }}</div>
+					<div class="col-sm-3">{{ form_row(regelement.moyen) }}</div>
 				</div>
-				{% endset -%}
-				{{ prototype_html|e('html_attr') }}" data-index="{{ form.regelement|length }}">
-		{% for regelement in form.regelement %}
-			<div class="form-group row reglement-item">
-				<div class="col-sm-3">{{ form_row(regelement.montantReglement) }}</div>
-				<div class="col-sm-3">{{ form_row(regelement.dateReglement) }}</div>
-				<div class="col-sm-3">{{ form_row(regelement.transaction) }}</div>
-				<div class="col-sm-3">{{ form_row(regelement.moyen) }}</div>
-			</div>
-		{% endfor %}
+			{% endfor %}
+		</div>
+
 	</div>
-	<!-- Conteneur pour les champs dynamiques d'antcdAssure -->
-	<div id="antcdAssure-container" data-prototype="
-				{%- set prototype_assure = form.antcdAssure.vars.prototype %}
-				{%- set prototype_assureur = form_row(prototype_assure.assureur) %}
-				{%- set prototype_nbrMois = form_row(prototype_assure.nbrMois) %}
-				{%- set prototype_etatContrat = form_row(prototype_assure.etatContrat) %}
-				{%- set prototype_sinistres = form_row(prototype_assure.sinistres) %}
-				{%- set prototype_nbrSinistre = form_row(prototype_assure.nbrSinistre) %}
-				{%- set prototype_typeSinistre = form_row(prototype_assure.typeSinistre) %}
-				{%- set prototype_responsable = form_row(prototype_assure.responsable) %}
-				{%- set prototype_pourcentResp = form_row(prototype_assure.pourcentResp) %}
-				{%- set prototype_brisGlace = form_row(prototype_assure.brisGlace) %}
-				{%- set prototype_volIncendie = form_row(prototype_assure.volIncendie) %}
-				{%- set prototype_crmAct = form_row(prototype_assure.crmAct) %}
-				{%- set prototype_html %}
-				<h3><u>Antecedent d'assurances:</u></h3>
-				<div class='form-group row antcdAssure-item'>
-					<div class='col-sm-2'>{{ prototype_assureur|raw }}</div>
-					<div class='col-sm-1'>{{ prototype_nbrMois|raw }}</div>
-					<div class='col-sm-2'>{{ prototype_etatContrat|raw }}</div>
-					<div class='col-sm-1'>{{ prototype_sinistres|raw }}</div>
-					<div class='col-sm-1'>{{ prototype_nbrSinistre|raw }}</div>
-					<div class='col-sm-2'>{{ prototype_typeSinistre|raw }}</div>
-					<div class='col-sm-1'>{{ prototype_responsable|raw }}</div>
-					<div class='col-sm-1'>{{ prototype_pourcentResp|raw }}</div>
-					<div class='col-sm-1'>{{ prototype_brisGlace|raw }}</div>
-					<div class='col-sm-1'>{{ prototype_volIncendie|raw }}</div>
-					<div class='col-sm-1'>{{ prototype_crmAct|raw }}</div>
-				</div>
-				{% endset -%}
-				{{ prototype_html|e('html_attr') }}" data-index="{{ form.antcdAssure|length }}">
-		{% for antcd in form.antcdAssure %}
-			<div class="form-group row antcdAssure-item">
-				<div class="col-sm-2">{{ form_row(antcd.assureur) }}</div>
-				<div class="col-sm-1">{{ form_row(antcd.nbrMois) }}</div>
-				<div class="col-sm-2">{{ form_row(antcd.etatContrat) }}</div>
-				<div class="col-sm-1">{{ form_row(antcd.sinistres) }}</div>
-				<div class="col-sm-1">{{ form_row(antcd.nbrSinistre) }}</div>
-				<div class="col-sm-2">{{ form_row(antcd.typeSinistre) }}</div>
-				<div class="col-sm-1">{{ form_row(antcd.responsable) }}</div>
-				<div class="col-sm-1">{{ form_row(antcd.pourcentResp) }}</div>
-				<div class="col-sm-1">{{ form_row(antcd.brisGlace) }}</div>
-				<div class="col-sm-1">{{ form_row(antcd.volIncendie) }}</div>
-				<div class="col-sm-1">{{ form_row(antcd.crmAct) }}</div>
+	<!-- Ligne 6 -->
+	<div class="form-group row"></div>
+	<!-- Ligne 8 -->
+	<div class="form-group row">
+
+		<div class="col-sm-2">
+			{{ form_row(form.etat, {'attr': {'class': 'form-control'}}) }}
+		</div>
+
+		<div class="col-sm-4">
+			{{ form_row(form.comment, {'attr': {'class': 'form-control'}}) }}
+		</div>
+		{% if is_granted('ROLE_VALID_CONTRT') is same as true and app.user is not same as contrat.user %}
+			<div class="col-sm-1">
+				{{ form_row(form.status, {'attr': {'class': 'form-control'}}) }}
 			</div>
-		{% endfor %}
+		{% else %}
+			<div class="col-sm-1" style="display: none">{{ form_row(form.status) }}</div>
+
+		{% endif %}
+
 	</div>
 
 

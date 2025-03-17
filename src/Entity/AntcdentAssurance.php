@@ -17,8 +17,6 @@ class AntcdentAssurance
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $assureur = null;
 
-    #[ORM\Column(type: Types::DECIMAL, precision: 10, scale: 2, nullable: true)]
-    private ?string $nbrMois = null;
 
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $etatContrat = null;
@@ -50,6 +48,9 @@ class AntcdentAssurance
     #[ORM\ManyToOne(inversedBy: 'antcdAssure')]
     private ?Contrat $contrat = null;
 
+    #[ORM\Column(nullable: true)]
+    private ?int $nbrMois = null;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -67,17 +68,7 @@ class AntcdentAssurance
         return $this;
     }
 
-    public function getNbrMois(): ?string
-    {
-        return $this->nbrMois;
-    }
 
-    public function setNbrMois(?string $nbrMois): static
-    {
-        $this->nbrMois = $nbrMois;
-
-        return $this;
-    }
 
     public function getEtatContrat(): ?string
     {
@@ -195,6 +186,18 @@ class AntcdentAssurance
     public function setContrat(?Contrat $contrat): static
     {
         $this->contrat = $contrat;
+
+        return $this;
+    }
+
+    public function getNbrMois(): ?int
+    {
+        return $this->nbrMois;
+    }
+
+    public function setNbrMois(?int $nbrMois): static
+    {
+        $this->nbrMois = $nbrMois;
 
         return $this;
     }

@@ -30,6 +30,15 @@ final class ContratController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            foreach ($contrat->getAntcdAssure() as $antcdAssure) {
+                $entityManager->persist($antcdAssure);
+            }
+
+            foreach ($contrat->getRegelement() as $regelement) {
+                $entityManager->persist($regelement);
+            }
+
+
             $entityManager->persist($contrat);
             $entityManager->flush();
 
@@ -71,7 +80,7 @@ final class ContratController extends AbstractController
     #[Route('/{id}', name: 'app_contrat_delete', methods: ['POST'])]
     public function delete(Request $request, Contrat $contrat, EntityManagerInterface $entityManager): Response
     {
-        if ($this->isCsrfTokenValid('delete'.$contrat->getId(), $request->getPayload()->getString('_token'))) {
+        if ($this->isCsrfTokenValid('delete' . $contrat->getId(), $request->getPayload()->getString('_token'))) {
             $entityManager->remove($contrat);
             $entityManager->flush();
         }

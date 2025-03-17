@@ -25,8 +25,8 @@ class Contrat
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $raisonSociale = null;
 
-    #[ORM\Column(length: 255, nullable: true)]
-    private ?string $dateSouscrpt = null;
+    #[ORM\Column(type: Types::DATETIME_MUTABLE, nullable: true)]
+    private ?\DateTimeInterface $dateSouscrpt = null;
 
     #[ORM\Column(type: Types::DATETIME_MUTABLE, nullable: true)]
     private ?\DateTimeInterface $dateEffet = null;
@@ -40,11 +40,7 @@ class Contrat
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $imatriclt = null;
 
-    #[ORM\Column(length: 255, nullable: true)]
-    private ?string $partenaire = null;
 
-    #[ORM\Column(length: 255, nullable: true)]
-    private ?string $compagnie = null;
 
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $formule = null;
@@ -153,17 +149,23 @@ class Contrat
     /**
      * @var Collection<int, AntcdentAssurance>
      */
-    #[ORM\OneToMany(targetEntity: AntcdentAssurance::class, mappedBy: 'contrat')]
+    #[ORM\OneToMany(targetEntity: AntcdentAssurance::class, mappedBy: 'contrat', cascade: ['persist', 'remove'])]
     private Collection $antcdAssure;
 
     /**
      * @var Collection<int, Regelement>
      */
-    #[ORM\OneToMany(targetEntity: Regelement::class, mappedBy: 'contrat')]
+    #[ORM\OneToMany(targetEntity: Regelement::class, mappedBy: 'contrat', cascade: ['persist', 'remove'])]
     private Collection $regelement;
 
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $NmbrAssure = null;
+
+    #[ORM\ManyToOne(inversedBy: 'contrats')]
+    private ?Compartenaire $compagnie = null;
+
+    #[ORM\ManyToOne(inversedBy: 'contrats')]
+    private ?Compartenaire $partenaire = null;
 
     public function __construct()
     {
@@ -212,12 +214,12 @@ class Contrat
         return $this;
     }
 
-    public function getDateSouscrpt(): ?string
+    public function getDateSouscrpt(): ?\DateTimeInterface
     {
         return $this->dateSouscrpt;
     }
 
-    public function setDateSouscrpt(?string $dateSouscrpt): static
+    public function setDateSouscrpt(?\DateTimeInterface $dateSouscrpt): static
     {
         $this->dateSouscrpt = $dateSouscrpt;
 
@@ -272,29 +274,7 @@ class Contrat
         return $this;
     }
 
-    public function getPartenaire(): ?string
-    {
-        return $this->partenaire;
-    }
 
-    public function setPartenaire(?string $partenaire): static
-    {
-        $this->partenaire = $partenaire;
-
-        return $this;
-    }
-
-    public function getCompagnie(): ?string
-    {
-        return $this->compagnie;
-    }
-
-    public function setCompagnie(?string $compagnie): static
-    {
-        $this->compagnie = $compagnie;
-
-        return $this;
-    }
 
     public function getFormule(): ?string
     {
@@ -778,6 +758,30 @@ class Contrat
     public function setNmbrAssure(?string $NmbrAssure): static
     {
         $this->NmbrAssure = $NmbrAssure;
+
+        return $this;
+    }
+
+    public function getCompagnie(): ?Compartenaire
+    {
+        return $this->compagnie;
+    }
+
+    public function setCompagnie(?Compartenaire $compagnie): static
+    {
+        $this->compagnie = $compagnie;
+
+        return $this;
+    }
+
+    public function getPartenaire(): ?Compartenaire
+    {
+        return $this->partenaire;
+    }
+
+    public function setPartenaire(?Compartenaire $partenaire): static
+    {
+        $this->partenaire = $partenaire;
 
         return $this;
     }

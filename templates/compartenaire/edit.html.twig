@@ -1,0 +1,13 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Edit Compartenaire{% endblock %}
+
+{% block body %}
+    <h1>Edit Compartenaire</h1>
+
+    {{ include('compartenaire/_form.html.twig', {'button_label': 'Update'}) }}
+
+    <a href="{{ path('app_compartenaire_index') }}">back to list</a>
+
+    {{ include('compartenaire/_delete_form.html.twig') }}
+{% endblock %}

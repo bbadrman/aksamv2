@@ -1,0 +1,11 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}New Compartenaire{% endblock %}
+
+{% block body %}
+    <h1>Create new Compartenaire</h1>
+
+    {{ include('compartenaire/_form.html.twig') }}
+
+    <a href="{{ path('app_compartenaire_index') }}">back to list</a>
+{% endblock %}

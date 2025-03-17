@@ -2,6 +2,7 @@
 
 namespace App\Form;
 
+use App\Entity\Compartenaire;
 use App\Entity\Contrat;
 use App\Entity\Product;
 use App\Entity\User;
@@ -24,7 +25,7 @@ class ContratType extends AbstractType
 
                     'placeholder' => 'Tapez le Nom du Client'
                 ],
-                'required' => true,
+                'required' => false,
             ])
             ->add('prenom', Type\TextType::class, [
                 'label' => 'Prénom ',
@@ -33,7 +34,7 @@ class ContratType extends AbstractType
 
                     'placeholder' => 'Tapez le Prénom du Client'
                 ],
-                'required' => true,
+                'required' => false,
             ])
             ->add('raisonSociale', Type\TextType::class, [
                 'label' => 'Raison sociale ',
@@ -52,24 +53,24 @@ class ContratType extends AbstractType
                 'attr' => [
                     'placeholder' => "date format: yyyy-mm-dd."
                 ],
-                'required' => true,
+                'required' => false,
             ])
             ->add('dateEffet', Type\DateType::class, [
-                'label' => "Date effet :",
+                'label' => "Date d'effet :",
                 'disabled' => false,
 
                 'widget' => 'single_text',
                 'attr' => [
                     'placeholder' => "date format: yyyy-mm-dd."
                 ],
-                'required' => true,
+                'required' => false,
             ])
             ->add(
                 'typeContrat',
                 Type\ChoiceType::class,
                 [
                     'label' => 'Type Contrat ',
-                    'required' => true,
+                    'required' => false,
                     'disabled' => false,
                     'placeholder' => '--Merci de selectie-- ',
                     'choices' => [
@@ -122,8 +123,8 @@ class ContratType extends AbstractType
                 ],
                 'required' => false
             ])
-            ->add('partenaire')
-            ->add('compagnie')
+
+
             ->add(
                 'formule',
                 Type\ChoiceType::class,
@@ -155,7 +156,7 @@ class ContratType extends AbstractType
                 Type\ChoiceType::class,
                 [
                     'label' => 'Fractionnement ',
-                    'required' => true,
+                    'required' => false,
                     'disabled' => false,
                     'placeholder' => '--Merci de selectie-- ',
                     'choices' => [
@@ -210,7 +211,7 @@ class ContratType extends AbstractType
                     'divisor' => 100,
 
                 ],
-                'required' => true,
+                'required' => false,
 
             ])
             ->add(
@@ -238,7 +239,7 @@ class ContratType extends AbstractType
                 Type\ChoiceType::class,
                 [
                     'label' => 'Type Conducteur ',
-                    'required' => true,
+                    'required' => false,
                     'disabled' => false,
                     'placeholder' => '--Merci de selectie-- ',
                     'choices' => [
@@ -271,8 +272,8 @@ class ContratType extends AbstractType
                 'required' => false
             ])
             ->add('status',  Type\ChoiceType::class, [
-                'label' => 'status',
-                'required' => true,
+                'label' => 'Status',
+                'required' => false,
                 'disabled' => true,
                 'choices' => [
                     'Valider' => 1,
@@ -290,7 +291,7 @@ class ContratType extends AbstractType
 
             ->add('cotisation', Type\MoneyType::class, [
                 'label' => 'Cotisation  ',
-                'required' => true,
+                'required' => false,
                 'disabled' => false,
                 'currency' => false,
                 'attr' => [
@@ -361,7 +362,7 @@ class ContratType extends AbstractType
             )
             ->add('typeProduct', Type\ChoiceType::class, [
                 'label' => 'Type Produit',
-                'required' => true,
+                'required' => false,
                 'disabled' => false,
                 'choices' => [
                     'AUTOMOBILE' =>  'AUTOMOBILE',
@@ -392,7 +393,7 @@ class ContratType extends AbstractType
                 'required' => false
             ])
             ->add('dateNaissance', Type\DateType::class, [
-                'label' => "Date da naissance :",
+                'label' => "Date de naissance :",
                 'disabled' => false,
 
                 'widget' => 'single_text',
@@ -423,7 +424,7 @@ class ContratType extends AbstractType
             ])
             ->add('risqueUsage', Type\ChoiceType::class, [
                 'label' => 'Usage',
-                'required' => true,
+                'required' => false,
                 'disabled' => false,
                 'choices' => [
                     'vtc' =>  'vtc',
@@ -438,8 +439,8 @@ class ContratType extends AbstractType
 
             ])
             ->add('typePermis', Type\ChoiceType::class, [
-                'label' => 'Usage',
-                'required' => true,
+                'label' => 'type permis',
+                'required' => false,
                 'disabled' => false,
                 'choices' => [
                     'A' =>  'A',
@@ -456,17 +457,17 @@ class ContratType extends AbstractType
 
             ])
             ->add('suspensionPermis', Type\ChoiceType::class, [
-                'label' => 'suspension Permis',
+                'label' => 'Suspension permis',
 
                 'choices' => [
                     'OUI' => 'OUI',
                     'NON' => 'NON'
                 ],
-                'expanded' => true,
+                'expanded' => false,
                 'multiple' => false
             ])
             ->add('dateSuspension', Type\DateType::class, [
-                'label' => "Date Suspension :",
+                'label' => "Date suspension :",
                 'disabled' => false,
 
                 'widget' => 'single_text',
@@ -476,8 +477,8 @@ class ContratType extends AbstractType
                 'required' => false
             ])
             ->add('motifSuspension', Type\ChoiceType::class, [
-                'label' => 'Usage',
-                'required' => true,
+                'label' => 'Motif suspension',
+                'required' => false,
                 'disabled' => false,
                 'choices' => [
                     'alcoolemie' =>  'alcoolemie',
@@ -489,17 +490,17 @@ class ContratType extends AbstractType
 
             ])
             ->add('annulationPermis', Type\ChoiceType::class, [
-                'label' => 'annulation Permis',
+                'label' => 'Annulation permis',
 
                 'choices' => [
                     'OUI' => 'OUI',
                     'NON' => 'NON'
                 ],
-                'expanded' => true,
+                'expanded' => false,
                 'multiple' => false
             ])
             ->add('dateAnnulation', Type\DateType::class, [
-                'label' => "Date Annulation :",
+                'label' => "Date annulation :",
                 'disabled' => false,
 
                 'widget' => 'single_text',
@@ -509,8 +510,8 @@ class ContratType extends AbstractType
                 'required' => false
             ])
             ->add('motifAnnulation', Type\ChoiceType::class, [
-                'label' => 'Usage',
-                'required' => true,
+                'label' => 'Motif annulation',
+                'required' => false,
                 'disabled' => false,
                 'choices' => [
                     'alcoolemie' =>  'alcoolemie',
@@ -521,13 +522,18 @@ class ContratType extends AbstractType
                 'multiple' => false,
 
             ])
-            ->add('crmActuel',  Type\TextareaType::class, [
+            ->add('crmActuel',  Type\MoneyType::class, [
                 'attr' => ['class' => 'tinymce'],
-                'label' => "crm Actuel",
+                'label' => "CRM actuel",
                 'required' => false,
+                'attr' => [
+                    'placeholder' => 'Tapez en EURO',
+                    'divisor' => 100,
+
+                ],
             ])
             ->add('crmRetenu', Type\MoneyType::class, [
-                'label' => 'crm Retenu',
+                'label' => 'CRM Retenu',
                 'required' => false,
                 'attr' => [
                     'placeholder' => 'Tapez en EURO',
@@ -548,7 +554,7 @@ class ContratType extends AbstractType
                     'OUI' => 'OUI',
                     'NON' => 'NON'
                 ],
-                'expanded' => true,
+                'expanded' => false,
                 'multiple' => false
             ])
             ->add('NmbrReglement', Type\ChoiceType::class, [
@@ -570,7 +576,8 @@ class ContratType extends AbstractType
 
             ->add('product', EntityType::class, [
                 'class' => Product::class,
-                'choice_label' => 'id',
+                'placeholder' => 'Sélectionnez un Produit',
+                'choice_label' => 'nom',
             ])
             ->add('regelement', CollectionType::class, [
                 'entry_type' => RegelementType::class,
@@ -589,6 +596,18 @@ class ContratType extends AbstractType
                 'by_reference' => false,
                 'prototype' => true,  // Important pour la génération dynamique
                 'label' => false,
+            ])
+            ->add('compagnie', EntityType::class, [
+                'class' => Compartenaire::class,
+                'choice_label' => 'compagnie',
+                'multiple' => true,
+                'required' => false,
+            ])
+            ->add('partenaire', EntityType::class, [
+                'class' => Compartenaire::class,
+                'choice_label' => 'partenaire',
+                'multiple' => true,
+                'required' => false,
             ])
 
 

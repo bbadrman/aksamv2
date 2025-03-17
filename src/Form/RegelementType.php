@@ -18,7 +18,25 @@ class RegelementType extends AbstractType
             ->add('montantReglement', Type\NumberType::class, ['label' => 'Montant du règlement'])
             ->add('dateReglement', Type\DateType::class, ['label' => 'Date du règlement', 'widget' => 'single_text'])
             ->add('transaction', Type\TextType::class, ['label' => 'Transaction'])
-            ->add('moyen', Type\TextType::class, ['label' => 'Moyen de paiement']);
+            ->add(
+                'moyen',
+                Type\ChoiceType::class,
+                [
+                    'label' => 'Etat Contrat ',
+                    'required' => false,
+                    'disabled' => false,
+                    'placeholder' => '--Merci de selectie-- ',
+                    'choices' => [
+                        'MANUEL' =>   'MANUEL',
+                        'LIEN' =>   'LIEN',
+                        'VIREMENT' =>   'VIREMENT',
+
+
+                    ],
+                    'expanded' => false,
+                    'multiple' => false,
+                ]
+            );
     }
 
     public function configureOptions(OptionsResolver $resolver): void
