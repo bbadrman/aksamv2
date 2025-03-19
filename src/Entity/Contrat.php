@@ -167,6 +167,9 @@ class Contrat
     #[ORM\ManyToOne(inversedBy: 'contrats')]
     private ?Compartenaire $partenaire = null;
 
+    #[ORM\ManyToOne(inversedBy: 'contrats')]
+    private ?Client $client = null;
+
     public function __construct()
     {
         $this->antcdAssure = new ArrayCollection();
@@ -782,6 +785,18 @@ class Contrat
     public function setPartenaire(?Compartenaire $partenaire): static
     {
         $this->partenaire = $partenaire;
+
+        return $this;
+    }
+
+    public function getClient(): ?Client
+    {
+        return $this->client;
+    }
+
+    public function setClient(?Client $client): static
+    {
+        $this->client = $client;
 
         return $this;
     }

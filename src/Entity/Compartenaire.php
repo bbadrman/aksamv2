@@ -15,17 +15,16 @@ class Compartenaire
     #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\Column(length: 255, nullable: true)]
-    private ?string $compagnie = null;
 
-    #[ORM\Column(length: 255, nullable: true)]
-    private ?string $partenaire = null;
 
     /**
      * @var Collection<int, Contrat>
      */
     #[ORM\OneToMany(targetEntity: Contrat::class, mappedBy: 'compagnie')]
     private Collection $contrats;
+
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $nom = null;
 
     public function __construct()
     {
@@ -39,29 +38,7 @@ class Compartenaire
         return $this->id;
     }
 
-    public function getCompagnie(): ?string
-    {
-        return $this->compagnie;
-    }
 
-    public function setCompagnie(?string $compagnie): static
-    {
-        $this->compagnie = $compagnie;
-
-        return $this;
-    }
-
-    public function getPartenaire(): ?string
-    {
-        return $this->partenaire;
-    }
-
-    public function setPartenaire(?string $partenaire): static
-    {
-        $this->partenaire = $partenaire;
-
-        return $this;
-    }
 
     /**
      * @return Collection<int, Contrat>
@@ -89,6 +66,18 @@ class Compartenaire
                 $contrat->setCompagnie(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getNom(): ?string
+    {
+        return $this->nom;
+    }
+
+    public function setNom(?string $nom): static
+    {
+        $this->nom = $nom;
 
         return $this;
     }

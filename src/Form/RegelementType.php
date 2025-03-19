@@ -15,14 +15,24 @@ class RegelementType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            ->add('montantReglement', Type\NumberType::class, ['label' => 'Montant du règlement'])
+            ->add('montantReglement', Type\MoneyType::class, [
+                'attr' => ['class' => 'tinymce'],
+                'label' => "Montant du règlement",
+                'required' => false,
+                'attr' => [
+                    'placeholder' => 'Tapez en EURO',
+                    'divisor' => 100,
+
+                ],
+
+            ])
             ->add('dateReglement', Type\DateType::class, ['label' => 'Date du règlement', 'widget' => 'single_text'])
-            ->add('transaction', Type\TextType::class, ['label' => 'Transaction'])
+            ->add('transaction', Type\TextType::class, ['label' => 'Transaction N°'])
             ->add(
                 'moyen',
                 Type\ChoiceType::class,
                 [
-                    'label' => 'Etat Contrat ',
+                    'label' => 'Moyen Paiement ',
                     'required' => false,
                     'disabled' => false,
                     'placeholder' => '--Merci de selectie-- ',

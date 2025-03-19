@@ -1,37 +1,36 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Compartenaire index{% endblock %}
+{% block title %}Compartenaire index
+{% endblock %}
 
 {% block body %}
-    <h1>Compartenaire index</h1>
+	<h1>Compartenaire index</h1>
 
-    <table class="table">
-        <thead>
-            <tr>
-                <th>Id</th>
-                <th>Compagnie</th>
-                <th>Partenaire</th>
-                <th>actions</th>
-            </tr>
-        </thead>
-        <tbody>
-        {% for compartenaire in compartenaires %}
-            <tr>
-                <td>{{ compartenaire.id }}</td>
-                <td>{{ compartenaire.compagnie }}</td>
-                <td>{{ compartenaire.partenaire }}</td>
-                <td>
-                    <a href="{{ path('app_compartenaire_show', {'id': compartenaire.id}) }}">show</a>
-                    <a href="{{ path('app_compartenaire_edit', {'id': compartenaire.id}) }}">edit</a>
-                </td>
-            </tr>
-        {% else %}
-            <tr>
-                <td colspan="4">no records found</td>
-            </tr>
-        {% endfor %}
-        </tbody>
-    </table>
+	<table class="table">
+		<thead>
+			<tr>
+				<th>Id</th>
+				<th>Nom</th>
+				<th>actions</th>
+			</tr>
+		</thead>
+		<tbody>
+			{% for compartenaire in compartenaires %}
+				<tr>
+					<td>{{ compartenaire.id }}</td>
+					<td>{{ compartenaire.nom }}</td>
+					<td>
+						<a href="{{ path('app_compartenaire_show', {'id': compartenaire.id}) }}">show</a>
+						<a href="{{ path('app_compartenaire_edit', {'id': compartenaire.id}) }}">edit</a>
+					</td>
+				</tr>
+			{% else %}
+				<tr>
+					<td colspan="4">no records found</td>
+				</tr>
+			{% endfor %}
+		</tbody>
+	</table>
 
-    <a href="{{ path('app_compartenaire_new') }}">Create new</a>
+	<a href="{{ path('app_compartenaire_new') }}">Create new</a>
 {% endblock %}

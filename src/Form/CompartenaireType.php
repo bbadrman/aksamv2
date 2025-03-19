@@ -12,9 +12,7 @@ class CompartenaireType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            ->add('compagnie')
-            ->add('partenaire')
-        ;
+            ->add('nom');
     }
 
     public function configureOptions(OptionsResolver $resolver): void

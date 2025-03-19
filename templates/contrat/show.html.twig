@@ -46,11 +46,11 @@
 			</tr>
 			<tr>
 				<th>Partenaire</th>
-				<td>{{ contrat.partenaire }}</td>
+				<td>{{ contrat.partenaire ? contrat.partenaire.nom : 'Non défini' }}</td>
 			</tr>
 			<tr>
 				<th>Compagnie</th>
-				<td>{{ contrat.compagnie }}</td>
+				<td>{{ contrat.compagnie ? contrat.compagnie.nom : 'Non défini' }}</td>
 			</tr>
 			<tr>
 				<th>Formule</th>
@@ -232,14 +232,20 @@
 								nbrSinistre:
 								{{ antcdAssure.nbrSinistre }}
 								<br>
-								typeSinistre:
-								{{ antcdAssure.typeSinistre }}
+								Sinistre material:
+								{{ antcdAssure.material }}
 								<br>
-								responsable:
-								{{ antcdAssure.responsable }}
+								Sinistre corporel:
+								{{ antcdAssure.corporel }}
 								<br>
-								pourcentResp:
-								{{ antcdAssure.pourcentResp }}
+								0% responsable:
+								{{ antcdAssure.zeresponsable }}
+								<br>
+								50% responsable:
+								{{ antcdAssure.cinqResponsable }}
+								<br>
+								100% responsable:
+								{{ antcdAssure.centResponsable }}
 								<br>
 								brisGlace:
 								{{ antcdAssure.brisGlace }}

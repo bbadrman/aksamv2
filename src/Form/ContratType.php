@@ -202,16 +202,14 @@ class ContratType extends AbstractType
                 ]
             )
             ->add('frais', Type\MoneyType::class, [
-                'label' => 'Frais  ',
-
-                'disabled' => false,
-                'currency' => false,
+                'attr' => ['class' => 'tinymce'],
+                'label' => "Frais",
+                'required' => false,
                 'attr' => [
-                    'placeholder' => 'Tapez en €',
+                    'placeholder' => 'Tapez en EURO',
                     'divisor' => 100,
 
                 ],
-                'required' => false,
 
             ])
             ->add(
@@ -220,7 +218,7 @@ class ContratType extends AbstractType
                 [
                     'label' => 'Etat Contrat ',
                     'required' => false,
-                    'disabled' => false,
+                    'disabled' => true,
                     'placeholder' => '--Merci de selectie-- ',
                     'choices' => [
                         'EN-COURS' =>   'EN-COURS',
@@ -290,24 +288,23 @@ class ContratType extends AbstractType
             ])
 
             ->add('cotisation', Type\MoneyType::class, [
-                'label' => 'Cotisation  ',
+                'attr' => ['class' => 'tinymce'],
+                'label' => "Cotisation",
                 'required' => false,
-                'disabled' => false,
-                'currency' => false,
                 'attr' => [
-                    'placeholder' => 'Tapez en €',
+                    'placeholder' => 'Tapez en EURO',
                     'divisor' => 100,
 
                 ],
 
             ])
             ->add('acompte', Type\MoneyType::class, [
-                'label' => 'Acompte  ',
+
+                'attr' => ['class' => 'tinymce'],
+                'label' => "Acompte",
                 'required' => false,
-                'disabled' => false,
-                'currency' => false,
                 'attr' => [
-                    'placeholder' => 'Tapez en €',
+                    'placeholder' => 'Tapez en EURO',
                     'divisor' => 100,
 
                 ],
@@ -424,6 +421,7 @@ class ContratType extends AbstractType
             ])
             ->add('risqueUsage', Type\ChoiceType::class, [
                 'label' => 'Usage',
+                'placeholder' => 'Tapez le Nom du Client',
                 'required' => false,
                 'disabled' => false,
                 'choices' => [
@@ -440,6 +438,7 @@ class ContratType extends AbstractType
             ])
             ->add('typePermis', Type\ChoiceType::class, [
                 'label' => 'type permis',
+                'placeholder' => '-- Selectie type permis --',
                 'required' => false,
                 'disabled' => false,
                 'choices' => [
@@ -458,6 +457,7 @@ class ContratType extends AbstractType
             ])
             ->add('suspensionPermis', Type\ChoiceType::class, [
                 'label' => 'Suspension permis',
+                'placeholder' => "--Merci de Selectie--",
 
                 'choices' => [
                     'OUI' => 'OUI',
@@ -478,6 +478,7 @@ class ContratType extends AbstractType
             ])
             ->add('motifSuspension', Type\ChoiceType::class, [
                 'label' => 'Motif suspension',
+                'placeholder' => "--Merci de Selectie--",
                 'required' => false,
                 'disabled' => false,
                 'choices' => [
@@ -491,6 +492,7 @@ class ContratType extends AbstractType
             ])
             ->add('annulationPermis', Type\ChoiceType::class, [
                 'label' => 'Annulation permis',
+                'placeholder' => "--Merci de Selectie--",
 
                 'choices' => [
                     'OUI' => 'OUI',
@@ -511,6 +513,7 @@ class ContratType extends AbstractType
             ])
             ->add('motifAnnulation', Type\ChoiceType::class, [
                 'label' => 'Motif annulation',
+                'placeholder' => '--Selectie Motif annulation -- ',
                 'required' => false,
                 'disabled' => false,
                 'choices' => [
@@ -542,9 +545,9 @@ class ContratType extends AbstractType
                 ],
 
             ])
-            ->add('garanties',  Type\TextareaType::class, [
+            ->add('garanties',  Type\IntegerType::class, [
                 'attr' => ['class' => 'tinymce'],
-                'label' => "voir devis n°",
+                'label' => "Devis n°",
                 'required' => false,
             ])
             ->add('facilite', Type\ChoiceType::class, [
@@ -559,7 +562,8 @@ class ContratType extends AbstractType
             ])
             ->add('NmbrReglement', Type\ChoiceType::class, [
                 'label' => 'Nombre de règlements',
-                'choices' => array_combine(range(0, 10), range(0, 10)),
+                'placeholder' => '--Selectie nombre de règlements -- ',
+                'choices' => array_combine(range(1, 10), range(1, 10)),
                 'attr' => [
                     'class' => 'form-control',
                     'data-controller' => 'reglement-updater'
@@ -567,7 +571,8 @@ class ContratType extends AbstractType
             ])
             ->add('NmbrAssure', Type\ChoiceType::class, [
                 'label' => 'Nombre des assureurs',
-                'choices' => array_combine(range(0, 10), range(0, 10)),
+                'placeholder' => '--Selectie nombre des assureurs -- ',
+                'choices' => array_combine(range(1, 10), range(1, 10)),
                 'attr' => [
                     'class' => 'form-control',
                     'data-controller' => 'reglement-updater'
@@ -599,14 +604,14 @@ class ContratType extends AbstractType
             ])
             ->add('compagnie', EntityType::class, [
                 'class' => Compartenaire::class,
-                'choice_label' => 'compagnie',
-                'multiple' => true,
+                'choice_label' => 'nom',
+                'multiple' => false,
                 'required' => false,
             ])
             ->add('partenaire', EntityType::class, [
                 'class' => Compartenaire::class,
-                'choice_label' => 'partenaire',
-                'multiple' => true,
+                'choice_label' => 'nom',
+                'multiple' => false,
                 'required' => false,
             ])
 

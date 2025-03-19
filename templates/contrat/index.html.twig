@@ -69,8 +69,8 @@
 					<td>{{ contrat.typeContrat }}</td>
 					<td>{{ contrat.activite }}</td>
 					<td>{{ contrat.imatriclt }}</td>
-					<td>{{ contrat.partenaire }}</td>
-					<td>{{ contrat.compagnie }}</td>
+					<td>{{ contrat.partenaire ? contrat.partenaire.nom : 'Non défini' }}</td>
+					<td>{{ contrat.compagnie ? contrat.compagnie.nom : 'Non défini' }}</td>
 					<td>{{ contrat.formule }}</td>
 					<td>{{ contrat.fraction }}</td>
 					<td>{{ contrat.frais }}</td>

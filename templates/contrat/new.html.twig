@@ -51,7 +51,7 @@
 	<script type="text/javascript">
 
 
-		// champ regelemen et anticip
+		// pour NmbrReglement
 document.addEventListener('DOMContentLoaded', function () {
 const reglementSelect = document.querySelector('[name="contrat[NmbrReglement]"]');
 const container = document.getElementById('reglements-container');
@@ -77,6 +77,7 @@ container.dataset.index ++;
 }
 });
 });
+
 
 // pour anticipe
 document.addEventListener('DOMContentLoaded', function () {
@@ -104,18 +105,28 @@ containerAssure.dataset.index ++;
 });
 });
 
-// select dynamique des champs
+
+// select dynamique des champs typeContrat
 document.addEventListener("DOMContentLoaded", function () { // Récupérer les éléments du DOM
 var typeContratField = document.getElementById("{{ form.typeContrat.vars.id }}");
 var typeConducteurField = document.getElementById("{{ form.typeConducteur.vars.id }}");
 var productField = document.getElementById("{{ form.product.vars.id }}");
+var suspensinField = document.getElementById("{{ form.suspensionPermis.vars.id }}");
+var annulationPermisField = document.getElementById("{{ form.annulationPermis.vars.id }}");
+
 
 var subcategoryContainer = document.getElementById("subcategory-container");
 var subcategoryActivites = document.getElementById("subcategory-activite");
+var subcategorytypeConducteur = document.getElementById("subcategory-typeConducteur");
+var subcategoryimatriclt = document.getElementById("subcategory-imatriclt");
 
 var subcategoryconducteur = document.getElementById("subcategory-conducteur");
 var subcategorytypePermis = document.getElementById("subcategory-typePermis");
 var subcategorydatePermis = document.getElementById("subcategory-datePermis");
+var subcategorydateSuspension = document.getElementById("subcategory-dateSuspension");
+var subcategorymotifSuspension = document.getElementById("subcategory-motifSuspension");
+var subcategorydateAnnulation = document.getElementById("subcategory-dateAnnulation");
+var subcategorymotifAnnulation = document.getElementById("subcategory-motifAnnulation");
 
 // Fonction pour gérer la visibilité des champs en fonction de typeContrat
 function handleTypeContratChange() {
@@ -147,11 +158,44 @@ if (productField.value === '1' || productField.value === '22') {
 subcategoryconducteur.style.display = "none";
 subcategorytypePermis.style.display = "none";
 subcategorydatePermis.style.display = "none";
+subcategorytypeConducteur.style.display = "none";
+subcategoryimatriclt.style.display = "none";
 } else {
 subcategoryconducteur.style.display = "block"; // Afficher le champ
 subcategorytypePermis.style.display = "block"; // Afficher le champ
 subcategorydatePermis.style.display = "block"; // Afficher le champ
+subcategorytypeConducteur.style.display = "block";
+subcategoryimatriclt.style.display = "block";
 }
+}
+
+
+// Fonction pour gérer la visibilité des champs en fonction de Product
+function handleSuspentionChange() {
+if (suspensinField.value === 'OUI') {
+subcategorydateSuspension.style.display = "block"; // ✅ Afficher si "oui"
+subcategorymotifSuspension.style.display = "block";
+} else {
+subcategorydateSuspension.style.display = "none"; // ❌ Masquer sinon
+subcategorymotifSuspension.style.display = "none";
+}
+}
+
+
+// Fonction pour gérer la visibilité des champs en annulation permis
+function handleAnulationpermiChange() {
+if (annulationPermisField.value === 'OUI') {
+subcategorydateAnnulation.style.display = "block"; // ✅ Afficher si "oui"
+subcategorymotifAnnulation.style.display = "block";
+} else {
+subcategorydateAnnulation.style.display = "none"; // ❌ Masquer sinon
+subcategorymotifAnnulation.style.display = "none";
+}
+}
+
+// Écouter les changements de annulation permist
+if (annulationPermisField) {
+annulationPermisField.addEventListener("change", handleAnulationpermiChange);
 }
 
 // Écouter les changements de typeContrat
@@ -167,11 +211,17 @@ typeConducteurField.addEventListener("change", handleTypeConducteurChange);
 if (productField) {
 productField.addEventListener("change", handleProductChange);
 }
+// Écouter les changements de suspention
+if (suspensinField) {
+suspensinField.addEventListener("change", handleSuspentionChange);
+}
 
 // Appliquer les règles initiales au chargement de la page
 handleTypeContratChange();
 handleTypeConducteurChange();
 handleProductChange();
+handleSuspentionChange();
+handleAnulationpermiChange();
 });
 	</script>
 {% endblock %}
