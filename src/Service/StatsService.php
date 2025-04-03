@@ -79,11 +79,11 @@ class StatsService
         $preclientComrcl = $this->getfindClientCmrcl($user);
         $preclientValide = $this->getpreclientValide($user);
         // compter contrat
-        // $preContratAdmin = $this->getpreContratAdmin();
-        // $preContratComrcl = $this->getpreContratComrcl($user);
+        $preContratAdmin = $this->getpreContratAdmin();
+        $preContratComrcl = $this->getpreContratComrcl($user);
 
 
-        return compact('contrats', 'preclientValide',  'preclientAdmin', 'preclientChef', 'preclientComrcl',  'relancesNoTrCmrcl', 'relancesNoTrChef', 'relanceNoTraite', 'prosAvenirCmrcl', 'prosAvenirChef', 'prospectsAvenir', 'unjoiniableCmrl', 'unjoiniableChef', 'prospectsNoTrCmrcl', 'prospectsNoTrChef', 'prospectsDayCmrcl', 'prospectsDayChef', 'prospectsCmrclNv', 'prospectsChefNv', 'prospectsChefNvAll', 'prospectsNoTraite', 'unjoiniable', 'prospects', 'prospectspasaffect', 'prospectsDay', 'users', 'teams', 'products', 'clients');
+        return compact('preContratComrcl', 'preContratAdmin', 'contrats', 'preclientValide',  'preclientAdmin', 'preclientChef', 'preclientComrcl',  'relancesNoTrCmrcl', 'relancesNoTrChef', 'relanceNoTraite', 'prosAvenirCmrcl', 'prosAvenirChef', 'prospectsAvenir', 'unjoiniableCmrl', 'unjoiniableChef', 'prospectsNoTrCmrcl', 'prospectsNoTrChef', 'prospectsDayCmrcl', 'prospectsDayChef', 'prospectsCmrclNv', 'prospectsChefNv', 'prospectsChefNvAll', 'prospectsNoTraite', 'unjoiniable', 'prospects', 'prospectspasaffect', 'prospectsDay', 'users', 'teams', 'products', 'clients');
     }
 
 
@@ -699,41 +699,41 @@ class StatsService
     }
 
     //compter le nombre pre contrat du admin 
-    // public function getpreContratAdmin()
-    // {
+    public function getpreContratAdmin()
+    {
 
-    //     $qb = $this->manager->createQueryBuilder();
-    //     $qb->select('COUNT(DISTINCT c.id)')
-    //         ->from(Contrat::class, 'c')
+        $qb = $this->manager->createQueryBuilder();
+        $qb->select('COUNT(DISTINCT c.id)')
+            ->from(Contrat::class, 'c')
 
-    //         ->where('c.status = 2 OR c.status IS NULL')
-    //     ;
-
-
-
-    //     $query = $qb->getQuery();
-    //     $result = $query->getSingleScalarResult();
-
-    //     return $result;
-    // }
-
-    // public function getpreContratComrcl($id)
-    // {
-
-    //     $qb = $this->manager->createQueryBuilder();
-    //     $qb->select('COUNT(DISTINCT c.id)')
-    //         ->from(Contrat::class, 'c')
-
-    //         ->where('c.status = 2 OR c.status IS NULL')
-    //         ->andWhere('c.cmrcl = :val')
-    //         ->setParameter('val', $id)
-    //     ;
+            ->where('c.status = 2 OR c.status IS NULL')
+        ;
 
 
 
-    //     $query = $qb->getQuery();
-    //     $result = $query->getSingleScalarResult();
+        $query = $qb->getQuery();
+        $result = $query->getSingleScalarResult();
 
-    //     return $result;
-    // }
+        return $result;
+    }
+
+    public function getpreContratComrcl($id)
+    {
+
+        $qb = $this->manager->createQueryBuilder();
+        $qb->select('COUNT(DISTINCT c.id)')
+            ->from(Contrat::class, 'c')
+
+            ->where('c.status = 2 OR c.status IS NULL')
+            ->andWhere('c.user = :val')
+            ->setParameter('val', $id)
+        ;
+
+
+
+        $query = $qb->getQuery();
+        $result = $query->getSingleScalarResult();
+
+        return $result;
+    }
 }

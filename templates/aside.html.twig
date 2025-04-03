@@ -153,8 +153,8 @@
 								<a href="{{ path('app_user_index') }}">Gérer les Users</a>
 							</li>
 							{# <li>
-																																																																																																																																																																																																																																																																																																																																																																																<a href="{{ path('user_acces') }}">Gérer les Sessions</a>
-																																																																																																																																																																																																																																																																																																																																																																															</li> #}
+																																																																																																																																																																																																																																																																																																																																																																																																																			<a href="{{ path('user_acces') }}">Gérer les Sessions</a>
+																																																																																																																																																																																																																																																																																																																																																																																																																		</li> #}
 						</ul>
 					</li>
 
@@ -203,8 +203,8 @@
 								<a href="{{ path('app_unite_travail_index') }}">Gérer les Unites</a>
 							</li>
 							{# <li>
-																																																																																																																																																																																																																																																																																																																																																																																<a href="{{ path('user_acces') }}">Gérer les Sessions</a>
-																																																																																																																																																																																																																																																																																																																																																																															</li> #}
+																																																																																																																																																																																																																																																																																																																																																																																																																			<a href="{{ path('user_acces') }}">Gérer les Sessions</a>
+																																																																																																																																																																																																																																																																																																																																																																																																																		</li> #}
 						</ul>
 					</li>
 				{% endif %}
@@ -247,15 +247,22 @@
 		<ul class="sub">
 
 			<li>
-				<a class="nav-link " href="#">
+				<a class="nav-link " href="{{ path('red_bebltq') }}" target="_blank" rel="noopener noreferrer">
 					<i class="fa fa-book" aria-hidden="true"></i>
 					<span>Règles souscription
 					</span>
 				</a>
 			</li>
+			<li>
+				<a class="nav-link " href="{{ path('bebltq_garage') }}" target="_blank" rel="noopener noreferrer">
+					<i class="fa fa-book" aria-hidden="true"></i>
+					<span>Souscription Garage
+					</span>
+				</a>
+			</li>
 
 			<li class="sub-menu">
-				<a href="#">
+				<a href="{{ path('aide_show') }}" target="_blank" rel="noopener noreferrer">
 					<i class="fa fa-question-circle" aria-hidden="true" style="font-size: 20px;"></i>
 					<span>Aide</span>
 				</a>

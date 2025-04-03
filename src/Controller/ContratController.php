@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Entity\Compartenaire;
 use App\Entity\Contrat;
+use App\Form\ContratEditType;
 use App\Form\ContratType;
 use App\Form\SearchContratType;
 use App\Repository\ClientRepository;
@@ -16,6 +17,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
+use Psr\Log\LoggerInterface;
 
 #[Route('/contrat')]
 final class ContratController extends AbstractController
@@ -38,7 +40,7 @@ final class ContratController extends AbstractController
     }
 
     #[Route('/valider', name: 'app_contrat_valid_index', methods: ['GET'])]
-    public function valider(Request $request, ContratRepository $contratRepository): Response
+    public function valider(Request $request, ContratRepository $contratRepository, LoggerInterface $logger): Response
     {
 
 
@@ -51,6 +53,7 @@ final class ContratController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid() && !$form->isEmpty()) {
             $user = $this->security->getUser();
+            $logger->info('User roles: ' . json_encode($user->getRoles()));
             if (in_array('ROLE_SUPER_ADMIN', $user->getRoles(), true)  || in_array('ROLE_ADMIN', $user->getRoles(), true)  || in_array('ROLE_VALIDE', $user->getRoles(), true)) {
                 // admi peut voire toutes les nouveaux client
                 $contrats =  $contratRepository->findByContartValid($data,  null);
@@ -120,8 +123,8 @@ final class ContratController extends AbstractController
 
             $entityManager->persist($contrat);
             $entityManager->flush();
-
-            return $this->redirectToRoute('app_contrat_index', [], Response::HTTP_SEE_OTHER);
+            $this->addFlash('info', 'la Contrat a été créer avec succès!');
+            return $this->redirectToRoute('app_contrat_valid_index', [], Response::HTTP_SEE_OTHER);
         }
 
         return $this->render('contrat/new.html.twig', [
@@ -141,13 +144,17 @@ final class ContratController extends AbstractController
     #[Route('/{id}/edit', name: 'app_contrat_edit', methods: ['GET', 'POST'])]
     public function edit(Request $request, Contrat $contrat, EntityManagerInterface $entityManager): Response
     {
-        $form = $this->createForm(ContratType::class, $contrat);
+        $form = $this->createForm(ContratEditType::class, $contrat);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $entityManager->flush();
 
-            return $this->redirectToRoute('app_contrat_index', [], Response::HTTP_SEE_OTHER);
+            $contrat->setModif(1);
+
+            $entityManager->flush();
+            $this->addFlash('info', 'la Contrat a été modifié avec succès!');
+
+            return $this->redirectToRoute('app_contrat_valid_index', [], Response::HTTP_SEE_OTHER);
         }
 
         return $this->render('contrat/edit.html.twig', [
@@ -164,6 +171,6 @@ final class ContratController extends AbstractController
             $entityManager->flush();
         }
 
-        return $this->redirectToRoute('app_contrat_index', [], Response::HTTP_SEE_OTHER);
+        return $this->redirectToRoute('app_contrat_valid_index', [], Response::HTTP_SEE_OTHER);
     }
 }

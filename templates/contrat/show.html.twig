@@ -265,9 +265,10 @@
 		</tbody>
 	</table>
 
-	<a href="{{ path('app_contrat_index') }}">back to list</a>
+	<a href="{{ path('app_contrat_valid_index') }}">back to list</a>
 
-	<a href="{{ path('app_contrat_edit', {'id': contrat.id}) }}">edit</a>
+	{% if  is_granted('ROLE_SUPER_ADMIN')   %}
+		<a href="{{ path('app_contrat_edit', {'id': contrat.id}) }}">edit</a>
+	{% endif %}
 
-	{{ include('contrat/_delete_form.html.twig') }}
 {% endblock %}

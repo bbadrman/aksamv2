@@ -37,7 +37,7 @@ class ProspectRepository extends ServiceEntityRepository
 
         // get selement les prospects qui n'as pas encors affectter a un user
         $query = $this->createQueryBuilder('p')
-            ->select('p', 't', 'f')
+            ->addSelect('t', 'f')
             ->leftJoin('p.team', 't')
             ->leftJoin('p.comrcl', 'f')
 
@@ -75,7 +75,7 @@ class ProspectRepository extends ServiceEntityRepository
         }
         // get selement les prospects qui n'as pas encors affectter a un user
         $query = $this->createQueryBuilder('p')
-            ->select('p', 't', 'f')
+            ->addSelect('t', 'f')
             ->leftJoin('p.team', 't')
             ->leftJoin('p.comrcl', 'f')
 
@@ -115,7 +115,7 @@ class ProspectRepository extends ServiceEntityRepository
         }
         // get selement les prospects qui n'as pas encors affectter a un user
         $query = $this->createQueryBuilder('p')
-            ->select('p, t, f')
+            ->addSelect('t, f')
             ->leftJoin('p.team', 't')
             ->leftJoin('p.comrcl', 'f')
             ->andwhere('p.team IN (:teams) ')
@@ -188,7 +188,7 @@ class ProspectRepository extends ServiceEntityRepository
 
 
         $query = $this->createQueryBuilder('p')
-            ->select('p, t, f')
+            ->addSelect('t, f')
 
             ->leftJoin('p.team', 't')
             ->leftJoin('p.comrcl', 'f')
@@ -230,7 +230,7 @@ class ProspectRepository extends ServiceEntityRepository
         $endOfDay->setTime(23, 59, 59);
 
         $query = $this->createQueryBuilder('p')
-            ->select('p, t, f')
+            ->addSelect('t, f')
             ->leftJoin('p.team', 't')
             ->leftJoin('p.comrcl', 'f')
 
@@ -312,7 +312,7 @@ class ProspectRepository extends ServiceEntityRepository
 
         $query = $this->createQueryBuilder('p')
 
-            ->select('p, t, f')
+            ->addSelect('t, f')
             ->leftJoin('p.team', 't')
             ->leftJoin('p.comrcl', 'f')
 
@@ -346,7 +346,7 @@ class ProspectRepository extends ServiceEntityRepository
 
         $query = $this->createQueryBuilder('p')
 
-            ->select('p, t, f')
+            ->addSelect('t, f')
             ->leftJoin('p.team', 't')
             ->leftJoin('p.comrcl', 'f')
             ->andWhere('p.relanceAt >= :tomorrow')
@@ -407,7 +407,7 @@ class ProspectRepository extends ServiceEntityRepository
         $yesterday->setTime(23, 59, 59);  // il depacer un jour a partir de minuit
 
         $query = $this->createQueryBuilder('p')
-            ->select('p, f, t ')
+            ->addSelect('f, t ')
             ->andWhere('p.team IS NOT NULL')  // deja Affecté à une équipe  
             ->andWhere('p.relance IS NULL')  // n'est pas encor relancer 
             // il faut changer creatAt par affectAt 
@@ -443,7 +443,7 @@ class ProspectRepository extends ServiceEntityRepository
         }
 
         $query = $this->createQueryBuilder('p')
-            ->select('p, t, f')
+            ->addSelect('t, f')
             ->leftJoin('p.team', 't')
             ->leftJoin('p.comrcl', 'f')
             ->where('p.team IN (:teams)')
@@ -516,14 +516,10 @@ class ProspectRepository extends ServiceEntityRepository
 
         $query = $this
             ->createQueryBuilder('p')
-            ->select('p, t, f ')
-
+            ->addSelect('t, f ')
             ->leftJoin('p.team', 't')
-
             ->leftJoin('p.comrcl', 'f')
-
-
-            ->orderBy('p.id', 'DESC');
+            ->indexBy('p', 'p.id', 'DESC');
 
         $query = $this->applySearchFilters($query, $search);
 
@@ -551,7 +547,7 @@ class ProspectRepository extends ServiceEntityRepository
 
         $query = $this
             ->createQueryBuilder('p')
-            ->select('p, t, f')
+            ->addSelect('t, f')
             ->where('p.team IN (:teams)')
             ->leftJoin('p.team', 't')
             ->leftJoin('p.comrcl', 'f')
@@ -613,7 +609,7 @@ class ProspectRepository extends ServiceEntityRepository
 
         $query = $this->createQueryBuilder('p')
 
-            ->select('p, t, f ')
+            ->addSelect('t, f ')
             ->leftJoin('p.team', 't')
             ->leftJoin('p.comrcl', 'f')
 
@@ -651,7 +647,7 @@ class ProspectRepository extends ServiceEntityRepository
         $yesterday = (new \DateTime('yesterday'))->setTime(23, 59, 59);
         $query = $this->createQueryBuilder('p')
 
-            ->select('p, t, f')
+            ->addSelect('t, f')
             ->leftJoin('p.team', 't')
             ->leftJoin('p.comrcl', 'f')
             ->andwhere('p.team IN (:teams)')
@@ -724,7 +720,7 @@ class ProspectRepository extends ServiceEntityRepository
     {
 
         $query = $this->createQueryBuilder('p')
-            ->select('p, t, f')
+            ->addSelect('t, f')
             ->where('p.relance = 11')
             ->leftJoin('p.team', 't')
             ->leftJoin('p.comrcl', 'f')
@@ -752,7 +748,7 @@ class ProspectRepository extends ServiceEntityRepository
             return $this->paginator->paginate([], 1, 10);
         }
         $query = $this->createQueryBuilder('p')
-            ->select('p, t, f')
+            ->addSelect('t, f')
             ->leftJoin('p.team', 't')
             ->where('p.relance = 11')
 

@@ -1,121 +1,136 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Contrat index
+{% block title %}Contrats
 {% endblock %}
 
 {% block body %}
-	<h1>Contrat index</h1>
+	{% for label, messages in app.flashes %}
+		<div class="container">
+			<div class="alert alert-{{ label }}">
+				{% for message in messages %}
+					{{ message | raw }}
+				{% endfor %}
+			</div>
+		</div>
+	{% endfor %}
 
-	<table class="table">
-		<thead>
-			<tr>
-				<th>Id</th>
-				<th>Nom</th>
-				<th>Prenom</th>
-				<th>RaisonSociale</th>
-				<th>DateSouscrpt</th>
-				<th>DateEffet</th>
-				<th>TypeContrat</th>
-				<th>Activite</th>
-				<th>Imatriclt</th>
-				<th>Partenaire</th>
-				<th>Compagnie</th>
-				<th>Formule</th>
-				<th>Fraction</th>
-				<th>Frais</th>
-				<th>Etat</th>
-				<th>TypeConducteur</th>
-				<th>Conducteur</th>
-				<th>DatePermis</th>
-				<th>Status</th>
-				<th>Comment</th>
-				<th>UpdatedAt</th>
-				<th>Cotisation</th>
-				<th>Acompte</th>
-				<th>FirstReglement</th>
-				<th>SecondReglement</th>
-				<th>JourPrelvm</th>
-				<th>TypeProduct</th>
-				<th>IsModif</th>
-				<th>DatePreleveAcompte</th>
-				<th>DateNaissance</th>
-				<th>DateAchat</th>
-				<th>DateMec</th>
-				<th>RisqueUsage</th>
-				<th>TypePermis</th>
-				<th>SuspensionPermis</th>
-				<th>DateSuspension</th>
-				<th>MotifSuspension</th>
-				<th>AnnulationPermis</th>
-				<th>DateAnnulation</th>
-				<th>MotifAnnulation</th>
-				<th>CrmActuel</th>
-				<th>CrmRetenu</th>
-				<th>Garanties</th>
-				<th>Facilite</th>
-				<th>NmbrReglement</th>
-				<th>actions</th>
-			</tr>
-		</thead>
-		<tbody>
-			{% for contrat in contrats %}
-				<tr>
-					<td>{{ contrat.id }}</td>
-					<td>{{ contrat.nom }}</td>
-					<td>{{ contrat.prenom }}</td>
-					<td>{{ contrat.raisonSociale }}</td>
-					<td>{{ contrat.dateSouscrpt ? contrat.dateSouscrpt|date('Y-m-d H:i:s') : '' }}</td>
-					<td>{{ contrat.dateEffet ? contrat.dateEffet|date('Y-m-d H:i:s') : '' }}</td>
-					<td>{{ contrat.typeContrat }}</td>
-					<td>{{ contrat.activite }}</td>
-					<td>{{ contrat.imatriclt }}</td>
-					<td>{{ contrat.partenaire ? contrat.partenaire.nom : 'Non défini' }}</td>
-					<td>{{ contrat.compagnie ? contrat.compagnie.nom : 'Non défini' }}</td>
-					<td>{{ contrat.formule }}</td>
-					<td>{{ contrat.fraction }}</td>
-					<td>{{ contrat.frais }}</td>
-					<td>{{ contrat.etat }}</td>
-					<td>{{ contrat.typeConducteur }}</td>
-					<td>{{ contrat.conducteur }}</td>
-					<td>{{ contrat.datePermis ? contrat.datePermis|date('Y-m-d H:i:s') : '' }}</td>
-					<td>{{ contrat.status }}</td>
-					<td>{{ contrat.comment }}</td>
-					<td>{{ contrat.updatedAt ? contrat.updatedAt|date('Y-m-d H:i:s') : '' }}</td>
-					<td>{{ contrat.cotisation }}</td>
-					<td>{{ contrat.acompte }}</td>
+	<section class="content-header">
+		<h2>Clients</h2>
+		<ol class="breadcrumb">
+			<li>
+				<a href="{{ path('app_home') }}">
+					<i class="fa fa-dashboard"></i>
+					Tableau de bord</a>
+			</li>
 
-					<td>{{ contrat.jourPrelvm }}</td>
-					<td>{{ contrat.typeProduct }}</td>
-					<td>{{ contrat.isModif ? 'Yes' : 'No' }}</td>
-					<td>{{ contrat.datePreleveAcompte ? contrat.datePreleveAcompte|date('Y-m-d H:i:s') : '' }}</td>
-					<td>{{ contrat.dateNaissance ? contrat.dateNaissance|date('Y-m-d') : '' }}</td>
-					<td>{{ contrat.dateAchat ? contrat.dateAchat|date('Y-m-d H:i:s') : '' }}</td>
-					<td>{{ contrat.dateMec ? contrat.dateMec|date('Y-m-d H:i:s') : '' }}</td>
-					<td>{{ contrat.risqueUsage }}</td>
-					<td>{{ contrat.typePermis }}</td>
-					<td>{{ contrat.suspensionPermis ? 'Yes' : 'No' }}</td>
-					<td>{{ contrat.dateSuspension ? contrat.dateSuspension|date('Y-m-d H:i:s') : '' }}</td>
-					<td>{{ contrat.motifSuspension }}</td>
-					<td>{{ contrat.annulationPermis ? 'Yes' : 'No' }}</td>
-					<td>{{ contrat.dateAnnulation ? contrat.dateAnnulation|date('Y-m-d H:i:s') : '' }}</td>
-					<td>{{ contrat.motifAnnulation }}</td>
-					<td>{{ contrat.crmActuel }}</td>
-					<td>{{ contrat.crmRetenu }}</td>
-					<td>{{ contrat.garanties }}</td>
-					<td>{{ contrat.facilite ? 'Yes' : 'No' }}</td>
-					<td>{{ contrat.NmbrReglement }}</td>
-					<td>
-						<a href="{{ path('app_contrat_show', {'id': contrat.id}) }}">show</a>
-						<a href="{{ path('app_contrat_edit', {'id': contrat.id}) }}">edit</a>
-					</td>
-				</tr>
-			{% else %}
-				<tr>
-					<td colspan="46">no records found</td>
-				</tr>
-			{% endfor %}
-		</tbody>
-	</table>
+		</ol>
+	</section>
+	<div class="col-xs-12 mx-auto d-flex justify-content-center">
 
-	<a href="{{ path('app_contrat_new') }}">Create new</a>
-{% endblock %}
+		<div class="row" style="margin-right: 12px;  ">
+
+			{% include 'contrat/_search_form.html.twig' with {search_form: search_form} only %}
+		</div>
+	</div>
+	<div class="row mt">
+		<div class="col-lg-12">
+			<div class="content-panel">
+				<table class="table table-striped table-advance table-hover">
+					<thead>
+						<tr>
+							<th>CONSEILLER</th>
+							<th>Nom</th>
+							<th>Prenom</th>
+							<th>RaisonSociale</th>
+							<th>DateSouscrpt</th>
+							<th>DateEffet</th>
+							<th>TypeContrat</th>
+							<th>Activite</th>
+							<th>Partenaire</th>
+							<th>Compagnie</th>
+							<th>Formule</th>
+							<th>Fraction</th>
+							<th>Frais</th>
+							<th>Etat</th>
+
+							<th>Status</th>
+							<th>Cotisation</th>
+							<th>Acompte</th>
+							<th>JourPrelvm</th>
+							<th>TypeProduct</th>
+
+							<th>actions</th>
+						</tr>
+					</thead>
+					<tbody>
+						{% for contrat in contrats %}
+							<tr>
+								<td>{{ contrat.user }}</td>
+								<td>{{ contrat.nom }}</td>
+								<td>{{ contrat.prenom }}</td>
+								<td>{{ contrat.raisonSociale }}</td>
+								<td>{{ contrat.dateSouscrpt ? contrat.dateSouscrpt|date('d-m-Y ') : '' }}</td>
+								<td>{{ contrat.dateEffet ? contrat.dateEffet|date('d-m-Y ') : '' }}</td>
+								<td>{{ contrat.typeContrat }}</td>
+								<td>{{ contrat.activite }}</td>
+								<td>{{ contrat.partenaire ? contrat.partenaire.nom : 'Non défini' }}</td>
+								<td>{{ contrat.compagnie ? contrat.compagnie.nom : 'Non défini' }}</td>
+								<td>{{ contrat.formule }}</td>
+								<td>{{ contrat.fraction }}</td>
+								<td>{{ contrat.frais }}</td>
+								<td>{{ contrat.etat }}</td>
+								<td>{{ contrat.status }}</td>
+								<td>{{ contrat.cotisation }}</td>
+								<td>{{ contrat.acompte }}</td>
+
+								<td>{{ contrat.jourPrelvm }}</td>
+								<td>{{ contrat.typeProduct }}</td>
+
+								<td>
+									{# <a href="{{ path('app_contrat_show', {'id': contrat.id}) }}">show</a> #}
+									{% if contrat.status == 1 %}
+										<a href="#" style="color:blue">
+											Valider
+										</a>
+										{# {% elseif contrat.status == 2 and contrat.etat is null  %} #}
+									{% elseif contrat.status == 2 and contrat.isModif is null  %}
+
+										<a href="{{ path('app_contrat_edit', {'id': contrat.id}) }}" class="btn btn-danger btn-xs">
+											Rejeter
+										</a>
+										{# {% elseif contrat.status == 2 and contrat.etat == 1  %} #}
+									{% elseif contrat.status == 2 and contrat.isModif == 1 %}
+
+										<a href="{{ path('app_contrat_edit', {'id': contrat.id}) }}" class="btn btn btn-xs" style="background-color:#98FB98;">
+											MODIFIE
+										</a>
+
+									{% elseif contrat.status is null %}
+										{% if  is_granted('ROLE_ADMIN')   or is_granted('ROLE_VALIDE')     %}
+											<a href="{{ path('app_contrat_edit', {'id': contrat.id}) }}" class="btn btn-primary btn-xs">
+												Nouveau
+											</a>
+										{% else %}
+											En verification
+										{% endif %}
+
+									{% endif %}
+								</td>
+							</tr>
+						{% else %}
+							<tr>
+								<td colspan="46">no records found</td>
+							</tr>
+						{% endfor %}
+					</tbody>
+				</table>
+				<tfoot class="text-right">
+					<tr>
+						<td colspan="9">
+							{{ knp_pagination_render(contrats, 'pagination.html.twig') }}
+						</td>
+					</tr>
+				</tfoot>
+
+
+			{% endblock %}

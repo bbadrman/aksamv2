@@ -8,9 +8,11 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\ORM\Mapping\Cache;
 
 
 #[ORM\Entity(repositoryClass: ProspectRepository::class)]
+#[Cache(usage: 'READ_ONLY')]
 #[ApiResource()]
 #[ORM\HasLifecycleCallbacks]
 #[ORM\Table(name: "prospect")]
@@ -85,7 +87,7 @@ class Prospect
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $activites = null;
 
-    #[ORM\ManyToOne(inversedBy: 'prospects')]
+    #[ORM\ManyToOne(inversedBy: 'prospects', fetch: 'EAGER')]
     private ?User $comrcl = null;
 
     #[ORM\Column(length: 255, nullable: true)]
@@ -94,10 +96,10 @@ class Prospect
     #[ORM\Column(nullable: true)]
     private ?\DateTimeImmutable $relanceAt = null;
 
-    #[ORM\ManyToOne(inversedBy: 'prospects')]
+    #[ORM\ManyToOne(inversedBy: 'prospects', fetch: 'EAGER')]
     private ?Team $team = null;
 
-    #[ORM\ManyToOne(inversedBy: 'prospects')]
+    #[ORM\ManyToOne(inversedBy: 'prospects', fetch: 'EAGER')]
     private ?Product $product = null;
 
     #[ORM\Column(nullable: true)]
@@ -111,15 +113,17 @@ class Prospect
      */
 
     #[ORM\OneToMany(targetEntity: History::class, mappedBy: 'prospect', cascade: ['remove'])]
+    #[Cache(usage: 'NONSTRICT_READ_WRITE')]
     private Collection $histories;
 
     /**
      * @var Collection<int, RelanceHistory>
      */
     #[ORM\OneToMany(targetEntity: RelanceHistory::class, mappedBy: 'prospect', cascade: ['remove'])]
+    #[Cache(usage: 'NONSTRICT_READ_WRITE')]
     private Collection $relanceHistories;
 
-    #[ORM\ManyToOne(inversedBy: 'prospectAutor')]
+    #[ORM\ManyToOne(inversedBy: 'prospectAutor', fetch: 'EAGER')]
     private ?User $autor = null;
 
     #[ORM\Column(length: 255, nullable: true)]

@@ -5,7 +5,9 @@ namespace App\Repository;
 use App\Entity\Contrat;
 use App\Search\SearchContrat;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\Persistence\ManagerRegistry;
+use Knp\Component\Pager\PaginatorInterface;
 use Knp\Component\Pager\Pagination\PaginationInterface;
 
 /**
@@ -13,7 +15,7 @@ use Knp\Component\Pager\Pagination\PaginationInterface;
  */
 class ContratRepository extends ServiceEntityRepository
 {
-    public function __construct(ManagerRegistry $registry)
+    public function __construct(ManagerRegistry $registry, private  PaginatorInterface $paginator, private EntityManagerInterface $manager)
     {
         parent::__construct($registry, Contrat::class);
     }
@@ -23,6 +25,7 @@ class ContratRepository extends ServiceEntityRepository
      * Find a list of contrat using a search form
      * @param SearchContrat $search
      * @return PaginationInterface
+     * 
      */
     public function findByContartValid(SearchContrat $search): PaginationInterface
     {
