@@ -1,0 +1,54 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Transaction{% endblock %}
+
+{% block body %}
+    <h1>Transaction</h1>
+
+    <table class="table">
+        <tbody>
+            <tr>
+                <th>Id</th>
+                <td>{{ transaction.id }}</td>
+            </tr>
+            <tr>
+                <th>Transaction</th>
+                <td>{{ transaction.transaction }}</td>
+            </tr>
+            <tr>
+                <th>Commande</th>
+                <td>{{ transaction.commande }}</td>
+            </tr>
+            <tr>
+                <th>Type</th>
+                <td>{{ transaction.type }}</td>
+            </tr>
+            <tr>
+                <th>DatePaiement</th>
+                <td>{{ transaction.datePaiement ? transaction.datePaiement|date('Y-m-d') : '' }}</td>
+            </tr>
+            <tr>
+                <th>Motif</th>
+                <td>{{ transaction.motif }}</td>
+            </tr>
+            <tr>
+                <th>Debit</th>
+                <td>{{ transaction.debit }}</td>
+            </tr>
+            <tr>
+                <th>Credit</th>
+                <td>{{ transaction.credit }}</td>
+            </tr>
+            <tr>
+                <th>Moyen</th>
+                <td>{{ transaction.moyen }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <a href="{{ path('app_transaction_index') }}">back to list</a>
+
+    <a href="{{ path('app_transaction_edit', {'id': transaction.id}) }}">edit</a>
+
+    {{ include('transaction/_delete_form.html.twig') }}
+{% endblock %}

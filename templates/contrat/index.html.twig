@@ -87,6 +87,7 @@
 								<td>{{ contrat.typeProduct }}</td>
 
 								<td>
+									{{ render(controller('App\\Controller\\ContratController::etat',{'id':contrat.id}))}}
 									{# <a href="{{ path('app_contrat_show', {'id': contrat.id}) }}">show</a> #}
 									{% if contrat.status == 1 %}
 										<a href="#" style="color:blue">

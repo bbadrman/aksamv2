@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\Compartenaire;
 use App\Entity\Contrat;
 use App\Form\ContratEditType;
+use App\Form\ContratEtatType;
 use App\Form\ContratType;
 use App\Form\SearchContratType;
 use App\Repository\ClientRepository;
@@ -158,6 +159,28 @@ final class ContratController extends AbstractController
         }
 
         return $this->render('contrat/edit.html.twig', [
+            'contrat' => $contrat,
+            'form' => $form,
+        ]);
+    }
+
+    #[Route('/{id}/etat', name: 'app_contrat_etat', methods: ['GET', 'POST'])]
+    public function etat(Request $request, Contrat $contrat, EntityManagerInterface $entityManager): Response
+    {
+        $form = $this->createForm(ContratEtatType::class, $contrat);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+
+            $contrat->setModif(1);
+
+            $entityManager->flush();
+            $this->addFlash('info', 'Etat du Contrat a été modifié avec succès!');
+
+            return $this->redirect($request->headers->get('referer'));
+        }
+
+        return $this->render('partials/_etat_modal.html.twig', [
             'contrat' => $contrat,
             'form' => $form,
         ]);

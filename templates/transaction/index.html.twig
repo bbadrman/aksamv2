@@ -1,0 +1,113 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Transactions
+{% endblock %}
+
+{% block body %}
+	<div class="container">
+		{% for label,  messages in app.flashes  %}
+			<div class="container">
+				<div class="alert alert-{{ label }}">
+					{% for message in messages %}
+						{{ message | raw }}
+					{% endfor %}
+
+				</div>
+			</div>
+		{% endfor %}
+		{% for message in app.flashes('warning') %}
+			<div class="alert alert-warning">
+				{{ message }}
+			</div>
+		{% endfor %}
+		<section class="content-header">
+			<h1>
+				Transactions
+			</h1>
+			<ol class="breadcrumb">
+				<li>
+					<a href="{{ path('app_home') }}">
+						<i class="fa fa-dashboard"></i>
+						Tableau de bord</a>
+				</li>
+				<li class="active">
+					<a href="{{ path('app_transaction_index') }}">
+						<i class="fa fa-object-fonction"></i>
+						Tous les transaction</a>
+				</li>
+			</ol>
+			<br>
+			{% if is_granted('ROLE_ADMIN')   %}
+				<a href="{{ path('upload_table') }}" class="btn btn-primary">
+					Importer des transactions
+					<i class="fa fa-upload" aria-hidden="true"></i>
+				</a>
+				<a href="{{ path('app_transaction_new') }}" class="btn btn-primary">Ajouter une transaction
+					<i class="fa fa-plus-square" aria-hidden="true"></i>
+				</a>
+			{% endif %}
+		</section>
+		<div class="row mt">
+			<div class="col-xs-12 mx-auto d-flex justify-content-center">
+
+				<div class="row" style="margin-right: 12px;  ">
+					{% include 'transaction/_search_form.html.twig' with {search_form: search_form} only %}
+				</div>
+			</div>
+		</div>
+		<div class="row mt">
+			<div class="col-lg-12">
+				<div class="content-panel">
+					<hr>
+					<table class="table table-striped table-advance table-hover">
+						<thead>
+							<tr>
+								<th>Commercial</th>
+								<th>Nom</th>
+								<th>DatePaiement</th>
+								<th>Motif</th>
+								<th>Debit</th>
+								<th>Credit</th>
+								<th>Moyen</th>
+								<th>actions</th>
+							</tr>
+						</thead>
+						<tbody>
+
+							{% for transaction in transactions %}
+								<tr>
+									<td>{{ transaction.comrcl }}</td>
+									<td>{{ transaction.commande }}</td>
+									<td>{{ transaction.datePaiement ? transaction.datePaiement|date('Y-m-d H:i:s') : '' }}</td>
+									<td>{{ transaction.motif }}</td>
+									<td>{{ transaction.debit }}</td>
+									<td>{{ transaction.credit }}</td>
+									<td>{{ transaction.moyen }}</td>
+									<td>
+										<a href="{{ path('app_transaction_show', {'id': transaction.id}) }}" class="btn btn-success btn-xs">
+											<i class="fa fa-eye fa-2x text-primary" aria-hidden="true"></i>
+										</a>
+
+
+									</td>
+								</tr>
+							{% else %}
+								<tr>
+									<td colspan="10">no records found</td>
+								</tr>
+							{% endfor %}
+						</tbody>
+						<tfoot class="text-center">
+							<tr>
+								<td colspan="7">
+									{{ knp_pagination_render(transactions, 'pagination.html.twig') }}
+								</td>
+							</tr>
+						</tfoot>
+
+					</table>
+
+				</div>
+			</div>
+		</div>
+	{% endblock %}

@@ -121,6 +121,12 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\OneToMany(targetEntity: Client::class, mappedBy: 'cmrcl')]
     private Collection $clients;
 
+    /**
+     * @var Collection<int, Transaction>
+     */
+    #[ORM\OneToMany(targetEntity: Transaction::class, mappedBy: 'comrcl')]
+    private Collection $transactions;
+
     public function __construct()
     {
         $this->permissions = new ArrayCollection();
@@ -131,6 +137,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         $this->userHistories = new ArrayCollection();
         $this->prospectAutor = new ArrayCollection();
         $this->clients = new ArrayCollection();
+        $this->transactions = new ArrayCollection();
     }
 
 
@@ -528,6 +535,36 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
             // set the owning side to null (unless already changed)
             if ($client->getCmrcl() === $this) {
                 $client->setCmrcl(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Transaction>
+     */
+    public function getTransactions(): Collection
+    {
+        return $this->transactions;
+    }
+
+    public function addTransaction(Transaction $transaction): static
+    {
+        if (!$this->transactions->contains($transaction)) {
+            $this->transactions->add($transaction);
+            $transaction->setComrcl($this);
+        }
+
+        return $this;
+    }
+
+    public function removeTransaction(Transaction $transaction): static
+    {
+        if ($this->transactions->removeElement($transaction)) {
+            // set the owning side to null (unless already changed)
+            if ($transaction->getComrcl() === $this) {
+                $transaction->setComrcl(null);
             }
         }
 

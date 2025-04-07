@@ -1,0 +1,54 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Recherche Client
+{% endblock %}
+
+{% block body %}
+
+	{% for label,  messages in app.flashes  %}
+		<div class="container">
+			<div class="alert alert-{{ label }}">
+				{% for message in messages %}
+					{{ message | raw }}
+				{% endfor %}
+
+			</div>
+		</div>
+	{% endfor %}
+	<section class="content-header">
+
+		<h2>Recherche dans Tous les Transaction</h2>
+
+
+		<ol class="breadcrumb">
+			<li>
+				<a href="{{ path('app_home') }}">
+					<i class="fa fa-dashboard"></i>
+					Tableau de bord</a>
+			</li>
+			<li class="active">
+				<a href="{{ path('app_traitement') }}">
+					<i class="fa fa-users"></i>
+					Tous les Clients</a>
+			</li>
+			<!-- NOTIFICATION DROPDOWN -->
+			<li id="header_notification_bar" class="dropdown">
+				<a data-toggle="dropdown" class="dropdown-toggle" href="#">
+					<i class="fa fa-shopping-cart"></i>
+					<span class="badge bg-warning">{{ transactions|length }}
+					</span>
+				</a>
+			</li>
+
+
+			<!-- END NOTIFICATION DROPDOWN -->
+		</ol>
+		<br>
+	</section>
+	<div class="col-xs-12 mx-auto d-flex justify-content-center">
+
+		<div class="row" style="margin-right: 12px;  ">
+			{{ include('transaction/_search_form.html.twig')  }}
+		</div>
+	</div>
+{% endblock %}
