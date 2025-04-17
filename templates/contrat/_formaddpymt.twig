@@ -1,0 +1,102 @@
+<div class="card p-4">
+
+	<h4 class="mb ">
+		<i class="fa fa-plus-square"></i>
+
+		{{ form_title|default('  Ajouter une Payment') }}
+	</h4>
+	<div class="col-sm-2 col-sm-2 control-label"></div>
+	<div class="col-sm-8">
+		{% if not form.vars.valid %}
+			<ul class="alert-danger">
+				{% for child in form.children %}
+					{% if child.vars.errors is defined %}
+						{% for error in child.vars.errors %}
+							<li>{{ error.message }}</li>
+						{% endfor %}
+					{% endif %}
+				{% endfor %}
+			</ul>
+		{% endif %}
+	</div>
+
+	{{ form_start(form) }}
+	<!-- Ligne 1 -->
+	<div class="form-group row">
+		<h3>
+			<u>Souscripteur:</u>
+		</h3>
+		<div class="col-sm-2">
+			{{ form_row(form.product, {'attr': {'class': 'form-control', 'id': 'product'}}) }}
+		</div>
+		<div class="col-sm-2">
+			{{ form_row(form.typeContrat, {'attr': {'class': 'form-control', 'id': 'typeContrat'}}) }}
+		</div>
+		<div class="col-sm-2">
+			{{ form_row(form.typeProduct, {'attr': {'class': 'form-control'}}) }}
+		</div>
+		<div id="subcategory-activite" class="col-sm-2" style="display: none">
+			{{ form_row(form.activite, {'attr': {'class': 'form-control', 'id': 'activite'}}) }}
+		</div>
+		<div id="subcategory-container" class="col-sm-2" style="display: none">
+			{{ form_row(form.raisonSociale, {'attr': {'class': 'form-control', 'id': 'raisonSociale'}}) }}
+		</div>
+		<div class="col-sm-2">
+			{{ form_row(form.nom, {'attr': {'class': 'form-control'}}) }}
+		</div>
+		<div class="col-sm-2">
+			{{ form_row(form.prenom, {'attr': {'class': 'form-control'}}) }}
+		</div>
+		<div class="col-sm-2">
+			{{ form_row(form.frais, {'attr': {'class': 'form-control'}}) }}
+		</div>
+
+
+	</div>
+
+
+	<!-- Ligne 5 -->
+	<div class="form-group row">
+		<h3>
+			<u>Paiment:</u>
+		</h3>
+
+
+		<div class="form-group row">
+
+			<div class="col-sm-2">
+				{{ form_row(form.NmbrReglement, {'attr': {'class': 'form-control'}}) }}
+			</div>
+			<!-- Payment container -->
+			<div class="col-sm-6">
+				<div id="reglements-container" data-prototype="{{ form_widget(form.regelement.vars.prototype)|e('html_attr') }}">
+					{% for regelement in form.regelement %}
+						<div class="form-group row reglement-item">
+							<div class="col-sm-3">{{ form_row(regelement.montantReglement) }}</div>
+							<div class="col-sm-3">{{ form_row(regelement.dateReglement) }}</div>
+							<div class="col-sm-3">{{ form_row(regelement.transaction) }}</div>
+							<div class="col-sm-3">{{ form_row(regelement.moyen) }}</div>
+						</div>
+					{% endfor %}
+				</div>
+			</div>
+		</div>
+
+
+		<!-- Ligne 8 -->
+		<div class="form-group row justify-content-end">
+			<div class="col-sm-6 text-right">
+				{{ form_row(form.comment, {'attr': {'class': 'form-control'}}) }}
+			</div>
+
+		</div>
+
+
+		<div class="form-group col-sm-12 text-center">
+			<button class="btn btn-primary">{{ button_label|default('Ajouter Paiment') }}</button>
+
+
+		</div>
+
+		{{ form_end(form) }}
+	</div>

@@ -170,10 +170,24 @@ class Contrat
     #[ORM\ManyToOne(inversedBy: 'contrats')]
     private ?Client $client = null;
 
+    /**
+     * @var Collection<int, Sav>
+     */
+    #[ORM\OneToMany(targetEntity: Sav::class, mappedBy: 'contrat')]
+    private Collection $savs;
+
+    /**
+     * @var Collection<int, Payment>
+     */
+    #[ORM\OneToMany(targetEntity: Payment::class, mappedBy: 'contrat', cascade: ['persist', 'remove'])]
+    private Collection $payments;
+
     public function __construct()
     {
         $this->antcdAssure = new ArrayCollection();
         $this->regelement = new ArrayCollection();
+        $this->savs = new ArrayCollection();
+        $this->payments = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -797,6 +811,66 @@ class Contrat
     public function setClient(?Client $client): static
     {
         $this->client = $client;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Sav>
+     */
+    public function getSavs(): Collection
+    {
+        return $this->savs;
+    }
+
+    public function addSav(Sav $sav): static
+    {
+        if (!$this->savs->contains($sav)) {
+            $this->savs->add($sav);
+            $sav->setContrat($this);
+        }
+
+        return $this;
+    }
+
+    public function removeSav(Sav $sav): static
+    {
+        if ($this->savs->removeElement($sav)) {
+            // set the owning side to null (unless already changed)
+            if ($sav->getContrat() === $this) {
+                $sav->setContrat(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Payment>
+     */
+    public function getPayments(): Collection
+    {
+        return $this->payments;
+    }
+
+    public function addPayment(Payment $payment): static
+    {
+        if (!$this->payments->contains($payment)) {
+            $this->payments->add($payment);
+            $payment->setContrat($this);
+        }
+
+        return $this;
+    }
+
+    public function removePayment(Payment $payment): static
+    {
+        if ($this->payments->removeElement($payment)) {
+            // set the owning side to null (unless already changed)
+            if ($payment->getContrat() === $this) {
+                $payment->setContrat(null);
+            }
+        }
 
         return $this;
     }

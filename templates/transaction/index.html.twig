@@ -69,6 +69,7 @@
 								<th>Debit</th>
 								<th>Credit</th>
 								<th>Moyen</th>
+								<th>Transaction</th>
 								<th>actions</th>
 							</tr>
 						</thead>
@@ -83,6 +84,7 @@
 									<td>{{ transaction.debit }}</td>
 									<td>{{ transaction.credit }}</td>
 									<td>{{ transaction.moyen }}</td>
+									<td>{{ transaction.transaction }}</td>
 									<td>
 										<a href="{{ path('app_transaction_show', {'id': transaction.id}) }}" class="btn btn-success btn-xs">
 											<i class="fa fa-eye fa-2x text-primary" aria-hidden="true"></i>

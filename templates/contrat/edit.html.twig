@@ -1,14 +1,82 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Edit Contrat
+{% block title %}Ajouter Contrat
 {% endblock %}
 
 {% block body %}
-	<h1>Edit Contrat</h1>
+	{% for label,  messages in app.flashes  %}
+		<div class="container">
+			<div class="alert alert-{{ label }}">
+				{% for message in messages %}
+					{{ message | raw }}
+				{% endfor %}
 
-	{{ include('contrat/_form.html.twig', {'button_label': 'Update'}) }}
+			</div>
+		</div>
+	{% endfor %}
 
-	<a href="{{ path('app_contrat_valid_index') }}">back to list</a>
+	<section class="content-header ">
+		<h1>
+			Contrats
+			<small>Modifie</small>
+		</h1>
+		<ol class="breadcrumb">
+			<li>
+				<a href="{{ path('app_home') }}">
+					<i class="fa fa-dashboard"></i>
+					Tableau de bord</a>
+			</li>
+			<li>
+				<a href="{{ path('app_prospect_index') }}">
+					<i class="fa fa-users"></i>
+					Tous les Contrats</a>
+			</li>
+			<li class="active">Ajouter un Contrat</li>
+		</ol>
+	</section>
+
+	<!-- FORM -->
+	{% block form %}
+		<div class="row mt ">
+			<div class="col-lg-12">
+				{{ include('contrat/_formaddpymt.twig') }}
+			</div>
+
+		</div>
+	{% endblock %}
+
+	<!-- END FORM -->
+{% endblock %}
+{% block javascripts %}
+	<script type="text/javascript">
 
 
+		document.addEventListener('DOMContentLoaded', function () {
+const reglementSelect = document.getElementById('{{ form.NmbrReglement.vars.id }}');
+const container = document.getElementById('reglements-container');
+
+if (! reglementSelect || ! container) {
+console.warn('Required elements not found');
+return;
+}
+
+reglementSelect.addEventListener('change', function (e) {
+const targetCount = parseInt(this.value);
+const currentCount = container.querySelectorAll('.reglement-item').length;
+
+// Clear existing fields
+container.innerHTML = '';
+
+// Add new fields
+for (let i = 0; i < targetCount; i++) {
+const newForm = container.dataset.prototype.replace(/__name__label__/g, '').replace(/__name__/g, i);
+
+const div = document.createElement('div');
+div.classList.add('form-group', 'row', 'reglement-item');
+div.innerHTML = newForm;
+container.appendChild(div);
+}
+});
+});
+	</script>
 {% endblock %}

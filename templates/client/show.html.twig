@@ -63,7 +63,7 @@
 		</tbody>
 	</table>
 
-	<a href="{{ path('app_client_index') }}">back to list</a>
+	<a href="{{ path('client_index') }}">back to list</a>
 
 	{% if  is_granted('ROLE_SUPER_ADMIN')   %}
 		<a href="{{ path('app_client_edit', {'id': client.id}) }}">edit</a>

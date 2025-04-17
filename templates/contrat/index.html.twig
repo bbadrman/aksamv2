@@ -15,7 +15,7 @@
 	{% endfor %}
 
 	<section class="content-header">
-		<h2>Clients</h2>
+		<h2>Contrats</h2>
 		<ol class="breadcrumb">
 			<li>
 				<a href="{{ path('app_home') }}">
@@ -88,10 +88,14 @@
 
 								<td>
 									{{ render(controller('App\\Controller\\ContratController::etat',{'id':contrat.id}))}}
+
+									{{ render(controller('App\\Controller\\ContratController::paiement',{'id':contrat.id}))}}
+									{# <a href="{{ path('app_contrat_addpayment', {'id': contrat.id}) }}" class="btn btn-info btn-xs">
+																			<i class="fa-duotone fa-solid fa-money-check"></i>
+																		</a> #}
 									{# <a href="{{ path('app_contrat_show', {'id': contrat.id}) }}">show</a> #}
-									{% if contrat.status == 1 %}
-										<a href="#" style="color:blue">
-											Valider
+										{% if contrat.status == 1 %}
+											<a href="#" style="color:blue"> Valider
 										</a>
 										{# {% elseif contrat.status == 2 and contrat.etat is null  %} #}
 									{% elseif contrat.status == 2 and contrat.isModif is null  %}

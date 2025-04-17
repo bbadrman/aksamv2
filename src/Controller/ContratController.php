@@ -4,9 +4,13 @@ namespace App\Controller;
 
 use App\Entity\Compartenaire;
 use App\Entity\Contrat;
+use App\Entity\Payment;
+use App\Form\AddPaymentType;
 use App\Form\ContratEditType;
 use App\Form\ContratEtatType;
+use App\Form\ContratPaiementType;
 use App\Form\ContratType;
+use App\Form\PaymentType;
 use App\Form\SearchContratType;
 use App\Repository\ClientRepository;
 use App\Repository\ContratRepository;
@@ -92,24 +96,32 @@ final class ContratController extends AbstractController
             throw $this->createNotFoundException('Client not found');
         }
 
+
         $contrat = new Contrat();
         $contrat->setNom($client->getNom());
         $contrat->setPrenom($client->getPrenom());
         $contrat->setRaisonSociale($client->getRaisonSociale());
         $contrat->setClient($client);
 
-
+        $payment = new Payment();
+        $payment->setContrat($contrat); // si nécessaire
+        $contrat->addPayment($payment); // ⚠️ important
 
         $form = $this->createForm(ContratType::class, $contrat);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+
             foreach ($contrat->getAntcdAssure() as $antcdAssure) {
                 $entityManager->persist($antcdAssure);
             }
 
             foreach ($contrat->getRegelement() as $regelement) {
                 $entityManager->persist($regelement);
+            }
+
+            foreach ($contrat->getPayments() as $payment) {
+                $entityManager->persist($payment);
             }
             foreach ($contrat->getPartenaire() as $partenaire) {
                 $entityManager->persist($partenaire);
@@ -121,18 +133,29 @@ final class ContratController extends AbstractController
             $contrat->setUser($this->getUser());
 
 
-
             $entityManager->persist($contrat);
             $entityManager->flush();
             $this->addFlash('info', 'la Contrat a été créer avec succès!');
             return $this->redirectToRoute('app_contrat_valid_index', [], Response::HTTP_SEE_OTHER);
         }
 
+        // $payment = new Payment();
+        // $formPayment = $this->createForm(PaymentType::class, $payment);
+        // $formPayment->handleRequest($request);
+        // if ($formPayment->isSubmitted() && !$formPayment->isValid()) {
+        //     $payment->setContrat($contrat);
+        //     $entityManager->persist($payment);
+        //     $entityManager->flush();
+        //     $this->addFlash('error', 'Erreur de validation du formulaire');
+        // }
+
         return $this->render('contrat/new.html.twig', [
             'contrat' => $contrat,
             'form' => $form,
+            // 'formPayment' => $formPayment->createView(),
         ]);
     }
+
 
     #[Route('/{id}', name: 'app_contrat_show', methods: ['GET'])]
     public function show(Contrat $contrat): Response
@@ -185,6 +208,51 @@ final class ContratController extends AbstractController
             'form' => $form,
         ]);
     }
+
+    #[Route('/{id}/paiement', name: 'app_contrat_paiement', methods: ['GET', 'POST'])]
+    public function paiement(Request $request, Contrat $contrat, EntityManagerInterface $entityManager): Response
+    {
+        $form = $this->createForm(ContratPaiementType::class, $contrat);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+
+
+            $entityManager->flush();
+            $this->addFlash('info', 'Une paiement a été ajouter avec succès!');
+
+            return $this->redirect($request->headers->get('referer'));
+        }
+
+        return $this->render('partials/_paiement_modal.html.twig', [
+            'contrat' => $contrat,
+            'form' => $form,
+        ]);
+    }
+
+
+    #[Route('/{id}/addpayment', name: 'app_contrat_addpayment', methods: ['GET', 'POST'])]
+    public function addpayment(Request $request, Contrat $contrat, EntityManagerInterface $entityManager): Response
+    {
+        $form = $this->createForm(AddPaymentType::class, $contrat);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+
+
+            $entityManager->flush();
+            $this->addFlash('info', 'Une paiement a été ajouter avec succès!');
+
+            return $this->redirect($request->headers->get('referer'));
+        }
+
+        return $this->render('contrat/edit.html.twig', [
+            'contrat' => $contrat,
+            'form' => $form,
+        ]);
+    }
+
+
 
     #[Route('/{id}', name: 'app_contrat_delete', methods: ['POST'])]
     public function delete(Request $request, Contrat $contrat, EntityManagerInterface $entityManager): Response

@@ -4,8 +4,8 @@ namespace App\Form;
 
 use App\Entity\Compartenaire;
 use App\Entity\Contrat;
+use App\Entity\Payment;
 use App\Entity\Product;
-use App\Entity\User;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -201,17 +201,17 @@ class ContratType extends AbstractType
                     'multiple' => false,
                 ]
             )
-            ->add('frais', Type\MoneyType::class, [
-                'attr' => ['class' => 'tinymce'],
-                'label' => "Frais",
-                'required' => false,
-                'attr' => [
-                    'placeholder' => 'Tapez en EURO',
-                    'divisor' => 100,
+            // ->add('frais', Type\MoneyType::class, [
+            //     'attr' => ['class' => 'tinymce'],
+            //     'label' => "Frais",
+            //     'required' => false,
+            //     'attr' => [
+            //         'placeholder' => 'Tapez en EURO',
+            //         'divisor' => 100,
 
-                ],
+            //     ],
 
-            ])
+            // ])
             ->add(
                 'etat',
                 Type\ChoiceType::class,
@@ -528,17 +528,16 @@ class ContratType extends AbstractType
                 'expanded' => false,
                 'multiple' => false
             ])
-            ->add('NmbrReglement', Type\ChoiceType::class, [
-                'label' => 'Nombre de règlements',
-                'placeholder' => '--Selectie nombre de règlements -- ',
-                'choices' => array_combine(range(1, 10), range(1, 10)),
-                'attr' => [
-                    'class' => 'form-control',
-                    'data-controller' => 'reglement-updater'
-                ],
-            ])
+            // ->add('NmbrReglement', Type\ChoiceType::class, [
+            //     'label' => 'Nombre de règlements',
+            //     'required' => true,
+            //     'placeholder' => '--Selectie nombre de règlements -- ',
+            //     'choices' => array_combine(range(1, 10), range(1, 10)),
+            //     'attr' => ['id' => 'contrat-nombre-reglement']
+            // ])
             ->add('NmbrAssure', Type\ChoiceType::class, [
                 'label' => 'Nombre des assureurs',
+                'required' => true,
                 'placeholder' => '--Selectie nombre des assureurs -- ',
                 'choices' => array_combine(range(1, 10), range(1, 10)),
                 'attr' => [
@@ -560,6 +559,7 @@ class ContratType extends AbstractType
                 'by_reference' => false,
                 'prototype' => true, // Important
                 'label' => false,
+                'required' => true,
             ])
             ->add('antcdAssure', CollectionType::class, [
                 'entry_type' => AntecedentType::class,
@@ -569,6 +569,18 @@ class ContratType extends AbstractType
                 'by_reference' => false,
                 'prototype' => true,  // Important pour la génération dynamique
                 'label' => false,
+            ])
+
+            ->add('payments', CollectionType::class, [
+                'entry_type' => PaymentType::class,
+                'allow_add' => true,
+                'allow_delete' => true,
+                'by_reference' => false,
+                'label' => 'Paiements',
+                'prototype' => true,
+                'attr' => [
+                    'class' => 'payments-collection',
+                ],
             ])
             ->add('compagnie', EntityType::class, [
                 'class' => Compartenaire::class,
@@ -582,6 +594,7 @@ class ContratType extends AbstractType
                 'multiple' => false,
                 'required' => false,
             ])
+
 
 
         ;

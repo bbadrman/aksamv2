@@ -1,0 +1,196 @@
+<button type="button" class="btn btn-warning" data-toggle="modal" data-target="#addfraisModal{{ contrat.id }}">
+	<i class="fa fa-credit-card-alt " aria-hidden="true"></i>
+</button>
+
+<div class="modal fade" id="addfraisModal{{ contrat.id }}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+	<div class="modal-dialog modal-xl" role="document">
+
+		<div class="modal-content">
+			<div class="modal-header">
+				<h5 class="modal-title">Ajouter un paiement</h5>
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+					<span aria-hidden="true">&times;</span>
+				</button>
+			</div>
+
+			{% set url = path('app_payment_newpayment', {'id': contrat.id}) %}
+			{{ form_start(form, {'action': url, 'method': 'POST',
+    'attr': {'novalidate': 'novalidate'}}) }}
+
+
+			<div class="modal-body container-fluid">
+
+				<div class="d-flex flex-row align-items-center mb-3">
+					<div class="me-3">{{ form_label(form.creatAt) }}{{ form_widget(form.creatAt) }}</div>
+					<div class="me-3">{{ form_label(form.moyen) }}{{ form_widget(form.moyen) }}</div>
+
+				</div>
+
+				<div class="d-flex flex-row align-items-center mb-3">
+					<div class="form-group col-md-3">{{ form_label(form.type) }}{{ form_widget(form.type) }}</div>
+					<div class="form-group col-md-3">{{ form_label(form.frais) }}{{ form_widget(form.frais) }}</div>
+					<div class="form-group col-md-3">{{ form_label(form.cotisation) }}{{ form_widget(form.cotisation) }}</div>
+					<div class="form-group col-md-3">{{ form_label(form.contrePartie) }}{{ form_widget(form.contrePartie) }}</div>
+
+				</div>
+
+				<div
+					class="reglements-container">
+					<!-- Règlement 1 -->
+					<div class="form-group">
+						{{ form_label(form.NmbrReglement) }}
+						{{ form_widget(form.NmbrReglement, {'attr': {'class': 'form-control'}}) }}
+					</div>
+
+					<div class="reglement-item reglement-1">
+						<div class="d-flex flex-row align-items-center mb-3">
+							<div class="mr-3">{{ form_label(form.montant) }}</div>
+							<div class="mr-3">{{ form_widget(form.montant) }}</div>
+							<div class="mr-3">{{ form_label(form.transaction) }}</div>
+							<div class="mr-3">{{ form_widget(form.transaction) }}</div>
+							<div class="mr-3">{{ form_label(form.datePayment) }}</div>
+							<div>{{ form_widget(form.datePayment) }}</div>
+						</div>
+					</div>
+
+
+					<!-- Règlement 2 -->
+					<div class="reglement-item reglement-2 d-none">
+						<div class="d-flex flex-row align-items-center mb-3">
+							<div class="mr-3">{{ form_label(form.montant1) }}</div>
+							<div class="mr-3">{{ form_widget(form.montant1) }}</div>
+							<div class="mr-3">{{ form_label(form.transaction1) }}</div>
+							<div class="mr-3">{{ form_widget(form.transaction1) }}</div>
+							<div class="mr-3">{{ form_label(form.datePayment1) }}</div>
+							<div>{{ form_widget(form.datePayment1) }}</div>
+						</div>
+					</div>
+
+					<!-- Règlement 3 -->
+					<div class="reglement-item reglement-3 d-none">
+						<div class="d-flex flex-row align-items-center mb-3">
+							<div class="mr-3">{{ form_label(form.montant2) }}</div>
+							<div class="mr-3">{{ form_widget(form.montant2) }}</div>
+							<div class="mr-3">{{ form_label(form.transaction2) }}</div>
+							<div class="mr-3">{{ form_widget(form.transaction2) }}</div>
+							<div class="mr-3">{{ form_label(form.datePayment2) }}</div>
+							<div>{{ form_widget(form.datePayment2) }}</div>
+						</div>
+					</div>
+
+					<!-- Règlement 4 -->
+					<div class="reglement-item reglement-4 d-none">
+						<div class="d-flex flex-row align-items-center mb-3">
+							<div class="mr-3">{{ form_label(form.montant3) }}</div>
+							<div class="mr-3">{{ form_widget(form.montant3) }}</div>
+							<div class="mr-3">{{ form_label(form.transaction3) }}</div>
+							<div class="mr-3">{{ form_widget(form.transaction3) }}</div>
+							<div class="mr-3">{{ form_label(form.datePayment3) }}</div>
+							<div>{{ form_widget(form.datePayment3) }}</div>
+						</div>
+					</div>
+				</div>
+
+
+			</div>
+
+			<div class="modal-footer">
+				<button type="button" class="btn btn-secondary" data-dismiss="modal">Annuler</button>
+				<button class="btn btn-primary">{{ button_label|default('Enregistrer') }}</button>
+			</div>
+			{{ form_end(form) }}
+		</div>
+	</div>
+	<script>
+		document.addEventListener('DOMContentLoaded', function () {
+const select = document.querySelector('[name$="[NmbrReglement]"]');
+const reglementItems = document.querySelectorAll('.reglement-item');
+
+function updateReglements() {
+const count = parseInt(select.value) || 0;
+
+reglementItems.forEach((item, index) => {
+if (index < count) {
+item.classList.remove('d-none');
+} else {
+item.classList.add('d-none');
+}
+});
+}
+
+if (select) {
+select.addEventListener('change', updateReglements);
+updateReglements(); // Initialisation
+}
+});
+
+
+// pour genere le type :
+document.addEventListener('DOMContentLoaded', function () { // Gestion des règlements (existant)
+const reglementSelect = document.querySelector('[name$="[NmbrReglement]"]');
+const reglementItems = document.querySelectorAll('.reglement-item');
+
+function updateReglements() {
+const count = parseInt(reglementSelect.value) || 0;
+reglementItems.forEach((item, index) => {
+item.classList.toggle('d-none', index >= count);
+});
+}
+
+if (reglementSelect) {
+reglementSelect.addEventListener('change', updateReglements);
+updateReglements();
+}
+
+// Nouveau: Gestion du type de paiement
+const typeSelect = document.querySelector('[name$="[type]"]');
+const fraisField = document.querySelector('.form-group:has([name$="[frais]"])');
+const cotisationField = document.querySelector('.form-group:has([name$="[cotisation]"])');
+const contrePartieField = document.querySelector('.form-group:has([name$="[contrePartie]"])');
+
+function updatePaymentFields() {
+const selectedType = typeSelect.value;
+
+// Masquer tous les champs d'abord
+[fraisField, cotisationField, contrePartieField].forEach(field => {
+if (field) 
+field.classList.add('d-none');
+
+
+
+});
+
+// Afficher seulement le champ correspondant
+switch (selectedType) {
+case 'frais':
+if (fraisField) 
+fraisField.classList.remove('d-none');
+
+
+
+break;
+case 'cotisation':
+if (cotisationField) 
+cotisationField.classList.remove('d-none');
+
+
+
+break;
+case 'contrePartie':
+if (contrePartieField) 
+contrePartieField.classList.remove('d-none');
+
+
+
+break;
+}
+}
+
+if (typeSelect) {
+typeSelect.addEventListener('change', updatePaymentFields);
+updatePaymentFields(); // Initialisation
+}
+});
+	</script>
+
+</div>

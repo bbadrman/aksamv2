@@ -71,6 +71,7 @@ class TransactionType extends AbstractType
 
             ])
             ->add('comrcl')
+            ->add('transaction')
             ->add(
                 'moyen',
                 Type\ChoiceType::class,
@@ -90,8 +91,7 @@ class TransactionType extends AbstractType
                     'multiple' => false,
 
                 ]
-            )
-        ;
+            );
     }
 
     public function configureOptions(OptionsResolver $resolver): void

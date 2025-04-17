@@ -4360,3 +4360,41 @@ ul.chat-available-user li a:hover {
 [data-reglement-status="removing"] {
     background-color: #ffe6e6;
 }
+
+table.display {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+table.display th,
+table.display td {
+    padding: 12px;
+    text-align: left;
+    border-bottom: 1px solid #ddd;
+}
+
+table.display th {
+    background-color: #007bff;
+    color: white;
+}
+
+.commercial-summary {
+    background-color: #f8f9fa;
+    transition: background 0.3s;
+}
+
+.commercial-summary:hover {
+    background-color: #e2e6ea;
+}
+
+.contract-details {
+    background-color: #fff;
+}
+
+.contract-details td {
+    border-left: 4px solid #007bff;
+}
+
+.d-none {
+    display: none;
+}

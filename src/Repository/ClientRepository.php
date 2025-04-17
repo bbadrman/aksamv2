@@ -31,11 +31,11 @@ class ClientRepository extends ServiceEntityRepository
     public function findClientAll(SearchClient $search): PaginationInterface
     {
         $query = $this->createQueryBuilder('c')
-            ->select('c, h, b')
+            ->addSelect('c, h, b')
             ->where('c.status = 1 ')
             ->leftJoin('c.team', 'b')
             ->leftJoin('c.cmrcl', 'h')
-            // ->leftJoin('c.contrats', 'r')
+            ->leftJoin('c.contrats', 'r')
             ->orderBy('c.id', 'DESC');
 
 
@@ -56,7 +56,7 @@ class ClientRepository extends ServiceEntityRepository
     public function findClientAdmin(SearchClient $search): PaginationInterface
     {
         $query = $this->createQueryBuilder('c')
-            ->select('c, h, b')
+            ->addSelect('h, b')
             ->where('c.status = 2 OR c.status IS NULL')
             ->leftJoin('c.team', 'b')
             ->leftJoin('c.cmrcl', 'h')
@@ -141,12 +141,12 @@ class ClientRepository extends ServiceEntityRepository
     {
         if (!empty($search->f)) {
             $query = $query
-                ->andWhere('c.firstname LIKE :f')
+                ->andWhere('c.nom LIKE :f')
                 ->setParameter('f', "%{$search->f}%");
         }
         if (!empty($search->l)) {
             $query = $query
-                ->andWhere('c.lastname LIKE :l')
+                ->andWhere('c.prenom LIKE :l')
                 ->setParameter('l', "%{$search->l}%");
         }
         if (!empty($search->team)) {

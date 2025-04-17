@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Entity\Client;
 use App\Form\ClientType;
+use App\Form\ClientValideType;
 use App\Form\SearchClientType;
 use App\Repository\ClientRepository;
 use App\Search\SearchClient;
@@ -105,7 +106,7 @@ final class ClientController extends AbstractController
             $entityManager->persist($client);
             $entityManager->flush();
 
-            return $this->redirectToRoute('app_client_index', [], Response::HTTP_SEE_OTHER);
+            return $this->redirectToRoute('client_index', [], Response::HTTP_SEE_OTHER);
         }
 
         return $this->render('client/new.html.twig', [
@@ -130,11 +131,33 @@ final class ClientController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
             $entityManager->flush();
-
-            return $this->redirectToRoute('app_client_index', [], Response::HTTP_SEE_OTHER);
+            $this->addFlash('info', 'le Client a été modifié avec succès!');
+            return $this->redirectToRoute('client_index', [], Response::HTTP_SEE_OTHER);
         }
 
         return $this->render('client/edit.html.twig', [
+            'client' => $client,
+            'form' => $form,
+        ]);
+    }
+
+
+    #[Route('/{id}/editvalide', name: 'client_valide_edit', methods: ['GET', 'POST'])]
+    public function editvalide(Request $request, Client $client): Response
+    {
+        // $this->denyAccessUnlessGrantedAuthorizedRoles();
+
+        $form = $this->createForm(ClientValideType::class, $client);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $client->setModifie(1);
+            $this->clientRepository->add($client, true);
+            $this->addFlash('info', 'le Client a été modifié avec succès!');
+            return $this->redirectToRoute('client_index', [], Response::HTTP_SEE_OTHER);
+        }
+
+        return $this->renderForm('client/editvalid.html.twig', [
             'client' => $client,
             'form' => $form,
         ]);
@@ -148,6 +171,6 @@ final class ClientController extends AbstractController
             $entityManager->flush();
         }
 
-        return $this->redirectToRoute('app_client_index', [], Response::HTTP_SEE_OTHER);
+        return $this->redirectToRoute('client_index', [], Response::HTTP_SEE_OTHER);
     }
 }

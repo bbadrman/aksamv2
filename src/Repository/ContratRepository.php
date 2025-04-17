@@ -64,28 +64,52 @@ class ContratRepository extends ServiceEntityRepository
         );
     }
 
-    //    /**
-    //     * @return Contrat[] Returns an array of Contrat objects
-    //     */
-    //    public function findByExampleField($value): array
-    //    {
-    //        return $this->createQueryBuilder('c')
-    //            ->andWhere('c.exampleField = :val')
-    //            ->setParameter('val', $value)
-    //            ->orderBy('c.id', 'ASC')
-    //            ->setMaxResults(10)
-    //            ->getQuery()
-    //            ->getResult()
-    //        ;
-    //    }
 
-    //    public function findOneBySomeField($value): ?Contrat
-    //    {
-    //        return $this->createQueryBuilder('c')
-    //            ->andWhere('c.exampleField = :val')
-    //            ->setParameter('val', $value)
-    //            ->getQuery()
-    //            ->getOneOrNullResult()
-    //        ;
-    //    }
+    /**
+     * Calcule la somme totale des frais
+     */
+    public function getTotalFrais(): float
+    {
+        return (float) $this->createQueryBuilder('c')
+            ->select('SUM(c.frais)')
+            ->Where('c.status = 1')
+            ->getQuery()
+            ->getSingleScalarResult();
+    }
+
+
+    public function countContratsAndTotalFraisByComrclForThisMonth(): array
+    {
+        $currentMonth = new \DateTime('first day of this month');
+
+        return $this->createQueryBuilder('c')
+            ->select('u.id AS userId, u.username AS username, COUNT(c.id) AS contratCount, SUM(c.frais) AS totalFrais, SUM(r.montantReglement) AS totalReglements')
+            ->join('c.user', 'u')
+            ->leftJoin('c.regelement', 'r') // on récupère les règlements
+            ->where('c.dateSouscrpt >= :startOfMonth')
+            ->andWhere('c.dateSouscrpt < :endOfMonth')
+            ->andWhere('c.status = 1')
+            ->setParameter('startOfMonth', $currentMonth->format('Y-m-01'))
+            ->setParameter('endOfMonth', $currentMonth->modify('first day of next month')->format('Y-m-01'))
+            ->groupBy('u.id')
+            ->getQuery()
+            ->getResult();
+    }
+
+
+    public function getTotalContratsAndFraisForThisMonth(): array
+    {
+        $currentMonth = new \DateTime('first day of this month');
+
+        return $this->createQueryBuilder('c')
+            ->select('COUNT(DISTINCT c.id) AS totalContrats, SUM(c.frais) AS totalFrais, SUM(r.montantReglement) AS totalReglements')
+            ->leftJoin('c.regelement', 'r')
+            ->where('c.dateSouscrpt >= :startOfMonth')
+            ->andWhere('c.dateSouscrpt < :endOfMonth')
+            ->andWhere('c.status = 1')
+            ->setParameter('startOfMonth', $currentMonth->format('Y-m-01'))
+            ->setParameter('endOfMonth', $currentMonth->modify('first day of next month')->format('Y-m-01'))
+            ->getQuery()
+            ->getSingleResult();
+    }
 }

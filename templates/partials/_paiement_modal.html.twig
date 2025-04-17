@@ -1,0 +1,31 @@
+<!-- Modal pour affictation team or cmrcl -->
+
+<button type="button" class="btn btn-warnig" data-toggle="modal" data-target="#paimentModal{{ contrat.id }}">
+
+
+	<i class="fa fa-credit-card-alt " aria-hidden="true"></i>
+</button>
+
+<div class="modal fade" id="paimentModal{{ contrat.id }}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+	<div class="modal-dialog" role="document">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h5 class="modal-title" id="exampleModalLabel">contrat du :
+					{{ contrat.nom }}</h5>
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+					<span aria-hidden="true">&times;</span>
+				</button>
+			</div>
+			{% set url = path('app_contrat_paiement', {'id': contrat.id}) %}
+			{{ form_start(form, {'action':url}) }}
+
+			{{ form_row(form.regelement ) }}
+
+			<div class="modal-footer">
+				<button type="button" class="btn btn-secondary" data-dismiss="modal">Annuler</button>
+				<button class="btn btn-primary">{{ button_label|default('Save') }}</button>
+			</div>
+			{{ form_end(form) }}
+		</div>
+	</div>
+</div>

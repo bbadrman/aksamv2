@@ -49,6 +49,58 @@ class UserRepository extends ServiceEntityRepository implements PasswordUpgrader
             ->getResult();
     }
 
+
+    public function findByContratValid(): array
+    {
+        $currentMonth = new \DateTime('first day of this month');
+
+        return $this->createQueryBuilder('u')
+            ->addSelect('c')
+            ->leftJoin('u.contrats', 'c')
+            ->Where('c.status = 1')
+            ->andwhere('c.dateSouscrpt >= :startOfMonth')
+            ->andWhere('c.dateSouscrpt < :endOfMonth')
+            ->setParameter('startOfMonth', $currentMonth->format('Y-m-01'))
+            ->setParameter('endOfMonth', $currentMonth->modify('first day of next month')->format('Y-m-01'))
+            ->getQuery()
+            ->getResult();
+    }
+
+    public function findByClientValid(): array
+    {
+        $currentMonth = new \DateTime('first day of this month');
+
+        return $this->createQueryBuilder('u')
+            ->addSelect('c', 'p') // Ajout de 'p' pour les paiements
+            ->leftJoin('u.contrats', 'c')
+            ->leftJoin('c.payments', 'p') // Jointure avec les paiements
+            ->where('c.status = 1')
+            ->andWhere('p.creatAt >= :startOfMonth')
+            ->andWhere('p.creatAt < :endOfMonth')
+            ->setParameter('startOfMonth', $currentMonth->format('Y-m-01'))
+            ->setParameter('endOfMonth', $currentMonth->modify('first day of next month')->format('Y-m-01'))
+            ->getQuery()
+            ->getResult();
+    }
+
+
+
+
+    public function findByContratValidBetweenDates(string $start, string $end): array
+    {
+        return $this->createQueryBuilder('u')
+            ->addSelect('c')
+            ->leftJoin('u.contrats', 'c')
+            ->where('c.status = 1')
+            ->andWhere('c.dateSouscrpt >= :start')
+            ->andWhere('c.dateSouscrpt < :end')
+            ->setParameter('start', $start)
+            ->setParameter('end', $end)
+            ->getQuery()
+            ->getResult();
+    }
+
+
     //    /**
     //     * @return User[] Returns an array of User objects
     //     */

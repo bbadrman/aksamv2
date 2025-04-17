@@ -127,6 +127,12 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\OneToMany(targetEntity: Transaction::class, mappedBy: 'comrcl')]
     private Collection $transactions;
 
+    /**
+     * @var Collection<int, Sav>
+     */
+    #[ORM\ManyToMany(targetEntity: Sav::class, mappedBy: 'afect')]
+    private Collection $savs;
+
     public function __construct()
     {
         $this->permissions = new ArrayCollection();
@@ -138,6 +144,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         $this->prospectAutor = new ArrayCollection();
         $this->clients = new ArrayCollection();
         $this->transactions = new ArrayCollection();
+        $this->savs = new ArrayCollection();
     }
 
 
@@ -566,6 +573,33 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
             if ($transaction->getComrcl() === $this) {
                 $transaction->setComrcl(null);
             }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Sav>
+     */
+    public function getSavs(): Collection
+    {
+        return $this->savs;
+    }
+
+    public function addSav(Sav $sav): static
+    {
+        if (!$this->savs->contains($sav)) {
+            $this->savs->add($sav);
+            $sav->addAfect($this);
+        }
+
+        return $this;
+    }
+
+    public function removeSav(Sav $sav): static
+    {
+        if ($this->savs->removeElement($sav)) {
+            $sav->removeAfect($this);
         }
 
         return $this;

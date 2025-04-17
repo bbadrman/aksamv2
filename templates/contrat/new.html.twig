@@ -39,7 +39,7 @@
 	{% block form %}
 		<div class="row mt ">
 			<div class="col-lg-12">
-				{{ include('contrat/_form.html.twig') }}
+				{{ include('contrat/_formtest.html.twig') }}
 			</div>
 
 		</div>
@@ -49,7 +49,6 @@
 {% endblock %}
 {% block javascripts %}
 	<script type="text/javascript">
-
 
 		// pour NmbrReglement
 document.addEventListener('DOMContentLoaded', function () {
@@ -222,6 +221,90 @@ handleTypeConducteurChange();
 handleProductChange();
 handleSuspentionChange();
 handleAnulationpermiChange();
+});
+
+// Nouveau: Gestion du type de paiement
+document.addEventListener('DOMContentLoaded', function () { // Pour chaque bloc de paiement
+document.querySelectorAll('[data-type-field]').forEach(typeFieldContainer => {
+const select = typeFieldContainer.querySelector('select');
+if (! select) 
+return;
+
+
+
+const parent = typeFieldContainer.closest('.form-group.row');
+
+// Champs associés à ce bloc
+const fraisField = parent.querySelector('[data-show-when-type="frais"]');
+const cotisationField = parent.querySelector('[data-show-when-type="cotisation"]');
+const contrePartieField = parent.querySelector('[data-show-when-type="contrePartie"]');
+
+function updateFields() {
+const selected = select.value;
+
+// Masquer tous les champs
+[fraisField, cotisationField, contrePartieField].forEach(field => {
+if (field) 
+field.classList.add('d-none');
+
+
+
+});
+
+// Afficher le champ sélectionné
+switch (selected) {
+case 'frais':
+if (fraisField) 
+fraisField.classList.remove('d-none');
+
+
+
+break;
+case 'cotisation':
+if (cotisationField) 
+cotisationField.classList.remove('d-none');
+
+
+
+break;
+case 'contrePartie':
+if (contrePartieField) 
+contrePartieField.classList.remove('d-none');
+
+
+
+break;
+}
+}
+
+select.addEventListener('change', updateFields);
+updateFields(); // Initialiser au chargement
+});
+});
+// Nouveau: Gestion du type de paiement
+document.addEventListener('DOMContentLoaded', function () {
+const select = document.querySelector('[name$="[NmbrReglement]"]');
+const reglementRows = document.querySelectorAll('[data-reglement]');
+
+function updateReglements() {
+const value = parseInt(select.value);
+
+reglementRows.forEach(row => {
+const index = parseInt(row.getAttribute('data-reglement'));
+const show = index <= value;
+row.style.display = show ? 'flex' : 'none';
+
+// Activer ou désactiver les champs de la ligne
+row.querySelectorAll('input, select, textarea').forEach(input => {
+input.disabled = ! show;
+});
+});
+}
+
+if (select) {
+select.addEventListener('change', updateReglements);
+updateReglements(); // Initialisation au chargement
+}
 });
 	</script>
 {% endblock %}
