@@ -25,6 +25,14 @@ final class UserController extends AbstractController
             'users' => $userRepository->findAll(),
         ]);
     }
+    #[Route('/contrat', name: 'app_user_contrat', methods: ['GET'])]
+    public function contrat(UserRepository $userRepository): Response
+    {
+        $user = $userRepository->findByContratValid();
+        return $this->render('user/contrat.html.twig', [
+            'users' => $user,
+        ]);
+    }
 
     #[Route('/new', name: 'app_user_new', methods: ['GET', 'POST'])]
     public function new(Request $request, EntityManagerInterface $entityManager): Response
@@ -99,6 +107,8 @@ final class UserController extends AbstractController
             'form' => $form,
         ]);
     }
+
+
 
     #[Route('/{id}', name: 'app_user_delete', methods: ['POST'])]
     public function delete(Request $request, User $user, EntityManagerInterface $entityManager): Response

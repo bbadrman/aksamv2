@@ -24,32 +24,17 @@
 			<div class="content-panel">
 				<section class="content-header">
 
-					<h1 style="text-align: center;">Chiffres d'Affaires du Mois
+					<h1 style="text-align: center;">
+						Chiffres d'Affaires du Mois<br>
+
 					</h1>
 
 					<div style="text-align: right;">
 
 						<button type="button" class="btn btn-info">
-							<a href="{{path('baypayment')}}">MENSUELLE</a>
+							<a href="{{path('baypaymentcalendrie')}}">CHERCHER PAR CALENDRIER</a>
 						</button>
 					</div>
-
-					<form method="get" action="{{ path('baypaymentcalendrie') }}" class="form-inline mb-4">
-						<div class="form-group row">
-							<div class="col-sm-2">
-								<label for="start" class="mr-2">Date de début:</label>
-								<input type="date" name="start" id="start" value="{{ app.request.get('start') }}" class="form-control">
-							</div>
-							<div class="col-sm-2">
-								<label for="end" class="mr-2">Date de fin:</label>
-								<input type="date" name="end" id="end" value="{{ app.request.get('end') }}" class="form-control">
-							</div>
-							<div class="col-sm-2">
-								<br>
-								<button type="submit" class="btn btn-primary">Rechercher</button>
-							</div>
-						</div>
-					</form>
 
 
 					<ol class="breadcrumb">
@@ -66,6 +51,7 @@
 					<thead>
 						<tr>
 							<th>Commercial</th>
+							<th class="text-right">Nombre de contrats</th>
 							<th class="text-right sortable" data-sort="frais" style="cursor:pointer;">
 								frais déclarés
 								<i class="fa-solid fa-sort"></i>
@@ -94,12 +80,16 @@
 									<button class="btn btn-info">{{ item.user.username }}
 										<i class="fas fa-angle-down mr-2"></i>
 									</button>
+
 								</td>
-								<td class="text-right">Total Frais :
-									{{ totalFrais|number_format(2, ',', ' ') }}
+								<td>{{  totalFrais|length }}</td>
+								<td class="text-right">
+									<strong>
+										{{ totalFrais|number_format(2, ',', ' ') }}</strong>
 									€</td>
-								<td class="text-right">Total Crédit :
-									{{ totalCredit|number_format(2, ',', ' ') }}
+								<td class="text-right">
+									<strong>
+										{{ totalCredit|number_format(2, ',', ' ') }}</strong>
 									€</td>
 								{% set grandTotalFrais = grandTotalFrais + totalFrais %}
 								{% set grandTotalCredit = grandTotalCredit + totalCredit %}
@@ -109,6 +99,7 @@
 							{% for trans in item.transactions %}
 								<tr class="details-row details-{{ loop.parent.loop.index }} d-none">
 									<td></td>
+
 									<td>
 										Transaction :
 										<strong>{{ trans.transaction }}</strong>
@@ -126,12 +117,15 @@
 										{% endif %}
 									</td>
 								</tr>
+								{# ✅ Ligne Total Général #}
+
 							{% endfor %}
 						{% endfor %}
 						<tr class="table-dark font-weight-bold">
 							<td>
 								<strong>Total Général</strong>
 							</td>
+							<td></td>
 							<td>
 								<strong>{{ grandTotalFrais|number_format(2, ',', ' ') }}
 									€</strong>
@@ -142,7 +136,9 @@
 							</td>
 						</tr>
 					</tbody>
+
 				</table>
+
 
 			</div>
 		</div>
@@ -151,104 +147,117 @@
 {% block javascripts %}
 	{{ parent() }}
 	<script src="https://code.jquery.com/jquery-3.7.0.min.js"></script>
-	<script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
-
 	<script>
 		document.addEventListener('DOMContentLoaded', function () {
-const summaryRows = document.querySelectorAll('.commercial-summary');
-
-summaryRows.forEach(row => {
-row.addEventListener('click', function () {
-const targetClass = this.dataset.target;
-const detailRows = document.querySelectorAll (`.contract-details.${targetClass}`);
-
-detailRows.forEach(row => {
-row.style.display = row.style.display === 'none' ? 'table-row' : 'none';
-});
-});
-});
-
 let sortAscFrais = true;
 let sortAscCaisses = true;
 
-// Tri pour "Total frais déclarés"
-document.querySelector('.sortable[data-sort="frais"]').addEventListener('click', function () {
+// Affichage / masquage des détails au clic
+document.querySelectorAll('.commercial-summary').forEach(row => {
+row.addEventListener('click', () => {
+const index = row.dataset.index;
+document.querySelectorAll (`.detail-row.detail-${index}`).forEach(detailRow => {
+detailRow.style.display = (detailRow.style.display === 'none') ? 'table-row' : 'none';
+});
+});
+});
+
+// Fonction de tri sur les totaux
+function sortTable(sortKey, ascending) {
 const tbody = document.querySelector('#contrat-stats tbody');
 const allRows = Array.from(tbody.querySelectorAll('tr'));
 
 const blocks = [];
+
 for (let i = 0; i < allRows.length; i++) {
 const row = allRows[i];
 if (row.classList.contains('commercial-summary')) {
+const summary = row;
 const details = [];
-const targetClass = row.dataset.target;
-let j = i + 1;
 
-while (j < allRows.length && allRows[j].classList.contains('contract-details') && allRows[j].classList.contains(targetClass)) {
+let j = i + 1;
+while (j < allRows.length && allRows[j].classList.contains('detail-row')) {
 details.push(allRows[j]);
 j++;
 }
 
-const totalFrais = parseFloat(row.querySelector('.frais-value').dataset.value);
-blocks.push({summary: row, details, totalFrais});
+const totalValue = parseFloat(summary.querySelector (`td:nth-child(${
+sortKey === 'frais' ? 2 : 3
+})`).textContent.replace(/\s/g, '').replace(',', '.'));
+blocks.push({summary, details, totalValue});
+
 i = j - 1;
 }
 }
 
-// Trie les blocs
-blocks.sort((a, b) => {
-return sortAscFrais ? b.totalFrais - a.totalFrais : a.totalFrais - b.totalFrais;
-});
+blocks.sort((a, b) => ascending ? a.totalValue - b.totalValue : b.totalValue - a.totalValue);
 
-// Réinsère les blocs
 tbody.innerHTML = '';
 blocks.forEach(block => {
 tbody.appendChild(block.summary);
-block.details.forEach(d => tbody.appendChild(d));
+block.details.forEach(detail => tbody.appendChild(detail));
 });
+}
 
+document.querySelector('.sortable[data-sort="frais"]').addEventListener('click', function () {
+sortTable('frais', sortAscFrais);
 sortAscFrais = ! sortAscFrais;
 });
 
-// Tri pour "Total frais en caisses"
 document.querySelector('.sortable[data-sort="frais_caisses"]').addEventListener('click', function () {
-const tbody = document.querySelector('#contrat-stats tbody');
-const allRows = Array.from(tbody.querySelectorAll('tr'));
-
-const blocks = [];
-for (let i = 0; i < allRows.length; i++) {
-const row = allRows[i];
-if (row.classList.contains('commercial-summary')) {
-const details = [];
-const targetClass = row.dataset.target;
-let j = i + 1;
-
-while (j < allRows.length && allRows[j].classList.contains('contract-details') && allRows[j].classList.contains(targetClass)) {
-details.push(allRows[j]);
-j++;
-}
-
-const totalCredit = parseFloat(row.querySelector('.caisses-value').dataset.value);
-blocks.push({summary: row, details, totalCredit});
-i = j - 1;
-}
-}
-
-// Trie les blocs
-blocks.sort((a, b) => {
-return sortAscCaisses ? b.totalCredit - a.totalCredit : a.totalCredit - b.totalCredit;
-});
-
-// Réinsère les blocs
-tbody.innerHTML = '';
-blocks.forEach(block => {
-tbody.appendChild(block.summary);
-block.details.forEach(d => tbody.appendChild(d));
-});
-
+sortTable('caisses', sortAscCaisses);
 sortAscCaisses = ! sortAscCaisses;
 });
 });
+
+// Affichage / masquage des détails au clic
+
+document.addEventListener('DOMContentLoaded', function () {
+let sortAscFrais = true;
+let sortAscCredit = true;
+
+// Toggle les lignes de détails
+document.querySelectorAll('.commercial-summary').forEach(row => {
+row.addEventListener('click', () => {
+const target = row.dataset.target;
+document.querySelectorAll (`.details-row.${target}`).forEach(tr => {
+tr.classList.toggle('d-none');
+});
+});
+});
+
+function sortTableBy(column, ascending) {
+const tbody = document.querySelector('#contrat-stats tbody');
+const rows = Array.from(tbody.querySelectorAll('.commercial-summary'));
+
+const sortedRows = rows.sort((a, b) => {
+const valA = parseFloat(a.dataset[column]);
+const valB = parseFloat(b.dataset[column]);
+return ascending ? valA - valB : valB - valA;
+});
+
+// Réorganiser les lignes avec les détails
+tbody.innerHTML = '';
+sortedRows.forEach(row => {
+tbody.appendChild(row);
+const target = row.dataset.target;
+document.querySelectorAll (`.details-row.${target}`).forEach(tr => {
+tbody.appendChild(tr);
+});
+});
+}
+
+document.querySelector('.sortable[data-sort="frais"]').addEventListener('click', () => {
+sortTableBy('totalFrais', sortAscFrais);
+sortAscFrais = ! sortAscFrais;
+});
+
+document.querySelector('.sortable[data-sort="frais_caisses"]').addEventListener('click', () => {
+sortTableBy('totalCredit', sortAscCredit);
+sortAscCredit = ! sortAscCredit;
+});
+});
 	</script>
+
 
 {% endblock %}

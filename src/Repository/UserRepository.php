@@ -85,15 +85,15 @@ class UserRepository extends ServiceEntityRepository implements PasswordUpgrader
 
 
 
-
     public function findByContratValidBetweenDates(string $start, string $end): array
     {
         return $this->createQueryBuilder('u')
-            ->addSelect('c')
+            ->addSelect('c', 'p')
             ->leftJoin('u.contrats', 'c')
+            ->leftJoin('c.payments', 'p')
             ->where('c.status = 1')
-            ->andWhere('c.dateSouscrpt >= :start')
-            ->andWhere('c.dateSouscrpt < :end')
+            ->andWhere('p.creatAt >= :start')
+            ->andWhere('p.creatAt < :end')
             ->setParameter('start', $start)
             ->setParameter('end', $end)
             ->getQuery()

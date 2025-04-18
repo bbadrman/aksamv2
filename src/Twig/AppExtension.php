@@ -21,6 +21,8 @@ class AppExtension extends AbstractExtension
         return [
             new TwigFilter('credit_by_transaction', [$this, 'getCreditByTransaction']),
             new TwigFilter('frais_par_contrat', [$this, 'getFraisParContratThisMonth']),
+            new TwigFilter('is_transaction_declared', [$this, 'isTransactionDeclaredInPayments']),
+
         ];
     }
 
@@ -46,5 +48,20 @@ class AppExtension extends AbstractExtension
         }
 
         return $total;
+    }
+    public function isTransactionDeclaredInPayments(Contrat $contrat, string $transactionNumber): bool
+    {
+        foreach ($contrat->getPayments() as $payment) {
+            if (
+                $payment->getTransaction() === $transactionNumber ||
+                $payment->getTransaction1() === $transactionNumber ||
+                $payment->getTransaction2() === $transactionNumber ||
+                $payment->getTransaction3() === $transactionNumber
+            ) {
+                return true;
+            }
+        }
+
+        return false;
     }
 }

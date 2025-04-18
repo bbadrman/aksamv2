@@ -49,8 +49,46 @@
 {% endblock %}
 {% block javascripts %}
 	<script type="text/javascript">
+		// cache les champs
 
-		// pour NmbrReglement
+document.addEventListener('DOMContentLoaded', function () { // Toggle Souscripteur
+const toggleSouscripteur = document.getElementById('toggle-souscripteur');
+const souscripteurFields = document.getElementById('souscripteur-fields');
+
+if (toggleSouscripteur && souscripteurFields) {
+toggleSouscripteur.style.cursor = 'pointer';
+toggleSouscripteur.addEventListener('click', () => {
+souscripteurFields.style.display = souscripteurFields.style.display === 'none' ? 'flex' : 'none';
+souscripteurFields.style.flexWrap = 'wrap';
+});
+}
+
+// Toggle Risque à assurer
+const toggleRisque = document.getElementById('toggle-risque');
+const risqueFields = document.getElementById('risque-fields');
+
+if (toggleRisque && risqueFields) {
+toggleRisque.style.cursor = 'pointer';
+toggleRisque.addEventListener('click', () => {
+risqueFields.style.display = risqueFields.style.display === 'none' ? 'flex' : 'none';
+risqueFields.style.flexWrap = 'wrap';
+});
+}
+
+// Toggle Risque à payment
+const togglePayment = document.getElementById('toggle-payment');
+const PaymentFields = document.getElementById('payment-fields');
+
+if (togglePayment && PaymentFields) {
+togglePayment.style.cursor = 'pointer';
+togglePayment.addEventListener('click', () => {
+PaymentFields.style.display = PaymentFields.style.display === 'none' ? 'flex' : 'none';
+PaymentFields.style.flexWrap = 'wrap';
+});
+}
+
+});
+// pour NmbrReglement
 document.addEventListener('DOMContentLoaded', function () {
 const reglementSelect = document.querySelector('[name="contrat[NmbrReglement]"]');
 const container = document.getElementById('reglements-container');
@@ -306,5 +344,6 @@ select.addEventListener('change', updateReglements);
 updateReglements(); // Initialisation au chargement
 }
 });
+
 	</script>
 {% endblock %}

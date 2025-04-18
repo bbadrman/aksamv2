@@ -118,7 +118,7 @@
 													Paiement du
 													{{ payment.creatAt|date('d/m/Y') }}
 													- 
-													                                Frais:
+																																							                                Frais:
 													{{ payment.frais|number_format(2, ',', ' ') }}
 													€
 												</div>
@@ -131,7 +131,7 @@
 														Transaction
 														{{ reglement.transaction }}
 														-
-														                                    Credit:
+																																										                                    Credit:
 														{{ reglement.transaction|credit_by_transaction }}
 														€
 													</div>

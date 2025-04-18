@@ -47,7 +47,7 @@ class PaymentType extends AbstractType
             ])
             ->add('cotisation', Type\MoneyType::class, [
                 'attr' => ['class' => 'tinymce'],
-                'label' => "Frais",
+                'label' => "Cotisation",
                 'required' => false,
                 'attr' => [
                     'placeholder' => 'Tapez en EURO',
@@ -58,7 +58,7 @@ class PaymentType extends AbstractType
             ])
             ->add('contrePartie', Type\MoneyType::class, [
                 'attr' => ['class' => 'tinymce'],
-                'label' => "Frais",
+                'label' => "Contre Partie",
                 'required' => false,
                 'attr' => [
                     'placeholder' => 'Tapez en EURO',
@@ -81,7 +81,7 @@ class PaymentType extends AbstractType
 
             ->add('montant', Type\MoneyType::class, [
                 'attr' => ['class' => 'tinymce'],
-                'label' => "Frais",
+                'label' => "montant",
                 'required' => false,
                 'attr' => [
                     'placeholder' => 'Tapez en EURO',
@@ -98,7 +98,7 @@ class PaymentType extends AbstractType
             ])
             ->add('montant1', Type\MoneyType::class, [
                 'attr' => ['class' => 'tinymce'],
-                'label' => "Frais",
+                'label' => "montant",
                 'required' => false,
                 'attr' => [
                     'placeholder' => 'Tapez en EURO',
@@ -116,7 +116,7 @@ class PaymentType extends AbstractType
             ])
             ->add('montant2', Type\MoneyType::class, [
                 'attr' => ['class' => 'tinymce'],
-                'label' => "Frais",
+                'label' => "montant",
                 'required' => false,
                 'attr' => [
                     'placeholder' => 'Tapez en EURO',
@@ -134,7 +134,7 @@ class PaymentType extends AbstractType
             ])
             ->add('montant3', Type\MoneyType::class, [
                 'attr' => ['class' => 'tinymce'],
-                'label' => "Frais",
+                'label' => "montant",
                 'required' => false,
                 'attr' => [
                     'placeholder' => 'Tapez en EURO',

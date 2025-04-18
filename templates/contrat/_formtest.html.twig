@@ -22,10 +22,11 @@
 
 	{{ form_start(form) }}
 	<!-- Ligne 1 -->
-	<div class="form-group row">
-		<h3>
-			<u>Souscripteur:</u>
-		</h3>
+	<h3>
+		<u id="toggle-souscripteur">Souscripteur:</u>
+	</h3>
+	<div class="form-group row" id="souscripteur-fields" style="display: none;">
+
 		<div class="col-sm-2">
 			{{ form_row(form.product, {'attr': {'class': 'form-control', 'id': 'product'}}) }}
 		</div>
@@ -60,10 +61,11 @@
 
 	</div>
 	<!-- Ligne 2 -->
-	<div class="form-group row">
-		<h3>
-			<u>Rique à assurer:</u>
-		</h3>
+	<h3>
+		<u id="toggle-risque">Risque à assurer:</u>
+	</h3>
+	<div id="risque-fields" class="form-group row" style="display: none;">
+
 		<div class="col-sm-2" id="subcategory-imatriclt" style="dislay: none">
 			{{ form_row(form.imatriclt, {'attr': {'class': 'form-control'}}) }}
 		</div>
@@ -128,42 +130,42 @@
 
 		<!-- Conteneur pour les champs dynamiques d'assureur -->
 		<div id="antcdAssure-container" data-prototype="
-																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																											{%- set prototype_assure = form.antcdAssure.vars.prototype %}
-																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																											{%- set prototype_assureur = form_row(prototype_assure.assureur) %}
-																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																											{%- set prototype_nbrMois = form_row(prototype_assure.nbrMois) %}
-																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																											{%- set prototype_etatContrat = form_row(prototype_assure.etatContrat) %}
-																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																											{%- set prototype_sinistres = form_row(prototype_assure.sinistres) %}
-																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																											{%- set prototype_nbrSinistre = form_row(prototype_assure.nbrSinistre) %}
+																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																												{%- set prototype_assure = form.antcdAssure.vars.prototype %}
+																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																												{%- set prototype_assureur = form_row(prototype_assure.assureur) %}
+																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																												{%- set prototype_nbrMois = form_row(prototype_assure.nbrMois) %}
+																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																												{%- set prototype_etatContrat = form_row(prototype_assure.etatContrat) %}
+																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																												{%- set prototype_sinistres = form_row(prototype_assure.sinistres) %}
+																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																												{%- set prototype_nbrSinistre = form_row(prototype_assure.nbrSinistre) %}
 			
-																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																												{%- set prototype_material = form_row(prototype_assure.material) %}
-																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																													{%- set prototype_corporel = form_row(prototype_assure.corporel) %}
-																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																														{%- set prototype_zeresponsable = form_row(prototype_assure.zeresponsable) %}
-																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																															{%- set prototype_centResponsable = form_row(prototype_assure.centResponsable) %}
-																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																{%- set prototype_cinqResponsable = form_row(prototype_assure.cinqResponsable) %}
+																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																													{%- set prototype_material = form_row(prototype_assure.material) %}
+																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																														{%- set prototype_corporel = form_row(prototype_assure.corporel) %}
+																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																															{%- set prototype_zeresponsable = form_row(prototype_assure.zeresponsable) %}
+																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																{%- set prototype_centResponsable = form_row(prototype_assure.centResponsable) %}
+																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																	{%- set prototype_cinqResponsable = form_row(prototype_assure.cinqResponsable) %}
 			
-																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																											{%- set prototype_brisGlace = form_row(prototype_assure.brisGlace) %}
-																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																											{%- set prototype_volIncendie = form_row(prototype_assure.volIncendie) %}
-																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																											{%- set prototype_crmAct = form_row(prototype_assure.crmAct) %}
-																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																											{%- set prototype_html %}
+																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																												{%- set prototype_brisGlace = form_row(prototype_assure.brisGlace) %}
+																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																												{%- set prototype_volIncendie = form_row(prototype_assure.volIncendie) %}
+																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																												{%- set prototype_crmAct = form_row(prototype_assure.crmAct) %}
+																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																												{%- set prototype_html %}
 			
-																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																											<div class='form-group row antcdAssure-item'>
-																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																												<div class='col-sm-2'>{{ prototype_assureur|raw }}</div>
-																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																												<div class='col-sm-1'>{{ prototype_nbrMois|raw }}</div>
-																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																												<div class='col-sm-2'>{{ prototype_etatContrat|raw }}</div>
-																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																												<div class='col-sm-1'>{{ prototype_sinistres|raw }}</div>
-																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																												<div class='col-sm-1'>{{ prototype_nbrSinistre|raw }}</div>
-																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																												<div class='col-sm-1'>{{ prototype_material|raw }}</div>
-																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																												<div class='col-sm-1'>{{ prototype_corporel|raw }}</div>
-																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																												<div class='col-sm-1'>{{ prototype_zeresponsable|raw }}</div>
-																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																												<div class='col-sm-1'>{{ prototype_centResponsable|raw }}</div>
-																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																												<div class='col-sm-1'>{{ prototype_cinqResponsable|raw }}</div>
+																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																												<div class='form-group row antcdAssure-item'>
+																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																													<div class='col-sm-2'>{{ prototype_assureur|raw }}</div>
+																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																													<div class='col-sm-1'>{{ prototype_nbrMois|raw }}</div>
+																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																													<div class='col-sm-2'>{{ prototype_etatContrat|raw }}</div>
+																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																													<div class='col-sm-1'>{{ prototype_sinistres|raw }}</div>
+																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																													<div class='col-sm-1'>{{ prototype_nbrSinistre|raw }}</div>
+																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																													<div class='col-sm-1'>{{ prototype_material|raw }}</div>
+																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																													<div class='col-sm-1'>{{ prototype_corporel|raw }}</div>
+																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																													<div class='col-sm-1'>{{ prototype_zeresponsable|raw }}</div>
+																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																													<div class='col-sm-1'>{{ prototype_centResponsable|raw }}</div>
+																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																													<div class='col-sm-1'>{{ prototype_cinqResponsable|raw }}</div>
 			
-																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																												<div class='col-sm-1'>{{ prototype_brisGlace|raw }}</div>
-																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																												<div class='col-sm-1'>{{ prototype_volIncendie|raw }}</div>
-																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																												<div class='col-sm-2'>{{ prototype_crmAct|raw }}</div>
-																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																											</div>
-																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																											{% endset -%}
-																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																											{{ prototype_html|e('html_attr') }}" data-index="{{ form.antcdAssure|length }}">
+																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																													<div class='col-sm-1'>{{ prototype_brisGlace|raw }}</div>
+																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																													<div class='col-sm-1'>{{ prototype_volIncendie|raw }}</div>
+																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																													<div class='col-sm-2'>{{ prototype_crmAct|raw }}</div>
+																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																												</div>
+																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																												{% endset -%}
+																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																												{{ prototype_html|e('html_attr') }}" data-index="{{ form.antcdAssure|length }}">
 			{% for antcd in form.antcdAssure %}
 				<div class="form-group row antcdAssure-item">
 					<div class="col-sm-2">{{ form_row(antcd.assureur) }}</div>
@@ -216,85 +218,89 @@
 	</div>
 
 	<!-- Ligne 5 -->
-	<div class="form-group row">
-		<h3>
-			<u>Paiment:</u>
-		</h3>
-		<div class="col-sm-2">
-			{{ form_row(form.acompte, {'attr': {'class': 'form-control'}}) }}
-		</div>
-		<div class="col-sm-2">
-			{{ form_row(form.datePreleveAcompte, {'attr': {'class': 'form-control'}}) }}
-		</div>
-		<div class="col-sm-2">
-			{{ form_row(form.jourPrelvm, {'attr': {'class': 'form-control'}}) }}
+	<h3>
+		<u id="toggle-payment">Payments:</u>
+	</h3>
+	<div id="payment-fields" class="form-group row" style="display: none;">
+		<div class="form-group row">
+
+			<div class="col-sm-2">
+				{{ form_row(form.acompte, {'attr': {'class': 'form-control'}}) }}
+			</div>
+			<div class="col-sm-2">
+				{{ form_row(form.datePreleveAcompte, {'attr': {'class': 'form-control'}}) }}
+			</div>
+			<div class="col-sm-2">
+				{{ form_row(form.jourPrelvm, {'attr': {'class': 'form-control'}}) }}
+			</div>
+
+			<div class="col-sm-2">
+				{{ form_row(form.facilite, {'attr': {'class': 'form-control'}}) }}
+			</div>
+
+
 		</div>
 
-		<div class="col-sm-2">
-			{{ form_row(form.facilite, {'attr': {'class': 'form-control'}}) }}
+		<div data-prototype="{{ form_widget(form.payments.vars.prototype)|e('html_attr') }}" class="mb-3">
+			{% for paymentForm in form.payments %}
+				<div class="form-group row">
+
+					<div class="col-sm-2" data-type-field>
+						{{ form_row(paymentForm.type) }}
+					</div>
+					<div class="col-sm-2 d-none" data-show-when-type="frais">
+						{{ form_row(paymentForm.frais) }}
+					</div>
+					<div class="col-sm-2 d-none" data-show-when-type="cotisation">
+						{{ form_row(paymentForm.cotisation) }}
+					</div>
+					<div class="col-sm-2 d-none" data-show-when-type="contrePartie">
+						{{ form_row(paymentForm.contrePartie) }}
+					</div>
+
+					<div class="col-sm-2">
+						{{ form_row(paymentForm.creatAt) }}
+
+					</div>
+					<div class="col-sm-2">
+						{{ form_row(paymentForm.moyen) }}
+
+					</div>
+					<div class="col-sm-2">
+						{{ form_row(paymentForm.NmbrReglement) }}
+
+					</div>
+				</div>
+
+				<div class="form-group row" data-reglement="1">
+					<div class="col-sm-2">{{ form_row(paymentForm.montant) }}</div>
+					<div class="col-sm-2">{{ form_row(paymentForm.transaction) }}</div>
+					<div class="col-sm-2">{{ form_row(paymentForm.datePayment) }}</div>
+				</div>
+
+				<div class="form-group row" data-reglement="2">
+					<div class="col-sm-2">{{ form_row(paymentForm.montant1) }}</div>
+					<div class="col-sm-2">{{ form_row(paymentForm.transaction1) }}</div>
+					<div class="col-sm-2">{{ form_row(paymentForm.datePayment1) }}</div>
+				</div>
+
+				<div class="form-group row" data-reglement="3">
+					<div class="col-sm-2">{{ form_row(paymentForm.montant2) }}</div>
+					<div class="col-sm-2">{{ form_row(paymentForm.transaction2) }}</div>
+					<div class="col-sm-2">{{ form_row(paymentForm.datePayment2) }}</div>
+				</div>
+
+				<div class="form-group row" data-reglement="4">
+					<div class="col-sm-2">{{ form_row(paymentForm.montant3) }}</div>
+					<div class="col-sm-2">{{ form_row(paymentForm.transaction3) }}</div>
+					<div class="col-sm-2">{{ form_row(paymentForm.datePayment3) }}</div>
+				</div>
+			{% endfor %}
+
+
 		</div>
-
-
 	</div>
 
-	<div data-prototype="{{ form_widget(form.payments.vars.prototype)|e('html_attr') }}" class="mb-3">
-		{% for paymentForm in form.payments %}
-			<div class="form-group row">
-
-				<div class="col-sm-2" data-type-field>
-					{{ form_row(paymentForm.type) }}
-				</div>
-				<div class="col-sm-2 d-none" data-show-when-type="frais">
-					{{ form_row(paymentForm.frais) }}
-				</div>
-				<div class="col-sm-2 d-none" data-show-when-type="cotisation">
-					{{ form_row(paymentForm.cotisation) }}
-				</div>
-				<div class="col-sm-2 d-none" data-show-when-type="contrePartie">
-					{{ form_row(paymentForm.contrePartie) }}
-				</div>
-
-				<div class="col-sm-2">
-					{{ form_row(paymentForm.creatAt) }}
-
-				</div>
-				<div class="col-sm-2">
-					{{ form_row(paymentForm.moyen) }}
-
-				</div>
-				<div class="col-sm-2">
-					{{ form_row(paymentForm.NmbrReglement) }}
-
-				</div>
-			</div>
-
-			<div class="form-group row" data-reglement="1">
-				<div class="col-sm-2">{{ form_row(paymentForm.montant) }}</div>
-				<div class="col-sm-2">{{ form_row(paymentForm.transaction) }}</div>
-				<div class="col-sm-2">{{ form_row(paymentForm.datePayment) }}</div>
-			</div>
-
-			<div class="form-group row" data-reglement="2">
-				<div class="col-sm-2">{{ form_row(paymentForm.montant1) }}</div>
-				<div class="col-sm-2">{{ form_row(paymentForm.transaction1) }}</div>
-				<div class="col-sm-2">{{ form_row(paymentForm.datePayment1) }}</div>
-			</div>
-
-			<div class="form-group row" data-reglement="3">
-				<div class="col-sm-2">{{ form_row(paymentForm.montant2) }}</div>
-				<div class="col-sm-2">{{ form_row(paymentForm.transaction2) }}</div>
-				<div class="col-sm-2">{{ form_row(paymentForm.datePayment2) }}</div>
-			</div>
-
-			<div class="form-group row" data-reglement="4">
-				<div class="col-sm-2">{{ form_row(paymentForm.montant3) }}</div>
-				<div class="col-sm-2">{{ form_row(paymentForm.transaction3) }}</div>
-				<div class="col-sm-2">{{ form_row(paymentForm.datePayment3) }}</div>
-			</div>
-		{% endfor %}
-
-
-	</div>
 	<!-- Ligne 8 -->
 
 	<div class="form-group row">
