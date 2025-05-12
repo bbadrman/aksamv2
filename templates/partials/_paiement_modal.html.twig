@@ -19,7 +19,7 @@
 			{% set url = path('app_contrat_paiement', {'id': contrat.id}) %}
 			{{ form_start(form, {'action':url}) }}
 
-			{{ form_row(form.regelement ) }}
+			{{ form_row(form.payments ) }}
 
 			<div class="modal-footer">
 				<button type="button" class="btn btn-secondary" data-dismiss="modal">Annuler</button>

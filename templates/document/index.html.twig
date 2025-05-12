@@ -1,0 +1,93 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Document index
+{% endblock %}
+
+{% block body %}
+	{% for label,  messages in app.flashes  %}
+		<div class="container">
+			<div class="alert alert-{{ label }}">
+				{% for message in messages %}
+					<h2>
+						{{ message | raw }}</h2>
+				{% endfor %}
+
+			</div>
+		</div>
+	{% endfor %}
+	<section class="content-header">
+		<h1>les Documents Manquant</h1>
+		<ol class="breadcrumb">
+			<li>
+				<a href="{{ path('app_home') }}">
+					<i class="fa fa-dashboard"></i>
+					Tableau de bord</a>
+			</li>
+			<li class="active">
+				<a href="{{ path('app_prospect_index') }}">
+					<i class="fa fa-users"></i>
+					Tous les prospects</a>
+			</li>
+		</ol>
+	</section>
+	<div class="col-xs-12 mx-auto d-flex justify-content-center">
+
+		<div class="row" style="margin-right: 12px;  ">{% include 'document/_search_form.html.twig' with {search_form: search_form} only %}
+		</div>
+	</div>
+	<div class="row mt">
+		<div class="col-lg-12">
+			<div class="content-panel">
+				<table class="table table-striped table-advance table-hover">
+					<thead>
+						<tr>
+							<th>Cmrcl</th>
+							<th>Nom</th>
+							<th>BulletinAdhesion</th>
+							<th>MondatSepa</th>
+							<th>conditionGeneral</th>
+							<th>devoirConseil</th>
+							<th>permis</th>
+							<th>kbis</th>
+							<th>releveInformation</th>
+							<th>deviSigne</th>
+							<th>CarteGriseDefinitive</th>
+							<th>AtestNonAssure</th>
+							<th>AtestNonSinist</th>
+							<th>actions</th>
+						</tr>
+					</thead>
+					<tbody>
+						{% for document in documents %}
+							<tr>
+								<td>{{ document.contrat.user }}</td>
+								<td>{{ document.contrat.nom }}</td>
+								<td>{{ document.bulletinAdhesion   }}</td>
+								<td>{{ document.mondatSepa   }}</td>
+								<td>{{ document.conditionGeneral   }}</td>
+								<td>{{ document.devoirConseil   }}</td>
+								<td>{{ document.permis   }}</td>
+								<td>{{ document.kbis   }}</td>
+								<td>{{ document.releveInformation   }}</td>
+								<td>{{ document.deviSigne   }}</td>
+								<td>{{ document.CarteGriseDefinitive   }}</td>
+								<td>{{ document.AtestNonAssure   }}</td>
+								<td>{{ document.AtestNonSinist  }}</td>
+
+								<td>
+									<a href="{{ path('app_document_show', {'id': document.id}) }}">show</a>
+									<a href="{{ path('app_document_edit', {'id': document.id}) }}">edit</a>
+								</td>
+							</tr>
+						{% else %}
+							<tr>
+								<td colspan="5">no records found</td>
+							</tr>
+						{% endfor %}
+					</tbody>
+				</table>
+			</div>
+		</div>
+	</div>
+
+{% endblock %}

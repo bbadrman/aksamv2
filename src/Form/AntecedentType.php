@@ -55,11 +55,13 @@ class AntecedentType extends AbstractType
                 'placeholder' => '--Merci de selectie-- ',
 
                 'choices' => [
-                    'oui' => 'oui',
-                    'non' => 'non'
+                    'Oui' => true,
+                    'Non' => false,
                 ],
+
                 'expanded' => false,
-                'multiple' => false
+                'multiple' => false,
+
             ])
             ->add('nbrSinistre', Type\ChoiceType::class, [
                 'label' => 'Nombre sinistre',

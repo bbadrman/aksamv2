@@ -1,8 +1,20 @@
 <!-- Modal pour affictation team or cmrcl -->
 
-<button type="button" class="btn btn-success" data-toggle="modal" data-target="#etatModal{{ contrat.id }}">
+<button type="button" class="btn " data-toggle="modal" data-target="#etatModal{{ contrat.id }}">
 
-	<i class="fa-solid fa-repeat"></i>
+	{% if contrat.etat == 'EN-COURS' %}
+		<i class="fa fa-circle-check text-success fa-2x" title="En cours"></i>
+	{% elseif contrat.etat == 'ANNULE' %}
+		<i class="fa fa-ban text-danger fa-2x" title="Annulé"></i>
+	{% elseif contrat.etat == 'SUSPENDU' %}
+		<i class="fa-solid fa-triangle-exclamation text-warning fa-2x" title="Suspendu"></i>
+
+	{% elseif contrat.etat == 'RESILIE' %}
+		<i class="fa  fa-file-circle-xmark text-info fa-2x" title="RESILIE"></i>
+	{% elseif contrat.etat == null %}
+		<i class="fa-solid fa-circle-question text-muted fa-2x" title="État non défini"></i>
+
+	{% endif %}
 </button>
 
 <div class="modal fade" id="etatModal{{ contrat.id }}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">

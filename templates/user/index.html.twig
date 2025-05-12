@@ -53,8 +53,7 @@
 								</h4>
 							</div>
 							<div class="col-xs-5" style="float: right !important;">
-								<div
-									class="row" style="margin-right: 5px;">{# {% include 'user/_search_form.html.twig' with {search_form: search_form} only %} #}
+								<div class="row" style="margin-right: 5px;">{% include 'user/_searchform_form.html.twig' with {search_form: search_form} only %}
 								</div>
 							</div>
 						</div>
@@ -80,9 +79,9 @@
 									Produits
 								</th>
 								{# <th>
-																																																																																																	<i class="fa fa-regular fa-shield-check"></i>
-																																																																																																	Permissions
-																																																																																																</th> #}
+																																																																																																																																																																																																																																																	<i class="fa fa-regular fa-shield-check"></i>
+																																																																																																																																																																																																																																																	Permissions
+																																																																																																																																																																																																																																																</th> #}
 								<th>
 									<i class="fa fa-calendar"></i>
 									Date d'Embuache
@@ -113,8 +112,8 @@
 
 							{% for user in users %}
 								{# {% set Oui = '<span class="label label-success">Active</span>' %}
-																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																								                             {% set Non  = '<span class="label label-warning">Desactive</span>' %}
-																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																<tr> #}
+																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																								                             {% set Non  = '<span class="label label-warning">Desactive</span>' %}
+																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																<tr> #}
 
 								{# <td>{{ user.roles ? user.roles|json_encode : '' }}</td> #}
 									<td>
@@ -136,11 +135,11 @@
 								{% endfor %}
 								</td>
 								{# <td>
-																																																																																																		{% for perm in user.permissions %}
-																																																																																																		{{ perm|replace({'ROLE_': ''})|lower|capitalize }}
-																																																																																																	<br>
-																																																																																																{% endfor %}
-																																																																																																</td> #}
+																																																																																																																																																																																																																																																		{% for perm in user.permissions %}
+																																																																																																																																																																																																																																																		{{ perm|replace({'ROLE_': ''})|lower|capitalize }}
+																																																																																																																																																																																																																																																	<br>
+																																																																																																																																																																																																																																																{% endfor %}
+																																																																																																																																																																																																																																																</td> #}
 									<td>
 								{{ user.embuchAt ? user.embuchAt|date('Y-m-d') : '' }}
 								</td>
@@ -173,8 +172,8 @@
 										</a>
 
 										{# <a hreff="#" class="btn primary press modal-tigger" data-target="DeleteStoreModal" data-id="{{user.id}}"  data-title="{{user.firstname}}">open</a>
-																																																																																																																																																																																																																																																																														 
-																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																											 #}
+																																																																																																																																																																																																																																																																																																																																																																																																																																																																		 
+																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																															 #}
 
 										{% set form_title = '<i class="fa fa-trash"></i>' %}
 										{{ include('user/_delete_form.html.twig', {
@@ -193,8 +192,10 @@
 					</tbody>
 					<tfoot class="text-right">
 						<tr>
-							<td
-								colspan="7">{# {{ knp_pagination_render(users, 'pagination.html.twig') }} #}
+							<td colspan="7">
+								{% if users is not null %}
+									{{ knp_pagination_render(users, 'pagination.html.twig') }}
+								{% endif %}
 							</td>
 						</tr>
 					</tfoot>

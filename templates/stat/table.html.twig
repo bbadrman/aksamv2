@@ -1,0 +1,68 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}
+	Stat general !
+
+{% endblock %}
+
+{% block body %}
+
+
+	<div class="jumbotron mt-2">
+		<h1 class="display-3 text-center">
+			<i class="fa-solid fa-diamond "></i>
+			PROSPECTS
+			<i class="fa fa-diamond "></i>
+		</h1>
+		<hr class="my-4">
+
+		<div
+			class="row">
+			<!-- AFFECTATIONS  -->
+
+			<div class="col-md-3 col-sm-3 mb ">
+				<div class="green-panel pn">
+					<div class="green-header">
+
+						<h2>AFFECTATIONS  &emsp;
+
+							<i class="fa-regular fa-circle-question" title="Ce tableau contient les prospects pour les affectations"></i>
+						</h2>
+
+					</div>
+
+					<i class="fa-solid fa-share-from-square fa-4x" aria-hidden=" true"></i>
+
+				</a>
+			</div>
+		</div>
+
+		<!-- END AFFECTATIONS -->
+
+		<!-- PANIE NOUVEAUX -->
+
+
+		<div class="col-md-3 col-sm-3 mb">
+			<div class="green-panel pn">
+				<div class="green-header">
+					<h2>NOUVEAUX  &emsp;
+						<i class="fa-regular fa-circle-question" aria-hidden="true" title="Ce tableau contient les prospects affectés a moi."></i>
+
+					</h2>
+				</div>
+
+				<a href="#">
+					<i class="fa fa-undo fa-4x" aria-hidden="true"></i>
+
+					<h1 id="notif"></h1>
+				</a>
+			</div>
+		</div>
+
+
+		<!--END PANIE -->
+
+
+	</div>
+
+</div></div>{% endblock %}

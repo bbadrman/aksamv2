@@ -8,6 +8,62 @@
 	</b>
 </a>
 <!-- END LOGO -->
+{% if app.user is not null %}
+	<div class="nav notify-row d-flex justify-content-end gap-3" id="top_menu">
+		{% if is_granted('ROLE_ADMIN') or is_granted('ROLE_AFFECTALL') or is_granted('ROLE_CHEF')   %}
+			<li id="header_notification_bar" class="dropdown me-3">
+				<a href="{{ path('app_prospect_index') }} " class="text-white">
+					<i class="fa-solid fa-share-from-square fa-2x"></i>AFFECTATIONS&emsp;&emsp;&emsp;&emsp;
+					{% if is_granted('ROLE_ADMIN') or is_granted('ROLE_AFFECTALL')   %}
+						<span class="badge bg-warning fs-4">{{ " %02d"|format(stats.prospectspasaffect ?? 0 ) }}</span>
+					{% elseif is_granted('ROLE_CHEF')   %}
+						<span class="badge bg-warning fs-4">{{ " %02d"|format(stats.prospectsChefNvAll ?? 0 ) }}</span>
+					{% endif %}
+				</a>
+			</li>
+		{% endif %}
+		<li>&emsp;</li>
+		{% if  is_granted('ROLE_COMRC') or is_granted('ROLE_CHEF')    %}
+
+			<li id="header_notification_bar" class="dropdown me-3">
+				<a href="{{ path('newprospectchef_index') }}" class="text-white">
+					<i class="fa fa-undo fa-2x"></i>
+					NOUVEAUX &emsp;&emsp;&emsp;
+					<span class="badge bg-success fs-4 ms-2">{{ stats.prospectsCmrclNv ?? 0 }}</span>
+				</a>
+			</li>
+		{% endif %}
+		<li>&emsp;</li>
+		<li id="header_notification_bar" class="dropdown me-3">
+			<a href="{{ path('notrait_index') }}" class="text-white">
+				<i class="fa fa-user-plus fa-2x"></i>
+				PROSPECTS NON TRAITÉS&emsp;&emsp;&emsp;&emsp;
+				{% if is_granted('ROLE_ADMIN') or is_granted('ROLE_AFFECTALL') == true   %}
+					<span class="badge bg-info fs-4">{{ " %02d"|format(stats.prospectsNoTraite ?? 0 ) }}</span>
+				{% elseif is_granted('ROLE_CHEF') == true %}
+					<span class="badge bg-info fs-4">{{ " %02d"|format(stats.prospectsNoTrChef ?? 0 ) }}</span>
+				{% elseif is_granted('ROLE_USER') == true %}
+					<span class="badge bg-info fs-4">{{ " %02d"|format(stats.prospectsNoTrCmrcl ?? 0 ) }}</span>
+				{% endif %}
+			</a>
+		</li>
+		<li>&emsp;</li>
+		<li id="header_notification_bar" class="dropdown me-3">
+			<a href="{{ path('relancejour_index') }}" class="text-white">
+				<i class="fa-solid fa-calendar-day fa-2x"></i>
+				RELANCES DU JOUR&emsp;&emsp;&emsp;&emsp;
+				{% if is_granted('ROLE_ADMIN') or is_granted('ROLE_AFFECTALL') == true   %}
+					<span class="badge bg-primary fs-4">{{ " %02d"|format(stats.prospectsDay ?? 0 ) }}</span>
+				{% elseif is_granted('ROLE_CHEF') == true %}
+					<span class="badge bg-primary fs-4">{{ " %02d"|format(stats.prospectsDayChef ?? 0 ) }}</span>
+				{% elseif is_granted('ROLE_USER') == true %}
+					<span class="badge bg-primary fs-4">{{ " %02d"|format(stats.prospectsDayCmrcl ?? 0 ) }}</span>
+				{% endif %}
+			</a>
+		</li>
+	</div>
+
+{% endif %}
 <div
 	class="nav notify-row" id="top_menu">
 	<!-- NOTIFICATION START -->
@@ -24,9 +80,9 @@
 						<span class="badge bg-warning fs-4">{{ prospects|length }}</span>
 					</a>
 					{# <a data-toggle="dropdown" class="dropdown-toggle" href="#">
-																<i class=" fa fa-shopping-cart"></i>
-																<span class="badge bg-warning fs-4">{{ contrats|length }}</span>
-															</a> #}
+																																																																																																																																																																																																																																																																																																																																																																																																																	<i class=" fa fa-shopping-cart"></i>
+																																																																																																																																																																																																																																																																																																																																																																																																																	<span class="badge bg-warning fs-4">{{ contrats|length }}</span>
+																																																																																																																																																																																																																																																																																																																																																																																																																</a> #}
 
 				{% elseif app.request.get('_route') == 'prospect_search' %}
 					<span class="badge bg-warning fs-4"></span>

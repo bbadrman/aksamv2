@@ -20,7 +20,7 @@ class Compartenaire
     /**
      * @var Collection<int, Contrat>
      */
-    #[ORM\OneToMany(targetEntity: Contrat::class, mappedBy: 'compagnie')]
+    #[ORM\OneToMany(targetEntity: Contrat::class, mappedBy: 'partenaire')]
     private Collection $contrats;
 
     #[ORM\Column(length: 255, nullable: true)]

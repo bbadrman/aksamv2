@@ -16,6 +16,21 @@ class CompartenaireRepository extends ServiceEntityRepository
         parent::__construct($registry, Compartenaire::class);
     }
 
+
+    public function countContratsByPartenaire(): array
+    {
+        return $this->createQueryBuilder('p')
+            ->select(
+                'p as partenaire',
+                'COUNT(c.id) as contratCount',
+                'SUM(pay.frais) as totalFrais'
+            )
+            ->leftJoin('p.contrats', 'c')
+            ->leftJoin('c.payments', 'pay') // Jointure avec la table Payment
+            ->groupBy('p.id')
+            ->getQuery()
+            ->getResult();
+    }
     //    /**
     //     * @return Compartenaire[] Returns an array of Compartenaire objects
     //     */

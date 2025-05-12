@@ -22,15 +22,11 @@ class ContratPaiementType extends AbstractType
 
         $builder
 
-            ->add('regelement', CollectionType::class, [
-                'entry_type' => AjouterRegelementType::class,
-                'entry_options' => ['label' => false],
-                'allow_add' => true,
-                'allow_delete' => true,
-                'by_reference' => false,
-                'prototype' => true,
+            ->add('payments', PaymentType::class, [
                 'label' => false,
-                'required' => true,
+                'required' => false,
+
+
             ]);
     }
 

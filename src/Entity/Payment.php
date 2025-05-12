@@ -23,8 +23,6 @@ class Payment
     #[ORM\Column(type: Types::DATETIME_MUTABLE, nullable: true)]
     private ?\DateTimeInterface $creatAt = null;
 
-    #[ORM\ManyToOne(inversedBy: 'payments')]
-    private ?Contrat $contrat = null;
 
     #[ORM\Column(type: Types::DECIMAL, precision: 10, scale: 2, nullable: true)]
     private ?string $contrePartie = null;
@@ -80,6 +78,9 @@ class Payment
     #[ORM\Column(nullable: true)]
     private ?int $nmbrReglement = null;
 
+    #[ORM\OneToOne(mappedBy: 'payments', cascade: ['persist', 'remove'])]
+    private ?Contrat $contrat = null;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -121,17 +122,6 @@ class Payment
         return $this;
     }
 
-    public function getContrat(): ?Contrat
-    {
-        return $this->contrat;
-    }
-
-    public function setContrat(?Contrat $contrat): static
-    {
-        $this->contrat = $contrat;
-
-        return $this;
-    }
 
     public function getContrePartie(): ?string
     {
@@ -347,6 +337,28 @@ class Payment
     public function setNmbrReglement(?int $nmbrReglement): static
     {
         $this->nmbrReglement = $nmbrReglement;
+
+        return $this;
+    }
+
+    public function getContrat(): ?Contrat
+    {
+        return $this->contrat;
+    }
+
+    public function setContrat(?Contrat $contrat): static
+    {
+        // unset the owning side of the relation if necessary
+        if ($contrat === null && $this->contrat !== null) {
+            $this->contrat->setPayments(null);
+        }
+
+        // set the owning side of the relation if necessary
+        if ($contrat !== null && $contrat->getPayments() !== $this) {
+            $contrat->setPayments($this);
+        }
+
+        $this->contrat = $contrat;
 
         return $this;
     }

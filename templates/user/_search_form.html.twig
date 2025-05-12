@@ -1,0 +1,47 @@
+<div class="card p-3 mb-3 shadow-sm">
+	<h5 class="mb-3">Filtrer les documents</h5>
+	{{ form_start(search_form) }}
+
+	<div class="row g-2 align-items-end">
+		<div class="col-md-2">
+			{{ form_row(search_form.dateMin) }}
+		</div>
+		<div class="col-md-2">
+
+			{{ form_row(search_form.dateMax) }}
+		</div>
+		<div class="col-md-2">
+
+			{{ form_row(search_form.team) }}
+		</div>
+		<div class="col-md-2">
+
+			{{ form_row(search_form.username) }}
+		</div>
+		<div class="col-md-2">
+
+			{{ form_row(search_form.contrat) }}
+		</div>
+
+
+		<div class="col-md-2 d-flex gap-1">
+			<button class="btn btn-primary btn search-btn" type="submit" target="_blank" title="Rechercher ">
+				<i class="fa fa-search" aria-hidden="true"></i>
+			</button>
+
+			<button class="btn btn-info" value="back" onclick="history.go(-1)" target="_blank" title="Retour ">
+				<i class="fa fa-undo" aria-hidden="true"></i>
+			</button>
+
+			<button class="btn btn-primary" type="reset" id="reset-button" target="_blank" title="Vider champs ">
+				<i class="fa fa-refresh" aria-hidden="true"></i>
+			</button>
+		</div>
+	</div>
+	{{ form_end(search_form) }}
+</div>
+<script>
+	document.getElementById("reset-button").addEventListener("click", function () { // Réinitialisez les paramètres de l'URL à vide
+window.location.href = window.location.pathname;
+});
+</script>

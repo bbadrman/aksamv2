@@ -1,0 +1,30 @@
+<li id="header_notification_bar" class="dropdown">
+	<a data-toggle="dropdown" class="dropdown-toggle" href="#">
+		<i class="fa fa-bell"></i>
+		<span class="badge bg-theme">{{ stats.prospectspasaffect|format('%02d') }}</span>
+		<span class="badge bg-green">{{ stats.prospectsCmrclNv|format('%02d') }}</span>
+	</a>
+	<ul class="dropdown-menu extended notification">
+		<li>
+			<p class="green">Notifications</p>
+		</li>
+		<li>
+			<a href="{{ path('app_traitement') }}">
+				<span class="label label-primary">
+					<i class="fa fa-users"></i>
+				</span>
+				Prospects à affecter :
+				{{ stats.prospectspasaffect|format('%02d') }}
+			</a>
+		</li>
+		<li>
+			<a href="{{ path('newprospectchef_index') }}">
+				<span class="label label-success">
+					<i class="fa fa-plus"></i>
+				</span>
+				Nouveaux prospects :
+				{{ stats.prospectsCmrclNv|format('%02d') }}
+			</a>
+		</li>
+	</ul>
+</li>

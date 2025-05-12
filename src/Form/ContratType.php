@@ -12,6 +12,7 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\Extension\Core\Type as Type;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 
 class ContratType extends AbstractType
 {
@@ -273,6 +274,7 @@ class ContratType extends AbstractType
                 'label' => 'Status',
                 'required' => false,
                 'disabled' => true,
+                'placeholder' => false,
                 'choices' => [
                     'Valider' => 1,
                     'Rejeter' => 2
@@ -428,8 +430,8 @@ class ContratType extends AbstractType
                 'placeholder' => "--Merci de Selectie--",
 
                 'choices' => [
-                    'OUI' => 'OUI',
-                    'NON' => 'NON'
+                    'Oui' => true,
+                    'Non' => false,
                 ],
                 'expanded' => false,
                 'multiple' => false
@@ -463,12 +465,14 @@ class ContratType extends AbstractType
                 'placeholder' => "--Merci de Selectie--",
 
                 'choices' => [
-                    'OUI' => 'OUI',
-                    'NON' => 'NON'
+                    'Oui' => true,
+                    'Non' => false,
                 ],
+
                 'expanded' => false,
-                'multiple' => false
+                'multiple' => false,
             ])
+
             ->add('dateAnnulation', Type\DateType::class, [
                 'label' => "Date annulation :",
                 'disabled' => false,
@@ -571,16 +575,11 @@ class ContratType extends AbstractType
                 'label' => false,
             ])
 
-            ->add('payments', CollectionType::class, [
-                'entry_type' => PaymentType::class,
-                'allow_add' => true,
-                'allow_delete' => true,
-                'by_reference' => false,
-                'label' => 'Paiements',
-                'prototype' => true,
-                'attr' => [
-                    'class' => 'payments-collection',
-                ],
+            ->add('payments', PaymentType::class, [
+                'label' => false,
+                'required' => false,
+
+
             ])
             ->add('compagnie', EntityType::class, [
                 'class' => Compartenaire::class,
@@ -595,6 +594,11 @@ class ContratType extends AbstractType
                 'required' => false,
             ])
 
+            ->add('document', DocumentType::class, [
+                'label' => false,
+                'required' => false,
+                'disabled' => true,
+            ])
 
 
         ;

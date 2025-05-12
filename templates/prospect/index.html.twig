@@ -110,7 +110,6 @@
 							{% if prospect.source  == 3 %}
 								{% if prospect.url  is null and prospect.source  == 3  %}
 									Autre Site
-
 								{% elseif prospect.url == 1 %}
 									<a href="https://www.assurance-des-vtc.fr" target="_blank" title="https://www.assurance-des-vtc.fr">des-vtc</a>
 								{% elseif prospect.url == 2 %}
@@ -374,7 +373,7 @@
 							<i class="fa fa-eye"></i>
 						</a>
 
-						{% if   is_granted('ROLE_RELANCER') %}
+						{% if is_granted('ROLE_RELANCER') %}
 							{{ render(controller('App\\Controller\\ProspectController::relance',{'id':prospect.id}))}}
 						{% endif %}
 						{% if is_granted('ROLE_AFFECT') %}

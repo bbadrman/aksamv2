@@ -84,6 +84,7 @@ class ClientType extends AbstractType
             ->add('forceJuridique', Type\ChoiceType::class, [
                 'label' => 'formes juridiques',
                 'required' => true,
+                'disabled' => true,
                 'placeholder' => '--Merci de selectie-- ',
                 'choices' => [
                     'SARL' =>  '1',

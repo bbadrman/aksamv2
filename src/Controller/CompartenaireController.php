@@ -4,13 +4,15 @@ namespace App\Controller;
 
 use App\Entity\Compartenaire;
 use App\Form\CompartenaireType;
-use App\Repository\CompartenaireRepository;
 use Doctrine\ORM\EntityManagerInterface;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use App\Repository\CompartenaireRepository;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
+use Symfony\Component\Security\Http\Attribute\IsGranted;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
+#[IsGranted('IS_AUTHENTICATED')]
 #[Route('/compartenaire')]
 final class CompartenaireController extends AbstractController
 {
@@ -71,7 +73,7 @@ final class CompartenaireController extends AbstractController
     #[Route('/{id}', name: 'app_compartenaire_delete', methods: ['POST'])]
     public function delete(Request $request, Compartenaire $compartenaire, EntityManagerInterface $entityManager): Response
     {
-        if ($this->isCsrfTokenValid('delete'.$compartenaire->getId(), $request->getPayload()->getString('_token'))) {
+        if ($this->isCsrfTokenValid('delete' . $compartenaire->getId(), $request->getPayload()->getString('_token'))) {
             $entityManager->remove($compartenaire);
             $entityManager->flush();
         }

@@ -49,219 +49,178 @@
 {% endblock %}
 {% block javascripts %}
 	<script type="text/javascript">
-		// cache les champs
+		document.addEventListener('DOMContentLoaded', function () { // TOGGLE BLOCKS
+const toggles = [
+{
+btnId: 'toggle-souscripteur',
+fieldId: 'souscripteur-fields'
+}, {
+btnId: 'toggle-risque',
+fieldId: 'risque-fields'
+}, {
+btnId: 'toggle-payment',
+fieldId: 'payment-fields'
+}, {
+btnId: 'toggle-document',
+fieldId: 'document-fields'
+}
+];
 
-document.addEventListener('DOMContentLoaded', function () { // Toggle Souscripteur
-const toggleSouscripteur = document.getElementById('toggle-souscripteur');
-const souscripteurFields = document.getElementById('souscripteur-fields');
+toggles.forEach(toggle => {
+const btn = document.getElementById(toggle.btnId);
+const field = document.getElementById(toggle.fieldId);
+if (btn && field) {
+btn.style.cursor = 'pointer';
+btn.addEventListener('click', () => {
+const isHidden = field.style.display === 'none';
+field.style.display = isHidden ? 'flex' : 'none';
+field.style.flexWrap = 'wrap';
+});
+}
+});
 
-if (toggleSouscripteur && souscripteurFields) {
-toggleSouscripteur.style.cursor = 'pointer';
-toggleSouscripteur.addEventListener('click', () => {
-souscripteurFields.style.display = souscripteurFields.style.display === 'none' ? 'flex' : 'none';
-souscripteurFields.style.flexWrap = 'wrap';
+// GESTION DES RÈGLEMENTS
+const reglementSelect = document.querySelector('[name="contrat[payments][NmbrReglement]"]');
+const reglementGroups = document.querySelectorAll('.reglement-group');
+
+function updateReglementVisibility(count) {
+reglementGroups.forEach(group => {
+const index = parseInt(group.dataset.index);
+group.style.display = index < count ? 'flex' : 'none';
 });
 }
 
-// Toggle Risque à assurer
-const toggleRisque = document.getElementById('toggle-risque');
-const risqueFields = document.getElementById('risque-fields');
+if (reglementSelect) {
+reglementSelect.addEventListener('change', (e) => {
+const count = parseInt(e.target.value);
+if (!isNaN(count)) 
+updateReglementVisibility(count);
 
-if (toggleRisque && risqueFields) {
-toggleRisque.style.cursor = 'pointer';
-toggleRisque.addEventListener('click', () => {
-risqueFields.style.display = risqueFields.style.display === 'none' ? 'flex' : 'none';
-risqueFields.style.flexWrap = 'wrap';
+
+
 });
+
+const initialCount = parseInt(reglementSelect.value);
+if (!isNaN(initialCount)) 
+updateReglementVisibility(initialCount);
+
+
+
 }
 
-// Toggle Risque à payment
-const togglePayment = document.getElementById('toggle-payment');
-const PaymentFields = document.getElementById('payment-fields');
-
-if (togglePayment && PaymentFields) {
-togglePayment.style.cursor = 'pointer';
-togglePayment.addEventListener('click', () => {
-PaymentFields.style.display = PaymentFields.style.display === 'none' ? 'flex' : 'none';
-PaymentFields.style.flexWrap = 'wrap';
-});
-}
-
-});
-// pour NmbrReglement
-document.addEventListener('DOMContentLoaded', function () {
-const reglementSelect = document.querySelector('[name="contrat[NmbrReglement]"]');
-const container = document.getElementById('reglements-container');
-
-reglementSelect.addEventListener('change', function (e) {
-const targetCount = parseInt(e.target.value);
-let currentCount = container.querySelectorAll('.reglement-item').length;
-
-// **💡 Étape 1 : Supprimer tous les éléments avant d'en ajouter des nouveaux**
-container.innerHTML = '';
-
-// **💡 Étape 2 : Ajouter uniquement le nombre requis**
-const prototype = container.dataset.prototype;
-container.dataset.index = 0; // Réinitialiser l'index
-
-for (let i = 0; i < targetCount; i++) {
-let newForm = prototype.replace(/__name__/g, container.dataset.index);
-let div = document.createElement('div');
-div.classList.add('reglement-item');
-div.innerHTML = newForm;
-container.appendChild(div);
-container.dataset.index ++;
-}
-});
-});
-
-
-// pour anticipe
-document.addEventListener('DOMContentLoaded', function () {
+// ANTÉCÉDENTS (NmbrAssure)
 const assureSelect = document.querySelector('[name="contrat[NmbrAssure]"]');
 const containerAssure = document.getElementById('antcdAssure-container');
 
-assureSelect.addEventListener('change', function (e) {
+if (assureSelect && containerAssure) {
+assureSelect.addEventListener('change', (e) => {
 const targetCount = parseInt(e.target.value);
-
-// **💡 Étape 1 : Supprimer tous les éléments avant d'en ajouter des nouveaux**
 containerAssure.innerHTML = '';
-
-// **💡 Étape 2 : Ajouter uniquement le nombre requis**
 const prototype = containerAssure.dataset.prototype;
-containerAssure.dataset.index = 0; // Réinitialiser l'index
+containerAssure.dataset.index = 0;
 
 for (let i = 0; i < targetCount; i++) {
-let newForm = prototype.replace(/__name__/g, containerAssure.dataset.index);
-let div = document.createElement('div');
+const newForm = prototype.replace(/__name__/g, containerAssure.dataset.index);
+const div = document.createElement('div');
 div.classList.add('antcdAssure-item');
 div.innerHTML = newForm;
 containerAssure.appendChild(div);
 containerAssure.dataset.index ++;
 }
 });
-});
+}
 
+// GESTION DES CHAMPS DYNAMIQUES
+const typeContratField = document.getElementById("{{ form.typeContrat.vars.id }}");
+const typeConducteurField = document.getElementById("{{ form.typeConducteur.vars.id }}");
+const productField = document.getElementById("{{ form.product.vars.id }}");
+const suspensinField = document.getElementById("{{ form.suspensionPermis.vars.id }}");
+const annulationPermisField = document.getElementById("{{ form.annulationPermis.vars.id }}");
 
-// select dynamique des champs typeContrat
-document.addEventListener("DOMContentLoaded", function () { // Récupérer les éléments du DOM
-var typeContratField = document.getElementById("{{ form.typeContrat.vars.id }}");
-var typeConducteurField = document.getElementById("{{ form.typeConducteur.vars.id }}");
-var productField = document.getElementById("{{ form.product.vars.id }}");
-var suspensinField = document.getElementById("{{ form.suspensionPermis.vars.id }}");
-var annulationPermisField = document.getElementById("{{ form.annulationPermis.vars.id }}");
+const subcategoryContainer = document.getElementById("subcategory-container");
+const subcategoryActivites = document.getElementById("subcategory-activite");
+const subcategorytypeConducteur = document.getElementById("subcategory-typeConducteur");
+const subcategoryimatriclt = document.getElementById("subcategory-imatriclt");
 
+const subcategoryconducteur = document.getElementById("subcategory-conducteur");
+const subcategorytypePermis = document.getElementById("subcategory-typePermis");
+const subcategorydatePermis = document.getElementById("subcategory-datePermis");
+const subcategorydateSuspension = document.getElementById("subcategory-dateSuspension");
+const subcategorymotifSuspension = document.getElementById("subcategory-motifSuspension");
+const subcategorydateAnnulation = document.getElementById("subcategory-dateAnnulation");
+const subcategorymotifAnnulation = document.getElementById("subcategory-motifAnnulation");
 
-var subcategoryContainer = document.getElementById("subcategory-container");
-var subcategoryActivites = document.getElementById("subcategory-activite");
-var subcategorytypeConducteur = document.getElementById("subcategory-typeConducteur");
-var subcategoryimatriclt = document.getElementById("subcategory-imatriclt");
-
-var subcategoryconducteur = document.getElementById("subcategory-conducteur");
-var subcategorytypePermis = document.getElementById("subcategory-typePermis");
-var subcategorydatePermis = document.getElementById("subcategory-datePermis");
-var subcategorydateSuspension = document.getElementById("subcategory-dateSuspension");
-var subcategorymotifSuspension = document.getElementById("subcategory-motifSuspension");
-var subcategorydateAnnulation = document.getElementById("subcategory-dateAnnulation");
-var subcategorymotifAnnulation = document.getElementById("subcategory-motifAnnulation");
-
-// Fonction pour gérer la visibilité des champs en fonction de typeContrat
 function handleTypeContratChange() {
-if (typeContratField.value === 'Particulier') {
-subcategoryContainer.style.display = "none"; // Masquer le champ
-subcategoryActivites.style.display = "none"; // Masquer le champ
-} else {
-subcategoryContainer.style.display = "block"; // Afficher le champ
-subcategoryActivites.style.display = "block"; // Afficher le champ
-}
+const isParticulier = typeContratField.value === 'Particulier';
+subcategoryContainer.style.display = isParticulier ? "none" : "block";
+subcategoryActivites.style.display = isParticulier ? "none" : "block";
 }
 
-// Fonction pour gérer la visibilité des champs en fonction de typeConducteur
 function handleTypeConducteurChange() {
-if (typeConducteurField.value === 'Multiconducteur') {
-subcategoryconducteur.style.display = "none"; // Masquer le champ
-subcategorytypePermis.style.display = "none"; // Masquer le champ
-subcategorydatePermis.style.display = "none"; // Masquer le champ
-} else {
-subcategoryconducteur.style.display = "block"; // Afficher le champ
-subcategorytypePermis.style.display = "block"; // Afficher le champ
-subcategorydatePermis.style.display = "block"; // Afficher le champ
-}
+const isMulti = typeConducteurField.value === 'Multiconducteur';
+[subcategoryconducteur, subcategorytypePermis, subcategorydatePermis].forEach(el => {
+el.style.display = isMulti ? "none" : "block";
+});
 }
 
-// Fonction pour gérer la visibilité des champs en fonction de Product
 function handleProductChange() {
-if (productField.value === '1' || productField.value === '22') {
-subcategoryconducteur.style.display = "none";
-subcategorytypePermis.style.display = "none";
-subcategorydatePermis.style.display = "none";
-subcategorytypeConducteur.style.display = "none";
-subcategoryimatriclt.style.display = "none";
-} else {
-subcategoryconducteur.style.display = "block"; // Afficher le champ
-subcategorytypePermis.style.display = "block"; // Afficher le champ
-subcategorydatePermis.style.display = "block"; // Afficher le champ
-subcategorytypeConducteur.style.display = "block";
-subcategoryimatriclt.style.display = "block";
-}
+const hideFields = ['22', '24', '27'].includes(productField.value);
+[
+subcategoryconducteur,
+subcategorytypePermis,
+subcategorydatePermis,
+subcategorytypeConducteur,
+subcategoryimatriclt
+].forEach(el => {
+el.style.display = hideFields ? "none" : "block";
+});
 }
 
-
-// Fonction pour gérer la visibilité des champs en fonction de Product
 function handleSuspentionChange() {
-if (suspensinField.value === 'OUI') {
-subcategorydateSuspension.style.display = "block"; // ✅ Afficher si "oui"
-subcategorymotifSuspension.style.display = "block";
-} else {
-subcategorydateSuspension.style.display = "none"; // ❌ Masquer sinon
-subcategorymotifSuspension.style.display = "none";
-}
+const isOui = suspensinField.value === '1';
+subcategorydateSuspension.style.display = isOui ? "block" : "none";
+subcategorymotifSuspension.style.display = isOui ? "block" : "none";
 }
 
-
-// Fonction pour gérer la visibilité des champs en annulation permis
 function handleAnulationpermiChange() {
-if (annulationPermisField.value === 'OUI') {
-subcategorydateAnnulation.style.display = "block"; // ✅ Afficher si "oui"
-subcategorymotifAnnulation.style.display = "block";
-} else {
-subcategorydateAnnulation.style.display = "none"; // ❌ Masquer sinon
-subcategorymotifAnnulation.style.display = "none";
-}
+const isOui = annulationPermisField.value === '1';
+subcategorydateAnnulation.style.display = isOui ? "block" : "none";
+subcategorymotifAnnulation.style.display = isOui ? "block" : "none";
 }
 
-// Écouter les changements de annulation permist
-if (annulationPermisField) {
-annulationPermisField.addEventListener("change", handleAnulationpermiChange);
-}
-
-// Écouter les changements de typeContrat
-if (typeContratField) {
+if (typeContratField) 
 typeContratField.addEventListener("change", handleTypeContratChange);
-}
 
-// Écouter les changements de typeConducteur
-if (typeConducteurField) {
+
+
+if (typeConducteurField) 
 typeConducteurField.addEventListener("change", handleTypeConducteurChange);
-}
-// Écouter les changements de Product
-if (productField) {
-productField.addEventListener("change", handleProductChange);
-}
-// Écouter les changements de suspention
-if (suspensinField) {
-suspensinField.addEventListener("change", handleSuspentionChange);
-}
 
-// Appliquer les règles initiales au chargement de la page
+
+
+if (productField) 
+productField.addEventListener("change", handleProductChange);
+
+
+
+if (suspensinField) 
+suspensinField.addEventListener("change", handleSuspentionChange);
+
+
+
+if (annulationPermisField) 
+annulationPermisField.addEventListener("change", handleAnulationpermiChange);
+
+
+
+// Initial trigger
 handleTypeContratChange();
 handleTypeConducteurChange();
 handleProductChange();
 handleSuspentionChange();
 handleAnulationpermiChange();
 });
-
-// Nouveau: Gestion du type de paiement
+// GESTION DU TYPE DE PAIEMENT
 document.addEventListener('DOMContentLoaded', function () { // Pour chaque bloc de paiement
 document.querySelectorAll('[data-type-field]').forEach(typeFieldContainer => {
 const select = typeFieldContainer.querySelector('select');
@@ -319,31 +278,5 @@ select.addEventListener('change', updateFields);
 updateFields(); // Initialiser au chargement
 });
 });
-// Nouveau: Gestion du type de paiement
-document.addEventListener('DOMContentLoaded', function () {
-const select = document.querySelector('[name$="[NmbrReglement]"]');
-const reglementRows = document.querySelectorAll('[data-reglement]');
-
-function updateReglements() {
-const value = parseInt(select.value);
-
-reglementRows.forEach(row => {
-const index = parseInt(row.getAttribute('data-reglement'));
-const show = index <= value;
-row.style.display = show ? 'flex' : 'none';
-
-// Activer ou désactiver les champs de la ligne
-row.querySelectorAll('input, select, textarea').forEach(input => {
-input.disabled = ! show;
-});
-});
-}
-
-if (select) {
-select.addEventListener('change', updateReglements);
-updateReglements(); // Initialisation au chargement
-}
-});
-
 	</script>
 {% endblock %}

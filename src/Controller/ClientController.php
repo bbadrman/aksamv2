@@ -4,18 +4,20 @@ namespace App\Controller;
 
 use App\Entity\Client;
 use App\Form\ClientType;
+use App\Search\SearchClient;
 use App\Form\ClientValideType;
 use App\Form\SearchClientType;
 use App\Repository\ClientRepository;
-use App\Search\SearchClient;
 use Doctrine\ORM\EntityManagerInterface;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
+use Symfony\Component\HttpFoundation\RequestStack;
+use Symfony\Component\Security\Http\Attribute\IsGranted;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
+#[IsGranted('IS_AUTHENTICATED')]
 #[Route('/client')]
 final class ClientController extends AbstractController
 {
@@ -36,7 +38,7 @@ final class ClientController extends AbstractController
         $client = [];
 
         if ($form->isSubmitted() && $form->isValid() && !$form->isEmpty()) {
-            // admi peut voire toutes les nouveaux client
+
             $client =  $this->clientRepository->findClientAll($data,  null);
 
             return $this->render('client/index.html.twig', [
@@ -69,7 +71,7 @@ final class ClientController extends AbstractController
         if ($form->isSubmitted() && $form->isValid() && !$form->isEmpty()) {
 
             $user = $security->getUser();
-            if (in_array('ROLE_SUPER_ADMIN', $user->getRoles(), true) || in_array('ROLE_ADMIN', $user->getRoles(), true) || in_array('ROLE_VALIDE', $user->getRoles(), true)) {
+            if (in_array('ROLE_DEV', $user->getRoles(), true) || in_array('ROLE_ADMIN', $user->getRoles(), true) || in_array('ROLE_VALID', $user->getRoles(), true)) {
                 // admit peut voire toutes les nouveaux client
                 $client =  $this->clientRepository->findClientAdmin($data, null);
             } elseif (in_array('ROLE_CHEF', $user->getRoles(), true)) {
@@ -152,7 +154,7 @@ final class ClientController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
             $client->setModifie(1);
-            $this->clientRepository->add($client, true);
+            $this->entityManager->flush();
             $this->addFlash('info', 'le Client a été modifié avec succès!');
             return $this->redirectToRoute('client_index', [], Response::HTTP_SEE_OTHER);
         }

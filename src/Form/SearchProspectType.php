@@ -36,7 +36,7 @@ class SearchProspectType extends AbstractType
         if ($user  instanceof User) {
             $teams = $user->getTeams(); // Assurez-vous que cette méthode existe et retourne l'équipe de l'utilisateur
 
-            if (in_array('ROLE_SUPER_ADMIN', $user->getRoles(), true) || in_array('ROLE_ADMIN', $user->getRoles(), true)) {
+            if (in_array('ROLE_DEV', $user->getRoles(), true) || in_array('ROLE_ADMIN', $user->getRoles(), true)) {
                 $comrclsForTeam = $this->userRepository->findAll();
             } else if (in_array('ROLE_CHEF', $user->getRoles(), true) && $team) {
                 $comrclsForTeam = $team === null ? [] :  $this->userRepository->findComrclByteamOrderedByAscName($user);

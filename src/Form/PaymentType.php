@@ -82,7 +82,8 @@ class PaymentType extends AbstractType
             ->add('montant', Type\MoneyType::class, [
                 'attr' => ['class' => 'tinymce'],
                 'label' => "montant",
-                'required' => false,
+                'required' => true,
+
                 'attr' => [
                     'placeholder' => 'Tapez en EURO',
                     'divisor' => 100,

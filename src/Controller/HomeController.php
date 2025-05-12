@@ -2,16 +2,17 @@
 
 namespace App\Controller;
 
-use App\Repository\ProspectRepository;
+use App\Service\StatsService;
 use App\Repository\TeamRepository;
 use App\Repository\UserRepository;
-use App\Service\StatsService;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use App\Repository\ProspectRepository;
 use Symfony\Bundle\SecurityBundle\Security;
-use Symfony\Component\HttpFoundation\BinaryFileResponse;
-use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
+use Symfony\Component\HttpFoundation\RequestStack;
+use Symfony\Component\HttpFoundation\BinaryFileResponse;
+use Symfony\Component\Security\Http\Attribute\IsGranted;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 class HomeController extends AbstractController
 {
@@ -24,6 +25,7 @@ class HomeController extends AbstractController
         private Security $security,
     ) {}
 
+    #[IsGranted('IS_AUTHENTICATED')]
     #[Route('/', name: 'app_home', methods: ["GET"])]
     public function index(): Response
     {
@@ -108,4 +110,11 @@ class HomeController extends AbstractController
             'Content-Type' => 'image/png',
         ]);
     }
+    // public function notifications(StatsService $statsService): Response
+    // {
+    //     $stats = $statsService->getStats();
+    //     return $this->render('_notifications.html.twig', [
+    //         'stats' => $stats
+    //     ]);
+    // }
 }

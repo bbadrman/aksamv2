@@ -64,6 +64,54 @@ class ContratRepository extends ServiceEntityRepository
         );
     }
 
+    /**
+     * Find a list of contrat using a search form
+     * @param SearchContrat $search
+     * @return PaginationInterface
+     */
+    public function findByContartValidComrcl(SearchContrat $search, $id): PaginationInterface
+    {
+
+
+        $queryBuilder = $this->createQueryBuilder('c')
+            ->select('c, f ')
+            ->where('c.status = 2 OR c.status IS NULL')
+            ->leftJoin('c.user', 'f')
+
+            ->andWhere('c.user = :val')
+            ->setParameter('val', $id)
+            ->orderBy('c.id', 'DESC');
+
+        if (!empty($search->f)) {
+            $queryBuilder
+                ->andWhere('c.nom LIKE :f')
+                ->setParameter('f', "%{$search->f}%");
+        }
+        if (!empty($search->l)) {
+            $queryBuilder
+                ->andWhere('c.prenom LIKE :l')
+                ->setParameter('l', "%{$search->l}%");
+        }
+
+        if (!empty($search->r)) {
+            $queryBuilder
+                ->andWhere('c.raisonSociale LIKE :r')
+                ->setParameter('r', "%{$search->r}%");
+        }
+        if (!empty($search->e)) {
+            $queryBuilder
+                ->andWhere('c.etat LIKE :e')
+                ->setParameter('e', "%{$search->e}%");
+        }
+
+        $query = $queryBuilder->getQuery();
+
+        return $this->paginator->paginate(
+            $query,
+            $search->page,
+            10
+        );
+    }
 
     /**
      * Calcule la somme totale des frais
@@ -111,5 +159,14 @@ class ContratRepository extends ServiceEntityRepository
             ->setParameter('endOfMonth', $currentMonth->modify('first day of next month')->format('Y-m-01'))
             ->getQuery()
             ->getSingleResult();
+    }
+    public function findByDateInterval(\DateTimeInterface $startDate, \DateTimeInterface $endDate): array
+    {
+        return $this->createQueryBuilder('c')
+            ->where('c.dateSouscrpt BETWEEN :start AND :end')
+            ->setParameter('start', $startDate)
+            ->setParameter('end', $endDate)
+            ->getQuery()
+            ->getResult();
     }
 }

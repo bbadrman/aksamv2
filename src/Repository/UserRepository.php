@@ -3,22 +3,26 @@
 namespace App\Repository;
 
 use App\Entity\User;
+use App\Search\SearchUser;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\ORM\QueryBuilder;
+use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Component\Security\Core\Exception\UnsupportedUserException;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\PasswordUpgraderInterface;
+use Knp\Component\Pager\PaginatorInterface;
+use Knp\Component\Pager\Pagination\PaginationInterface;
 
 /**
  * @extends ServiceEntityRepository<User>
  */
 class UserRepository extends ServiceEntityRepository implements PasswordUpgraderInterface
 {
-    public function __construct(ManagerRegistry $registry)
+    public function __construct(ManagerRegistry $registry, private  PaginatorInterface $paginator, private EntityManagerInterface $manager)
     {
         parent::__construct($registry, User::class);
     }
-
     /**
      * Used to upgrade (rehash) the user's password automatically over time.
      */
@@ -83,7 +87,51 @@ class UserRepository extends ServiceEntityRepository implements PasswordUpgrader
             ->getResult();
     }
 
+    /**
+     * Find list a user by a search form
+     * @param SearchUser $search
+     * @return PaginationInterface
+     */
+    public function findSearchUser(SearchUser $search): PaginationInterface
+    {
+        $query = $this
+            ->createQueryBuilder('u')
+            ->addSelect('u, t ')
+            // joiner les tables en relation ManyToOne avec team
+            ->leftJoin('u.teams', 't')
+            //relation manytomany avec product apartir team
+            ->leftJoin('u.products', 'p')
+            ->orderBy('u.id', 'asc');
 
+        if (!empty($search->q)) {
+            $query = $query
+                ->Where('u.firstname LIKE :q')
+                ->orWhere('u.username LIKE :q')
+                ->orWhere('u.lastname LIKE :q')
+                ->orWhere('u.remuneration LIKE :q')
+                ->orWhere('u.embuchAt LIKE :q')
+                ->orWhere('u.fonction LIKE :q')
+                // join les tables              
+                ->orWhere('t.name LIKE :q')
+                ->orWhere('p.nom LIKE :q')
+
+                ->orWhere('u.status LIKE :q')
+                ->orderBy('u.id', 'desc')
+                ->setParameter('q', "%{$search->q}%");
+        }
+
+        if (isset($search->status)) {
+            $query = $query
+                ->andWhere('u.status = :status')
+                ->setParameter('status', $search->status);
+        }
+        return $this->paginator->paginate(
+            $query,
+            $search->page,
+            8
+
+        );
+    }
 
     public function findByContratValidBetweenDates(string $start, string $end): array
     {
@@ -96,6 +144,55 @@ class UserRepository extends ServiceEntityRepository implements PasswordUpgrader
             ->andWhere('p.creatAt < :end')
             ->setParameter('start', $start)
             ->setParameter('end', $end)
+            ->getQuery()
+            ->getResult();
+    }
+
+
+    public function findWithFilters(SearchUser $search): QueryBuilder
+    {
+        $qb = $this->createQueryBuilder('u')
+            ->leftJoin('u.teams', 't')
+            ->leftJoin('u.contrats', 'c')
+            ->addSelect('t')
+            ->addSelect('c');
+
+        if ($search->team) {
+            $qb->andWhere('t.name LIKE :team')
+                ->setParameter('team', '%' . $search->team . '%');
+        }
+
+        if ($search->username) {
+            $qb->andWhere('u.username LIKE :username')
+                ->setParameter('username', '%' . $search->username . '%');
+        }
+
+        if ($search->contrat) {
+            $qb->andWhere('c.nom LIKE :contrat')
+                ->setParameter('contrat', '%' . $search->contrat . '%');
+        }
+
+        if ($search->dateMin) {
+            $qb->andWhere('c.dateSouscrpt >= :dateMin')
+                ->setParameter('dateMin', $search->dateMin->format('Y-m-d 00:00:00'));
+        }
+
+        if ($search->dateMax) {
+            $qb->andWhere('c.dateSouscrpt <= :dateMax')
+                ->setParameter('dateMax', $search->dateMax->format('Y-m-d 23:59:59'));
+        }
+
+        return $qb->orderBy('u.id', 'ASC');
+    }
+
+    // src/Repository/UserRepository.php
+
+    public function findAllWithProspects(): array
+    {
+        return $this->createQueryBuilder('u')
+            ->leftJoin('u.prospects', 'p')
+            ->leftJoin('u.teams', 't')
+            ->addSelect('p', 't')
             ->getQuery()
             ->getResult();
     }

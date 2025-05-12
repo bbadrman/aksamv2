@@ -132,7 +132,7 @@ final class TraitementController extends AbstractController
         $prospect = [];
 
 
-        if (in_array('ROLE_SUPER_ADMIN', $roles, true) || in_array('ROLE_ADMIN', $roles, true)) {
+        if (in_array('ROLE_DEV', $roles, true) || in_array('ROLE_ADMIN', $roles, true)) {
             // admi peut voire toutes les no traite
             $prospect =  $this->prospectRepository->findProspectNonTraiter($data, null);
         } else if (in_array('ROLE_CHEF', $roles, true)) {
@@ -170,7 +170,7 @@ final class TraitementController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid() && !$form->isEmpty()) {
 
-            if (in_array('ROLE_SUPER_ADMIN',  $roles, true) || in_array('ROLE_ADMIN',  $roles, true)) {
+            if (in_array('ROLE_DEV',  $roles, true) || in_array('ROLE_ADMIN',  $roles, true)) {
                 // admi peut chercher toutes les prospects
                 $prospect = $this->prospectRepository->findSearch($data, $user);
             } else if (in_array('ROLE_CHEF',  $roles, true)) {
@@ -212,7 +212,7 @@ final class TraitementController extends AbstractController
         $prospect = [];
 
 
-        if (in_array('ROLE_SUPER_ADMIN',  $roles, true) || in_array('ROLE_ADMIN',  $roles, true)) {
+        if (in_array('ROLE_DEV',  $roles, true) || in_array('ROLE_ADMIN',  $roles, true)) {
             // admi peut voire toutes les relance du jour
             $prospect =  $this->prospectRepository->findRelancedJour($data, null);
         } else if (in_array('ROLE_CHEF',  $roles, true)) {
@@ -254,7 +254,7 @@ final class TraitementController extends AbstractController
         if ($form->isSubmitted() && $form->isValid() && !$form->isEmpty()) {
 
             $user = $security->getUser();
-            if (in_array('ROLE_SUPER_ADMIN', $roles, true) || in_array('ROLE_ADMIN', $roles, true)) {
+            if (in_array('ROLE_DEV', $roles, true) || in_array('ROLE_ADMIN', $roles, true)) {
 
                 $prospect =  $this->prospectRepository->findAvenir($data, null);
             } else if (in_array('ROLE_CHEF', $roles, true)) {
@@ -298,7 +298,7 @@ final class TraitementController extends AbstractController
         $prospect = [];
 
         if ($form->isSubmitted() && $form->isValid() && !$form->isEmpty()) {
-            if (in_array('ROLE_SUPER_ADMIN', $roles, true) || in_array('ROLE_ADMIN', $roles, true)) {
+            if (in_array('ROLE_DEV', $roles, true) || in_array('ROLE_ADMIN', $roles, true)) {
 
                 $prospect =  $this->prospectRepository->findRelancesNonTraitees($data, null);
 
@@ -345,7 +345,7 @@ final class TraitementController extends AbstractController
         $prospect = [];
 
 
-        if (in_array('ROLE_SUPER_ADMIN', $roles, true) || in_array('ROLE_ADMIN', $roles, true)) {
+        if (in_array('ROLE_DEV', $roles, true) || in_array('ROLE_ADMIN', $roles, true)) {
 
             $prospect =  $this->prospectRepository->findUnjoing($data, null);
         } else if (in_array('ROLE_CHEF', $roles, true)) {

@@ -259,12 +259,9 @@
 						<a href="{{path('app_contrat_valid_index')}}">
 							<i class="fa fa-check-square fa-4x" aria-hidden="true"></i>
 
-							{% if is_granted('ROLE_ADMIN')  == true   %}
+							{% if is_granted('ROLE_ADMIN') or is_granted('ROLE_CHEF') or is_granted('ROLE_VALID')  == true   %}
 								<h1>{{ " %02d"|format(stats.preContratAdmin ) }}</h1>
-							{% elseif is_granted('ROLE_CHEF') == true %}
-								<h1>{{ " %02d"|format(stats.preContratAdmin ) }}</h1>
-							{% elseif is_granted('ROLE_VALIDE') == true %}
-								<h1>{{ " %02d"|format(stats.preContratAdmin ) }}</h1>
+
 							{% elseif is_granted('ROLE_USER') == true %}
 								<h1>{{ " %02d"|format(stats.preContratComrcl ) }}</h1>
 							{% endif %}
@@ -289,7 +286,7 @@
 
 							{% if is_granted('ROLE_ADMIN')  == true   %}
 								<h1>{{ " %02d"|format(stats.preclientAdmin ) }}</h1>
-							{% elseif is_granted('ROLE_VALIDE') == true %}
+							{% elseif is_granted('ROLE_VALID') == true %}
 								<h1>{{ " %02d"|format(stats.preclientValide ) }}</h1>
 							{% elseif is_granted('ROLE_CHEF') == true %}
 								<h1>{{ " %02d"|format(stats.preclientChef ) }}</h1>

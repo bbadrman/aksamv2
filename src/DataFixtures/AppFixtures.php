@@ -28,7 +28,7 @@ class AppFixtures extends Fixture
             ->setLastName('bechtioui')
             ->setStatus(2)
             ->setFonction('developper')
-            ->setRoles(['ROLE_SUPER_ADMIN']);
+            ->setRoles(['ROLE_DEV']);
 
         $manager->persist($user);
 

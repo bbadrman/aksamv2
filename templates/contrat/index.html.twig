@@ -87,12 +87,13 @@
 								<td>{{ contrat.typeProduct }}</td>
 
 								<td>
+									{# changer l'etat de contrat #}
 									{{ render(controller('App\\Controller\\ContratController::etat',{'id':contrat.id}))}}
-
-									{{ render(controller('App\\Controller\\ContratController::paiement',{'id':contrat.id}))}}
+									{# ajouter payment au contrat #}
+									{# {{ render(controller('App\\Controller\\ContratController::paiement',{'id':contrat.id}))}} #}
 									{# <a href="{{ path('app_contrat_addpayment', {'id': contrat.id}) }}" class="btn btn-info btn-xs">
-																			<i class="fa-duotone fa-solid fa-money-check"></i>
-																		</a> #}
+																																																							<i class="fa-duotone fa-solid fa-money-check"></i>
+																																																						</a> #}
 									{# <a href="{{ path('app_contrat_show', {'id': contrat.id}) }}">show</a> #}
 										{% if contrat.status == 1 %}
 											<a href="#" style="color:blue"> Valider
@@ -111,7 +112,7 @@
 										</a>
 
 									{% elseif contrat.status is null %}
-										{% if  is_granted('ROLE_ADMIN')   or is_granted('ROLE_VALIDE')     %}
+										{% if  is_granted('ROLE_ADMIN')   or is_granted('ROLE_VALID')     %}
 											<a href="{{ path('app_contrat_edit', {'id': contrat.id}) }}" class="btn btn-primary btn-xs">
 												Nouveau
 											</a>

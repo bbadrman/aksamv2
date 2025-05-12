@@ -1,0 +1,31 @@
+{{ form_start(search_form) }}
+
+<div class="row align-items-center">
+
+
+	<div class="col-md-4" style="padding-right: 2px;padding-left: 8px;">
+		{{ form_row(search_form.startDate) }}
+	</div>
+
+	<div class="col-md-4" style="padding-right: 2px;padding-left: 8px;">
+		{{ form_row(search_form.endDate) }}
+	</div>
+	<div class="col-md-4" style="padding-right: 2px;padding-left: 8px;">
+		<h1>
+			<button class="btn btn-primary btn search-btn" type="submit">
+				<i class="fa fa-search" aria-hidden="true"></i>
+			</button>
+
+			<button class="btn btn-primary" type="reset" id="reset-button">
+				<i class="fa fa-refresh" aria-hidden="true"></i>
+			</button>
+		</h1>
+	</div>
+
+</div>
+{{ form_end(search_form) }}
+<script>
+	document.getElementById("reset-button").addEventListener("click", function () { // Réinitialisez les paramètres de l'URL à vide
+window.location.href = window.location.pathname;
+});
+</script>

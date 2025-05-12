@@ -53,7 +53,7 @@ RUN cd /usr/src && \
 ########## Increase PHP Configuration
 RUN echo "upload_max_filesize = 500M\n" \
     "post_max_size = 500M\n" \
-    "memory_limit = 512M\n" \ 
+    "memory_limit = 1024M\n" \ 
     >> /usr/local/etc/php/conf.d/maxsize.ini
 
 RUN echo 'max_execution_time = 300' >> /usr/local/etc/php/conf.d/maxexectime.ini; 

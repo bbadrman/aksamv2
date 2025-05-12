@@ -1,0 +1,46 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Recherche document
+{% endblock %}
+
+{% block body %}
+
+	{% for label,  messages in app.flashes  %}
+		<div class="container">
+			<div class="alert alert-{{ label }}">
+				{% for message in messages %}
+					{{ message | raw }}
+				{% endfor %}
+			</div>
+		</div>
+	{% endfor %}
+	<section class="content-header">
+		<h2>Rechercher les documents monqaunts</h2>
+
+
+		<ol class="breadcrumb">
+			<li>
+				<a href="#">
+					<i class="fa fa-dashboard"></i>
+					Tableau de bord</a>
+			</li>
+			<li class="active">
+				<a href="{{ path('app_traitement') }}">
+					<i class="fa fa-users"></i>
+					Tous les documents</a>
+			</li>
+			<!-- NOTIFICATION DROPDOWN -->
+			<li id="header_notification_bar" class="dropdown">
+				<a data-toggle="dropdown" class="dropdown-toggle" href="#">
+					<i class="fa fa-shopping-cart"></i>
+					<span class="badge bg-warning">{{ documents|length }}
+					</span>
+				</a>
+			</li>
+		</ol><br>
+
+	</section>
+	<div class="col-xs-10" style="float: right !important;">
+		<div class="row" style="margin-right: 10px;">{{ include('document/_search_form.html.twig')  }}</div>
+	</div>
+{% endblock %}

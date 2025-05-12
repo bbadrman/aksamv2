@@ -27,8 +27,10 @@ class SearchClientType extends AbstractType
         }
 
         $user = $this->security->getUser();
-
-        if (in_array('ROLE_SUPER_ADMIN', $user->getRoles(), true) || in_array('ROLE_ADMIN', $user->getRoles(), true)) {
+        if (!$user) {
+            throw new \LogicException('L\'utilisateur n\'est pas connecté.');
+        }
+        if (in_array('ROLE_DEV', $user->getRoles(), true) || in_array('ROLE_ADMIN', $user->getRoles(), true)) {
             $comrclsForTeam = $this->userRepository->findAll();
         } else if (in_array('ROLE_CHEF', $user->getRoles(), true)) {
             $comrclsForTeam = $this->userRepository->findComrclByteamOrderedByAscName($user);

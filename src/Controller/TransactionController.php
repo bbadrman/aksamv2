@@ -3,17 +3,19 @@
 namespace App\Controller;
 
 use App\Entity\Transaction;
-use App\Form\SearchTransactionType;
 use App\Form\TransactionType;
-use App\Repository\TransactionRepository;
 use App\Search\SearchTransaction;
+use App\Form\SearchTransactionType;
 use Doctrine\ORM\EntityManagerInterface;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use App\Repository\TransactionRepository;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
+use Symfony\Component\HttpFoundation\RequestStack;
+use Symfony\Component\Security\Http\Attribute\IsGranted;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
+#[IsGranted('IS_AUTHENTICATED')]
 #[Route('/transaction')]
 final class TransactionController extends AbstractController
 {

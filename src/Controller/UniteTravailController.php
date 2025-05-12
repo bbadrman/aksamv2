@@ -4,13 +4,15 @@ namespace App\Controller;
 
 use App\Entity\UniteTravail;
 use App\Form\UniteTravailType;
-use App\Repository\UniteTravailRepository;
 use Doctrine\ORM\EntityManagerInterface;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use App\Repository\UniteTravailRepository;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
+use Symfony\Component\Security\Http\Attribute\IsGranted;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
+#[IsGranted('IS_AUTHENTICATED')]
 #[Route('/unitetravail')]
 final class UniteTravailController extends AbstractController
 {

@@ -206,17 +206,7 @@ class ContratEditType extends AbstractType
                         'multiple' => false,
                     ]
                 )
-                ->add('frais', Type\MoneyType::class, [
-                    'attr' => ['class' => 'tinymce'],
-                    'label' => "Frais",
-                    'required' => false,
-                    'attr' => [
-                        'placeholder' => 'Tapez en EURO',
-                        'divisor' => 100,
 
-                    ],
-
-                ])
                 ->add(
                     'etat',
                     Type\ChoiceType::class,
@@ -278,6 +268,7 @@ class ContratEditType extends AbstractType
                     'label' => 'Status',
                     'required' => false,
                     'disabled' => false,
+                    'placeholder' => false,
                     'choices' => [
                         'Valider' => 1,
                         'Rejeter' => 2
@@ -434,8 +425,8 @@ class ContratEditType extends AbstractType
                     'placeholder' => "--Merci de Selectie--",
 
                     'choices' => [
-                        'OUI' => 'OUI',
-                        'NON' => 'NON'
+                        'Oui' => true,
+                        'Non' => false,
                     ],
                     'expanded' => false,
                     'multiple' => false
@@ -469,8 +460,8 @@ class ContratEditType extends AbstractType
                     'placeholder' => "--Merci de Selectie--",
 
                     'choices' => [
-                        'OUI' => 'OUI',
-                        'NON' => 'NON'
+                        'Oui' => true,
+                        'Non' => false,
                     ],
                     'expanded' => false,
                     'multiple' => false
@@ -534,15 +525,7 @@ class ContratEditType extends AbstractType
                     'expanded' => false,
                     'multiple' => false
                 ])
-                ->add('NmbrReglement', Type\ChoiceType::class, [
-                    'label' => 'Nombre de règlements',
-                    'placeholder' => '--Selectie nombre de règlements -- ',
-                    'choices' => array_combine(range(1, 10), range(1, 10)),
-                    'attr' => [
-                        'class' => 'form-control',
-                        'data-controller' => 'reglement-updater'
-                    ],
-                ])
+
                 ->add('NmbrAssure', Type\ChoiceType::class, [
                     'label' => 'Nombre des assureurs',
                     'placeholder' => '--Selectie nombre des assureurs -- ',
@@ -587,6 +570,15 @@ class ContratEditType extends AbstractType
                     'choice_label' => 'nom',
                     'multiple' => false,
                     'required' => false,
+                ])
+                ->add('payments', PaymentType::class, [
+                    'label' => false,
+                    'required' => false,
+                ])
+                ->add('document', DocumentType::class, [
+                    'label' => false,
+                    'required' => false,
+                    'disabled' => true,
                 ])
 
 
@@ -776,18 +768,7 @@ class ContratEditType extends AbstractType
                         'multiple' => false,
                     ]
                 )
-                ->add('frais', Type\MoneyType::class, [
-                    'attr' => ['class' => 'tinymce'],
-                    'label' => "Frais",
-                    'required' => false,
-                    'disabled' => true,
-                    'attr' => [
-                        'placeholder' => 'Tapez en EURO',
-                        'divisor' => 100,
 
-                    ],
-
-                ])
                 ->add(
                     'etat',
                     Type\ChoiceType::class,
@@ -849,6 +830,7 @@ class ContratEditType extends AbstractType
                     'label' => 'Status',
                     'required' => false,
                     'disabled' => false,
+                    'placeholder' => false,
                     'choices' => [
                         'Valider' => 1,
                         'Rejeter' => 2
@@ -1006,8 +988,8 @@ class ContratEditType extends AbstractType
                     'placeholder' => "--Merci de Selectie--",
                     'disabled' => true,
                     'choices' => [
-                        'OUI' => 'OUI',
-                        'NON' => 'NON'
+                        'Oui' => true,
+                        'Non' => false,
                     ],
                     'expanded' => false,
                     'multiple' => false
@@ -1041,8 +1023,8 @@ class ContratEditType extends AbstractType
                     'placeholder' => "--Merci de Selectie--",
                     'disabled' => true,
                     'choices' => [
-                        'OUI' => 'OUI',
-                        'NON' => 'NON'
+                        'Oui' => true,
+                        'Non' => false,
                     ],
                     'expanded' => false,
                     'multiple' => false
@@ -1109,16 +1091,7 @@ class ContratEditType extends AbstractType
                     'expanded' => false,
                     'multiple' => false
                 ])
-                ->add('NmbrReglement', Type\ChoiceType::class, [
-                    'label' => 'Nombre de règlements',
-                    'placeholder' => '--Selectie nombre de règlements -- ',
-                    'disabled' => true,
-                    'choices' => array_combine(range(1, 10), range(1, 10)),
-                    'attr' => [
-                        'class' => 'form-control',
-                        'data-controller' => 'reglement-updater'
-                    ],
-                ])
+
                 ->add('NmbrAssure', Type\ChoiceType::class, [
                     'label' => 'Nombre des assureurs',
                     'disabled' => true,
@@ -1170,8 +1143,16 @@ class ContratEditType extends AbstractType
                     'required' => false,
                     'disabled' => true,
                 ])
+                ->add('payments', PaymentType::class, [
+                    'label' => false,
+                    'required' => false,
+                    'disabled' => true,
+                ])
+                ->add('document', DocumentType::class, [
+                    'label' => false,
+                    'required' => false,
 
-
+                ])
             ;
         }
     }

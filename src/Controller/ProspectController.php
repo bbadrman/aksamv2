@@ -20,6 +20,9 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Bundle\SecurityBundle\Security;
+use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\Serializer\SerializerInterface;
 
 #[IsGranted('IS_AUTHENTICATED')]
 #[Route('/prospect')]
@@ -79,6 +82,41 @@ final class ProspectController extends AbstractController
 
         ]);
     }
+
+    //Afficher les nouveaux prospects via API return Int  
+
+    #[Route('/newprospectApi', name: 'app_prospect_new', methods: ['GET'])]
+    #[IsGranted('IS_AUTHENTICATED')]
+    public function newprospectApi(
+        ProspectRepository $prospectRepository,
+        Security $security,
+        SerializerInterface $serializer
+    ): JsonResponse {
+
+        // $this->denyAccessUnlessGrantedAuthorizedRoles();
+
+        $prospect = [];
+        $user = $security->getUser();
+        $roles = $user->getRoles();
+        if (in_array('ROLE_SUPER_ADMIN', $roles, true) || in_array('ROLE_ADMIN', $user->getRoles(), true) || in_array('ROLE_AFFECT', $user->getRoles(), true)) {
+            $prospect =  $prospectRepository->findAllNewProspectsApi(null);
+        } elseif (in_array('ROLE_CHEF', $roles, true)) {
+            $prospect =  $prospectRepository->findAllNewProspectsChefAllApi($user, null);
+        } elseif (in_array('ROLE_TEAM', $roles, true)) {
+            // chef peut voire toutes les nouveaux prospects atacher a leur equipe
+            $prospect =  $prospectRepository->findAllNewProspectsChefApi($user, null);
+        } else {
+            // cmrcl peut voire seulement les nouveaux prospects atacher a lui
+            $prospect =  $prospectRepository->findAllNewProspectsComercialApi($user, null);
+        }
+
+
+        // Sérialiser les prospects
+        $jsonData = $serializer->serialize($prospect, 'json');
+
+        return new JsonResponse($jsonData, 200, [], true);
+    }
+
 
     #[Route('/{id}', name: 'app_prospect_show', methods: ['GET'])]
     public function show(Prospect $prospect, HistoryRepository $historyRepository, RelanceHistoryRepository $relanceHistory): Response

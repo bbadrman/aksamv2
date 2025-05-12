@@ -49,5 +49,20 @@
 		$('.selectchoice').select2();
 	</script>
 
+	{# cet script permet de cacher le permission   "role_dev" dans le formulaire d'ajout d'utilisateur #}
+	<script>
+		document.addEventListener('DOMContentLoaded', function () {
+document.querySelectorAll('.form-check-label').forEach(function (label) {
+if (label.textContent.trim().toUpperCase() === 'DEV') {
+const wrapper = label.closest('.col-md-3');
+if (wrapper) 
+wrapper.style.display = 'none';
+
+
+
+}
+});
+});
+	</script>
 
 {% endblock %}

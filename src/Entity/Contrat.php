@@ -176,18 +176,19 @@ class Contrat
     #[ORM\OneToMany(targetEntity: Sav::class, mappedBy: 'contrat')]
     private Collection $savs;
 
-    /**
-     * @var Collection<int, Payment>
-     */
-    #[ORM\OneToMany(targetEntity: Payment::class, mappedBy: 'contrat', cascade: ['persist', 'remove'])]
-    private Collection $payments;
+
+    #[ORM\OneToOne(cascade: ['persist', 'remove'])]
+    private ?Document $document = null;
+
+    #[ORM\OneToOne(inversedBy: 'contrat', cascade: ['persist', 'remove'])]
+    private ?Payment $payments = null;
+
 
     public function __construct()
     {
         $this->antcdAssure = new ArrayCollection();
         $this->regelement = new ArrayCollection();
         $this->savs = new ArrayCollection();
-        $this->payments = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -845,32 +846,26 @@ class Contrat
         return $this;
     }
 
-    /**
-     * @return Collection<int, Payment>
-     */
-    public function getPayments(): Collection
+    public function getDocument(): ?Document
     {
-        return $this->payments;
+        return $this->document;
     }
 
-    public function addPayment(Payment $payment): static
+    public function setDocument(?Document $document): static
     {
-        if (!$this->payments->contains($payment)) {
-            $this->payments->add($payment);
-            $payment->setContrat($this);
-        }
+        $this->document = $document;
 
         return $this;
     }
 
-    public function removePayment(Payment $payment): static
+    public function getPayments(): ?Payment
     {
-        if ($this->payments->removeElement($payment)) {
-            // set the owning side to null (unless already changed)
-            if ($payment->getContrat() === $this) {
-                $payment->setContrat(null);
-            }
-        }
+        return $this->payments;
+    }
+
+    public function setPayments(?Payment $payments): static
+    {
+        $this->payments = $payments;
 
         return $this;
     }

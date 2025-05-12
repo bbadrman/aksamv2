@@ -267,7 +267,7 @@
 
 	<a href="{{ path('app_contrat_valid_index') }}">back to list</a>
 
-	{% if  is_granted('ROLE_SUPER_ADMIN')   %}
+	{% if  is_granted('ROLE_DEV')   %}
 		<a href="{{ path('app_contrat_edit', {'id': contrat.id}) }}">edit</a>
 	{% endif %}
 

@@ -17,13 +17,12 @@
 		{{ form_row(form.phone) }}
 		{{ form_row(form.email) }}
 		{{ form_row(form.adress) }}
-		{# <div style="display: none">
-									{{ form_row(form.isModif) }}
-								</div> #}
+		{{ form_row(form.forceJuridique) }}
+
 
 		{{ form_row(form.comment) }}
 
-		<button class="btn btn-theme">{{ button_label|default('Save') }}</button>
+		<button class="btn btn-info">{{ button_label|default('Save') }}</button>
 
 		{{ form_end(form) }}
 	</div>

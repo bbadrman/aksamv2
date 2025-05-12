@@ -8,17 +8,24 @@ use App\Entity\Contrat;
 use App\Entity\Prospect;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\SecurityBundle\Security;
+use Symfony\Component\Security\Http\Attribute\IsGranted;
+use Symfony\Contracts\Cache\TagAwareCacheInterface;
 
-
+#[IsGranted('IS_AUTHENTICATED')]
 class StatsService
 {
 
 
-    public function __construct(private EntityManagerInterface $manager, private  Security $security) {}
-    public function getStats()
+    public function __construct(private EntityManagerInterface $manager, private  Security $security, TagAwareCacheInterface $cache) {}
+
+    public function getStats(): array
+
     {
 
         $user = $this->security->getUser();
+        if (!$user instanceof User) {
+            return []; // ou return 0, ou [] selon le besoin de ton appelant
+        }
 
 
         $users    = $this->getUsersCount();
@@ -150,6 +157,9 @@ class StatsService
     public function getProspectChefNv(User $user): int
     {
 
+        if (!$user) {
+            return 0;
+        }
         $teams = $user->getTeams();
 
         if ($teams->isEmpty()) {
@@ -157,7 +167,7 @@ class StatsService
         }
         $qb = $this->manager->createQueryBuilder();
         $qb->select('COUNT(DISTINCT p.id)')
-            ->from('App\Entity\Prospect', 'p')
+            ->from(Prospect::class, 'p')
             ->where('p.team IN (:teams)')
             ->andWhere('p.team IS NOT NULL')
             ->andWhere('p.comrcl IS NULL')
@@ -176,6 +186,7 @@ class StatsService
     // les nouveaux prospects cree ce jour affecter a mon equipe
     public function getProspectChefNvAll(User $user): int
     {
+
 
         $teams = $user->getTeams();
 

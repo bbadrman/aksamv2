@@ -1,0 +1,63 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Hello StatController!
+{% endblock %}
+
+{% block body %}
+	<table class="table table-bordered">
+		<thead>
+			<tr>
+				<th>Nom d'Equipe</th>
+				<th>Nom d'utilisateur</th>
+				<th>Nombre de prospects</th>
+				<th>Nombre de Contrats</th>
+				<th>Revendeur</th>
+				<th>Saisir manual</th>
+				<th>Propre site</th>
+
+				{# les motifSaise #}
+				<th>LEADS</th>
+				<th>Parrainage</th>
+				<th>Appel Entrant</th>
+				<th>Avenant</th>
+				<th>Ancienne Contrat</th>
+				<th>Propre site</th>
+				<th>Revendeur site</th>
+			</tr>
+		</thead>
+		<tbody>
+			{% for stat in stats %}
+				<tr>
+					<td>
+						{% for team in stat.user.teams %}
+							{{ team.name }}
+							{% if not loop.last %},
+							{% endif %}
+						{% else %}
+							<em>Aucune</em>
+						{% endfor %}
+					</td>
+					<td>{{ stat.user.username }}</td>
+					<td>{{ stat.total }}</td>
+					<td>{{ stat.contrat }}</td>
+					<td>{{ stat.sources['2'] }}</td>
+					<td>{{ stat.sources['null'] }}</td>
+					<td>{{ stat.sources['3'] }}</td>
+
+					{# les motifSaise #}
+					<td>{{ stat.motifs['null'] }}</td>
+					<td>{{ stat.motifs['1'] }}</td>
+					<td>{{ stat.motifs['2'] }}</td>
+					<td>{{ stat.motifs['3'] }}</td>
+					<td>{{ stat.motifs['4'] }}</td>
+					<td>{{ stat.motifs['5'] }}</td>
+					<td>{{ stat.motifs['6'] }}</td>
+
+
+				</tr>
+			{% endfor %}
+
+		</tbody>
+	</table>
+
+{% endblock %}

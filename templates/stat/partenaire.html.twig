@@ -1,0 +1,82 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Hello StatController!
+{% endblock %}
+
+{% block body %}
+	<section class="content-header">
+
+		<h2>Statistique par Partenaire</h2>
+
+		<ol class="breadcrumb">
+			<li>
+				<a href="{{ path('app_home') }}">
+					<i class="fa fa-dashboard"></i>
+					Tableau de bord</a>
+			</li>
+			{# <li class="active">
+																																																																																																																																																																																																																																																																																																																																																																																																																																																	<a href="{{ path('app_table_liste') }}">
+																																																																																																																																																																																																																																																																																																																																																																																																																																																		<i class="fa fa-users"></i>
+																																																																																																																																																																																																																																																																																																																																																																																																																																																		Toutes les Tables</a>
+																																																																																																																																																																																																																																																																																																																																																																																																																																																</li> #}
+			<!-- NOTIFICATION DROPDOWN -->
+
+			<li id="header_notification_bar" class="dropdown">
+				<a data-toggle="dropdown" class="dropdown-toggle" href="#">
+					<i class="fa fa-shopping-cart"></i>
+
+				</a>
+
+			</li>
+			<!-- END NOTIFICATION DROPDOWN -->
+		</ol>
+		<br>
+	</section>
+	<div class="col-xs-12 mx-auto d-flex justify-content-center">
+		<div class="row" style="margin-right: 12px;  ">
+			{% include 'stat/_search_form.html.twig' with {search_form: search_form} only %}
+		</div>
+	</div>
+
+	<table class="table table-bordered">
+		<thead>
+			<tr>
+				<th>Nom partenaire</th>
+				<th>Nombre de prospects</th>
+				<th>Nombre de contrats</th>
+				<th>contartCoutisation</th>
+				<th>fraisPayment</th>
+				{# <th>Utilisateurs</th> #}
+			</tr>
+		</thead>
+
+		<tbody>
+
+			{% for stat in stats %}
+				<tr>
+					<td>{{ stat.partenaire.nom }}</td>
+					<td>{{ stat.nbProspects }}</td>
+					<td>{{ stat.nbContrats }}</td>
+
+					<td>{{ stat.cotisationTotal|number_format(2, ',', ' ') }}
+						€</td>
+					<td>{{ stat.ca|number_format(2, '.', ' ') }}
+						€</td>
+					{# <td>
+											{% for user in stat.users %}
+												{{ user.username }}
+												{% if not loop.last %},
+												{% endif %}
+											{% else %}
+												<em>Aucun</em>
+											{% endfor %}
+										</td> #}
+
+				</tr>
+			{% endfor %}
+		</tbody>
+
+	</table>
+
+
+{% endblock %}
