@@ -1,0 +1,220 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Liste des Prospects
+{% endblock %}
+
+{% block body %}
+	<div class="container mt-4">
+		<div class="d-flex justify-content-between align-items-center mb-4">
+			<h1>Liste des Prospects</h1>
+			<a href="{{ path('app_search_dates') }}" class="btn btn-outline-secondary">
+				<i class="fas fa-arrow-left"></i>
+				Retour à la recherche
+			</a>
+		</div>
+
+		<!-- Formulaire de filtres -->
+		<div class="card mb-4">
+			<div class="card-header bg-primary text-white">
+				<h5 class="mb-0">Filtres de recherche</h5>
+			</div>
+			<div class="card-body">
+				<form method="get" action="{{ path('app_prospectsdeep') }}">
+					<div
+						class="row g-3">
+						<!-- Dates -->
+						<div class="col-md-3">
+							<label class="form-label">Date début</label>
+							<input type="date" name="startDate" class="form-control" value="{{ startDate }}">
+						</div>
+						<div class="col-md-3">
+							<label class="form-label">Date fin</label>
+							<input type="date" name="endDate" class="form-control" value="{{ endDate }}">
+						</div>
+
+						<!-- Filtres déroulants -->
+						<div class="col-md-2">
+							<label class="form-label">Équipe</label>
+							<select name="team" class="form-select">
+								<option value="">Toutes</option>
+								{% for team in teams %}
+									<option value="{{ team.id }}" {{ selectedTeam == team.id ? 'selected' }}>
+										{{ team.name }}
+									</option>
+								{% endfor %}
+							</select>
+						</div>
+
+						<div class="col-md-2">
+							<label class="form-label">Commercial</label>
+							<select name="comrcl" class="form-select">
+								<option value="">Tous</option>
+								{% for comrcl in comrcls %}
+									<option value="{{ comrcl.id }}" {{ selectedComrcl == comrcl.id ? 'selected' }}>
+										{{ comrcl.username }}
+									</option>
+								{% endfor %}
+							</select>
+						</div>
+
+						<div class="col-md-2">
+							<label class="form-label">Produit</label>
+							<select name="product" class="form-select">
+								<option value="">Tous</option>
+								{% for product in products %}
+									<option value="{{ product.id }}" {{ selectedProduct == product.id ? 'selected' }}>
+										{{ product.nom }}
+									</option>
+								{% endfor %}
+							</select>
+						</div>
+
+						<!-- Filtres texte -->
+						<div class="col-md-3">
+							<label class="form-label">Sites</label>
+							<select name="url" class="form-select">
+								<option value="">-- Tous --</option>
+								{% for key, label in get_choice_options('url') %}
+									<option value="{{ key }}" {{ selectedUrl == key ? 'selected' }}>{{ label }}</option>
+								{% endfor %}
+							</select>
+						</div>
+
+						<div class="col-md-3">
+							<label class="form-label">Activités</label>
+							<select name="activites" class="form-select">
+								<option value="">-- Tous --</option>
+								{% for key, label in get_choice_options('activites') %}
+									<option value="{{ key }}" {{ selectedActivites == key ? 'selected' }}>{{ label }}</option>
+								{% endfor %}
+							</select>
+						</div>
+
+						<div class="col-md-3">
+							<label class="form-label">Type prospect</label>
+							<select name="typeProspect" class="form-select">
+								<option value="">-- Tous --</option>
+								{% for key, label in get_choice_options('typeProspect') %}
+									<option value="{{ key }}" {{ selectedTypeProspect == key ? 'selected' }}>{{ label }}</option>
+								{% endfor %}
+							</select>
+						</div>
+
+						<!-- Boutons -->
+						<div class="col-12 text-end mt-3">
+							<button type="submit" class="btn btn-success">
+								<i class="fas fa-filter"></i>
+								Appliquer
+							</button>
+							<a href="{{ path('app_prospectsdeep') }}" class="btn btn-danger">
+								<i class="fas fa-times"></i>
+								Réinitialiser
+							</a>
+						</div>
+					</div>
+				</form>
+			</div>
+		</div>
+
+		<!-- Tableau des résultats -->
+		<div class="card">
+			<div class="card-header bg-success text-white">
+				<h5 class="mb-0">
+					Résultats ({{ pagination.getTotalItemCount }})
+					{% if startDate and endDate %}
+						du
+						{{ startDate|date('d/m/Y') }}
+						au
+						{{ endDate|date('d/m/Y') }}
+					{% endif %}
+				</h5>
+			</div>
+			<div class="card-body">
+				{% if pagination.getTotalItemCount > 0 %}
+					<div class="table-responsive">
+						<table class="table table-hover align-middle">
+							<thead>
+								<tr>
+									<th>Équipe</th>
+									<th>Commercial</th>
+									<th>Nom</th>
+									<th>Prénom</th>
+									<th>Date création</th>
+									<th>Téléphone</th>
+									<th>Email</th>
+									<th>Produit</th>
+									<th>Site</th>
+									<th>Activités</th>
+									<th>Type</th>
+								</tr>
+							</thead>
+							<tbody>
+								{% for prospect in pagination %}
+									<tr>
+										<td>{{ prospect.team ? prospect.team.name }}</td>
+										<td>{{ prospect.comrcl ? prospect.comrcl.username }}</td>
+										<td>{{ prospect.nom }}</td>
+										<td>{{ prospect.prenom }}</td>
+										<td>{{ prospect.creatAt|date('d/m/Y H:i') }}</td>
+										<td>{{ prospect.gsm }}</td>
+										<td>{{ prospect.email }}</td>
+										<td>{{ prospect.product ? prospect.product.nom }}</td>
+										<td>{{ prospect.url|map_choice('url') }}</td>
+										<td>{{ prospect.activites|map_choice('activites') }}</td>
+										<td>{{ prospect.typeProspect|map_choice('typeProspect') }}</td>
+									</tr>
+								{% endfor %}
+							</tbody>
+						</table>
+					</div>
+
+					<!-- Pagination -->
+					<div class="d-flex justify-content-center mt-4">
+						<div class="navigation">
+							{{ knp_pagination_render(pagination, 'pagination.html.twig') }}
+						</div>
+					</div>
+				{% else %}
+					<div class="alert alert-warning">Aucun prospect trouvé avec ces critères</div>
+				{% endif %}
+			</div>
+		</div>
+		<div class="row mb-4">
+			<div class="col-12">
+				<a href="{{ path('app_contrats', {'startDate': startDate, 'endDate': endDate}) }}" class="btn btn-success w-100">
+					<i class="fas fa-users"></i>
+					Voir la production pour cette période
+				</a>
+			</div>
+		</div>
+	</div>
+{% endblock %}
+
+{% block javascripts %}
+	{{ parent() }}
+	<script>
+		document.addEventListener('DOMContentLoaded', function () { // Ajout de la classe active aux éléments de pagination
+document.querySelectorAll('.page-item').forEach(function (item) {
+const link = item.querySelector('.page-link');
+if (link && window.location.href.includes(link.getAttribute('href'))) {
+item.classList.add('active');
+}
+});
+
+// Préservation des paramètres de filtrage dans les liens de pagination
+document.querySelectorAll('.page-link').forEach(function (link) {
+const url = new URL(link.href, window.location.origin);
+const searchParams = new URLSearchParams(window.location.search);
+
+// Ajout de tous les paramètres de filtrage aux liens de pagination
+for (const [key, value] of searchParams.entries()) {
+if (key !== 'page') { // Éviter les conflits avec le paramètre de page
+url.searchParams.set(key, value);
+}
+}
+
+link.href = url.toString();
+});
+});
+	</script>
+{% endblock %}

@@ -15,10 +15,10 @@
 					Tableau de bord</a>
 			</li>
 			{# <li class="active">
-																																																																																																																																																																																																																																																																																																																																																																																																																																																	<a href="{{ path('app_table_liste') }}">
-																																																																																																																																																																																																																																																																																																																																																																																																																																																		<i class="fa fa-users"></i>
-																																																																																																																																																																																																																																																																																																																																																																																																																																																		Toutes les Tables</a>
-																																																																																																																																																																																																																																																																																																																																																																																																																																																</li> #}
+																																																																																																																																																																																																																																																																																																																																																																																																																																																				<a href="{{ path('app_table_liste') }}">
+																																																																																																																																																																																																																																																																																																																																																																																																																																																					<i class="fa fa-users"></i>
+																																																																																																																																																																																																																																																																																																																																																																																																																																																					Toutes les Tables</a>
+																																																																																																																																																																																																																																																																																																																																																																																																																																																			</li> #}
 			<!-- NOTIFICATION DROPDOWN -->
 
 			<li id="header_notification_bar" class="dropdown">
@@ -63,14 +63,14 @@
 					<td>{{ stat.ca|number_format(2, '.', ' ') }}
 						€</td>
 					{# <td>
-											{% for user in stat.users %}
-												{{ user.username }}
-												{% if not loop.last %},
-												{% endif %}
-											{% else %}
-												<em>Aucun</em>
-											{% endfor %}
-										</td> #}
+																{% for user in stat.users %}
+																	{{ user.username }}
+																	{% if not loop.last %},
+																	{% endif %}
+																{% else %}
+																	<em>Aucun</em>
+																{% endfor %}
+															</td> #}
 
 				</tr>
 			{% endfor %}

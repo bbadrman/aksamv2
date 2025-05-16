@@ -604,4 +604,27 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
         return $this;
     }
+    public function getPartenairesStats(): array
+    {
+        $stats = [];
+
+        foreach ($this->contrats as $contrat) {
+            $partenaire = $contrat->getPartenaire();
+            if ($partenaire) {
+                $nom = $partenaire->getNom();
+                if (!isset($stats[$nom])) {
+                    $stats[$nom] = [
+                        'count' => 0,
+                        'cotisation' => 0.0,
+                        'partenaire' => $partenaire
+                    ];
+                }
+                $stats[$nom]['count']++;
+                $stats[$nom]['cotisation'] += (float)$contrat->getCotisation();
+            }
+        }
+
+        ksort($stats);
+        return $stats;
+    }
 }

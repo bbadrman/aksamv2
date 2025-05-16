@@ -1,0 +1,155 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Liste des Contrats par Commercial et Partenaire
+{% endblock %}
+
+{% block body %}
+	<div class="container mt-4">
+		<div class="d-flex justify-content-between align-items-center mb-4">
+			<h1>Production par Commercial</h1>
+			<a href="{{ path('app_search_dates') }}" class="btn btn-outline-secondary">
+				<i class="fas fa-arrow-left"></i>
+				Retour à la recherche
+			</a>
+		</div>
+
+		<div class="card mb-4">
+			<div class="card-header bg-info text-white">
+				<h5>Production pour la période du
+					{{ startDate|date('d/m/Y') }}
+					au
+					{{ endDate|date('d/m/Y') }}</h5>
+			</div>
+			<div
+				class="card-body">
+				<!-- Formulaire de filtres -->
+				<form method="get" action="{{ path('app_contrats') }}" class="mb-4 row align-items-end">
+					<input type="hidden" name="startDate" value="{{ startDate }}">
+					<input type="hidden" name="endDate" value="{{ endDate }}">
+
+					<div class="col-md-3">
+						<label for="team" class="form-label">Équipe</label>
+						<select name="team" id="team" class="form-select">
+							<option value="">Toutes les équipes</option>
+							{% for team in teams %}
+								<option value="{{ team.id }}" {% if selectedTeam is not null and selectedTeam == team.id %} selected {% endif %}>
+									{{ team.name }}
+								</option>
+							{% endfor %}
+						</select>
+					</div>
+
+					<div class="col-md-3">
+						<label for="commercial" class="form-label">Commercial</label>
+						<select name="commercial" id="commercial" class="form-select">
+							<option value="">Tous les commerciaux</option>
+							{% for commercial in commercials %}
+								<option value="{{ commercial.id }}" {% if selectedCommercial is not null and selectedCommercial == commercial.id %} selected {% endif %}>
+									{{ commercial.username }}
+								</option>
+							{% endfor %}
+						</select>
+					</div>
+
+					<div class="col-md-3">
+						<label for="partenaire" class="form-label">Partenaire</label>
+						<select name="partenaire" id="partenaire" class="form-select">
+							<option value="">Tous les partenaires</option>
+							{% for partenaire in partenaires %}
+								<option value="{{ partenaire.nom }}" {% if selectedPartenaire is not null and selectedPartenaire == partenaire.nom %} selected {% endif %}>
+									{{ partenaire.nom }}
+								</option>
+							{% endfor %}
+						</select>
+					</div>
+
+					<div class="col-md-3">
+						<button type="submit" class="btn btn-primary w-100">Filtrer</button>
+					</div>
+				</form>
+
+				<!-- Bouton pour réinitialiser les filtres -->
+				{% if selectedCommercial or selectedPartenaire or selectedTeam %}
+					<div class="mb-4">
+						<a href="{{ path('app_contrats', {'startDate': startDate, 'endDate': endDate}) }}" class="btn btn-outline-secondary">
+							<i class="fas fa-times"></i>
+							Réinitialiser les filtres
+						</a>
+					</div>
+				{% endif %}
+
+				{% if commercialsData|length > 0 %}
+					<div class="table-responsive">
+						<table class="table table-bordered table-striped">
+							<thead class="table-light">
+								<tr>
+									<th>Commercial</th>
+									<th>Partenaire</th>
+									<th>Contrats</th>
+									<th>Cotisation</th>
+								</tr>
+							</thead>
+							<tbody>
+								{% for commercialId, commercialData in commercialsData %}
+									{% set firstPartenaire = true %}
+
+									{% for partenaireName, partenaireData in commercialData.partenaires %}
+										<tr>
+											{% if firstPartenaire %}
+												<td rowspan="{{ commercialData.rowspan }}">{{ commercialData.commercial.username }}</td>
+											{% endif %}
+
+											<td>{{ partenaireName }}</td>
+											<td>{{ partenaireData.count }}</td>
+											<td>{{ partenaireData.cotisation|number_format(2, ',', ' ') }}
+												€</td>
+										</tr>
+
+										{% set firstPartenaire = false %}
+									{% endfor %}
+								{% endfor %}
+							</tbody>
+							<tfoot>
+								<tr class="table-info">
+									<th colspan="2">Total</th>
+									<th>
+										{% set totalContrats = 0 %}
+										{% for commercialId, commercialData in commercialsData %}
+											{% for partenaireName, partenaireData in commercialData.partenaires %}
+												{% set totalContrats = totalContrats + partenaireData.count %}
+											{% endfor %}
+										{% endfor %}
+										{{ totalContrats }}
+									</th>
+									<th>
+										{% set totalCotisation = 0 %}
+										{% for commercialId, commercialData in commercialsData %}
+											{% for partenaireName, partenaireData in commercialData.partenaires %}
+												{% set totalCotisation = totalCotisation + partenaireData.cotisation %}
+											{% endfor %}
+										{% endfor %}
+										{{ totalCotisation|number_format(2, ',', ' ') }}
+										€
+									</th>
+								</tr>
+							</tfoot>
+						</table>
+					</div>
+				{% else %}
+					<div class="alert alert-info">
+						Aucun contrat trouvé pour cette période.
+					</div>
+				{% endif %}
+			</div>
+		</div>
+
+		<div class="row mb-4">
+			<div class="col-12">
+				<a href="{{ path('app_prospectsdeep', {'startDate': startDate, 'endDate': endDate}) }}" class="btn btn-success w-100">
+					<i class="fas fa-users"></i>
+					Voir les prospects pour cette période
+				</a>
+			</div>
+		</div>
+	</div>
+{% endblock %}

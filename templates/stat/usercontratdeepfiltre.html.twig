@@ -1,0 +1,158 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Hello StatController!
+{% endblock %}
+
+{% block body %}
+	<section class="content-header">
+		<h2>Statistique
+		</h2>
+
+		<ol class="breadcrumb">
+			<li>
+				<a href="{{ path('app_home') }}">
+					<i class="fa fa-dashboard"></i>
+					Tableau de bord</a>
+			</li>
+			{# <li class="active">
+																																																																																																																																																																																																																																																																																																																																																																																																																																								<a href="{{ path('app_table_liste') }}">
+																																																																																																																																																																																																																																																																																																																																																																																																																																									<i class="fa fa-users"></i>
+																																																																																																																																																																																																																																																																																																																																																																																																																																									Toutes les Tables</a>
+																																																																																																																																																																																																																																																																																																																																																																																																																																							</li> #}
+			<!-- NOTIFICATION DROPDOWN -->
+
+			<li id="header_notification_bar" class="dropdown">
+				<a data-toggle="dropdown" class="dropdown-toggle" href="#">
+					<i class="fa fa-shopping-cart"></i>
+
+				</a>
+
+			</li>
+			<!-- END NOTIFICATION DROPDOWN -->
+		</ol>
+		<br>
+	</section>
+	            <div style="text-align: center;"> 
+					<button type="button" type="button" class="btn btn-info">
+						<a href="{{ path('prospects_calandri') }}">Prospects</a>
+					</button>
+					<button type="button" type="button" class="btn btn-info">
+						<a href="{{ path('app_usercontratfiltre') }}">Production</a>
+					</button>
+				</div>
+
+             
+<br>
+	<form method="get" class="mb-4">
+		<div
+			class="row g-2">
+			{# Filtre Équipe #}
+			<div class="col-md-2">
+				<label class="form-label">Équipe</label>
+				<select name="team" class="form-select">
+					<option value="">Toutes les équipes</option>
+					{% for team in allTeams %}
+						<option value="{{ team.id }}" {{ selectedTeam and team.id == selectedTeam.id ? 'selected' }}>
+							{{ team.name }}
+						</option>
+					{% endfor %}
+				</select>
+			</div>
+
+			{# Filtre Utilisateur #}
+			<div class="col-md-2">
+				<label class="form-label">Utilisateur</label>
+				<select name="user" class="form-select">
+					<option value="">Tous les utilisateurs</option>
+					{% for user in filteredUsers %}
+						<option value="{{ user.id }}" {{ selectedUser and user.id == selectedUser.id ? 'selected' }}>
+							{{ user.username }}
+						</option>
+					{% endfor %}
+				</select>
+			</div>
+
+			{# Filtres existants (dates + partenaire) #}
+			<div class="col-md-2">
+				<label class="form-label">Date début</label>
+				<input type="date" name="startDate" value="{{ startDate }}" class="form-control">
+			</div>
+			<div class="col-md-2">
+				<label class="form-label">Date fin</label>
+				<input type="date" name="endDate" value="{{ endDate }}" class="form-control">
+			</div>
+			<div class="col-md-2">
+				<label class="form-label">Partenaire</label>
+				<select name="partenaire" class="form-select">
+					<option value="">Tous les partenaires</option>
+					{% for p in allPartenaires %}
+						<option value="{{ p.id }}" {{ selectedPartenaire and p.id == selectedPartenaire.id ? 'selected' }}>
+							{{ p.nom }}
+						</option>
+					{% endfor %}
+				</select>
+			</div>
+
+			<div class="col-md-2 d-flex align-items-end">
+				<button type="submit" class="btn btn-primary w-100">
+					<i class="fas fa-filter"></i>
+					Appliquer
+				</button>
+			</div>
+		</div>
+	</form>
+
+	{% if formSubmitted %}
+		{% if teamData|length > 0 %}
+			<table class="table table-bordered">
+				<thead>
+					<tr>
+						<th>Équipe</th>
+						<th>Comercial</th>
+						<th>Partenaire</th>
+						<th>Contrats</th>
+						<th>Cotisation</th>
+					</tr>
+				</thead>
+				<tbody>
+					{% for teamEntry in teamData %}
+						{% set firstUser = true %}
+
+						{% for userEntry in teamEntry.users %}
+							{% set firstPartner = true %}
+
+							{% for nom, details in userEntry.partenaires %}
+								<tr>
+									{% if firstUser and firstPartner %}
+										<td rowspan="{{ teamEntry.totalRows }}">{{ teamEntry.team.name }}</td>
+									{% endif %}
+
+									{% if firstPartner %}
+										<td rowspan="{{ userEntry.rowspan }}">{{ userEntry.user.username }}</td>
+									{% endif %}
+
+									<td>{{ nom }}</td>
+									<td>{{ details.count }}</td>
+									<td>{{ details.cotisation|number_format(2, ',', ' ') }}
+										€</td>
+								</tr>
+
+								{% set firstPartner = false %}
+								{% set firstUser = false %}
+							{% endfor %}
+						{% endfor %}
+					{% endfor %}
+				</tbody>
+			</table>
+		{% else %}
+			<div class="alert alert-info mt-3">
+				Aucun résultat trouvé pour les critères sélectionnés.
+			</div>
+		{% endif %}
+	{% else %}
+		<div class="alert alert-info mt-3">
+			Veuillez sélectionner des critères et appliquer le filtre pour afficher les données.
+		</div>
+	{% endif %}
+
+{% endblock %}

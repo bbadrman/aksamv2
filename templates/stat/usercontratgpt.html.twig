@@ -1,0 +1,34 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Hello StatController!
+{% endblock %}
+
+{% block body %}
+	<table class="table table-bordered">
+		<thead>
+			<tr>
+				<th>Utilisateur</th>
+				<th>Partenaire</th>
+				<th>Nombre de contrats</th>
+				<th>Chiffre d'affaires (€)</th>
+			</tr>
+		</thead>
+		<tbody>
+			{% for row in data %}
+				{% set user = row.user %}
+				{% set partenaires = row.partenaires %}
+
+				{% for partenaire, infos in partenaires %}
+					<tr>
+						<td>{{ user.username }}</td>
+						<td>{{ partenaire }}</td>
+						<td>{{ infos.nombre_contrats }}</td>
+						<td>{{ infos.total_cotisation|number_format(2, ',', ' ') }}</td>
+					</tr>
+				{% endfor %}
+			{% endfor %}
+		</tbody>
+	</table>
+
+
+{% endblock %}

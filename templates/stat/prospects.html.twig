@@ -1,0 +1,68 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Liste des Prospects
+{% endblock %}
+
+{% block body %}
+	<div class="container mt-4">
+		<div class="d-flex justify-content-between align-items-center mb-4">
+			<h1>Liste des Prospects</h1>
+			<a href="{{ path('app_search_dates') }}" class="btn btn-outline-secondary">
+				<i class="fas fa-arrow-left"></i>
+				Retour à la recherche
+			</a>
+		</div>
+
+		<div class="card mb-4">
+			<div class="card-header bg-success text-white">
+				<h5>Prospects pour la période du
+					{{ startDate|date('d/m/Y') }}
+					au
+					{{ endDate|date('d/m/Y') }}</h5>
+			</div>
+			<div class="card-body">
+				{% if prospects|length > 0 %}
+					<div class="table-responsive">
+						<table class="table table-bordered table-striped">
+							<thead class="table-light">
+								<tr>
+									<th>Nom</th>
+									<th>Prénom</th>
+									<th>Date de création</th>
+									<th>Téléphone</th>
+									<th>Email</th>
+									<th>Équipe</th>
+								</tr>
+							</thead>
+							<tbody>
+								{% for prospect in prospects %}
+									<tr>
+										<td>{{ prospect.nom }}</td>
+										<td>{{ prospect.prenom }}</td>
+										<td>{{ prospect.creatAt|date('d/m/Y') }}</td>
+										<td>{{ prospect.gsm }}</td>
+										<td>{{ prospect.email }}</td>
+										<td>{{ prospect.team ? prospect.team.name : 'N/A' }}</td>
+									</tr>
+								{% endfor %}
+							</tbody>
+						</table>
+					</div>
+				{% else %}
+					<div class="alert alert-info">
+						Aucun prospect trouvé pour cette période.
+					</div>
+				{% endif %}
+			</div>
+		</div>
+
+		<div class="row mb-4">
+			<div class="col-12">
+				<a href="{{ path('app_contrats', {'startDate': startDate, 'endDate': endDate}) }}" class="btn btn-info w-100">
+					<i class="fas fa-file-contract"></i>
+					Voir les contrats pour cette période
+				</a>
+			</div>
+		</div>
+	</div>
+{% endblock %}

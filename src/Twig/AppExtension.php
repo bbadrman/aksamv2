@@ -15,6 +15,42 @@ class AppExtension extends AbstractExtension
     {
         $this->transactionRepository = $transactionRepository;
     }
+    private $mappings = [
+        'url' => [
+            '1' => 'des-vtc',
+            '2' => 'garage-pro',
+            '3' => 'pour-taxi',
+            '4' => 'pour-vtc',
+            '5' => 'des-resilies',
+            '6' => 'decennale',
+            '7' => 'comparez',
+            '8' => 'camion',
+            '9' => 'flotte',
+            '10' => 'vehicule-pro',
+            '11' => 'transporteurs',
+            '12' => 'vehicules-prof',
+            '13' => 'engins',
+            '14' => 'prof-auto',
+            '15' => 'auto-ecole',
+            '16' => 'negociants-auto',
+            '17' => 'garage-auto',
+        ],
+        'activites' => [
+            1 => 'TPM',
+            2 => 'VTC',
+            3 => 'Sociéte',
+            4 => 'Décenale',
+            5 => 'Dommage',
+            6 => 'Marchandise',
+            7 => 'Négociant',
+            8 => 'Prof auto',
+            9 => 'Garage'
+        ],
+        'typeProspect' => [
+            '1' => 'Particulier',
+            '2' => 'Professionnel'
+        ]
+    ];
 
     public function getFilters(): array
     {
@@ -22,6 +58,8 @@ class AppExtension extends AbstractExtension
             new TwigFilter('credit_by_transaction', [$this, 'getCreditByTransaction']),
             new TwigFilter('frais_par_contrat', [$this, 'getFraisParContratThisMonth']),
             new TwigFilter('is_transaction_declared', [$this, 'isTransactionDeclaredInPayments']),
+            //filtre du affichage du usl et activite stat/prospets.htl.twg
+            new TwigFilter('map_choice', [$this, 'mapChoice']),
 
         ];
     }
@@ -63,5 +101,9 @@ class AppExtension extends AbstractExtension
         }
 
         return false;
+    }
+    public function mapChoice($value, string $type)
+    {
+        return $this->mappings[$type][$value] ?? 'N/A';
     }
 }

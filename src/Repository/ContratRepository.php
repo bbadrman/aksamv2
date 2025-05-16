@@ -169,4 +169,145 @@ class ContratRepository extends ServiceEntityRepository
             ->getQuery()
             ->getResult();
     }
+
+    public function findByDateIntervalCalud(
+        \DateTimeInterface $startDate,
+        \DateTimeInterface $endDate,
+        $commercialId = null,
+        $partenaireNom = null,
+        $teamId = null
+    ) {
+        // Ajuster la date de fin pour inclure toute la journée
+        $endDateAdjusted = \DateTime::createFromInterface($endDate);
+        $endDateAdjusted->setTime(23, 59, 59);
+
+        $queryBuilder = $this->createQueryBuilder('c')
+            ->andWhere('c.dateSouscrpt >= :startDate')
+            ->andWhere('c.dateSouscrpt <= :endDate')
+            ->setParameter('startDate', $startDate)
+            ->setParameter('endDate', $endDateAdjusted);
+
+        // Ajouter le filtre par commercial si spécifié
+        if ($commercialId) {
+            $queryBuilder
+                ->andWhere('c.user = :commercialId')
+                ->setParameter('commercialId', $commercialId);
+        }
+
+        // Ajouter le filtre par partenaire si spécifié
+        if ($partenaireNom) {
+            $queryBuilder
+                ->leftJoin('c.partenaire', 'p')
+                ->andWhere('p.nom = :partenaireNom')
+                ->setParameter('partenaireNom', $partenaireNom);
+        }
+
+        // Ajouter le filtre par équipe si spécifié
+        if ($teamId) {
+            $queryBuilder
+                ->leftJoin('c.user', 'u')
+                ->leftJoin('u.teams', 't')
+                ->andWhere('t.id = :teamId')
+                ->setParameter('teamId', $teamId);
+        }
+
+        return $queryBuilder
+            ->orderBy('c.dateSouscrpt', 'DESC')
+            ->getQuery()
+            ->getResult();
+    }
+
+    public function findByDateIntervalGroupedByCommercialAndPartenaire(
+        \DateTimeInterface $startDate,
+        \DateTimeInterface $endDate,
+        $commercialId = null,
+        $partenaireNom = null,
+        $teamId = null
+    ) {
+        // Ajuster la date de fin pour inclure toute la journée
+        $endDateAdjusted = \DateTime::createFromInterface($endDate);
+        $endDateAdjusted->setTime(23, 59, 59);
+
+        $queryBuilder = $this->createQueryBuilder('c')
+            ->andWhere('c.dateSouscrpt >= :startDate')
+            ->andWhere('c.dateSouscrpt <= :endDate')
+            ->leftJoin('c.user', 'u')
+            ->leftJoin('c.partenaire', 'p')
+            ->addSelect('u')
+            ->addSelect('p')
+            ->setParameter('startDate', $startDate)
+            ->setParameter('endDate', $endDateAdjusted);
+
+        // Ajouter le filtre par commercial si spécifié
+        if ($commercialId) {
+            $queryBuilder
+                ->andWhere('c.user = :commercialId')
+                ->setParameter('commercialId', $commercialId);
+        }
+
+        // Ajouter le filtre par partenaire si spécifié
+        if ($partenaireNom) {
+            $queryBuilder
+                ->andWhere('p.nom = :partenaireNom')
+                ->setParameter('partenaireNom', $partenaireNom);
+        }
+
+        // Ajouter le filtre par équipe si spécifié
+        if ($teamId) {
+            $queryBuilder
+                ->leftJoin('u.teams', 't')
+                ->andWhere('t.id = :teamId')
+                ->setParameter('teamId', $teamId);
+        }
+
+        $contrats = $queryBuilder
+            ->orderBy('u.username', 'ASC')
+            ->addOrderBy('p.nom', 'ASC')
+            ->getQuery()
+            ->getResult();
+
+        $commercialsData = [];
+        $totalRows = 0;
+
+        foreach ($contrats as $contrat) {
+            $commercial = $contrat->getUser();
+            $partenaire = $contrat->getPartenaire();
+
+            if (!$commercial || !$partenaire) {
+                continue;
+            }
+
+            $commercialId = $commercial->getId();
+            $partenaireName = $partenaire->getNom();
+
+            // Initialiser les données du commercial s'il n'existe pas encore
+            if (!isset($commercialsData[$commercialId])) {
+                $commercialsData[$commercialId] = [
+                    'commercial' => $commercial,
+                    'partenaires' => [],
+                    'rowspan' => 0
+                ];
+            }
+
+            // Initialiser le partenaire s'il n'existe pas encore pour ce commercial
+            if (!isset($commercialsData[$commercialId]['partenaires'][$partenaireName])) {
+                $commercialsData[$commercialId]['partenaires'][$partenaireName] = [
+                    'count' => 0,
+                    'cotisation' => 0.0
+                ];
+                // Incrémenter le rowspan du commercial à chaque nouveau partenaire
+                $commercialsData[$commercialId]['rowspan']++;
+                $totalRows++;
+            }
+
+            // Ajouter les données du contrat
+            $commercialsData[$commercialId]['partenaires'][$partenaireName]['count']++;
+            $commercialsData[$commercialId]['partenaires'][$partenaireName]['cotisation'] += (float)$contrat->getCotisation();
+        }
+
+        return [
+            'commercialsData' => $commercialsData,
+            'totalRows' => $totalRows
+        ];
+    }
 }

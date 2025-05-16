@@ -46,6 +46,15 @@
 			display: none;
 		}
 	</style>
+	           <div style="text-align: center;"> 
+					<button type="button" type="button" class="btn btn-info">
+						<a href="{{ path('prospects_calandri') }}"> <Strong>Prospects</Strong> </a>
+					</button>
+					<button type="button" type="button" class="btn btn-info">
+						<a href="{{ path('app_usercontratfiltre') }}"><Strong>Production</Strong></a>
+					</button>
+				</div>
+<br>
 	<div class="col-xs-12 mx-auto d-flex justify-content-center">
 		<div class="row" style="margin-right: 12px;  ">
 			{% include 'stat/_search_form.html.twig' with {search_form: search_form} only %}

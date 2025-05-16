@@ -909,6 +909,21 @@ class ProspectRepository extends ServiceEntityRepository
             ->getResult();
     }
 
+    public function findByDateIntervalClaud(\DateTimeInterface $startDate, \DateTimeInterface $endDate)
+    {
+        // Ajuster la date de fin pour inclure toute la journée
+        $endDateAdjusted = \DateTime::createFromInterface($endDate);
+        $endDateAdjusted->setTime(23, 59, 59);
+
+        return $this->createQueryBuilder('p')
+            ->andWhere('p.creatAt >= :startDate')
+            ->andWhere('p.creatAt <= :endDate')
+            ->setParameter('startDate', $startDate)
+            ->setParameter('endDate', $endDateAdjusted)
+            ->orderBy('p.creatAt', 'DESC')
+            ->getQuery()
+            ->getResult();
+    }
     /**
      * getnumber prospects for notifiy
      * return with int pour admin
@@ -919,9 +934,7 @@ class ProspectRepository extends ServiceEntityRepository
         $query = $this->createQueryBuilder('p')
             ->select('COUNT(DISTINCT p.id)')
             ->andWhere("p.comrcl is NULL")
-            ->andWhere("p.team is NULL")
-            ->leftJoin('p.relanceds', 'r')
-            ->andWhere('r.motifRelanced is null');
+            ->andWhere("p.team is NULL");
 
         return (int) $query->getQuery()->getSingleScalarResult();
     }
@@ -939,9 +952,7 @@ class ProspectRepository extends ServiceEntityRepository
             ->Where('p.team IS NULL')
             ->orwhere('p.team IN (:teams) ')
             ->setParameter('teams', $team)
-            ->leftJoin('p.relanceds', 'r')
-            ->andWhere('p.comrcl IS NULL')
-            ->andWhere('r.prospect IS NULL');
+            ->andWhere('p.comrcl IS NULL');
         //->andWhere('p.comrcl IS NULL OR p.comrcl = :user') // Filtrer les prospects no affectés et affect au chef aussi
         //->setParameter('user', $user);
 
@@ -960,9 +971,7 @@ class ProspectRepository extends ServiceEntityRepository
             ->leftJoin('p.comrcl', 'f')
             ->where('p.team IN (:teams) ')
             ->setParameter('teams', $team)
-            ->leftJoin('p.relanceds', 'r')
             ->andWhere('p.comrcl IS NULL')
-            ->andWhere('r.prospect IS NULL')
             ->andWhere('p.team IS NOT NULL');
         //->andWhere('p.comrcl IS NULL OR p.comrcl = :user') // Filtrer les prospects no affectés et affect au chef aussi
         //->setParameter('user', $user);
@@ -981,8 +990,6 @@ class ProspectRepository extends ServiceEntityRepository
             ->where('p.comrcl = :val')
             ->setParameter('val', $id)
 
-            ->leftJoin('p.relanceds', 'r')
-            ->andWhere('r.prospect IS NULL')
 
             ->leftJoin('p.histories', 'h')
             ->andWhere('h.actionDate >= :endOfYesterday')
@@ -998,5 +1005,187 @@ class ProspectRepository extends ServiceEntityRepository
 
 
         return (int) $query->getQuery()->getSingleScalarResult();
+    }
+    public function findByFilters(
+        \DateTimeInterface $startDate,
+        \DateTimeInterface $endDate,
+        ?int $teamId,
+        ?int $comrclId,
+        ?int $productId,
+        ?string $url,
+        ?string $activites,
+        ?string $typeProspect
+    ) {
+        $endDateAdjusted = \DateTime::createFromInterface($endDate);
+        $endDateAdjusted->setTime(23, 59, 59);
+
+        $qb = $this->createQueryBuilder('p')
+            ->andWhere('p.creatAt >= :startDate')
+            ->andWhere('p.creatAt <= :endDate')
+            ->setParameter('startDate', $startDate)
+            ->setParameter('endDate', $endDateAdjusted);
+
+        if ($teamId) {
+            $qb->andWhere('p.team = :teamId')->setParameter('teamId', $teamId);
+        }
+
+        if ($comrclId) {
+            $qb->andWhere('p.comrcl = :comrclId')->setParameter('comrclId', $comrclId);
+        }
+
+        if ($productId) {
+            $qb->andWhere('p.product = :productId')->setParameter('productId', $productId);
+        }
+
+        if ($url) {
+            $qb->andWhere('p.url LIKE :url')->setParameter('url', '%' . $url . '%');
+        }
+
+        if ($activites) {
+            $qb->andWhere('p.activites LIKE :activites')->setParameter('activites', '%' . $activites . '%');
+        }
+
+        if ($typeProspect) {
+            $qb->andWhere('p.typeProspect LIKE :typeProspect')->setParameter('typeProspect', '%' . $typeProspect . '%');
+        }
+
+        return $qb->orderBy('p.creatAt', 'DESC')->getQuery()->getResult();
+    }
+
+    public function findByFiltersdeepp(
+        ?\DateTimeInterface $startDate,
+        ?\DateTimeInterface $endDate,
+        $teamId,
+        $comrclId,
+        $productId,
+        $url,
+        $activites,
+        $typeProspect
+    ) {
+        $qb = $this->createQueryBuilder('p')
+            ->orderBy('p.creatAt', 'DESC');
+
+        // Filtre par dates
+        if ($startDate) {
+            $qb->andWhere('p.creatAt >= :startDate')
+                ->setParameter('startDate', $startDate);
+        }
+        if ($endDate) {
+            $endDateAdjusted = \DateTime::createFromInterface($endDate);
+            $endDateAdjusted->setTime(23, 59, 59);
+            $qb->andWhere('p.creatAt <= :endDate')
+                ->setParameter('endDate', $endDateAdjusted);
+        }
+
+        // Filtres relationnels
+        if ($teamId) {
+            $qb->andWhere('p.team = :teamId')
+                ->setParameter('teamId', $teamId);
+        }
+        if ($comrclId) {
+            $qb->andWhere('p.comrcl = :comrclId')
+                ->setParameter('comrclId', $comrclId);
+        }
+        if ($productId) {
+            $qb->andWhere('p.product = :productId')
+                ->setParameter('productId', $productId);
+        }
+
+        // Filtres textuels (LIKE pour recherche partielle)
+        if ($url) {
+            $qb->andWhere('p.url LIKE :url')
+                ->setParameter('url', '%' . $url . '%');
+        }
+        if ($activites) {
+            $qb->andWhere('p.activites LIKE :activites')
+                ->setParameter('activites', '%' . $activites . '%');
+        }
+        if ($typeProspect) {
+            $qb->andWhere('p.typeProspect = :typeProspect')
+                ->setParameter('typeProspect', $typeProspect);
+        }
+
+        return $qb->getQuery()->getResult();
+    }
+
+    public function createFilteredQuerydeep(
+        ?\DateTimeInterface $startDate,
+        ?\DateTimeInterface $endDate,
+        $teamId,
+        $comrclId,
+        $productId,
+        $url,
+        $activites,
+        $typeProspect
+    ) {
+        $qb = $this->createQueryBuilder('p')
+            ->orderBy('p.creatAt', 'DESC');
+
+        // Filtre par dates
+        if ($startDate) {
+            $qb->andWhere('p.creatAt >= :startDate')
+                ->setParameter('startDate', $startDate);
+        }
+        if ($endDate) {
+            $endDateAdjusted = \DateTime::createFromInterface($endDate);
+            $endDateAdjusted->setTime(23, 59, 59);
+            $qb->andWhere('p.creatAt <= :endDate')
+                ->setParameter('endDate', $endDateAdjusted);
+        }
+
+        // Filtres relationnels
+        if ($teamId) {
+            $qb->andWhere('p.team = :teamId')
+                ->setParameter('teamId', $teamId);
+        }
+        if ($comrclId) {
+            $qb->andWhere('p.comrcl = :comrclId')
+                ->setParameter('comrclId', $comrclId);
+        }
+        if ($productId) {
+            $qb->andWhere('p.product = :productId')
+                ->setParameter('productId', $productId);
+        }
+
+        // Filtres textuels
+        if ($url) {
+            $qb->andWhere('p.url = :url')
+                ->setParameter('url', $url);
+        }
+        if ($activites) {
+            $qb->andWhere('p.activites = :activites')
+                ->setParameter('activites', $activites);
+        }
+        if ($typeProspect) {
+            $qb->andWhere('p.typeProspect = :typeProspect')
+                ->setParameter('typeProspect', $typeProspect);
+        }
+
+        return $qb->getQuery();
+    }
+
+    /**
+     * Récupération des résultats avec filtres (méthode originale)
+     */
+    public function findByFiltersdeep(
+        ?\DateTimeInterface $startDate,
+        ?\DateTimeInterface $endDate,
+        $teamId,
+        $comrclId,
+        $productId,
+        $url,
+        $activites,
+        $typeProspect
+    ) {
+        return $this->createFilteredQuerydeep(
+            $startDate,
+            $endDate,
+            $teamId,
+            $comrclId,
+            $productId,
+            $url,
+            $activites,
+            $typeProspect
+        )->getResult();
     }
 }

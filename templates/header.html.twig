@@ -11,6 +11,7 @@
 {% if app.user is not null %}
 	<div class="nav notify-row d-flex justify-content-end gap-3" id="top_menu">
 		{% if is_granted('ROLE_ADMIN') or is_granted('ROLE_AFFECTALL') or is_granted('ROLE_CHEF')   %}
+
 			<li id="header_notification_bar" class="dropdown me-3">
 				<a href="{{ path('app_prospect_index') }} " class="text-white">
 					<i class="fa-solid fa-share-from-square fa-2x"></i>AFFECTATIONS&emsp;&emsp;&emsp;&emsp;
@@ -21,6 +22,7 @@
 					{% endif %}
 				</a>
 			</li>
+
 		{% endif %}
 		<li>&emsp;</li>
 		{% if  is_granted('ROLE_COMRC') or is_granted('ROLE_CHEF')    %}
@@ -80,9 +82,9 @@
 						<span class="badge bg-warning fs-4">{{ prospects|length }}</span>
 					</a>
 					{# <a data-toggle="dropdown" class="dropdown-toggle" href="#">
-																																																																																																																																																																																																																																																																																																																																																																																																																	<i class=" fa fa-shopping-cart"></i>
-																																																																																																																																																																																																																																																																																																																																																																																																																	<span class="badge bg-warning fs-4">{{ contrats|length }}</span>
-																																																																																																																																																																																																																																																																																																																																																																																																																</a> #}
+																																																																																																																																																																																																																																																																																																																																																																																																																																					<i class=" fa fa-shopping-cart"></i>
+																																																																																																																																																																																																																																																																																																																																																																																																																																					<span class="badge bg-warning fs-4">{{ contrats|length }}</span>
+																																																																																																																																																																																																																																																																																																																																																																																																																																				</a> #}
 
 				{% elseif app.request.get('_route') == 'prospect_search' %}
 					<span class="badge bg-warning fs-4"></span>

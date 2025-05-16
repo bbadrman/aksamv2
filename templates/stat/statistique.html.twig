@@ -1,0 +1,84 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Hello StatController!
+{% endblock %}
+
+{% block body %}
+	<section class="content-header">
+		<h2>Statistique
+		</h2>
+
+		<ol class="breadcrumb">
+			<li>
+				<a href="{{ path('app_home') }}">
+					<i class="fa fa-dashboard"></i>
+					Tableau de bord</a>
+			</li>
+			{# <li class="active">
+																																																																																																																																																																																																																																																																																																																																																																																																																																								<a href="{{ path('app_table_liste') }}">
+																																																																																																																																																																																																																																																																																																																																																																																																																																									<i class="fa fa-users"></i>
+																																																																																																																																																																																																																																																																																																																																																																																																																																									Toutes les Tables</a>
+																																																																																																																																																																																																																																																																																																																																																																																																																																							</li> #}
+			<!-- NOTIFICATION DROPDOWN -->
+
+			<li id="header_notification_bar" class="dropdown">
+				<a data-toggle="dropdown" class="dropdown-toggle" href="#">
+					<i class="fa fa-shopping-cart"></i>
+
+				</a>
+
+			</li>
+			<!-- END NOTIFICATION DROPDOWN -->
+		</ol>
+		<br>
+	 </section>
+	            <div style="text-align: center;"> 
+					<button type="button" type="button" class="btn btn-info">
+						<a href="{{ path('prospects_calandri') }}">Prospects</a>
+					</button>
+					<button type="button" type="button" class="btn btn-info">
+						<a href="{{ path('app_usercontratfiltre') }}">Production</a>
+					</button>
+				</div> 
+ 
+	  <div style="text-align: center;"> 
+	  <div
+			class="row">
+			<!-- AFFECTATIONS  -->
+
+			<div class="col-md-3 col-sm-3 mb ">
+				<div class="green-panel pn">
+					<div class="green-header">
+
+						<a href="{{ path('prospects_calandri') }}">Prospects</a>
+
+							<i class="fa-regular fa-circle-question" title="Ce tableau contient les prospects pour les affectations"></i>
+						</h2>
+
+					</div>
+
+					<i class="fa-solid fa-share-from-square fa-4x" aria-hidden=" true"></i>
+
+				</a>
+			</div>
+		</div>
+		<div class="col-md-3 col-sm-3 mb">
+			<div class="green-panel pn">
+				<div class="green-header">
+					<a href="{{ path('app_usercontratfiltre') }}">Production</a>
+						<i class="fa-regular fa-circle-question" aria-hidden="true" title="Ce tableau contient les prospects affectés a moi."></i>
+
+					</h2>
+				</div>
+
+				<a href="#">
+					<i class="fa fa-undo fa-4x" aria-hidden="true"></i>
+
+					<h1 id="notif"></h1>
+				</a>
+			</div>
+		</div>
+
+	 
+
+{% endblock %}
