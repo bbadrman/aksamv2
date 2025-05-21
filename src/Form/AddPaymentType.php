@@ -161,13 +161,13 @@ class AddPaymentType extends AbstractType
 
 
 
-            ->add('regelement', CollectionType::class, [
-                'entry_type' => RegelementType::class,
-                'allow_add' => true,
-                'by_reference' => false,
-                'prototype' => true,
-                'label' => false,
-            ])
+            // ->add('regelement', CollectionType::class, [
+            //     'entry_type' => RegelementType::class,
+            //     'allow_add' => true,
+            //     'by_reference' => false,
+            //     'prototype' => true,
+            //     'label' => false,
+            // ])
 
 
 

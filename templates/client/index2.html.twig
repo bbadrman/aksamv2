@@ -4,28 +4,6 @@
 {% endblock %}
 
 {% block body %}
-	<style>
-		/* Styles pour améliorer l'affichage des contrats */
-		.expanded-content td {
-			padding: 0 !important;
-		}
-		.expanded-content .table-responsive {
-			margin-bottom: 0;
-		}
-		.loading {
-			padding: 20px;
-			text-align: center;
-			font-style: italic;
-			color: #666;
-		}
-		.client-row {
-			cursor: pointer;
-		}
-		.client-row:hover {
-			background-color: #f5f5f5;
-		}
-	</style>
-
 	{% for label, messages in app.flashes %}
 		<div class="container">
 			<div class="alert alert-{{ label }}">
@@ -53,7 +31,6 @@
 			</li>
 		</ol>
 	</section>
-
 
 	<div class="col-xs-12 mx-auto d-flex justify-content-center">
 		<div class="row" style="margin-right: 12px;">
@@ -83,12 +60,12 @@
 					</thead>
 					<tbody>
 						{% for client in clients %}
-							<tr class="expandable-row client-row" data-client-id="{{ client.id }}">
+							<tr class="expandable-row client-row">
 								<td>{{ client.team }}</td>
 								<td>{{ client.cmrcl }}</td>
 								<td>{{ client.nom }}</td>
 								<td>{{ client.prenom }}</td>
-								{% if is_granted('ROLE_ADMIN') or is_granted('ROLE_CLIENT') or app.user == client.cmrcl %}
+								{% if  is_granted('ROLE_ADMIN') or  is_granted('ROLE_CLIENT') or  app.user == client.cmrcl %}
 									<td>{{ client.phone }}</td>
 									<td>{{ client.email }}</td>
 								{% else %}
@@ -100,9 +77,9 @@
 								<td>{{ client.creatAt ? client.creatAt|date('Y-m-d H:i') : '' }}</td>
 								<td>
 									{% set formes = {
-                                    1: 'SARL', 2: 'EI', 3: 'EURL', 4: 'SA', 5: 'SAS',
-                                    6: 'SASU', 7: 'SNC', 8: 'SCOP', 9: 'Association'
-                                } %}
+                                        1: 'SARL', 2: 'EI', 3: 'EURL', 4: 'SA', 5: 'SAS',
+                                        6: 'SASU', 7: 'SNC', 8: 'SCOP', 9: 'Association'
+                                    } %}
 									{{ formes[client.forceJuridique] ?? '' }}
 								</td>
 								<td style="text-align:center;">
@@ -119,6 +96,7 @@
 										{% else %}
 											<a href="{{ path('app_client_edit', {'id': client.id}) }}" class="btn btn-danger btn-xs">REJETER</a>
 										{% endif %}
+
 									{% elseif client.status is null %}
 										{% if is_granted('ROLE_VALID') and app.user == client.cmrcl %}
 											<a href="{{ path('client_valide_edit', {'id': client.id}) }}" class="btn btn-success btn-xs">MYCLIENT</a>
@@ -138,10 +116,71 @@
 									{% endif %}
 								</td>
 							</tr>
-							<!-- Ligne pour les contrats (initialement cachée) -->
+
 							<tr class="expanded-content contract-row" style="display: none;">
 								<td colspan="12">
-									<div class="loading">Cliquez pour charger les contrats...</div>
+									<table class="table table-bordered">
+										<thead>
+											<tr>
+												<th>
+													<i class="fa fa-handshake-o" aria-hidden="true"></i>
+													CONTRAT</th>
+												<th>État</th>
+												<th>Commercial</th>
+												<th>Produit</th>
+												<th>Immatriculation</th>
+												<th>Date d'effet</th>
+												<th>Date souscription</th>
+												<th>Partenaire</th>
+												<th>Compagnie</th>
+												<th>Formule</th>
+												<th>Cotisation</th>
+												<th>Frais</th>
+												<th>Actions</th>
+											</tr>
+										</thead>
+										<tbody>
+											{% for contrat in client.contrats|filter(contrat => contrat.status == 1) %}
+												<tr class="expandable-row contrat-row">
+													<td></td>
+													{% if is_granted('ROLE_ETATCONTRAT') %}
+														<td>{{ contrat.etat }}{{ render(controller('App\\Controller\\ContratController::etat',{'id':contrat.id}))}}</td>
+													{% else %}
+														<td>{{ contrat.etat }}</td>
+													{% endif %}
+													<td>{{ contrat.user }}</td>
+													<td>{{ contrat.product }}</td>
+													<td>{{ contrat.imatriclt }}</td>
+													<td>{{ contrat.dateEffet ? contrat.dateEffet|date('Y-m-d') : '' }}</td>
+													<td>{{ contrat.dateSouscrpt ? contrat.dateSouscrpt|date('Y-m-d') : '' }}</td>
+													<td>{{ contrat.partenaire ? contrat.partenaire.nom : '' }}</td>
+													<td>{{ contrat.compagnie ? contrat.compagnie.nom : '' }}</td>
+													<td>{{ contrat.formule }}</td>
+													<td>{{ contrat.cotisation }}</td>
+													<td>{{ contrat.frais }}</td>
+													<td>
+														{% if contrat.payments %}
+															{{ render(controller('App\\Controller\\PaymentController::editpayment', {'id': contrat.id})) }}
+
+															{# {% else %}
+																														{{ render(controller('App\\Controller\\PaymentController::newpayment', {'id': contrat.id})) }} #}
+														{% endif %}
+
+														{# {{ render(controller('App\\Controller\\PaymentController::newpayment', {'id': contrat.id})) }} #}
+														{# {{ render(controller('App\\Controller\\ContratController::paiement', {'id': contrat.id})) }} #}
+
+
+														{% if contrat.document and is_granted('ROLE_DOCUMENT_EDIT') %}
+															<a href="{{ path('app_document_edit', {'id': contrat.document.id}) }}" class="btn btn-info">
+																<i class="fa-solid fa-copy"></i>
+															</a>
+
+														{% endif %}
+													</td>
+												</tr>
+											{% endfor %}
+										</tbody>
+									</table>
 								</td>
 							</tr>
 						{% endfor %}
@@ -156,59 +195,19 @@
 		</div>
 	</div>
 
-	<!-- Separate Ajax-based contract loading -->
-	<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+	<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
 	<script>
-		document.addEventListener('DOMContentLoaded', function () {
-const clientRows = document.querySelectorAll('.client-row');
-
-clientRows.forEach(row => {
-row.addEventListener('click', function () { // Get client ID from the data attribute
-const clientId = this.getAttribute('data-client-id') ||
-// Alternative: Extract from URL in button if data-client-id is not set
-this.querySelector('a[href*="/client/"]') ?. getAttribute('href') ?. match(/\/client\/(\d+)/) ?. [1];
-
-if (! clientId) 
-return;
-
-
-
-// Skip if we can't determine client ID
-
-// Trouver la ligne de contrat (la ligne suivante)
-const contractContainer = this.nextElementSibling;
-
-if (contractContainer.style.display === 'none' || ! contractContainer.style.display) {
-contractContainer.style.display = 'table-row';
-
-// Only load contracts if not already loaded
-if (! contractContainer.getAttribute('data-loaded')) {
-const loadingDiv = contractContainer.querySelector('.loading');
-if (loadingDiv) 
-loadingDiv.textContent = 'Chargement des contrats...';
-
-
-
-fetch (`/client/client/${clientId}/contracts`).then(response => {
-if (!response.ok) {
-throw new Error('Erreur réseau');
-}
-return response.text();
-}).then(html => {
-contractContainer.querySelector('td').innerHTML = html;
-contractContainer.setAttribute('data-loaded', 'true');
-}).catch(error => {
-contractContainer.querySelector('td').innerHTML = '<div class="alert alert-danger">Erreur lors du chargement des contrats</div>';
-console.error('Erreur:', error);
+		$(document).ready(function () {
+$('.client-row').click(function () {
+$(this).next('.contract-row').toggle();
 });
-}
-} else {
-contractContainer.style.display = 'none';
-}
-});
+
+$('.contrat-row').click(function () {
+$(this).next('.sav-row').toggle();
 });
 });
 	</script>
+
 	<script>
 		// Script pour le modal de paiement
 document.addEventListener('DOMContentLoaded', function () { // Utiliser une délégation d'événements pour gérer toutes les modales

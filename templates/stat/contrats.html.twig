@@ -87,6 +87,7 @@
 									<th>Partenaire</th>
 									<th>Contrats</th>
 									<th>Cotisation</th>
+									<th>Frais</th>
 								</tr>
 							</thead>
 							<tbody>
@@ -102,6 +103,8 @@
 											<td>{{ partenaireName }}</td>
 											<td>{{ partenaireData.count }}</td>
 											<td>{{ partenaireData.cotisation|number_format(2, ',', ' ') }}
+												€</td>
+											<td>{{ partenaireData.frais|number_format(2, ',', ' ') }}
 												€</td>
 										</tr>
 
@@ -131,6 +134,16 @@
 										{{ totalCotisation|number_format(2, ',', ' ') }}
 										€
 									</th>
+									<th>
+										{% set totalFrais = 0 %}
+										{% for commercialId, commercialData in commercialsData %}
+											{% for partenaireName, partenaireData in commercialData.partenaires %}
+												{% set totalFrais = totalFrais + partenaireData.frais %}
+											{% endfor %}
+										{% endfor %}
+										{{ totalFrais|number_format(2, ',', ' ') }}
+										€
+									</th>
 								</tr>
 							</tfoot>
 						</table>
@@ -141,15 +154,14 @@
 					</div>
 				{% endif %}
 			</div>
-		</div>
 
-		<div class="row mb-4">
-			<div class="col-12">
-				<a href="{{ path('app_prospectsdeep', {'startDate': startDate, 'endDate': endDate}) }}" class="btn btn-success w-100">
-					<i class="fas fa-users"></i>
-					Voir les prospects pour cette période
-				</a>
+			<div class="row mb-4">
+				<div class="col-12">
+					<a href="{{ path('app_prospectstats', {'startDate': startDate, 'endDate': endDate}) }}" class="btn btn-success w-100">
+						<i class="fas fa-users"></i>
+						Voir les prospects pour cette période
+					</a>
+				</div>
 			</div>
 		</div>
-	</div>
-{% endblock %}
+	{% endblock %}

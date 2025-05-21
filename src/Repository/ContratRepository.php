@@ -113,6 +113,7 @@ class ContratRepository extends ServiceEntityRepository
         );
     }
 
+
     /**
      * Calcule la somme totale des frais
      */
@@ -126,40 +127,41 @@ class ContratRepository extends ServiceEntityRepository
     }
 
 
-    public function countContratsAndTotalFraisByComrclForThisMonth(): array
-    {
-        $currentMonth = new \DateTime('first day of this month');
 
-        return $this->createQueryBuilder('c')
-            ->select('u.id AS userId, u.username AS username, COUNT(c.id) AS contratCount, SUM(c.frais) AS totalFrais, SUM(r.montantReglement) AS totalReglements')
-            ->join('c.user', 'u')
-            ->leftJoin('c.regelement', 'r') // on récupère les règlements
-            ->where('c.dateSouscrpt >= :startOfMonth')
-            ->andWhere('c.dateSouscrpt < :endOfMonth')
-            ->andWhere('c.status = 1')
-            ->setParameter('startOfMonth', $currentMonth->format('Y-m-01'))
-            ->setParameter('endOfMonth', $currentMonth->modify('first day of next month')->format('Y-m-01'))
-            ->groupBy('u.id')
-            ->getQuery()
-            ->getResult();
-    }
+    // public function countContratsAndTotalFraisByComrclForThisMonth(): array
+    // {
+    //     $currentMonth = new \DateTime('first day of this month');
+
+    //     return $this->createQueryBuilder('c')
+    //         ->select('u.id AS userId, u.username AS username, COUNT(c.id) AS contratCount, SUM(c.frais) AS totalFrais, SUM(r.montantReglement) AS totalReglements')
+    //         ->join('c.user', 'u')
+    //         ->leftJoin('c.regelement', 'r') // on récupère les règlements
+    //         ->where('c.dateSouscrpt >= :startOfMonth')
+    //         ->andWhere('c.dateSouscrpt < :endOfMonth')
+    //         ->andWhere('c.status = 1')
+    //         ->setParameter('startOfMonth', $currentMonth->format('Y-m-01'))
+    //         ->setParameter('endOfMonth', $currentMonth->modify('first day of next month')->format('Y-m-01'))
+    //         ->groupBy('u.id')
+    //         ->getQuery()
+    //         ->getResult();
+    // }
 
 
-    public function getTotalContratsAndFraisForThisMonth(): array
-    {
-        $currentMonth = new \DateTime('first day of this month');
+    // public function getTotalContratsAndFraisForThisMonth(): array
+    // {
+    //     $currentMonth = new \DateTime('first day of this month');
 
-        return $this->createQueryBuilder('c')
-            ->select('COUNT(DISTINCT c.id) AS totalContrats, SUM(c.frais) AS totalFrais, SUM(r.montantReglement) AS totalReglements')
-            ->leftJoin('c.regelement', 'r')
-            ->where('c.dateSouscrpt >= :startOfMonth')
-            ->andWhere('c.dateSouscrpt < :endOfMonth')
-            ->andWhere('c.status = 1')
-            ->setParameter('startOfMonth', $currentMonth->format('Y-m-01'))
-            ->setParameter('endOfMonth', $currentMonth->modify('first day of next month')->format('Y-m-01'))
-            ->getQuery()
-            ->getSingleResult();
-    }
+    //     return $this->createQueryBuilder('c')
+    //         ->select('COUNT(DISTINCT c.id) AS totalContrats, SUM(c.frais) AS totalFrais, SUM(r.montantReglement) AS totalReglements')
+    //         ->leftJoin('c.regelement', 'r')
+    //         ->where('c.dateSouscrpt >= :startOfMonth')
+    //         ->andWhere('c.dateSouscrpt < :endOfMonth')
+    //         ->andWhere('c.status = 1')
+    //         ->setParameter('startOfMonth', $currentMonth->format('Y-m-01'))
+    //         ->setParameter('endOfMonth', $currentMonth->modify('first day of next month')->format('Y-m-01'))
+    //         ->getQuery()
+    //         ->getSingleResult();
+    // }
     public function findByDateInterval(\DateTimeInterface $startDate, \DateTimeInterface $endDate): array
     {
         return $this->createQueryBuilder('c')
@@ -184,6 +186,9 @@ class ContratRepository extends ServiceEntityRepository
         $queryBuilder = $this->createQueryBuilder('c')
             ->andWhere('c.dateSouscrpt >= :startDate')
             ->andWhere('c.dateSouscrpt <= :endDate')
+            ->andWhere('c.status = 1')
+            ->leftJoin('c.payments', 'pay') // Joindre la table Payment
+            ->addSelect('pay') // Sélectionner les paiements
             ->setParameter('startDate', $startDate)
             ->setParameter('endDate', $endDateAdjusted);
 
@@ -231,10 +236,13 @@ class ContratRepository extends ServiceEntityRepository
         $queryBuilder = $this->createQueryBuilder('c')
             ->andWhere('c.dateSouscrpt >= :startDate')
             ->andWhere('c.dateSouscrpt <= :endDate')
+            ->andWhere('c.status = 1')
             ->leftJoin('c.user', 'u')
             ->leftJoin('c.partenaire', 'p')
+            ->leftJoin('c.payments', 'pay') // Joindre la table Payment
             ->addSelect('u')
             ->addSelect('p')
+            ->addSelect('pay') // Sélectionner les paiements
             ->setParameter('startDate', $startDate)
             ->setParameter('endDate', $endDateAdjusted);
 
@@ -293,7 +301,8 @@ class ContratRepository extends ServiceEntityRepository
             if (!isset($commercialsData[$commercialId]['partenaires'][$partenaireName])) {
                 $commercialsData[$commercialId]['partenaires'][$partenaireName] = [
                     'count' => 0,
-                    'cotisation' => 0.0
+                    'cotisation' => 0.0,
+                    'frais' => 0.0 // Ajouter champ pour les frais
                 ];
                 // Incrémenter le rowspan du commercial à chaque nouveau partenaire
                 $commercialsData[$commercialId]['rowspan']++;
@@ -303,6 +312,12 @@ class ContratRepository extends ServiceEntityRepository
             // Ajouter les données du contrat
             $commercialsData[$commercialId]['partenaires'][$partenaireName]['count']++;
             $commercialsData[$commercialId]['partenaires'][$partenaireName]['cotisation'] += (float)$contrat->getCotisation();
+
+            // Ajouter les frais si un paiement est associé
+            $payment = $contrat->getPayments();
+            if ($payment) {
+                $commercialsData[$commercialId]['partenaires'][$partenaireName]['frais'] += (float)$payment->getFrais();
+            }
         }
 
         return [

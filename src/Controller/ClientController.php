@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use ApiPlatform\State\Pagination\PaginatorInterface;
 use App\Entity\Client;
 use App\Form\ClientType;
 use App\Search\SearchClient;
@@ -9,6 +10,7 @@ use App\Form\ClientValideType;
 use App\Form\SearchClientType;
 use App\Repository\ClientRepository;
 use Doctrine\ORM\EntityManagerInterface;
+use Knp\Component\Pager\PaginatorInterface as PagerPaginatorInterface;
 use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -16,6 +18,7 @@ use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+
 
 #[IsGranted('IS_AUTHENTICATED')]
 #[Route('/client')]
@@ -28,9 +31,41 @@ final class ClientController extends AbstractController
         private ClientRepository $clientRepository,
     ) {}
 
+
     #[Route(name: 'client_index', methods: ['GET'])]
-    public function index(Request $request,): Response
+    public function index(Request $request, EntityManagerInterface $entityManager, PagerPaginatorInterface $paginator): Response
     {
+        // Create search form
+        $data = new SearchClient();
+        $data->page = $request->query->get('page', 1);
+        $form = $this->createForm(SearchClientType::class, $data);
+        $form->handleRequest($this->requestStack->getCurrentRequest());
+        $client = [];
+
+
+        // Apply search criteria if form is submitted
+        if ($form->isSubmitted() && $form->isValid() && !$form->isEmpty()) {
+            $client =  $this->clientRepository->findClientAll($data,  null);
+
+            return $this->render('client/index.html.twig', [
+                'clients' => $client,
+
+                'search_form' => $form->createView()
+            ]);
+        }
+
+        return $this->render('client/search.html.twig', [
+            'clients' => $client,
+
+            'search_form' => $form->createView()
+        ]);
+    }
+
+
+    #[Route('/client2', name: 'client_index2', methods: ['GET'])]
+    public function index2(Request $request,): Response
+    {
+
         $data = new SearchClient();
         $data->page = $request->query->get('page', 1);
         $form = $this->createForm(SearchClientType::class, $data);
@@ -41,7 +76,10 @@ final class ClientController extends AbstractController
 
             $client =  $this->clientRepository->findClientAll($data,  null);
 
-            return $this->render('client/index.html.twig', [
+
+
+
+            return $this->render('client/index2.html.twig', [
                 'clients' => $client,
 
                 'search_form' => $form->createView()
@@ -56,6 +94,24 @@ final class ClientController extends AbstractController
 
 
 
+    #[Route('/client/{id}/contracts', name: 'app_client_contracts', methods: ['GET'])]
+    public function getClientContracts(Client $client): Response
+    {
+        // Only fetch active contracts
+        $contracts = $this->entityManager->createQueryBuilder()
+            ->select('c')
+            ->from('App\Entity\Contrat', 'c')
+            ->where('c.client = :client')
+            ->andWhere('c.status = 1')
+            ->setParameter('client', $client)
+            ->getQuery()
+            ->getResult();
+
+        return $this->render('client/_contracts_list.html.twig', [
+            'contracts' => $contracts,
+            'client' => $client
+        ]);
+    }
 
     #[Route('/valide', name: 'client_valide_index', methods: ['GET'])]
     public function valide(Request $request,  Security $security): Response

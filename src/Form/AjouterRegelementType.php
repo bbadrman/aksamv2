@@ -14,54 +14,54 @@ class AjouterRegelementType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
-        $builder
-            ->add('transaction', Type\TextType::class, ['label' => 'Transaction N°', 'required' => true,])
-            ->add('montantReglement', Type\MoneyType::class, [
-                'attr' => ['class' => 'tinymce'],
-                'label' => "Montant du règlement",
+        // $builder
+        //     ->add('transaction', Type\TextType::class, ['label' => 'Transaction N°', 'required' => true,])
+        //     ->add('montantReglement', Type\MoneyType::class, [
+        //         'attr' => ['class' => 'tinymce'],
+        //         'label' => "Montant du règlement",
 
-                'disabled' => true,
-                'attr' => [
-                    'placeholder' => 'Tapez en EURO',
-                    'divisor' => 100,
+        //         'disabled' => true,
+        //         'attr' => [
+        //             'placeholder' => 'Tapez en EURO',
+        //             'divisor' => 100,
 
-                ],
+        //         ],
 
-            ])
-            ->add('dateReglement', Type\DateType::class, ['label' => 'Date du règlement',   'disabled' => true, 'widget' => 'single_text'])
+        //     ])
+        //     ->add('dateReglement', Type\DateType::class, ['label' => 'Date du règlement',   'disabled' => true, 'widget' => 'single_text'])
 
-            ->add(
-                'moyen',
-                Type\ChoiceType::class,
-                [
-                    'label' => 'Moyen Paiement ',
+        //     ->add(
+        //         'moyen',
+        //         Type\ChoiceType::class,
+        //         [
+        //             'label' => 'Moyen Paiement ',
 
-                    'disabled' => true,
-                    'placeholder' => '--Merci de selectie-- ',
-                    'choices' => [
-                        'MANUEL' =>   'MANUEL',
-                        'LIEN' =>   'LIEN',
-                        'VIREMENT' =>   'VIREMENT',
+        //             'disabled' => true,
+        //             'placeholder' => '--Merci de selectie-- ',
+        //             'choices' => [
+        //                 'MANUEL' =>   'MANUEL',
+        //                 'LIEN' =>   'LIEN',
+        //                 'VIREMENT' =>   'VIREMENT',
 
 
-                    ],
-                    'expanded' => false,
-                    'multiple' => false,
-                ]
-            )
-            ->add('frais', Type\MoneyType::class, [
-                'attr' => ['class' => 'tinymce'],
-                'label' => "Frais declarer",
-                'required' => true,
-                'attr' => [
-                    'placeholder' => 'Tapez en EURO',
-                    'divisor' => 100,
+        //             ],
+        //             'expanded' => false,
+        //             'multiple' => false,
+        //         ]
+        //     )
+        //     ->add('frais', Type\MoneyType::class, [
+        //         'attr' => ['class' => 'tinymce'],
+        //         'label' => "Frais declarer",
+        //         'required' => true,
+        //         'attr' => [
+        //             'placeholder' => 'Tapez en EURO',
+        //             'divisor' => 100,
 
-                ],
+        //         ],
 
-            ])
+        //     ])
 
-        ;
+        // ;
     }
 
     public function configureOptions(OptionsResolver $resolver): void

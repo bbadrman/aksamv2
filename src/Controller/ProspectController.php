@@ -52,6 +52,7 @@ final class ProspectController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
 
             $prospect->setAutor($this->getUser());
+            $prospect->setSource(1);
             $this->entityManager->persist($prospect);
             $teamHistory = new History();
             $teamHistory->setProspect($prospect); // $prospect est votre instance de Prospect 
@@ -84,8 +85,7 @@ final class ProspectController extends AbstractController
     }
 
     //Afficher les nouveaux prospects via API return Int  
-
-    #[Route('/newprospectApi', name: 'app_prospect_new', methods: ['GET'])]
+    #[Route('/newprospectApi', name: 'app_apiprospect_new', methods: ['GET'])]
     #[IsGranted('IS_AUTHENTICATED')]
     public function newprospectApi(
         ProspectRepository $prospectRepository,
@@ -148,6 +148,7 @@ final class ProspectController extends AbstractController
         ]);
     }
 
+    //modale pour affectation 
     #[Route('/{id}/affect', name: 'app_affect_edit', methods: ['GET', 'POST'])]
     public function affect(Request $request, Prospect $prospect, TeamRepository $teamRepository): Response
     {
@@ -189,6 +190,7 @@ final class ProspectController extends AbstractController
     }
 
 
+    //modale pour relance un prosect
     #[Route('/{id}/relance', name: 'app_relance_edit', methods: ['GET', 'POST'])]
     public function relance(Request $request, Prospect $prospect, EntityManagerInterface $entityManager): Response
     {

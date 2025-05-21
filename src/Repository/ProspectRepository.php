@@ -1006,51 +1006,51 @@ class ProspectRepository extends ServiceEntityRepository
 
         return (int) $query->getQuery()->getSingleScalarResult();
     }
-    public function findByFilters(
-        \DateTimeInterface $startDate,
-        \DateTimeInterface $endDate,
-        ?int $teamId,
-        ?int $comrclId,
-        ?int $productId,
-        ?string $url,
-        ?string $activites,
-        ?string $typeProspect
-    ) {
-        $endDateAdjusted = \DateTime::createFromInterface($endDate);
-        $endDateAdjusted->setTime(23, 59, 59);
+    // public function findByFilters(
+    //     \DateTimeInterface $startDate,
+    //     \DateTimeInterface $endDate,
+    //     ?int $teamId,
+    //     ?int $comrclId,
+    //     ?int $productId,
+    //     ?string $url,
+    //     ?string $activites,
+    //     ?string $typeProspect
+    // ) {
+    //     $endDateAdjusted = \DateTime::createFromInterface($endDate);
+    //     $endDateAdjusted->setTime(23, 59, 59);
 
-        $qb = $this->createQueryBuilder('p')
-            ->andWhere('p.creatAt >= :startDate')
-            ->andWhere('p.creatAt <= :endDate')
-            ->setParameter('startDate', $startDate)
-            ->setParameter('endDate', $endDateAdjusted);
+    //     $qb = $this->createQueryBuilder('p')
+    //         ->andWhere('p.creatAt >= :startDate')
+    //         ->andWhere('p.creatAt <= :endDate')
+    //         ->setParameter('startDate', $startDate)
+    //         ->setParameter('endDate', $endDateAdjusted);
 
-        if ($teamId) {
-            $qb->andWhere('p.team = :teamId')->setParameter('teamId', $teamId);
-        }
+    //     if ($teamId) {
+    //         $qb->andWhere('p.team = :teamId')->setParameter('teamId', $teamId);
+    //     }
 
-        if ($comrclId) {
-            $qb->andWhere('p.comrcl = :comrclId')->setParameter('comrclId', $comrclId);
-        }
+    //     if ($comrclId) {
+    //         $qb->andWhere('p.comrcl = :comrclId')->setParameter('comrclId', $comrclId);
+    //     }
 
-        if ($productId) {
-            $qb->andWhere('p.product = :productId')->setParameter('productId', $productId);
-        }
+    //     if ($productId) {
+    //         $qb->andWhere('p.product = :productId')->setParameter('productId', $productId);
+    //     }
 
-        if ($url) {
-            $qb->andWhere('p.url LIKE :url')->setParameter('url', '%' . $url . '%');
-        }
+    //     if ($url) {
+    //         $qb->andWhere('p.url LIKE :url')->setParameter('url', '%' . $url . '%');
+    //     }
 
-        if ($activites) {
-            $qb->andWhere('p.activites LIKE :activites')->setParameter('activites', '%' . $activites . '%');
-        }
+    //     if ($activites) {
+    //         $qb->andWhere('p.activites LIKE :activites')->setParameter('activites', '%' . $activites . '%');
+    //     }
 
-        if ($typeProspect) {
-            $qb->andWhere('p.typeProspect LIKE :typeProspect')->setParameter('typeProspect', '%' . $typeProspect . '%');
-        }
+    //     if ($typeProspect) {
+    //         $qb->andWhere('p.typeProspect LIKE :typeProspect')->setParameter('typeProspect', '%' . $typeProspect . '%');
+    //     }
 
-        return $qb->orderBy('p.creatAt', 'DESC')->getQuery()->getResult();
-    }
+    //     return $qb->orderBy('p.creatAt', 'DESC')->getQuery()->getResult();
+    // }
 
     public function findByFiltersdeepp(
         ?\DateTimeInterface $startDate,
@@ -1116,9 +1116,14 @@ class ProspectRepository extends ServiceEntityRepository
         $productId,
         $url,
         $activites,
-        $typeProspect
+        $typeProspect,
+        $source,
+        $relance
     ) {
         $qb = $this->createQueryBuilder('p')
+
+            // ->andWhere('p.relance NOT IN (:motifs)')
+            // ->setParameter('motifs', [13])
             ->orderBy('p.creatAt', 'DESC');
 
         // Filtre par dates
@@ -1160,9 +1165,18 @@ class ProspectRepository extends ServiceEntityRepository
             $qb->andWhere('p.typeProspect = :typeProspect')
                 ->setParameter('typeProspect', $typeProspect);
         }
+        if (!empty($relance)) {
+            $qb->andWhere('p.relance NOT IN (:relance)')
+                ->setParameter('relance', $relance);
+        }
+
+        // Filtre source (obligatoire)
+        $qb->andWhere('p.source = :source')
+            ->setParameter('source', $source);
 
         return $qb->getQuery();
     }
+
 
     /**
      * Récupération des résultats avec filtres (méthode originale)
@@ -1175,7 +1189,9 @@ class ProspectRepository extends ServiceEntityRepository
         $productId,
         $url,
         $activites,
-        $typeProspect
+        $typeProspect,
+        $source,
+        $relance
     ) {
         return $this->createFilteredQuerydeep(
             $startDate,
@@ -1185,7 +1201,9 @@ class ProspectRepository extends ServiceEntityRepository
             $productId,
             $url,
             $activites,
-            $typeProspect
+            $typeProspect,
+            $source,
+            $relance
         )->getResult();
     }
 }

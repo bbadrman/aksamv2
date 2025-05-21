@@ -68,7 +68,8 @@
 			{% block javascripts %}
 				<script>
 
-					var loader = $('#loader');
+					{
+# var loader = $('#loader');
 $(window).on('load', function () {
 setTimeout(function () {
 loader.fadeOut('fast', function () {
@@ -76,6 +77,8 @@ $(this).remove();
 });
 }, 200)
 });
+#
+}
 				</script>
 			{% endblock %}
 		</body>

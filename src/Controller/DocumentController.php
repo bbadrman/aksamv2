@@ -132,7 +132,7 @@ final class DocumentController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $entityManager->flush();
 
-            return $this->redirectToRoute('app_document_index', [], Response::HTTP_SEE_OTHER);
+            return $this->redirectToRoute('client_index', [], Response::HTTP_SEE_OTHER);
         }
 
         return $this->render('document/edit.html.twig', [

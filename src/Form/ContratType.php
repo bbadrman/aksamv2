@@ -555,16 +555,16 @@ class ContratType extends AbstractType
                 'placeholder' => 'Sélectionnez un Produit',
                 'choice_label' => 'nom',
             ])
-            ->add('regelement', CollectionType::class, [
-                'entry_type' => RegelementType::class,
-                'entry_options' => ['label' => false],
-                'allow_add' => true,
-                'allow_delete' => true,
-                'by_reference' => false,
-                'prototype' => true, // Important
-                'label' => false,
-                'required' => true,
-            ])
+            // ->add('regelement', CollectionType::class, [
+            //     'entry_type' => RegelementType::class,
+            //     'entry_options' => ['label' => false],
+            //     'allow_add' => true,
+            //     'allow_delete' => true,
+            //     'by_reference' => false,
+            //     'prototype' => true, // Important
+            //     'label' => false,
+            //     'required' => true,
+            // ])
             ->add('antcdAssure', CollectionType::class, [
                 'entry_type' => AntecedentType::class,
                 'entry_options' => ['label' => false],

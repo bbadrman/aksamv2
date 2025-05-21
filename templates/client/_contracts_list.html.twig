@@ -1,0 +1,66 @@
+{# client/_contracts_list.html.twig #}
+<div class="table-responsive">
+	<table class="table table-bordered table-striped">
+		<thead>
+			<tr>
+				<th style="width: 5%;">
+					<i class="fa fa-handshake-o" aria-hidden="true"></i>
+					CONTRAT
+				</th>
+				<th style="width: 7%;">État</th>
+				<th style="width: 8%;">Commercial</th>
+				<th style="width: 8%;">Produit</th>
+				<th style="width: 8%;">Immatriculation</th>
+				<th style="width: 8%;">Date d'effet</th>
+				<th style="width: 8%;">Date souscription</th>
+				<th style="width: 8%;">Partenaire</th>
+				<th style="width: 8%;">Compagnie</th>
+				<th style="width: 8%;">Formule</th>
+				<th style="width: 8%;">Cotisation</th>
+				<th style="width: 8%;">Frais</th>
+				<th style="width: 8%;">Actions</th>
+			</tr>
+		</thead>
+		<tbody>
+			{% for contrat in contracts %}
+				<tr class="contrat-row">
+					<td class="text-center">{{ loop.index }}</td>
+					{% if is_granted('ROLE_ETATCONTRAT') %}
+						<td>{{ contrat.etat }}{{ render(controller('App\\Controller\\ContratController::etat',{'id':contrat.id}))}}</td>
+					{% else %}
+						<td>{{ contrat.etat }}</td>
+					{% endif %}
+					<td>{{ contrat.user }}</td>
+					<td>{{ contrat.product }}</td>
+					<td>{{ contrat.imatriclt }}</td>
+					<td>{{ contrat.dateEffet ? contrat.dateEffet|date('Y-m-d') : '' }}</td>
+					<td>{{ contrat.dateSouscrpt ? contrat.dateSouscrpt|date('Y-m-d') : '' }}</td>
+					<td>{{ contrat.partenaire ? contrat.partenaire.nom : '' }}</td>
+					<td>{{ contrat.compagnie ? contrat.compagnie.nom : '' }}</td>
+					<td>{{ contrat.formule }}</td>
+					<td>{{ contrat.cotisation }}</td>
+					<td>{{ contrat.frais }}</td>
+					<td class="btn-toolbar">
+
+						{% if contrat.payments %}
+							{{ render(controller('App\\Controller\\PaymentController::editpayment', {'id': contrat.id})) }}
+						{% else %}
+							{{ render(controller('App\\Controller\\PaymentController::newpayment', {'id': contrat.id})) }}
+						{% endif %}
+
+						{% if contrat.document and is_granted('ROLE_DOCUMENT_EDIT') %}
+							<a href="{{ path('app_document_edit', {'id': contrat.document.id}) }}" class="btn btn-info btn-sm">
+								<i class="fa-solid fa-copy"></i>
+							</a>
+						{% endif %}
+
+					</td>
+				</tr>
+			{% else %}
+				<tr>
+					<td colspan="13" class="text-center">Aucun contrat trouvé pour ce client.</td>
+				</tr>
+			{% endfor %}
+		</tbody>
+	</table>
+</div>

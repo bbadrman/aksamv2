@@ -147,10 +147,13 @@ class SearchProspectType extends AbstractType
                 'required' => false,
                 'placeholder' => '--Selectie-- ',
                 'choices' => [
-                    'Propre site' => '3',
+
                     'Saisie manuelle' => '1',
                     'Revendeur' => '2',
+                    'Propre site' => '3',
+
                 ],
+
                 'expanded' => false,
                 'multiple' => false
             ])
@@ -194,7 +197,6 @@ class SearchProspectType extends AbstractType
                         'Passage Client ' => '9',
                         'Déjà Souscrit' => '10',
                         'Toujour Injoignable' => '11',
-                        'Hors Cible' => '12',
                         'Test' => '13',
                     ],
 

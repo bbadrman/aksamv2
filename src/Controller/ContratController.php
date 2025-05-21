@@ -126,9 +126,9 @@ final class ContratController extends AbstractController
                 $entityManager->persist($antcdAssure);
             }
 
-            foreach ($contrat->getRegelement() as $regelement) {
-                $entityManager->persist($regelement);
-            }
+            // foreach ($contrat->getRegelement() as $regelement) {
+            //     $entityManager->persist($regelement);
+            // }
 
             foreach ($contrat->getPayments() as $payment) {
                 $entityManager->persist($payment);
@@ -267,9 +267,9 @@ final class ContratController extends AbstractController
             }
 
 
-            foreach ($contrat->getRegelement() as $regelement) {
-                $entityManager->persist($regelement);
-            }
+            // foreach ($contrat->getRegelement() as $regelement) {
+            //     $entityManager->persist($regelement);
+            // }
 
             if ($contrat->getPayments()) {
                 $entityManager->persist($contrat->getPayments());

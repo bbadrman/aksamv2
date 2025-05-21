@@ -35,7 +35,6 @@ class RelanceProspectType extends AbstractType
                         'Passage Client ' => '9',
                         'Déjà Souscrit' => '10',
                         'Toujour Injoignable' => '11',
-                        'Hors Cible' => '12',
                         'Test' => '13',
                     ],
 

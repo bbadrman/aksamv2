@@ -66,7 +66,7 @@ class Client
     /**
      * @var Collection<int, Contrat>
      */
-    #[ORM\OneToMany(targetEntity: Contrat::class, mappedBy: 'client')]
+    #[ORM\OneToMany(targetEntity: Contrat::class, mappedBy: 'client', fetch: "EXTRA_LAZY")]
     private Collection $contrats;
 
     public function __construct()

@@ -1,4 +1,4 @@
-<button type="button" class='btn btn' style="background-color:#7a96ea;" data-toggle="modal" data-target="#AddClientModal{{ prospect.id }}">
+{# <button type="button" class='btn btn' style="background-color:#7a96ea;" data-toggle="modal" data-target="#AddClientModal{{ prospect.id }}">
 	Ajouter Client
 </button>
 <div class="col-sm-8">
@@ -32,25 +32,20 @@
 					class="form-group">
 					{# {% set url = path('client_add', {'id': prospect.id}) %}
 																																			{{ form_start(form, {'action':url}) }} #}
-					{{ form_start(form) }}
+{{ form_start(form) }}
 
 
-					<div style="display: none">
-						{{ form_row(form.firstname) }}
-						{{ form_row(form.lastname) }}
-						{{ form_row(form.raisonSociale) }}
-					</div>
-
-
-					{{ form_row(form.phone) }}
-					{{ form_row(form.email) }}
-					{{ form_row(form.adress) }}
-
-					<button class="btn btn-theme">
-						{{ button_label|default('Save') }}</button>
-					{{ form_end(form) }}
-				</div>
-			</div>
-		</div>
-	</div>
+<div style="display: none">
+	{{ form_row(form.firstname) }}
+	{{ form_row(form.lastname) }}
+	{{ form_row(form.raisonSociale) }}
 </div>
+
+
+{{ form_row(form.phone) }}
+{{ form_row(form.email) }}
+{{ form_row(form.adress) }}
+
+<button class="btn btn-theme">
+	{{ button_label|default('Save') }}</button>
+{{ form_end(form) }}</div></div></div></div></div>#}

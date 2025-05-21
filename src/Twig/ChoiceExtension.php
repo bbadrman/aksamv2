@@ -19,6 +19,7 @@ class ChoiceExtension extends AbstractExtension
     {
         $choices = [
             'url' => [
+
                 '1' => 'des-vtc',
                 '2' => 'garage-pro',
                 '3' => 'pour-taxi',
@@ -39,6 +40,7 @@ class ChoiceExtension extends AbstractExtension
                 // ...
             ],
             'activites' => [
+
                 1 => 'TPM',
                 2 => 'VTC',
                 3 => 'Sociéte',
@@ -52,6 +54,28 @@ class ChoiceExtension extends AbstractExtension
             'typeProspect' => [
                 '1' => 'Particulier',
                 '2' => 'Professionnel'
+            ],
+            'source' => [
+                '1' => 'Saisie manuelle',
+                '2' => 'Revendeur',
+                '3' => 'Propre site',
+
+
+            ],
+            'relance' => [
+                '1' => 'Rendez-vous',
+                '2' => 'Injoignable',
+                '3' => 'Attente DOC',
+                '4' => 'Tarification',
+                '5' => 'Prise de Décision',
+                '6' => 'Faux Fiche',
+                '7' => 'Doublon',
+                '8' => 'Passage Concurrent',
+                '9' => 'Passage Client',
+                '10' => 'Déjà Souscrit',
+                '11' => 'Toujour Injoignable',
+                '12' => 'Tarification',
+                '13' => 'Test',
             ]
         ];
 

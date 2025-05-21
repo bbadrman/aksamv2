@@ -108,7 +108,7 @@
 					{% if is_granted('ROLE_ADMIN')   or is_granted('ROLE_AFFECTALL') %}
 						<td>
 							{% if prospect.source  == 3 %}
-								{% if prospect.url  is null and prospect.source  == 3  %}
+								{% if prospect.url  is null and prospect  == 3  %}
 									Autre Site
 								{% elseif prospect.url == 1 %}
 									<a href="https://www.assurance-des-vtc.fr" target="_blank" title="https://www.assurance-des-vtc.fr">des-vtc</a>
@@ -150,7 +150,7 @@
 								Revendeur
 							{% endif %}
 							{# si source est saisi maniale  #}
-							{% if prospect.source is null %}
+							{% if prospect.source == 1 %}
 								{% if prospect.motifSaise is null %}
 									LEADS
 								{% endif %}
@@ -355,8 +355,6 @@
 								Déjà Souscrit
 							{% elseif prospect.relance == 11 %}
 								Toujour Injoignable
-							{% elseif prospect.relance == 12 %}
-								Hors Cible
 							{% elseif prospect.relance == 13 %}
 								Test
 							{% endif %}

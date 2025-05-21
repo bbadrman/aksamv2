@@ -26,7 +26,7 @@
 	<!-- DASHBOARD -->
 
 	<li class="sub-menu">
-		<a class="nav-link " href="#">
+		<a class="nav-link " href="/">
 			<i class="fa fa-dashboard"></i>
 			<span>Dashboard
 			</span>
@@ -52,28 +52,11 @@
 	<!--  Stat -->
 	{% if is_granted('ROLE_STATIQUE')  == true %}
 		<li class="sub-menu">
-			<a class="nav-link {% if page in ['dashboard', 'prospects_calandri' ] %}active{% endif %}" href="javascript:;">
+			<a class="nav-link " href="{{ path('app_search_dates') }} ">
 				<i class="fa fa-pie-chart" aria-hidden="true"></i>
 				<span>Statistique</span>
 			</a>
-			<ul class="sub">
 
-				<li>
-					<a class="nav-link " href="{{ path('app_stat_partenaire') }}">
-						<i class="fa fa-calendar" aria-hidden="true"></i>
-						<span>Stat partenaire
-						</span>
-					</a>
-				</li>
-
-				<li>
-					<a class="nav-link " href="{{ path('prospects_calandri') }}">
-						<i class="fa fa-line-chart" aria-hidden="true"></i>
-						<span>Stat du prospects
-						</span>
-					</a>
-				</li>
-			</ul>
 		</li>
 	{% endif %}
 	<!-- END  Stat -->
@@ -152,8 +135,8 @@
 								<a href="{{ path('app_user_index') }}">Gérer les Users</a>
 							</li>
 							{# <li>
-																																																																																																																																																																																																																																																																																																																																																																																																																																																													<a href="{{ path('user_acces') }}">Gérer les Sessions</a>
-																																																																																																																																																																																																																																																																																																																																																																																																																																																												</li> #}
+																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																<a href="{{ path('user_acces') }}">Gérer les Sessions</a>
+																																																																																																																																																																																																																																																																																																																																																																																																																																																																																															</li> #}
 						</ul>
 					</li>
 
@@ -202,8 +185,8 @@
 								<a href="{{ path('app_unite_travail_index') }}">Gérer les Unites</a>
 							</li>
 							{# <li>
-																																																																																																																																																																																																																																																																																																																																																																																																																																																													<a href="{{ path('user_acces') }}">Gérer les Sessions</a>
-																																																																																																																																																																																																																																																																																																																																																																																																																																																												</li> #}
+																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																<a href="{{ path('user_acces') }}">Gérer les Sessions</a>
+																																																																																																																																																																																																																																																																																																																																																																																																																																																																																															</li> #}
 						</ul>
 					</li>
 				{% endif %}

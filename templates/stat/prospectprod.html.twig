@@ -19,15 +19,19 @@
 				<h5 class="mb-0">Filtres de recherche</h5>
 			</div>
 			<div class="card-body">
-				<form method="get" action="{{ path('app_prospectsdeep') }}">
+				{% if errorMessage %}
+					<div class="alert alert-danger">{{ errorMessage }}</div>
+				{% endif %}
+
+				<form method="get" action="{{ path('app_prospectstats') }}">
 					<div
-						class="row g-3">
+						class="row g-4">
 						<!-- Dates -->
-						<div class="col-md-3">
+						<div class="col-md-2">
 							<label class="form-label">Date début</label>
 							<input type="date" name="startDate" class="form-control" value="{{ startDate }}">
 						</div>
-						<div class="col-md-3">
+						<div class="col-md-2">
 							<label class="form-label">Date fin</label>
 							<input type="date" name="endDate" class="form-control" value="{{ endDate }}">
 						</div>
@@ -70,10 +74,10 @@
 						</div>
 
 						<!-- Filtres texte -->
-						<div class="col-md-3">
+						<div class="col-md-2">
 							<label class="form-label">Sites</label>
 							<select name="url" class="form-select">
-								<option value="">-- Tous --</option>
+								<option value="">Tous</option>
 								{% for key, label in get_choice_options('url') %}
 									<option value="{{ key }}" {{ selectedUrl == key ? 'selected' }}>{{ label }}</option>
 								{% endfor %}
@@ -81,9 +85,22 @@
 						</div>
 
 						<div class="col-md-3">
+							<label class="form-label">Relance à exclure</label>
+							<div class="border p-2 rounded" style="max-height: 100px; overflow-y: auto;">
+								{% for key, label in get_choice_options('relance') %}
+									<div class="form-check">
+										<input class="form-check-input" type="checkbox" name="relance[]" value="{{ key }}" id="relance{{ key }}" {{ key in selectedRelance ? 'checked' }}>
+										<label class="form-check-label" for="relance{{ key }}">{{ label }}</label>
+									</div>
+								{% endfor %}
+							</div>
+						</div>
+
+
+						<div class="col-md-3">
 							<label class="form-label">Activités</label>
 							<select name="activites" class="form-select">
-								<option value="">-- Tous --</option>
+								<option value="">Tous</option>
 								{% for key, label in get_choice_options('activites') %}
 									<option value="{{ key }}" {{ selectedActivites == key ? 'selected' }}>{{ label }}</option>
 								{% endfor %}
@@ -93,9 +110,24 @@
 						<div class="col-md-3">
 							<label class="form-label">Type prospect</label>
 							<select name="typeProspect" class="form-select">
-								<option value="">-- Tous --</option>
+								<option value="">Tous</option>
 								{% for key, label in get_choice_options('typeProspect') %}
 									<option value="{{ key }}" {{ selectedTypeProspect == key ? 'selected' }}>{{ label }}</option>
+								{% endfor %}
+							</select>
+						</div>
+
+
+						<div class="col-md-3">
+							<label class="form-label">Source
+								<span class="text-danger">*</span>
+							</label>
+							<select name="source" class="form-select" required>
+								<option value="">-- Sélectionner --</option>
+								{% for key, label in get_choice_options('source') %}
+									<option value="{{ key is null ? '' : key }}" {% if selectedSource == key %} selected {% endif %}>{{ label }}</option>
+
+
 								{% endfor %}
 							</select>
 						</div>
@@ -104,9 +136,9 @@
 						<div class="col-12 text-end mt-3">
 							<button type="submit" class="btn btn-success">
 								<i class="fas fa-filter"></i>
-								Appliquer
+								Rechercher
 							</button>
-							<a href="{{ path('app_prospectsdeep') }}" class="btn btn-danger">
+							<a href="{{ path('app_prospectstats') }}" class="btn btn-danger">
 								<i class="fas fa-times"></i>
 								Réinitialiser
 							</a>
@@ -116,77 +148,84 @@
 			</div>
 		</div>
 
-		<!-- Tableau des résultats -->
-		<div class="card">
-			<div class="card-header bg-success text-white">
-				<h5 class="mb-0">
-					Résultats ({{ pagination.getTotalItemCount }})
-					{% if startDate and endDate %}
-						du
-						{{ startDate|date('d/m/Y') }}
-						au
-						{{ endDate|date('d/m/Y') }}
-					{% endif %}
-				</h5>
-			</div>
-			<div class="card-body">
-				{% if pagination.getTotalItemCount > 0 %}
-					<div class="table-responsive">
-						<table class="table table-hover align-middle">
-							<thead>
-								<tr>
-									<th>Équipe</th>
-									<th>Commercial</th>
-									<th>Nom</th>
-									<th>Prénom</th>
-									<th>Date création</th>
-									<th>Téléphone</th>
-									<th>Email</th>
-									<th>Produit</th>
-									<th>Site</th>
-									<th>Activités</th>
-									<th>Type</th>
-								</tr>
-							</thead>
-							<tbody>
-								{% for prospect in pagination %}
+		<!-- Tableau des résultats - Affiché uniquement si le formulaire a été soumis et qu'il y a des résultats -->
+		{% if pagination is not null %}
+			<div class="card">
+				<div class="card-header bg-success text-white">
+					<h5 class="mb-0">
+						Résultats ({{ pagination.getTotalItemCount }})
+						{% if startDate and endDate %}
+							du
+							{{ startDate|date('d/m/Y') }}
+							au
+							{{ endDate|date('d/m/Y') }}
+						{% endif %}
+					</h5>
+				</div>
+				<div class="card-body">
+					{% if pagination.getTotalItemCount > 0 %}
+						<div class="table-responsive">
+							<table class="table table-hover align-middle">
+								<thead>
 									<tr>
-										<td>{{ prospect.team ? prospect.team.name }}</td>
-										<td>{{ prospect.comrcl ? prospect.comrcl.username }}</td>
-										<td>{{ prospect.nom }}</td>
-										<td>{{ prospect.prenom }}</td>
-										<td>{{ prospect.creatAt|date('d/m/Y H:i') }}</td>
-										<td>{{ prospect.gsm }}</td>
-										<td>{{ prospect.email }}</td>
-										<td>{{ prospect.product ? prospect.product.nom }}</td>
-										<td>{{ prospect.url|map_choice('url') }}</td>
-										<td>{{ prospect.activites|map_choice('activites') }}</td>
-										<td>{{ prospect.typeProspect|map_choice('typeProspect') }}</td>
+										<th>Équipe</th>
+										<th>Commercial</th>
+										<th>Nom</th>
+										<th>Prénom</th>
+										<th>Date création</th>
+										<th>Téléphone</th>
+										<th>Email</th>
+										<th>Produit</th>
+										<th>Site</th>
+										<th>Activités</th>
+										<th>Type</th>
+										<th>Source</th>
+										<th>Relance</th>
 									</tr>
-								{% endfor %}
-							</tbody>
-						</table>
-					</div>
-
-					<!-- Pagination -->
-					<div class="d-flex justify-content-center mt-4">
-						<div class="navigation">
-							{{ knp_pagination_render(pagination, 'pagination.html.twig') }}
+								</thead>
+								<tbody>
+									{% for prospect in pagination %}
+										<tr>
+											<td>{{ prospect.team ? prospect.team.name }}</td>
+											<td>{{ prospect.comrcl ? prospect.comrcl.username }}</td>
+											<td>{{ prospect.nom }}</td>
+											<td>{{ prospect.prenom }}</td>
+											<td>{{ prospect.creatAt|date('d/m/Y H:i') }}</td>
+											<td>{{ prospect.gsm }}</td>
+											<td>{{ prospect.email }}</td>
+											<td>{{ prospect.product ? prospect.product.nom }}</td>
+											<td>{{ prospect.url|map_choice('url') }}</td>
+											<td>{{ prospect.activites|map_choice('activites') }}</td>
+											<td>{{ prospect.typeProspect|map_choice('typeProspect') }}</td>
+											<td>{{ prospect.source|map_choice('source') }}</td>
+											<td>{{ prospect.relance|map_choice('relance') }}</td>
+										</tr>
+									{% endfor %}
+								</tbody>
+							</table>
 						</div>
-					</div>
-				{% else %}
-					<div class="alert alert-warning">Aucun prospect trouvé avec ces critères</div>
-				{% endif %}
+
+						<!-- Pagination -->
+						<div class="d-flex justify-content-center mt-4">
+							<div class="navigation">
+								{{ knp_pagination_render(pagination, 'pagination.html.twig') }}
+							</div>
+						</div>
+					{% else %}
+						<div class="alert alert-warning">Aucun prospect trouvé avec ces critères</div>
+					{% endif %}
+				</div>
 			</div>
-		</div>
-		<div class="row mb-4">
-			<div class="col-12">
-				<a href="{{ path('app_contrats', {'startDate': startDate, 'endDate': endDate}) }}" class="btn btn-success w-100">
-					<i class="fas fa-users"></i>
-					Voir la production pour cette période
-				</a>
+
+			<div class="row mb-4 mt-4">
+				<div class="col-12">
+					<a href="{{ path('app_contrats', {'startDate': startDate, 'endDate': endDate}) }}" class="btn btn-success w-100">
+						<i class="fas fa-users"></i>
+						Voir la production pour cette période
+					</a>
+				</div>
 			</div>
-		</div>
+		{% endif %}
 	</div>
 {% endblock %}
 

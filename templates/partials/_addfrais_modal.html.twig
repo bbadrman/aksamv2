@@ -1,4 +1,4 @@
-<button type="button" class="btn btn-warning" data-toggle="modal" data-target="#addfraisModal{{ contrat.id }}">
+{# <button type="button" class="btn btn-warning" data-toggle="modal" data-target="#addfraisModal{{ contrat.id }}">
 	<i class="fa fa-credit-card-alt " aria-hidden="true"></i>
 </button>
 
@@ -13,17 +13,14 @@
 			</div>
 
 			{# URL correcte avec contrat.id #}
-			{% set url = path('app_payment_newpayment', {'id': contrat.id}) %}
-			{{ form_start(form, {'action': url}) }}
+{% set url = path('app_payment_newpayment', {'id': contrat.id}) %}
+{{ form_start(form, {'action': url}) }}
 
-			{{ form_row(form) }}
+{{ form_row(form) }}
 
-			<div class="modal-footer">
-				<button type="button" class="btn btn-secondary" data-dismiss="modal">Annuler</button>
-				<button class="btn btn-primary">{{ button_label|default('Enregistrer') }}</button>
-			</div>
-
-			{{ form_end(form) }}
-		</div>
-	</div>
+<div class="modal-footer">
+	<button type="button" class="btn btn-secondary" data-dismiss="modal">Annuler</button>
+	<button class="btn btn-primary">{{ button_label|default('Enregistrer') }}</button>
 </div>
+
+{{ form_end(form) }}</div></div></div>#}

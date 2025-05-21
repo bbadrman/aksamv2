@@ -4,7 +4,8 @@
 {% endblock %}
 
 {% block body %}
-	<div class="container mt-4">
+	<div class="container  mt-4">
+
 		<h1 class="mb-4">Recherche par dates</h1>
 
 		<div class="card">
@@ -37,7 +38,7 @@
 			</div>
 			<div class="row mt-3">
 				<div class="col-md-6">
-					<a href="{{ path('app_prospectsdeep', {'startDate': startDate, 'endDate': endDate}) }}" class="btn btn-success btn-lg w-100">
+					<a href="{{ path('app_prospectstats', {'startDate': startDate, 'endDate': endDate}) }}" class="btn btn-success btn-lg w-100">
 						<i class="fas fa-users"></i>
 						PROSPECTS
 					</a>
