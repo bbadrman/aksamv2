@@ -159,7 +159,7 @@
 	<!-- Separate Ajax-based contract loading -->
 	<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 	<script>
-		document.addEventListener('DOMContentLoaded', function () {
+		document.addEventListener('DOMContentLoaded', function () { // Gestion des clics sur les lignes de clients
 const clientRows = document.querySelectorAll('.client-row');
 
 clientRows.forEach(row => {
@@ -197,6 +197,9 @@ return response.text();
 }).then(html => {
 contractContainer.querySelector('td').innerHTML = html;
 contractContainer.setAttribute('data-loaded', 'true');
+
+// Après avoir chargé les contrats, initialiser les événements pour les SAV
+initContractSavEvents(contractContainer);
 }).catch(error => {
 contractContainer.querySelector('td').innerHTML = '<div class="alert alert-danger">Erreur lors du chargement des contrats</div>';
 console.error('Erreur:', error);
@@ -207,6 +210,59 @@ contractContainer.style.display = 'none';
 }
 });
 });
+
+// Fonction pour initialiser les événements sur les lignes de contrats pour afficher les SAV
+function initContractSavEvents(container) {
+const contratRows = container.querySelectorAll('.contrat-row');
+
+contratRows.forEach(row => {
+row.addEventListener('click', function (e) { // Empêcher la propagation si on clique sur un bouton
+if (e.target.closest('.btn, .btn-toolbar')) {
+return;
+}
+
+const contratId = this.getAttribute('data-contrat-id');
+
+if (! contratId) 
+return;
+
+
+
+// Trouver la ligne SAV (la ligne suivante)
+const savContainer = this.nextElementSibling;
+
+if (savContainer && savContainer.classList.contains('sav-row')) {
+if (savContainer.style.display === 'none' || ! savContainer.style.display) {
+savContainer.style.display = 'table-row';
+
+// Only load SAVs if not already loaded
+if (! savContainer.getAttribute('data-loaded')) {
+const loadingDiv = savContainer.querySelector('.loading');
+if (loadingDiv) 
+loadingDiv.textContent = 'Chargement des SAV...';
+
+
+
+fetch (`/client/contract/${contratId}/savs`).then(response => {
+if (!response.ok) {
+throw new Error('Erreur réseau');
+}
+return response.text();
+}).then(html => {
+savContainer.querySelector('td').innerHTML = html;
+savContainer.setAttribute('data-loaded', 'true');
+}).catch(error => {
+savContainer.querySelector('td').innerHTML = '<div class="alert alert-danger">Erreur lors du chargement des SAV</div>';
+console.error('Erreur:', error);
+});
+}
+} else {
+savContainer.style.display = 'none';
+}
+}
+});
+});
+}
 });
 	</script>
 	<script>

@@ -152,12 +152,6 @@ class Contrat
     #[ORM\OneToMany(targetEntity: AntcdentAssurance::class, mappedBy: 'contrat', cascade: ['persist', 'remove'])]
     private Collection $antcdAssure;
 
-    /**
-     * @var Collection<int, Regelement>
-     */
-    #[ORM\OneToMany(targetEntity: Regelement::class, mappedBy: 'contrat', cascade: ['persist', 'remove'])]
-    private Collection $regelement;
-
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $NmbrAssure = null;
 
@@ -167,7 +161,7 @@ class Contrat
     #[ORM\ManyToOne(inversedBy: 'contrats')]
     private ?Compartenaire $partenaire = null;
 
-    #[ORM\ManyToOne(inversedBy: 'contrats')]
+    #[ORM\ManyToOne(inversedBy: 'contrats', cascade: ['persist', 'remove'])]
     private ?Client $client = null;
 
     /**
@@ -187,7 +181,6 @@ class Contrat
     public function __construct()
     {
         $this->antcdAssure = new ArrayCollection();
-        $this->regelement = new ArrayCollection();
         $this->savs = new ArrayCollection();
     }
 
@@ -738,35 +731,6 @@ class Contrat
         return $this;
     }
 
-    /**
-     * @return Collection<int, Regelement>
-     */
-    public function getRegelement(): Collection
-    {
-        return $this->regelement;
-    }
-
-    public function addRegelement(Regelement $regelement): static
-    {
-        if (!$this->regelement->contains($regelement)) {
-            $this->regelement->add($regelement);
-            $regelement->setContrat($this);
-        }
-
-        return $this;
-    }
-
-    public function removeRegelement(Regelement $regelement): static
-    {
-        if ($this->regelement->removeElement($regelement)) {
-            // set the owning side to null (unless already changed)
-            if ($regelement->getContrat() === $this) {
-                $regelement->setContrat(null);
-            }
-        }
-
-        return $this;
-    }
 
     public function getNmbrAssure(): ?string
     {

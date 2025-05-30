@@ -1,0 +1,44 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Creer Sav
+{% endblock %}
+
+{% block body %}
+	<div class="container">
+		<section class="content-header ">
+			<h2>
+				Service après-vente
+
+			</h2>
+			<ol class="breadcrumb">
+				<li>
+					<a href="#">
+						<i class="fa fa-users"></i>
+						Tous les Savs</a>
+				</li>
+				<li class="active">Ajouter un SAV</li>
+			</ol>
+		</section>
+		<div class="row mt ">
+			<div class="col-lg-12">
+
+				{{ include('sav/_form.html.twig') }}
+
+			</div>
+			{% for sav in sav %}
+				<td>{{ sav.creatAt ? sav.creatAt|date('Y-m-d H:i:s') : '' }}</td>
+
+			{% endfor %}
+		</div>
+	</div>
+
+{% endblock %}
+{% block javascripts %}
+
+	{{ parent() }}
+
+
+	<script src='/js/ad.js'></script>
+
+
+{% endblock %}

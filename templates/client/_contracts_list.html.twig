@@ -1,29 +1,26 @@
 {# client/_contracts_list.html.twig #}
 <div class="table-responsive">
-	<table class="table table-bordered table-striped">
+	<table class="table table-striped table-bordered">
 		<thead>
 			<tr>
-				<th style="width: 5%;">
-					<i class="fa fa-handshake-o" aria-hidden="true"></i>
-					CONTRAT
-				</th>
-				<th style="width: 7%;">État</th>
-				<th style="width: 8%;">Commercial</th>
-				<th style="width: 8%;">Produit</th>
-				<th style="width: 8%;">Immatriculation</th>
-				<th style="width: 8%;">Date d'effet</th>
-				<th style="width: 8%;">Date souscription</th>
-				<th style="width: 8%;">Partenaire</th>
-				<th style="width: 8%;">Compagnie</th>
-				<th style="width: 8%;">Formule</th>
-				<th style="width: 8%;">Cotisation</th>
-				<th style="width: 8%;">Frais</th>
-				<th style="width: 8%;">Actions</th>
+				<th>#</th>
+				<th>État</th>
+				<th>Utilisateur</th>
+				<th>Produit</th>
+				<th>Immatriculation</th>
+				<th>Date Effet</th>
+				<th>Date Souscription</th>
+				<th>Partenaire</th>
+				<th>Compagnie</th>
+				<th>Formule</th>
+				<th>Cotisation</th>
+				<th>Frais</th>
+				<th>Actions</th>
 			</tr>
 		</thead>
 		<tbody>
 			{% for contrat in contracts %}
-				<tr class="contrat-row">
+				<tr class="expandable-row contrat-row" data-contrat-id="{{ contrat.id }}">
 					<td class="text-center">{{ loop.index }}</td>
 					{% if is_granted('ROLE_ETATCONTRAT') %}
 						<td>{{ contrat.etat }}{{ render(controller('App\\Controller\\ContratController::etat',{'id':contrat.id}))}}</td>
@@ -41,7 +38,6 @@
 					<td>{{ contrat.cotisation }}</td>
 					<td>{{ contrat.frais }}</td>
 					<td class="btn-toolbar">
-
 						{% if contrat.payments %}
 							{{ render(controller('App\\Controller\\PaymentController::editpayment', {'id': contrat.id})) }}
 						{% else %}
@@ -53,7 +49,16 @@
 								<i class="fa-solid fa-copy"></i>
 							</a>
 						{% endif %}
-
+						&emsp;
+						<a href="{{ path('contrat_sav_new', {'id': contrat.id}) }}" class="btn btn-sm btn-outline-primary" title="Ajouter SAV">
+							+ SAV
+						</a>
+					</td>
+				</tr>
+				<!-- Ligne pour les SAV (initialement cachée) -->
+				<tr class="expanded-content sav-row" style="display: none;">
+					<td colspan="13">
+						<div class="loading">Cliquez pour charger les SAV...</div>
 					</td>
 				</tr>
 			{% else %}

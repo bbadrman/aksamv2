@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use ApiPlatform\State\Pagination\PaginatorInterface;
 use App\Entity\Client;
+use App\Entity\Contrat;
 use App\Form\ClientType;
 use App\Search\SearchClient;
 use App\Form\ClientValideType;
@@ -62,37 +63,6 @@ final class ClientController extends AbstractController
     }
 
 
-    #[Route('/client2', name: 'client_index2', methods: ['GET'])]
-    public function index2(Request $request,): Response
-    {
-
-        $data = new SearchClient();
-        $data->page = $request->query->get('page', 1);
-        $form = $this->createForm(SearchClientType::class, $data);
-        $form->handleRequest($this->requestStack->getCurrentRequest());
-        $client = [];
-
-        if ($form->isSubmitted() && $form->isValid() && !$form->isEmpty()) {
-
-            $client =  $this->clientRepository->findClientAll($data,  null);
-
-
-
-
-            return $this->render('client/index2.html.twig', [
-                'clients' => $client,
-
-                'search_form' => $form->createView()
-            ]);
-        }
-        return $this->render('client/search.html.twig', [
-            'clients' => $client,
-
-            'search_form' => $form->createView()
-        ]);
-    }
-
-
 
     #[Route('/client/{id}/contracts', name: 'app_client_contracts', methods: ['GET'])]
     public function getClientContracts(Client $client): Response
@@ -110,6 +80,26 @@ final class ClientController extends AbstractController
         return $this->render('client/_contracts_list.html.twig', [
             'contracts' => $contracts,
             'client' => $client
+        ]);
+    }
+
+    // Nouvelle route pour récupérer les SAV d'un contrat
+    #[Route('/contract/{id}/savs', name: 'app_contract_savs', methods: ['GET'])]
+    public function getContractSavs(Contrat $contrat): Response
+    {
+        // Récupérer tous les SAV du contrat
+        $savs = $this->entityManager->createQueryBuilder()
+            ->select('s')
+            ->from('App\Entity\Sav', 's')
+            ->where('s.contrat = :contrat')
+            ->setParameter('contrat', $contrat)
+            ->orderBy('s.id', 'DESC') // Optionnel : trier par date de création
+            ->getQuery()
+            ->getResult();
+
+        return $this->render('client/_savs_list.html.twig', [
+            'savs' => $savs,
+            'contrat' => $contrat
         ]);
     }
 

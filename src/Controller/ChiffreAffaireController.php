@@ -32,6 +32,7 @@ class ChiffreAffaireController extends AbstractController
     ) {}
 
 
+    //chiffre d'affaire 
     #[IsGranted('IS_AUTHENTICATED')]
     #[Route('/', name: 'baypayment', methods: ['GET'])]
     public function afficherbypayment(UserRepository $userRepository, TransactionRepository $transactionRepository,    PaymentRepository $paymentRepository): Response
@@ -81,6 +82,7 @@ class ChiffreAffaireController extends AbstractController
         ]);
     }
 
+    //chiffre d'affaire par by calendrie
     #[Route('/bypaymentcalendrie', name: 'baypaymentcalendrie', methods: ['GET'])]
     public function afficherbypaymentcalendrie(
         Request $request,

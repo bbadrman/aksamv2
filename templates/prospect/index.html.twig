@@ -389,17 +389,44 @@
                                                     'form_title': form_title
                                                                            }) }}
 						{% endif %}
+						<button type="button" class="btn btn-info btn-sm" id="showCallsButton" data-toggle="modal" data-target="#callsModal" data-id="{{ prospect.id }}">
+							<h3>
+								<img src=" {{ asset('images/chat-en-direct.png') }} " class="img-circle" width="20" alt="">
+							</h3>
+						</button>
+						<!-- Modale -->
+
+
 					</td>
 				</tr>
 			</td>
 		</tbody>
 	</tr>
-
+	{# modal #}
+	<div class="modal fade" id="callsModal" tabindex="-1" role="dialog" aria-labelledby="callsModalLabel" aria-hidden="true">
+		<div class="modal-dialog modal-lg" role="document">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h3 class="modal-title text-center" id="callsModalLabel">Historique des appels</h3>
+					<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+						<span aria-hidden="true">&times;</span>
+					</button>
+				</div>
+				<div class="modal-body">
+					<div id="callsContent">
+						Chargement...
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	{# end modal #}
 {% else %}
 	<tr>
 		<td colspan="23">no records found</td>
 	</tr>
+
 {% endfor %}</tbody></tbody><tfoot class="text-right"><tr>
 <td colspan="9">
 	{{ knp_pagination_render(prospects, 'pagination.html.twig') }}
-</td></tr></tfoot></table></div></div></div>{% endblock %}{% block javascripts %}{{ parent() }}{{ encore_entry_script_tags('appaffct') }}{% endblock %}
+</td></tr></tfoot></table></div></div></div>{% endblock %}{% block javascripts %}{{ parent() }}{{ encore_entry_script_tags('appaffct') }}<script src='/js/calls.js'></script>{% endblock %}

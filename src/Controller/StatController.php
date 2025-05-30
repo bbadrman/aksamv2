@@ -35,7 +35,7 @@ final class StatController extends AbstractController
     public function prospectsCalendrie(): Response
     {
 
-        $form = $this->createForm(SearchDateType::class);
+        $form = $this->createForm(SearchDateClaudType::class);
         $form->handleRequest($this->requestStack->getCurrentRequest());
 
         $contrats = [];

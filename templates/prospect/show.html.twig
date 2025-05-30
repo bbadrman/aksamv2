@@ -244,6 +244,38 @@
 							{% endfor %}
 						</tbody>
 					</table>
+					<!-- Button to trigger modal -->
+					<button type="button" class="btn btn-info btn-sm" id="showCallsButton" data-id="{{ prospect.id }}">
+						<img src="{{ asset('images/chat-en-direct.png') }}" class="img-circle" width="20" alt="Historique des appels">
+						Appels
+					</button>
+
+					<!-- Modal -->
+					<div class="modal fade" id="callsModal" tabindex="-1" aria-labelledby="callsModalLabel" aria-hidden="true">
+						<div class="modal-dialog modal-lg">
+							<div class="modal-content">
+								<div class="modal-header">
+									<h3 class="modal-title" id="callsModalLabel">Historique des appels</h3>
+									<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+								</div>
+								<div class="modal-body">
+									<div id="callsContent">
+										<div class="text-center">
+											<i class="fas fa-phone"></i>
+											Cliquez sur le bouton pour charger les appels...
+										</div>
+									</div>
+								</div>
+								<div class="modal-footer">
+									<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fermer</button>
+									<button type="button" class="btn btn-primary" id="refreshCallsButton">
+										<i class="fas fa-sync-alt"></i>
+										Actualiser
+									</button>
+								</div>
+							</div>
+						</div>
+					</div>
 
 				</div>
 			</div>
@@ -257,9 +289,9 @@
 
 {% endblock %}
 {% block javascripts %}
+	<!-- Supprimer le script calls.js séparé et tout intégrer ici -->
 	<script type="text/javascript">
-
-		// pour afficher comment onclick sur comment sur motifrelanced
+		// Pour afficher comment onclick sur comment sur motifrelanced
 function showFullText(element) { // Récupère l'élément contenant le texte complet
 var fullText = element.querySelector('.fullText');
 // Change la visibilité du texte complet au clic
@@ -271,5 +303,103 @@ fullText.style.display = 'none'; // Cache le texte complet
 element.querySelector('.shortened').style.display = 'inline'; // Montre le texte raccourci
 }
 }
+
+// Script pour le modal des appels
+document.addEventListener('DOMContentLoaded', function () {
+const showCallsButton = document.getElementById('showCallsButton');
+const refreshCallsButton = document.getElementById('refreshCallsButton');
+const callsContent = document.getElementById('callsContent');
+const callsModal = document.getElementById('callsModal');
+
+console.log('Script initialisé');
+console.log('showCallsButton:', showCallsButton);
+console.log('callsModal:', callsModal);
+
+function loadCalls(prospectId) {
+console.log('Chargement des appels pour le prospect:', prospectId);
+
+if (callsContent) {
+callsContent.innerHTML = '<div class="text-center"><i class="fas fa-spinner fa-spin"></i> Chargement des appels...</div>';
+}
+
+fetch (`/appels/${prospectId}`).then(response => {
+console.log('Réponse reçue:', response.status);
+if (!response.ok) {
+throw new Error (`HTTP error! status: ${
+response.status
+}`);
+}
+return response.text();
+}).then(data => {
+console.log('Données reçues:', data.substring(0, 100) + '...');
+if (callsContent) {
+callsContent.innerHTML = data;
+}
+}).catch(error => {
+console.error('Error fetching calls:', error);
+if (callsContent) {
+callsContent.innerHTML = `
+                                <div class="alert alert-danger">
+                                    <i class="fas fa-exclamation-triangle"></i>
+                                    Erreur lors du chargement des appels. Veuillez réessayer.
+                                    <br><small>Détails: ${
+error.message
+}</small>
+                                </div>
+                            `;
+}
+});
+}
+
+// Initialiser le modal Bootstrap 5
+let modalInstance;
+if (callsModal) {
+modalInstance = new bootstrap.Modal(callsModal);
+console.log('Modal Bootstrap initialisé');
+}
+
+// Événement sur le bouton d'ouverture du modal
+if (showCallsButton) {
+showCallsButton.addEventListener('click', function (e) {
+e.preventDefault();
+console.log('Bouton cliqué');
+
+const prospectId = this.dataset.id;
+console.log('Prospect ID:', prospectId);
+
+// Charger les appels
+if (prospectId) {
+loadCalls(prospectId);
+}
+
+// Ouvrir le modal manuellement
+if (modalInstance) {
+modalInstance.show();
+}
+});
+} else {
+console.error('Bouton showCallsButton non trouvé');
+}
+
+// Événement sur le bouton de rafraîchissement
+if (refreshCallsButton) {
+refreshCallsButton.addEventListener('click', function () {
+const prospectId = showCallsButton ? showCallsButton.dataset.id : null;
+console.log('Rafraîchissement pour prospect:', prospectId);
+
+if (prospectId) {
+loadCalls(prospectId);
+}
+});
+}
+
+// Événement lorsque le modal s'ouvre (alternative)
+if (callsModal) {
+callsModal.addEventListener('shown.bs.modal', function () {
+console.log('Modal ouvert');
+// Vous pouvez ajouter du code ici si nécessaire
+});
+}
+});
 	</script>
 {% endblock %}

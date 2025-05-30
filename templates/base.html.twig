@@ -27,10 +27,17 @@
 	</head>
 	<body>
 		<div id="loader"></div>
-		<section id="container"><!-- HEADER -->{% block header %}
+		<section
+			id="container">
+			<!-- HEADER -->
+			{% block header %}
 				<header class="header black-bg">
-					{% include "header.html.twig" %}</header>
-			{% endblock %}<!-- END HEADER --><!-- ASIDE -->{% block aside %}
+					{% include "header.html.twig" %}
+				</header>
+			{% endblock %}
+			<!-- END HEADER -->
+			<!-- ASIDE -->
+			{% block aside %}
 				<aside>
 					<div id="sidebar" class="nav-collapse ">
 						<ul class="sidebar-menu" id="nav-accordion">
@@ -38,10 +45,16 @@
 						</ul>
 					</div>
 				</aside>
-			{% endblock %}<!-- END ASIDE --><!-- END body --><section id="main-content">
+			{% endblock %}
+			<!-- END ASIDE -->
+
+			<!-- END body -->
+			<section id="main-content">
 				<section class="wrapper site-min-height"> {% block body %}{% endblock %}
 					</section>
-				</section><!-- END body -->{% block footer %}
+				</section>
+				<!-- END body -->
+				{% block footer %}
 					<footer>
 						{% include "footer.html.twig" %}
 					</footer>
@@ -83,4 +96,3 @@ $(this).remove();
 			{% endblock %}
 		</body>
 	</html>
-</body></html>

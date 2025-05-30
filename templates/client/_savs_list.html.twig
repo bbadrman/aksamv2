@@ -1,0 +1,116 @@
+<div class="sav-container" style="background-color: #f8f9fa; padding: 15px; margin: 10px 0; border-left: 4px solid #007bff;">
+	<h5 class="mb-3">
+		<i class="fa fa-wrench"></i>
+		SAV pour le contrat
+		{{ contrat.imatriclt ?? contrat.id }}
+		<span class="badge badge-info">{{ savs|length }}
+			SAV(s)</span>
+	</h5>
+
+	{% if savs|length > 0 %}
+		<div class="table-responsive">
+			<table class="table table-sm table-hover">
+				<thead class="thead-light">
+					<tr>
+						<th>#</th>
+						<th>Nature Demande</th>
+						<th>Motif</th>
+						<th>Date Création</th>
+						<th>Montant</th>
+						<th>Affecté à</th>
+						<th>Date Relance</th>
+						<th>Motif Relance</th>
+						<th>Actions</th>
+					</tr>
+				</thead>
+				<tbody>
+					{% set natureDemande = {
+    1: 'Avenant',
+    2: 'Remboursement', 
+    3: 'Sinistre',
+    4: 'Demande documents'
+} %}
+					{% set motif = {
+    1: 'Changement adresse',
+    2: 'Changement RIB',
+    3: 'Changement véhicule',
+    4: 'Frais dossier',
+    5: 'Acompte',
+    6: 'Prorata suite résiliation',
+    7: 'Ouverture sinistre',
+    8: 'Mandaté expert',
+    9: 'Remboursement sinistre',
+    10: 'Relevé information',
+    11: 'Attestation'
+} %}
+					{% for sav in savs %}
+						<tr>
+							<td>{{ sav.id }}</td>
+							<td>
+								{% if sav.natureDemande %}
+									{% set natureDemandeText = natureDemande[sav.natureDemande] ?? sav.natureDemande %}
+
+									{{ natureDemandeText|length > 40 ? natureDemandeText|slice(0, 40) ~ '...' : natureDemandeText }}
+								{% else %}
+									<span class="badge badge-secondary">Non défini</span>
+								{% endif %}
+							</td>
+
+							<td>
+								{% if sav.motif %}
+									{% set motifText = motif[sav.motif] ?? sav.motif %}
+									{{ motifText|length > 40 ? motifText|slice(0, 40) ~ '...' : motifText }}
+								{% else %}
+									-
+								{% endif %}
+							</td>
+							<td>{{ sav.creatAt ? sav.creatAt|date('d/m/Y H:i') : '-' }}</td>
+
+							<td>
+								{% if sav.montant %}
+									<span class="text-success font-weight-bold">{{ sav.montant|number_format(2, ',', ' ') }}
+										€</span>
+								{% else %}
+									-
+								{% endif %}
+							</td>
+							<td>
+								{% if sav.afect|length > 0 %}
+									{% for user in sav.afect %}
+										<span>{{ user.nom ?? user.username }}</span>
+										{% if not loop.last %}<br>
+										{% endif %}
+									{% endfor %}
+								{% else %}
+									<span class="text-muted">Non affecté</span>
+								{% endif %}
+							</td>
+							<td>{{ sav.relanceAt ? sav.relanceAt|date('d/m/Y H:i') : '-' }}</td>
+							<td>
+								{% if sav.motifRelance %}
+									{{ sav.motifRelance|length > 30 ? sav.motifRelance|slice(0, 30) ~ '...' : sav.motifRelance }}
+								{% else %}
+									-
+								{% endif %}
+							</td>
+							{# <td>
+																																																																																											 
+																																																																																												<a href="#" class="btn btn-sm btn-outline-primary" title="Voir détails">
+																																																																																													<i class="fa fa-eye"></i>
+																																																																																												</a>
+																																																																																												<a href="#" class="btn btn-sm btn-outline-warning" title="Modifier">
+																																																																																													<i class="fa fa-edit"></i>
+																																																																																												</a>
+																																																																																											</td> #}
+						</tr>
+					{% endfor %}
+				</tbody>
+			</table>
+		</div>
+	{% else %}
+		<div class="alert alert-info mb-0">
+			<i class="fa fa-info-circle"></i>
+			Aucun SAV trouvé pour ce contrat.
+		</div>
+	{% endif %}
+</div>

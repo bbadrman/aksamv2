@@ -1,7 +1,7 @@
 document.getElementById('showCallsButton').addEventListener('click', function () {
     const prospectId = this.dataset.id;
 
-    fetch(`/traiter/appels/${prospectId}`) // Replace with your actual route for fetching calls
+    fetch(`/ringover/appels/${prospectId}`) // Replace with your actual route for fetching calls
         .then(response => response.text())
         .then(data => {
             document.getElementById('callsContent').innerHTML = data;

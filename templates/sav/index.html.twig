@@ -1,0 +1,97 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Sav index
+{% endblock %}
+
+{% block body %}
+	<h1>Sav index</h1>
+
+	<table class="table">
+		<thead>
+			<tr>
+
+				<th>CreatAt</th>
+				<th>affect au
+				</th>
+				<th>Nature Demande</th>
+				<th>Motif</th>
+				<th>actions</th>
+			</tr>
+		</thead>
+		<tbody>
+			{% for sav in savs %}
+				<tr>
+
+					<td>{{ sav.creatAt ? sav.creatAt|date('Y-m-d H:i:s') : '' }}</td>
+
+					<td>
+						{% if sav.afect is not empty %}
+
+							{% for user in sav.afect %}
+								{{ user.username }}
+							{% endfor %}
+
+						{% else %}
+							...
+						{% endif %}
+					</td>
+					<td>
+						{% if  sav.motif is not empty %}
+							{% if sav.motif == 1 %}
+								Avenant
+							{% elseif sav.motif == 2 %}
+								Remboursement
+							{% elseif sav.motif == 3 %}
+								Sinistre
+							{% elseif sav.motif == 4 %}
+								Demande documents
+							{% endif %}
+							<br>
+						{% endif %}
+
+					</td>
+					<td>
+						{% if  sav.natureDemande is not empty %}
+							{% if sav.natureDemande == 1 %}
+								Changement adresse
+							{% elseif sav.natureDemande == 2 %}
+								Changement RIB
+							{% elseif sav.natureDemande == 3 %}
+								Changement véhicule
+							{% elseif sav.natureDemande == 4 %}
+								Frais dossier
+							{% elseif sav.natureDemande == 5 %}
+								Acompte
+							{% elseif sav.natureDemande == 6 %}
+								Prorata suite résiliation
+							{% elseif sav.natureDemande == 7 %}
+								Ouverture sinistre
+							{% elseif sav.natureDemande == 8 %}
+								Mandaté expert
+							{% elseif sav.natureDemande == 9 %}
+								Remboursement sinistre
+							{% elseif sav.natureDemande == 10 %}
+								Relevé information
+							{% elseif sav.natureDemande == 11 %}
+								Attestation
+
+							{% endif %}
+							<br>
+						{% endif %}
+					</td>
+
+					<td>
+						<a href="{{ path('app_sav_show', {'id': sav.id}) }}">show</a>
+						<a href="{{ path('app_sav_edit', {'id': sav.id}) }}">edit</a>
+					</td>
+				</tr>
+			{% else %}
+				<tr>
+					<td colspan="4">no records found</td>
+				</tr>
+			{% endfor %}
+		</tbody>
+	</table>
+
+
+{% endblock %}
