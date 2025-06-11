@@ -1,0 +1,412 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Détails équipe
+	{{ team.name }}
+	- Statistiques Prospects
+{% endblock %}
+
+{% block body %}
+	<div class="container-fluid">
+		<div class="row">
+			<div
+				class="col-12">
+				{# En-tête avec navigation #}
+				<div class="d-flex justify-content-between align-items-center mb-4">
+					<h1 class="h3 mb-0">
+						<i class="fas fa-users"></i>
+						Détails de l'équipe :
+						{{ team.name }}
+					</h1>
+					<div>
+						<a href="{{ path('app_prospect_stats', { 'startDate': startDate, 'endDate': endDate, 'team': team.id, 'filter': 'team' }) }}" class="btn btn-secondary">
+							<i class="fas fa-arrow-left"></i>
+							Retour aux statistiques
+						</a>
+					</div>
+				</div>
+
+				{# Informations période #}
+				{% if startDate and endDate %}
+					<div class="alert alert-info">
+						<i class="fas fa-calendar-alt"></i>
+						<strong>Période :</strong>
+						Du
+						{{ startDate|date('d/m/Y') }}
+						au
+						{{ endDate|date('d/m/Y') }}
+						<span class="ms-3">
+							<strong>Total prospects :</strong>
+							<span class="badge bg-primary fs-6">{{ prospects|length }}</span>
+						</span>
+					</div>
+				{% else %}
+					<div class="alert alert-info">
+						<i class="fas fa-calendar-alt"></i>
+						<strong>Période :</strong>
+						Toutes les dates
+						<span class="ms-3">
+							<strong>Total prospects :</strong>
+							<span class="badge bg-primary fs-6">{{ prospects|length }}</span>
+						</span>
+					</div>
+				{% endif %}
+
+				{% if prospects is not empty %}
+					{# Statistiques rapides #}
+					<div class="row mb-4">
+						<div class="col-md-3">
+							<div class="card text-center bg-primary text-white">
+								<div class="card-body">
+									<h4>{{ prospects|length }}</h4>
+									<p class="mb-0">Total Prospects</p>
+								</div>
+							</div>
+						</div>
+						<div class="col-md-3">
+							<div class="card text-center bg-success text-white">
+								<div class="card-body">
+									<h4>
+										{% set particuliers = 0 %}
+										{% for prospect in prospects %}
+											{% if prospect.typeProspect == '1' %}
+												{% set particuliers = particuliers + 1 %}
+											{% endif %}
+										{% endfor %}
+										{{ particuliers }}
+									</h4>
+									<p class="mb-0">Particuliers</p>
+								</div>
+							</div>
+						</div>
+						<div class="col-md-3">
+							<div class="card text-center bg-info text-white">
+								<div class="card-body">
+									<h4>
+										{% set professionnels = 0 %}
+										{% for prospect in prospects %}
+											{% if prospect.typeProspect == '2' %}
+												{% set professionnels = professionnels + 1 %}
+											{% endif %}
+										{% endfor %}
+										{{ professionnels }}
+									</h4>
+									<p class="mb-0">Professionnels</p>
+								</div>
+							</div>
+						</div>
+						<div class="col-md-3">
+							<div class="card text-center bg-warning text-white">
+								<div class="card-body">
+									<h4>
+										{% set thisMonth = prospects|filter(p => p.creatAt and p.creatAt|date('Y-m') == "now"|date('Y-m'))|length %}
+										{{ thisMonth }}
+									</h4>
+									<p class="mb-0">Ce mois-ci</p>
+								</div>
+							</div>
+						</div>
+					</div>
+
+					{# Tableau détaillé des prospects #}
+					<div class="card">
+						<div class="card-header">
+							<h5 class="mb-0">
+								<i class="fas fa-list"></i>
+								Liste détaillée des prospects
+							</h5>
+						</div>
+						<div class="card-body">
+							<div class="table-responsive">
+								<table class="table table-striped table-hover" id="prospectsTable">
+									<thead class="table-dark">
+										<tr>
+											<th>Date</th>
+											<th>Nom/Prénom</th>
+											<th>Email</th>
+											<th>Téléphone</th>
+											<th>Type</th>
+											<th>Source</th>
+											<th>Activité</th>
+											<th>Commercial</th>
+											<th>Statut</th>
+										</tr>
+									</thead>
+									<tbody>
+										{% for prospect in prospects %}
+											<tr>
+												<td>
+													{% if prospect.creatAt %}
+														{{ prospect.creatAt|date('d/m/Y H:i') }}
+													{% else %}
+														<span class="text-muted">-</span>
+													{% endif %}
+												</td>
+												<td>
+													<strong>{{ prospect.nom|default('-') }}</strong>
+													{% if prospect.prenom %}
+														<br><small>{{ prospect.prenom }}</small>
+													{% endif %}
+												</td>
+												<td>
+													{% if prospect.email %}
+														<a href="mailto:{{ prospect.email }}">{{ prospect.email }}</a>
+													{% else %}
+														<span class="text-muted">-</span>
+													{% endif %}
+												</td>
+												<td>
+													{% if prospect.phone %}
+														<a href="tel:{{ prospect.phone }}">{{ prospect.phone }}</a>
+													{% else %}
+														<span class="text-muted">-</span>
+													{% endif %}
+												</td>
+												<td>
+													{% if prospect.typeProspect == '1' %}
+														<span class="badge bg-success">Particulier</span>
+													{% elseif prospect.typeProspect == '2' %}
+														<span class="badge bg-info">Professionnel</span>
+													{% else %}
+														<span class="badge bg-secondary">Inconnu</span>
+													{% endif %}
+												</td>
+												<td>
+													{% set sourceMapping = {
+                                                    '1': 'Parrainage',
+                                                    '2': 'Appel Entrant',
+                                                    '3': 'Avenant',
+                                                    '4': 'Ancienne contrat',
+                                                    '5': 'Propre site',
+                                                    '6': 'Revendeur',
+                                                    '7': 'Hors cible',
+                                                    '8': 'Test'
+                                                } %}
+													<small>{{ sourceMapping[prospect.motifSaise]|default('Inconnu') }}</small>
+												</td>
+												<td>
+													{% set activiteMapping = {
+                                                    '1': 'TPM',
+                                                    '2': 'VTC',
+                                                    '3': 'Sociéte',
+                                                    '4': 'Décenale',
+                                                    '5': 'Dommage',
+                                                    '6': 'Marchandise',
+                                                    '7': 'Négociant',
+                                                    '8': 'Prof auto',
+                                                    '9': 'Garage'
+                                                } %}
+													{% if prospect.activites %}
+														<small>{{ activiteMapping[prospect.activites]|default('Inconnu') }}</small>
+													{% else %}
+														<span class="text-muted">-</span>
+													{% endif %}
+												</td>
+												<td>
+													{% if prospect.comrcl %}
+														<small>{{ prospect.comrcl.firstname }}
+															{{ prospect.comrcl.lastname }}</small>
+													{% else %}
+														<span class="text-muted">Non assigné</span>
+													{% endif %}
+												</td>
+												<td>
+													{% if prospect.relance %}
+														<span class="badge bg-warning">{{ prospect.relance }}</span>
+													{% else %}
+														<span class="badge bg-secondary">En attente</span>
+													{% endif %}
+												</td>
+											</tr>
+										{% endfor %}
+									</tbody>
+								</table>
+							</div>
+						</div>
+					</div>
+
+					{# Graphiques de répartition #}
+					<div class="row mt-4">
+						<div class="col-md-4">
+							<div class="card">
+								<div class="card-header">
+									<h6>Répartition par Source</h6>
+								</div>
+								<div class="card-body">
+									<canvas id="sourceChart"></canvas>
+								</div>
+							</div>
+						</div>
+						<div class="col-md-4">
+							<div class="card">
+								<div class="card-header">
+									<h6>Répartition par Type</h6>
+								</div>
+								<div class="card-body">
+									<canvas id="typeChart"></canvas>
+								</div>
+							</div>
+						</div>
+						<div class="col-md-4">
+							<div class="card">
+								<div class="card-header">
+									<h6>Évolution mensuelle</h6>
+								</div>
+								<div class="card-body">
+									<canvas id="monthlyChart"></canvas>
+								</div>
+							</div>
+						</div>
+					</div>
+
+				{% else %}
+					<div class="alert alert-warning">
+						<i class="fas fa-exclamation-triangle"></i>
+						Aucun prospect trouvé pour cette équipe dans la période sélectionnée.
+					</div>
+				{% endif %}
+			</div>
+		</div>
+	</div>
+
+	{% if prospects is not empty %}
+		<script>
+			document.addEventListener('DOMContentLoaded', function () { // Préparation des données pour les graphiques
+const sourceData = {};
+const typeData = {};
+const monthlyData = {};
+
+const sourceMapping = {
+'1': 'Parrainage',
+'2': 'Appel Entrant',
+'3': 'Avenant',
+'4': 'Ancienne contrat',
+'5': 'Propre site',
+'6': 'Revendeur',
+'7': 'Hors cible',
+'8': 'Test'
+};
+
+const typeMapping = {
+'1': 'Particulier',
+'2': 'Professionnel'
+};{% for prospect in prospects %}
+// Sources
+const source = '{{ prospect.motifSaise }}';
+const sourceLabel = sourceMapping[source] || 'Inconnu';
+sourceData[sourceLabel] = (sourceData[sourceLabel] || 0) + 1;
+
+// Types
+const type = '{{ prospect.typeProspect }}';
+const typeLabel = typeMapping[type] || 'Inconnu';
+typeData[typeLabel] = (typeData[typeLabel] || 0) + 1;
+
+// Données mensuelles
+{% if prospect.creatAt %}
+const month = '{{ prospect.creatAt|date('Y-m') }}';
+monthlyData[month] = (monthlyData[month] || 0) + 1;{% endif %}{% endfor %}
+
+// Graphique des sources
+const sourceCtx = document.getElementById('sourceChart').getContext('2d');
+new Chart(sourceCtx, {
+type: 'pie',
+data: {
+labels: Object.keys(sourceData),
+datasets: [
+{
+data: Object.values(sourceData),
+backgroundColor: [
+'#FF6384',
+'#36A2EB',
+'#FFCE56',
+'#4BC0C0',
+'#9966FF',
+'#FF9F40',
+'#FF6384',
+'#C9CBCF'
+]
+}
+]
+},
+options: {
+responsive: true,
+plugins: {
+legend: {
+position: 'bottom'
+}
+}
+}
+});
+
+// Graphique des types
+const typeCtx = document.getElementById('typeChart').getContext('2d');
+new Chart(typeCtx, {
+type: 'doughnut',
+data: {
+labels: Object.keys(typeData),
+datasets: [
+{
+data: Object.values(typeData),
+backgroundColor: ['#36A2EB', '#FF6384']
+}
+]
+},
+options: {
+responsive: true,
+plugins: {
+legend: {
+position: 'bottom'
+}
+}
+}
+});
+
+// Graphique mensuel
+const monthlyCtx = document.getElementById('monthlyChart').getContext('2d');
+const sortedMonths = Object.keys(monthlyData).sort();
+new Chart(monthlyCtx, {
+type: 'line',
+data: {
+labels: sortedMonths,
+datasets: [
+{
+label: 'Prospects',
+data: sortedMonths.map(month => monthlyData[month]),
+borderColor: '#36A2EB',
+backgroundColor: 'rgba(54, 162, 235, 0.1)',
+tension: 0.4
+}
+]
+},
+options: {
+responsive: true,
+plugins: {
+legend: {
+display: false
+}
+},
+scales: {
+y: {
+beginAtZero: true,
+ticks: {
+stepSize: 1
+}
+}
+}
+}
+});
+
+// DataTable pour le tableau
+$('#prospectsTable').DataTable({
+language: {
+url: '//cdn.datatables.net/plug-ins/1.11.5/i18n/fr-FR.json'
+},
+order: [
+[0, 'desc']
+],
+pageLength: 25,
+responsive: true
+});
+});
+		</script>
+	{% endif %}
+{% endblock %}

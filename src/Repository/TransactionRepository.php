@@ -60,6 +60,10 @@ class TransactionRepository extends ServiceEntityRepository
                 ->andWhere('t.moyen = :moyen')
                 ->setParameter('moyen', $search->moyen);
         }
+        if (isset($search->comrcl)) {
+            $query->andWhere('t.comrcl = :comrcl')
+                ->setParameter('comrcl', $search->comrcl);
+        }
         return $this->paginator->paginate(
             $query,
             $search->page,

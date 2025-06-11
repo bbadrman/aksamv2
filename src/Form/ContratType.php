@@ -524,10 +524,11 @@ class ContratType extends AbstractType
             ])
             ->add('facilite', Type\ChoiceType::class, [
                 'label' => 'facilite',
+                'placeholder' => "--Merci de Selectie--",
 
                 'choices' => [
-                    'OUI' => 'OUI',
-                    'NON' => 'NON'
+                    'Oui' => true,
+                    'Non' => false,
                 ],
                 'expanded' => false,
                 'multiple' => false

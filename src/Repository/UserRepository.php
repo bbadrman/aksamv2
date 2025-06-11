@@ -87,6 +87,24 @@ class UserRepository extends ServiceEntityRepository implements PasswordUpgrader
             ->getResult();
     }
 
+
+
+    public function findByClientValidWithCreatAtRange(\DateTime $startDate, \DateTime $endDate): array
+    {
+        return $this->createQueryBuilder('u')
+            ->addSelect('c', 'p') // Ajout de 'p' pour les paiements
+            ->leftJoin('u.contrats', 'c')
+            ->leftJoin('c.payments', 'p') // Jointure avec les paiements
+            ->where('c.status = 1')
+            ->andWhere('p.datePayment IS NOT NULL')
+            ->andWhere('p.datePayment >= :startDate')
+            ->andWhere('p.datePayment <= :endDate')
+            ->setParameter('startDate', $startDate)
+            ->setParameter('endDate', $endDate)
+            ->getQuery()
+            ->getResult();
+    }
+
     /**
      * Find list a user by a search form
      * @param SearchUser $search
@@ -196,7 +214,6 @@ class UserRepository extends ServiceEntityRepository implements PasswordUpgrader
             ->getQuery()
             ->getResult();
     }
-
 
 
     //    /**

@@ -117,6 +117,8 @@ class SavController extends AbstractController
 
             // Add the new relance to the prospect
             $sav->addRelanceSav($relance);
+            $sav->setMotifRelance($relance->getMotifRelance());
+            $sav->setRelanceAt($relance->getCreatAt());
             $this->entityManager->persist($relance);
 
             $this->entityManager->flush();

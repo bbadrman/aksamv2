@@ -52,7 +52,7 @@ class Compartenaire
     {
         if (!$this->contrats->contains($contrat)) {
             $this->contrats->add($contrat);
-            $contrat->setCompagnie($this);
+            $contrat->setPartenaire($this);
         }
 
         return $this;
@@ -62,8 +62,8 @@ class Compartenaire
     {
         if ($this->contrats->removeElement($contrat)) {
             // set the owning side to null (unless already changed)
-            if ($contrat->getCompagnie() === $this) {
-                $contrat->setCompagnie(null);
+            if ($contrat->getPartenaire() === $this) {
+                $contrat->setPartenaire(null);
             }
         }
 

@@ -52,19 +52,20 @@
 			<li id="header_notification_bar" class="dropdown">
 				<a data-toggle="dropdown" class="dropdown-toggle" href="#">
 					<i class="fa fa-shopping-cart"></i>
-					<span class="badge bg-warning">{{ prospects|length }}
+					<span class="badge bg-warning">
+						{% if totalResults is defined %}
+							{{ totalResults }}
+						{% else %}
+							{{ prospects|length }}
+						{% endif %}
 					</span>
-				</li>
+				</span>
 			</li>
-		</a>
+		</li>
+	</a>
 
-	</li>
-	<!-- END NOTIFICATION DROPDOWN -->
-</ol>
-<br>
-{# {% if is_granted('ROLE_ADMIN') or is_granted('ROLE_TEAM')  == true %}
-		<a href="{{ path('app_prospect_new') }}" class="btn btn-primary">Ajouter Prospect</a>
-          	{% endif %} #}</section><div class="col-xs-10" style="float: right !important;">
-<div class="row" style="margin-right: 10px;">
-	{{ include('prospect/_search_form.html.twig')  }}
-</div></div>{% endblock %}
+</li>
+<!-- END NOTIFICATION DROPDOWN --></ol><br>{# {% if is_granted('ROLE_ADMIN') or is_granted('ROLE_TEAM')  == true %}
+			<a href="{{ path('app_prospect_new') }}" class="btn btn-primary">Ajouter Prospect</a>
+	          	{% endif %} #}</section><div class="col-xs-10" style="float: right !important;"><div class="row" style="margin-right: 10px;">
+{{ include('prospect/_search_form.html.twig')  }}</div></div>{% endblock %}

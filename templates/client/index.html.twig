@@ -74,15 +74,23 @@
 							<th>Téléphone</th>
 							<th>Email</th>
 							<th>Raison Sociale</th>
-							<th>Adresse</th>
 							<th>Créé le</th>
 							<th>Forme Juridique</th>
 							<th style="text-align:center;">Nbr Contrats</th>
+
 							<th>Actions</th>
 						</tr>
 					</thead>
 					<tbody>
 						{% for client in clients %}
+
+							{% set payments_count = 0 %}
+							{% for contrat in client.contrats %}
+								{% if contrat.payments %}
+									{% set payments_count = payments_count + 1 %}
+								{% endif %}
+							{% endfor %}
+
 							<tr class="expandable-row client-row" data-client-id="{{ client.id }}">
 								<td>{{ client.team }}</td>
 								<td>{{ client.cmrcl }}</td>
@@ -96,7 +104,6 @@
 									<td>—</td>
 								{% endif %}
 								<td>{{ client.raisonSociale }}</td>
-								<td>{{ client.adress }}</td>
 								<td>{{ client.creatAt ? client.creatAt|date('Y-m-d H:i') : '' }}</td>
 								<td>
 									{% set formes = {
@@ -108,7 +115,11 @@
 								<td style="text-align:center;">
 									{{ client.contrats|filter(contrat => contrat.status == 1)|length }}
 								</td>
+
+
 								<td class="btn-toolbar">
+
+
 									{% if client.status == 1 %}
 										<a href="{{ path('app_contrat_new', {'id': client.id}) }}" class="btn btn-success btn-xs">CONTRAT</a>
 									{% elseif client.status == 2 %}
@@ -129,6 +140,12 @@
 												En vérification
 											{% endif %}
 										{% endif %}
+									{% endif %}
+									{% if payments_count > 0 %}
+										<a href="{{ path('client_payments', {'id': client.id}) }}" class="btn btn-info btn-xs mr-1" title="Voir les {{ payments_count }} paiement(s)">
+											<i class="fa fa-credit-card"></i>
+											({{ payments_count }})
+										</a>
 									{% endif %}
 
 									{% if is_granted('ROLE_ADMIN') %}
@@ -337,6 +354,29 @@ updatePaymentFields();
 }
 }
 });
+});
+	</script>
+
+	<script>
+		document.addEventListener('DOMContentLoaded', function () { // Fonction pour charger les paiements en AJAX (optionnel)
+function loadClientPayments(clientId, buttonElement) {
+buttonElement.innerHTML = '<i class="fa fa-spinner fa-spin"></i> Chargement...';
+buttonElement.disabled = true;
+
+fetch (`/client/${clientId}/payments/ajax`).then(response => response.json()).then(data => {
+if (data.success) { // Afficher une modal ou rediriger vers la page des paiements
+window.location.href = `/client/${clientId}/payments`;
+} else {
+alert('Erreur lors du chargement des paiements');
+}
+}).catch(error => {
+console.error('Erreur:', error);
+alert('Erreur lors du chargement des paiements');
+}). finally(() => {
+buttonElement.innerHTML = '<i class="fa fa-credit-card"></i> PAIEMENTS';
+buttonElement.disabled = false;
+});
+}
 });
 	</script>
 {% endblock %}

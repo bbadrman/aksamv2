@@ -43,6 +43,12 @@
     10: 'Relevé information',
     11: 'Attestation'
 } %}
+					{% set motifRelance = {
+    1: 'RDV',
+    2: 'Attente doc', 
+    3: 'Attente réponse CIE',
+    4: 'Clôture SAV'
+} %}
 					{% for sav in savs %}
 						<tr>
 							<td>{{ sav.id }}</td>
@@ -87,22 +93,44 @@
 							</td>
 							<td>{{ sav.relanceAt ? sav.relanceAt|date('d/m/Y H:i') : '-' }}</td>
 							<td>
+
+
 								{% if sav.motifRelance %}
-									{{ sav.motifRelance|length > 30 ? sav.motifRelance|slice(0, 30) ~ '...' : sav.motifRelance }}
+									{% set motifRelanceText = motifRelance[sav.motifRelance] ?? sav.motifRelance %}
+									{{ motifRelanceText|length > 40 ? motifText|slice(0, 40) ~ '...' : motifRelanceText }}
 								{% else %}
 									-
 								{% endif %}
 							</td>
-							{# <td>
-																																																																																											 
-																																																																																												<a href="#" class="btn btn-sm btn-outline-primary" title="Voir détails">
-																																																																																													<i class="fa fa-eye"></i>
-																																																																																												</a>
-																																																																																												<a href="#" class="btn btn-sm btn-outline-warning" title="Modifier">
-																																																																																													<i class="fa fa-edit"></i>
-																																																																																												</a>
-																																																																																											</td> #}
+							<td>
+
+
+								{% set lastRelanceSav = sav.relanceSavs|last %}
+
+								{% if lastRelanceSav is not empty %}
+									{% if lastRelanceSav.motifRelance == 4 %}
+										<a href="#" class="btn btn-primary">
+											<i class="fa fa-check" style="font-size: 12px;" aria-hidden="true"></i>
+										</a>
+									{% else %}
+										<a href="{{ path('app_afficher_show', {'id': sav.id}) }}" class="btn btn-info">
+											<i class="fa fa-hourglass-half" style="font-size: 12px;" aria-hidden="true"></i>
+										</a>
+									{% endif %}
+								{% endif %}
+
+								{# Ne pas afficher le bouton "Traiter" si motifRelance est égal à 4 #}
+								{% if lastRelanceSav is empty  %}
+									<button>
+										<a href="{{ path('app_afficher_show', {'id': sav.id}) }}">
+											<i class="fa fa-folder-open" style="font-size: 20px;" aria-hidden="true"></i>
+										</a>
+									</button>
+								{% endif %}
+							</td>
 						</tr>
+
+
 					{% endfor %}
 				</tbody>
 			</table>

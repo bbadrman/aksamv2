@@ -44,15 +44,15 @@
 							{{ render(controller('App\\Controller\\PaymentController::newpayment', {'id': contrat.id})) }}
 						{% endif %}
 
+						&emsp;
+						<a href="{{ path('contrat_sav_new', {'id': contrat.id}) }}" class="btn btn-sm btn-outline-primary" title="Ajouter SAV">
+							+ SAV
+						</a>
 						{% if contrat.document and is_granted('ROLE_DOCUMENT_EDIT') %}
 							<a href="{{ path('app_document_edit', {'id': contrat.document.id}) }}" class="btn btn-info btn-sm">
 								<i class="fa-solid fa-copy"></i>
 							</a>
 						{% endif %}
-						&emsp;
-						<a href="{{ path('contrat_sav_new', {'id': contrat.id}) }}" class="btn btn-sm btn-outline-primary" title="Ajouter SAV">
-							+ SAV
-						</a>
 					</td>
 				</tr>
 				<!-- Ligne pour les SAV (initialement cachée) -->

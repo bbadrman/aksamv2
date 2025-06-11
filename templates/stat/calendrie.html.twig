@@ -7,7 +7,6 @@
 
 	<section class="content-header">
 
-		<h2>Statistique Des Equipes</h2>
 
 		<ol class="breadcrumb">
 			<li>
@@ -16,10 +15,10 @@
 					Tableau de bord</a>
 			</li>
 			{# <li class="active">
-																																																																																																																																																																																																																																																																																																																																																																																																				<a href="{{ path('app_table_liste') }}">
-																																																																																																																																																																																																																																																																																																																																																																																																					<i class="fa fa-users"></i>
-																																																																																																																																																																																																																																																																																																																																																																																																					Toutes les Tables</a>
-																																																																																																																																																																																																																																																																																																																																																																																																			</li> #}
+																																																																																																																																																																																																																																																																																																																																																																																																																																											<a href="{{ path('app_table_liste') }}">
+																																																																																																																																																																																																																																																																																																																																																																																																																																												<i class="fa fa-users"></i>
+																																																																																																																																																																																																																																																																																																																																																																																																																																												Toutes les Tables</a>
+																																																																																																																																																																																																																																																																																																																																																																																																																																										</li> #}
 			<!-- NOTIFICATION DROPDOWN -->
 
 			<li id="header_notification_bar" class="dropdown">
@@ -33,7 +32,16 @@
 		</ol>
 		<br>
 	</section>
-
+	<div class="row">
+		<div class="col-12">
+			<h1 class="mb-4">
+				📊 Statistiques
+				{% if fromUrl %}
+					<small class="text-muted">(Dates pré-sélectionnées)</small>
+				{% endif %}
+			</h1>
+		</div>
+	</div>
 	<style>
 		.expanded-content {
 			display: none;
@@ -48,355 +56,417 @@
 	</style>
 
 	<br>
-	<div class="col-xs-12 mx-auto d-flex justify-content-center">
-		<div class="row" style="margin-right: 12px;  ">
-			{% include 'stat/_search_form.html.twig' with {search_form: search_form} only %}
-		</div>
-	</div>
+	<!-- Formulaire de recherche -->
+	<div class="row mb-4">
+		<div class="col-12">
+			<div class="card">
+				<div class="card-header d-flex justify-content-between align-items-center">
+					<h5 class="mb-0">
+						🔍 Recherche par dates
+						{% if fromUrl %}
+							<span class="badge badge-info ml-2">Dates chargées depuis l'interface</span>
+						{% endif %}
+					</h5>
+					{% if searchExecuted %}
+						<div class="badge badge-success">
+							Recherche exécutée :
+							{{ searchStartDate|date('d/m/Y') }}
+							-
+							{{ searchEndDate|date('d/m/Y') }}
+						</div>
+					{% endif %}
+				</div>
+				<div class="card-body">
+					{{ form_start(search_form, {'attr': {'class': 'row g-3'}}) }}
+					<div class="col-md-4">
+						{{ form_row(search_form.startDate, {
+                                'label': 'Date de début', 
+                                'attr': {'class': 'form-control'}
+                            }) }}
+					</div>
+					<div class="col-md-4">
+						{{ form_row(search_form.endDate, {
+                                'label': 'Date de fin', 
+                                'attr': {'class': 'form-control'}
+                            }) }}
+					</div>
+					<div class="col-md-4 d-flex align-items-end">
+						<div class="w-100">
+							<button type="submit" class="btn btn-primary w-100 mb-2">
+								<i class="fas fa-search"></i>
+								Rechercher
+							</button>
+							<a href="{{ path('prospects_calandri') }}" class="btn btn-secondary w-100">
+								<i class="fas fa-refresh"></i>
+								Reset
+							</a>
+						</div>
+					</div>
+					{{ form_end(search_form) }}
 
-	<hr>
+					{% if fromUrl %}
+						<div class="alert alert-info mt-3">
+							<i class="fas fa-info-circle"></i>
+							<strong>Recherche automatique :</strong>
+							Les dates ont été chargées depuis l'interface de recherche et les résultats affichés automatiquement.
+																																																	                            Du
+							{{ searchStartDate|date('d/m/Y') }}
+							au
+							{{ searchEndDate|date('d/m/Y') }}.
+						</div>
+					{% endif %}
+				</div>
+			</div>
+			<div class="d-flex justify-content-between align-items-center mb-4">
 
-	<table id="ma-table" class="table table-striped table-advance table-hover ">
-		<thead>
+				<a href="{{ path('app_search_dates') }}" class="btn btn-outline-secondary">
+					<i class="fas fa-arrow-left"></i>
+					Retour à la recherche
+				</a>
+			</div>
+			<hr>
 
-			<tr style="text-align: center;">
-				<th rowspan="2">Equipe</th>
-				<th rowspan="2">Prospects</th>
-				<th rowspan="2">Contrats</th>
-				<th rowspan="2">Cotisation</th>
+			<table id="ma-table" class="table table-striped table-advance table-hover ">
+				<thead>
 
-				<th colspan="3">Source</th>
-				<th colspan="2">Type Prospect</th>
+					<tr style="text-align: center;">
+						<th rowspan="2">Equipe</th>
+						<th rowspan="2">Prospects</th>
+						<th rowspan="2">Contrats</th>
+						<th rowspan="2">Cotisation</th>
 
-				<th data-col="extra" colspan="6">Motive de saisir</th>
-				<th data-col="activites" colspan="8">Activites</th>
-			</tr>
-			<tr style="text-align: center;">
+						<th colspan="3">Source</th>
+						<th colspan="2">Type Prospect</th>
 
-				<th>
-					<button id="toggleColumns">Saisir</button>
-				</th>
-				<th>Site Pub</th>
-				<th>Revedeur</th>
+						<th data-col="extra" colspan="6">Motive de saisir</th>
+						<th data-col="activites" colspan="8">Activites</th>
+					</tr>
+					<tr style="text-align: center;">
 
-				<th>Particulier</th>
-				<th>
-					<button id="toggleColumnsActivite">Professionel</button>
-				</th>
+						<th>
+							<button id="toggleColumns">Saisir</button>
+						</th>
+						<th>Site Pub</th>
+						<th>Revedeur</th>
 
-				<th data-col="extra">Parrainage</th>
-				<th data-col="extra">Appel
-				</th>
-				<th data-col="extra">Avenant</th>
-				<th data-col="extra">Ancienne</th>
-				<th data-col="extra">Propre site</th>
-				<th data-col="extra">Revendeur</th>
+						<th>Particulier</th>
+						<th>
+							<button id="toggleColumnsActivite">Professionel</button>
+						</th>
 
-
-				<th data-col="activites">TPM</th>
-				<th data-col="activites">VTC</th>
-				<th data-col="activites">Sociéte</th>
-				<th data-col="activites">Décenale</th>
-				<th data-col="activites">Dommage</th>
-				<th data-col="activites">Marchandise</th>
-				<th data-col="activites">Négociant</th>
-				<th data-col="activites">Prof Auto</th>
-
-			</tr>
-		</thead>
-		<tbody>
-			{# total #}
-			<tr>
-				<td>
-					<button class="btn btn" style="background-color:#B0E0E6;">Total
-					</button>
-				</td>
-
-				<td>
-					<span class="btn btn" style="background-color:	#00BFFF;">
-						{{ " %02d"|format(prospects|filter(p => p.team is not null  )|length )}}</span>
-				</td>
-
-				<td>
-					<span class="btn btn" style="background-color:	rgb(122, 213, 255);">{{ " %02d"|format( contrats|filter(p => p.status == 1   )|length ) }}
-					</span>
-				</td>
-				<td>
-					<span class="btn btn-primary">
-						{{ contrats|filter(c => c.status == 1)|reduce((carry, c) => carry + (c.cotisation ?? 0), 0)|number_format(2, ',', ' ') }}
-						€
-					</span>
-				</td>
-
-				<td>
-					<span class="btn btn" style="background-color:	#FFA07A;">{{ " %02d"|format( prospects|filter(p => p.source == 3 and p.team is not null  )|length ) }}
-					</span>
-				</td>
-				<td>
-					<span class="btn btn" style="background-color:	#FFA07A;">{{ " %02d"|format( prospects|filter(p => p.source is null and p.team is not null )|length ) }}</span>
-				</td>
-				<td>
-					<span class="btn btn" style="background-color:	#FFA07A;">{{ " %02d"|format( prospects|filter(p => p.source == 2 and p.team is not null )|length ) }}</span>
-				</td>
-				<td>
-					<span class="btn btn" style="background-color:	#98FB98;">{{ " %02d"|format(prospects|filter(p => p.typeProspect == 1 and p.team is not null )|length ) }}</span>
-				</td>
-				<td>
-					<span class="btn btn" style="background-color:	#98FB98;">{{ " %02d"|format( prospects|filter(p => p.typeProspect == 2 and p.team is not null )|length ) }}</span>
-				</td>
-				<td data-col="extra">
-					<span class="btn btn" style="background-color:#cde4e2;">{{ " %02d"|format( prospects|filter(p => p.motifSaise == 1 and p.team is not null )|length ) }}
-					</span>
-				</td>
-				<td data-col="extra">
-					<span class="btn btn" style="background-color:#cde4e2;">{{ " %02d"|format( prospects|filter(p => p.motifSaise == 2 and p.team is not null )|length ) }}</span>
-				</td>
-				<td data-col="extra">
-					<span class="btn btn" style="background-color:#cde4e2;">{{ " %02d"|format( prospects|filter(p => p.motifSaise == 3 and p.team is not null )|length ) }}</span>
-				</td>
-				<td data-col="extra">
-					<span class="btn btn" style="background-color:#cde4e2;">{{ " %02d"|format( prospects|filter(p => p.motifSaise == 4 and p.team is not null )|length ) }}</span>
-				</td>
-				<td data-col="extra">
-					<span class="btn btn" style="background-color:#cde4e2;">{{ " %02d"|format( prospects|filter(p => p.motifSaise == 5 and p.team is not null )|length ) }}</span>
-				</td>
-				<td data-col="extra">
-					<span class="btn btn" style="background-color:#cde4e2;">{{ " %02d"|format( prospects|filter(p => p.motifSaise == 6 and p.team is not null )|length ) }}</span>
-				</td>
-				<td data-col="activites">
-					<span class='btn btn-warning'>{{ " %02d"|format( prospects|filter(p => p.activites == 1 and p.team is not null )|length ) }}
-					</span>
-				</td>
-				<td data-col="activites">
-					<span class='btn btn-warning'>{{ " %02d"|format( prospects|filter(p => p.activites == 2 and p.team is not null )|length ) }}</span>
-				</td>
-				<td data-col="activites">
-					<span class='btn btn-warning'>{{ " %02d"|format( prospects|filter(p => p.activites == 3 and p.team is not null )|length ) }}</span>
-				</td>
-				<td data-col="activites">
-					<span class='btn btn-warning'>{{ " %02d"|format( prospects|filter(p => p.activites == 4 and p.team is not null )|length ) }}</span>
-				</td>
-				<td data-col="activites">
-					<span class='btn btn-warning'>{{ " %02d"|format( prospects|filter(p => p.activites == 5 and p.team is not null )|length ) }}</span>
-				</td>
-				<td data-col="activites">
-					<span class='btn btn-warning'>{{ " %02d"|format( prospects|filter(p => p.activites == 6  and p.team is not null )|length ) }}</span>
-				</td>
-				<td data-col="activites">
-					<span class='btn btn-warning'>{{ " %02d"|format( prospects|filter(p => p.activites == 7 and p.team is not null )|length ) }}</span>
-				</td>
-				<td data-col="activites">
-					<span class='btn btn-warning'>{{ " %02d"|format( prospects|filter(p => p.activites == 8 and p.team is not null )|length ) }}</span>
-				</td>
-
-			</tr>
-			{# les equipes #}
-			{% for team in teams %}
-				<tr class="expandable-row">
-					<td>
-						<button class="btn btn" style="background-color:#B0E0E6;">{{ team.name }}
-						</button>
-					</td>
-
-					<td>
-						<span class="btn btn" style="background-color:	#00BFFF;">
-							{{ " %02d"|format(prospects|filter(p => p.team is not null and p.team == team  )|length )}}
-						</span>
-					</td>
-					<td>
-						<span class="btn btn" style="background-color: rgb(122, 213, 255);">
-							{{ " %02d"|format(
-                    contrats|filter(c => c.user is not null  and c.status == 1 and team.users.contains(c.user))|length 
-                ) }}
-						</span>
-					</td>
-
-					<td>
-						<span class="btn btn-primary">
-							{{ contrats|filter(c => c.status == 1 and team.users.contains(c.user))|reduce((carry, c) => carry + (c.cotisation ?? 0), 0)|number_format(2, ',', ' ') }}
-							€
-						</span>
-					</td>
+						<th data-col="extra">Parrainage</th>
+						<th data-col="extra">Appel
+						</th>
+						<th data-col="extra">Avenant</th>
+						<th data-col="extra">Ancienne</th>
+						<th data-col="extra">Propre site</th>
+						<th data-col="extra">Revendeur</th>
 
 
-					<td>
-						<span class="btn btn" style="background-color:	#FFA07A;">
-							{{ " %02d"|format(prospects|filter(p => p.source == 3 and p.team == team)|length) }}
-						</span>
-					</td>
-					<td>
-						<span class="btn btn" style="background-color:	#FFA07A;">
-							{{ " %02d"|format(prospects|filter(p => p.source is null and p.team == team)|length) }}
-						</span>
-					</td>
-					<td>
-						<span class="btn btn" style="background-color:	#FFA07A;">
-							{{ " %02d"|format(prospects|filter(p => p.source == 2 and p.team == team)|length) }}
-						</span>
-					</td>
-					<td>
-						<span class="btn btn" style="background-color:	#98FB98;">
-							{{ " %02d"|format(prospects|filter(p => p.typeProspect == 1 and p.team == team)|length) }}
-						</span>
-					</td>
-					<td style="background-color:warning;">
-						<span class="btn btn" style="background-color:	#98FB98;">
-							{{ " %02d"|format(prospects|filter(p => p.typeProspect == 2 and p.team == team)|length) }}
-						</span>
-					</td>
-					<td data-col="extra">
-						<span class="btn btn" style="background-color: #cde4e2;">{{ " %02d"|format( prospects|filter(p => p.motifSaise == 1 and p.team == team )|length ) }}
-						</span>
-					</td>
-					<td data-col="extra">
-						<span class="btn btn" style="background-color:#cde4e2;">{{ " %02d"|format( prospects|filter(p => p.motifSaise == 2 and p.team == team )|length ) }}
-						</span>
-					</td>
-					<td data-col="extra">
-						<span class="btn btn" style="background-color:#cde4e2;">{{ " %02d"|format( prospects|filter(p => p.motifSaise == 3 and p.team == team )|length ) }}</span>
-					</td>
-					<td data-col="extra">
-						<span class="btn btn" style="background-color:#cde4e2;">{{ " %02d"|format( prospects|filter(p => p.motifSaise == 4 and p.team == team )|length ) }}</span>
-					</td>
-					<td data-col="extra">
-						<span class="btn btn" style="background-color:#cde4e2;">{{ " %02d"|format( prospects|filter(p => p.motifSaise == 5 and p.team == team )|length ) }}</span>
-					</td>
-					<td data-col="extra">
-						<span class="btn btn" style="background-color:#cde4e2;">{{ " %02d"|format( prospects|filter(p => p.motifSaise == 6 and p.team == team )|length ) }}</span>
-					</td>
-					<td data-col="activites">
-						<span class='btn btn-warning'>{{ " %02d"|format( prospects|filter(p => p.activites == 1 and p.team == team )|length ) }}</span>
-					</td>
-					<td data-col="activites">
-						<span class='btn btn-warning'>{{ " %02d"|format( prospects|filter(p => p.activites == 2 and p.team == team )|length ) }}</span>
-					</td>
-					<td data-col="activites">
-						<span class='btn btn-warning'>{{ " %02d"|format( prospects|filter(p => p.activites == 3 and p.team == team )|length ) }}</span>
-					</td>
-					<td data-col="activites">
-						<span class='btn btn-warning'>{{ " %02d"|format( prospects|filter(p => p.activites == 4 and p.team == team )|length ) }}</span>
-					</td>
-					<td data-col="activites">
-						<span class='btn btn-warning'>{{ " %02d"|format( prospects|filter(p => p.activites == 5 and p.team == team )|length ) }}</span>
-					</td>
-					<td data-col="activites">
-						<span class='btn btn-warning'>{{ " %02d"|format( prospects|filter(p => p.activites == 6  and p.team == team )|length ) }}</span>
-					</td>
-					<td data-col="activites">
-						<span class='btn btn-warning'>{{ " %02d"|format( prospects|filter(p => p.activites == 7 and p.team == team )|length ) }}</span>
-					</td>
-					<td data-col="activites">
-						<span class='btn btn-warning'>{{ " %02d"|format( prospects|filter(p => p.activites == 8 and p.team == team )|length ) }}</span>
-					</td>
-				</tr>
-				{# les comercials #}
-				{% for  user in team.users %}
-					<tr class="expanded-content">
+						<th data-col="activites">TPM</th>
+						<th data-col="activites">VTC</th>
+						<th data-col="activites">Sociéte</th>
+						<th data-col="activites">Décenale</th>
+						<th data-col="activites">Dommage</th>
+						<th data-col="activites">Marchandise</th>
+						<th data-col="activites">Négociant</th>
+						<th data-col="activites">Prof Auto</th>
 
+					</tr>
+				</thead>
+				<tbody>
+					{# total #}
+					<tr>
 						<td>
-							<button class="btn btn ">
-								{{ user.username }}
+							<button class="btn btn" style="background-color:#B0E0E6;">Total
 							</button>
 						</td>
-						<td>
 
+						<td>
 							<span class="btn btn" style="background-color:	#00BFFF;">
-								{{ " %02d"|format(prospects|filter(p => p.comrcl is not null and p.comrcl == user)|length) }}
-							</span>
-						</td>
-						<td>
-							<span class="btn btn" style="background-color:rgb(122, 213, 255);">
-								{{ " %02d"|format(
-                    contrats|filter(c => c.user is same as(user) and c.status == 1)|length 
-                ) }}
-							</span>
+								{{ " %02d"|format(prospects|filter(p => p.team is not null  )|length )}}</span>
 						</td>
 
+						<td>
+							<span class="btn btn" style="background-color:	rgb(122, 213, 255);">{{ " %02d"|format( contrats|filter(p => p.status == 1   )|length ) }}
+							</span>
+						</td>
 						<td>
 							<span class="btn btn-primary">
-								{{ contrats|filter(c => c.user is same as(user) and c.status == 1)|reduce((carry, c) => carry + (c.cotisation ?? 0), 0)|number_format(2, ',', ' ') }}
+								{{ contrats|filter(c => c.status == 1)|reduce((carry, c) => carry + (c.cotisation ?? 0), 0)|number_format(2, ',', ' ') }}
 								€
 							</span>
 						</td>
 
 						<td>
-							<span class="btn btn" style="background-color:	#FFA07A;">
-								{{ " %02d"|format(prospects|filter(p => p.source == 3 and p.comrcl == user)|length) }}
+							<span class="btn btn" style="background-color:	#FFA07A;">{{ " %02d"|format( prospects|filter(p => p.source == 1 and p.team is not null  )|length ) }}
 							</span>
 						</td>
 						<td>
-							<span class="btn btn" style="background-color:	#FFA07A;">
-								{{ " %02d"|format(prospects|filter(p => p.source is null and p.comrcl == user)|length) }}
-							</span>
+							<span class="btn btn" style="background-color:	#FFA07A;">{{ " %02d"|format( prospects|filter(p => p.source is null and p.team is not null )|length ) }}</span>
 						</td>
 						<td>
-							<span class="btn btn" style="background-color:	#FFA07A;">
-								{{ " %02d"|format(prospects|filter(p => p.source == 2  and p.comrcl == user)|length) }}
-							</span>
+							<span class="btn btn" style="background-color:	#FFA07A;">{{ " %02d"|format( prospects|filter(p => p.source == 2 and p.team is not null )|length ) }}</span>
 						</td>
 						<td>
-							<span class="btn btn" style="background-color:	#98FB98;">
-								{{ " %02d"|format(prospects|filter(p => p.typeProspect == 1 and p.comrcl == user)|length) }}
+							<span class="btn btn" style="background-color:	#98FB98;">{{ " %02d"|format(prospects|filter(p => p.typeProspect == 1 and p.team is not null )|length ) }}</span>
+						</td>
+						<td>
+							<span class="btn btn" style="background-color:	#98FB98;">{{ " %02d"|format( prospects|filter(p => p.typeProspect == 2 and p.team is not null )|length ) }}</span>
+						</td>
+						<td data-col="extra">
+							<span class="btn btn" style="background-color:#cde4e2;">{{ " %02d"|format( prospects|filter(p => p.motifSaise == 1 and p.team is not null )|length ) }}
 							</span>
 						</td>
-						<td style="background-color:warnig;">
-							<span class="btn btn" style="background-color:	#98FB98;">
-								{{ " %02d"|format(prospects|filter(p => p.typeProspect == 2 and p.comrcl == user)|length) }}
+						<td data-col="extra">
+							<span class="btn btn" style="background-color:#cde4e2;">{{ " %02d"|format( prospects|filter(p => p.motifSaise == 2 and p.team is not null )|length ) }}</span>
+						</td>
+						<td data-col="extra">
+							<span class="btn btn" style="background-color:#cde4e2;">{{ " %02d"|format( prospects|filter(p => p.motifSaise == 3 and p.team is not null )|length ) }}</span>
+						</td>
+						<td data-col="extra">
+							<span class="btn btn" style="background-color:#cde4e2;">{{ " %02d"|format( prospects|filter(p => p.motifSaise == 4 and p.team is not null )|length ) }}</span>
+						</td>
+						<td data-col="extra">
+							<span class="btn btn" style="background-color:#cde4e2;">{{ " %02d"|format( prospects|filter(p => p.motifSaise == 5 and p.team is not null )|length ) }}</span>
+						</td>
+						<td data-col="extra">
+							<span class="btn btn" style="background-color:#cde4e2;">{{ " %02d"|format( prospects|filter(p => p.motifSaise == 6 and p.team is not null )|length ) }}</span>
+						</td>
+						<td data-col="activites">
+							<span class='btn btn-warning'>{{ " %02d"|format( prospects|filter(p => p.activites == 1 and p.team is not null )|length ) }}
 							</span>
 						</td>
-						<td data-col="extra">
-							<span class="btn btn" style="background-color: #cde4e2;">{{ " %02d"|format( prospects|filter(p => p.motifSaise == 1 and p.comrcl == user )|length ) }}</span>
-						</td>
-						<td data-col="extra">
-							<span class="btn btn" style="background-color:#cde4e2;">{{ " %02d"|format( prospects|filter(p => p.motifSaise == 2 and p.comrcl == user )|length ) }}</span>
-						</td>
-						<td data-col="extra">
-							<span class="btn btn" style="background-color:#cde4e2;">{{ " %02d"|format( prospects|filter(p => p.motifSaise == 3 and p.comrcl == user )|length ) }}</span>
-						</td>
-						<td data-col="extra">
-							<span class="btn btn" style="background-color:#cde4e2;">{{ " %02d"|format( prospects|filter(p => p.motifSaise == 4 and p.comrcl == user )|length ) }}</span>
-						</td>
-						<td data-col="extra">
-							<span class="btn btn" style="background-color:#cde4e2;">{{ " %02d"|format( prospects|filter(p => p.motifSaise == 5 and p.comrcl == user )|length ) }}</span>
-						</td>
-						<td data-col="extra">
-							<span class="btn btn" style="background-color:#cde4e2;">{{ " %02d"|format( prospects|filter(p => p.motifSaise == 6 and p.comrcl == user )|length ) }}</span>
+						<td data-col="activites">
+							<span class='btn btn-warning'>{{ " %02d"|format( prospects|filter(p => p.activites == 2 and p.team is not null )|length ) }}</span>
 						</td>
 						<td data-col="activites">
-							<span class='btn btn-warning'>{{ " %02d"|format( prospects|filter(p => p.activites == 1 and p.comrcl == user )|length ) }}</span>
+							<span class='btn btn-warning'>{{ " %02d"|format( prospects|filter(p => p.activites == 3 and p.team is not null )|length ) }}</span>
 						</td>
 						<td data-col="activites">
-							<span class='btn btn-warning'>{{ " %02d"|format( prospects|filter(p => p.activites == 2 and p.comrcl == user )|length ) }}</span>
+							<span class='btn btn-warning'>{{ " %02d"|format( prospects|filter(p => p.activites == 4 and p.team is not null )|length ) }}</span>
 						</td>
 						<td data-col="activites">
-							<span class='btn btn-warning'>{{ " %02d"|format( prospects|filter(p => p.activites == 3 and p.comrcl == user )|length ) }}</span>
+							<span class='btn btn-warning'>{{ " %02d"|format( prospects|filter(p => p.activites == 5 and p.team is not null )|length ) }}</span>
 						</td>
 						<td data-col="activites">
-							<span class='btn btn-warning'>{{ " %02d"|format( prospects|filter(p => p.activites == 4 and p.comrcl == user )|length ) }}</span>
+							<span class='btn btn-warning'>{{ " %02d"|format( prospects|filter(p => p.activites == 6  and p.team is not null )|length ) }}</span>
 						</td>
 						<td data-col="activites">
-							<span class='btn btn-warning'>{{ " %02d"|format( prospects|filter(p => p.activites == 5 and p.comrcl == user )|length ) }}</span>
+							<span class='btn btn-warning'>{{ " %02d"|format( prospects|filter(p => p.activites == 7 and p.team is not null )|length ) }}</span>
 						</td>
 						<td data-col="activites">
-							<span class='btn btn-warning'>{{ " %02d"|format( prospects|filter(p => p.activites == 6  and p.comrcl == user )|length ) }}</span>
+							<span class='btn btn-warning'>{{ " %02d"|format( prospects|filter(p => p.activites == 8 and p.team is not null )|length ) }}</span>
 						</td>
-						<td data-col="activites">
-							<span class='btn btn-warning'>{{ " %02d"|format( prospects|filter(p => p.activites == 7 and p.comrcl == user )|length ) }}</span>
-						</td>
-						<td data-col="activites">
-							<span class='btn btn-warning'>{{ " %02d"|format( prospects|filter(p => p.activites == 8 and p.comrcl == user )|length ) }}</span>
-						</td>
+
 					</tr>
-				{% endfor %}
-			{% endfor %}
-		</tbody>
-	</table>
+					{# les equipes #}
+					{% for team in teams %}
+						<tr class="expandable-row">
+							<td>
+								<button class="btn btn" style="background-color:#B0E0E6;">{{ team.name }}
+								</button>
+							</td>
+
+							<td>
+								<span class="btn btn" style="background-color:	#00BFFF;">
+									{{ " %02d"|format(prospects|filter(p => p.team is not null and p.team == team  )|length )}}
+								</span>
+							</td>
+							<td>
+								<span class="btn btn" style="background-color: rgb(122, 213, 255);">
+									{{ " %02d"|format(
+                    contrats|filter(c => c.user is not null  and c.status == 1 and team.users.contains(c.user))|length 
+                ) }}
+								</span>
+							</td>
+
+							<td>
+								<span class="btn btn-primary">
+									{{ contrats|filter(c => c.status == 1 and team.users.contains(c.user))|reduce((carry, c) => carry + (c.cotisation ?? 0), 0)|number_format(2, ',', ' ') }}
+									€
+								</span>
+							</td>
 
 
-	<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+							<td>
+								<span class="btn btn" style="background-color:	#FFA07A;">
+									{{ " %02d"|format(prospects|filter(p => p.source == 1 and p.team == team)|length) }}
+								</span>
+							</td>
+							<td>
+								<span class="btn btn" style="background-color:	#FFA07A;">
+									{{ " %02d"|format(prospects|filter(p => p.source is null and p.team == team)|length) }}
+								</span>
+							</td>
+							<td>
+								<span class="btn btn" style="background-color:	#FFA07A;">
+									{{ " %02d"|format(prospects|filter(p => p.source == 2 and p.team == team)|length) }}
+								</span>
+							</td>
+							<td>
+								<span class="btn btn" style="background-color:	#98FB98;">
+									{{ " %02d"|format(prospects|filter(p => p.typeProspect == 1 and p.team == team)|length) }}
+								</span>
+							</td>
+							<td style="background-color:warning;">
+								<span class="btn btn" style="background-color:	#98FB98;">
+									{{ " %02d"|format(prospects|filter(p => p.typeProspect == 2 and p.team == team)|length) }}
+								</span>
+							</td>
+							<td data-col="extra">
+								<span class="btn btn" style="background-color: #cde4e2;">{{ " %02d"|format( prospects|filter(p => p.motifSaise == 1 and p.team == team )|length ) }}
+								</span>
+							</td>
+							<td data-col="extra">
+								<span class="btn btn" style="background-color:#cde4e2;">{{ " %02d"|format( prospects|filter(p => p.motifSaise == 2 and p.team == team )|length ) }}
+								</span>
+							</td>
+							<td data-col="extra">
+								<span class="btn btn" style="background-color:#cde4e2;">{{ " %02d"|format( prospects|filter(p => p.motifSaise == 3 and p.team == team )|length ) }}</span>
+							</td>
+							<td data-col="extra">
+								<span class="btn btn" style="background-color:#cde4e2;">{{ " %02d"|format( prospects|filter(p => p.motifSaise == 4 and p.team == team )|length ) }}</span>
+							</td>
+							<td data-col="extra">
+								<span class="btn btn" style="background-color:#cde4e2;">{{ " %02d"|format( prospects|filter(p => p.motifSaise == 5 and p.team == team )|length ) }}</span>
+							</td>
+							<td data-col="extra">
+								<span class="btn btn" style="background-color:#cde4e2;">{{ " %02d"|format( prospects|filter(p => p.motifSaise == 6 and p.team == team )|length ) }}</span>
+							</td>
+							<td data-col="activites">
+								<span class='btn btn-warning'>{{ " %02d"|format( prospects|filter(p => p.activites == 1 and p.team == team )|length ) }}</span>
+							</td>
+							<td data-col="activites">
+								<span class='btn btn-warning'>{{ " %02d"|format( prospects|filter(p => p.activites == 2 and p.team == team )|length ) }}</span>
+							</td>
+							<td data-col="activites">
+								<span class='btn btn-warning'>{{ " %02d"|format( prospects|filter(p => p.activites == 3 and p.team == team )|length ) }}</span>
+							</td>
+							<td data-col="activites">
+								<span class='btn btn-warning'>{{ " %02d"|format( prospects|filter(p => p.activites == 4 and p.team == team )|length ) }}</span>
+							</td>
+							<td data-col="activites">
+								<span class='btn btn-warning'>{{ " %02d"|format( prospects|filter(p => p.activites == 5 and p.team == team )|length ) }}</span>
+							</td>
+							<td data-col="activites">
+								<span class='btn btn-warning'>{{ " %02d"|format( prospects|filter(p => p.activites == 6  and p.team == team )|length ) }}</span>
+							</td>
+							<td data-col="activites">
+								<span class='btn btn-warning'>{{ " %02d"|format( prospects|filter(p => p.activites == 7 and p.team == team )|length ) }}</span>
+							</td>
+							<td data-col="activites">
+								<span class='btn btn-warning'>{{ " %02d"|format( prospects|filter(p => p.activites == 8 and p.team == team )|length ) }}</span>
+							</td>
+						</tr>
+						{# les comercials #}
+						{% for  user in team.users %}
+							<tr class="expanded-content">
 
-	<script>
-		{# Hide all rows comercials #}
+								<td>
+									<button class="btn btn ">
+										{{ user.username }}
+									</button>
+								</td>
+								<td>
+
+									<span class="btn btn" style="background-color:	#00BFFF;">
+										{{ " %02d"|format(prospects|filter(p => p.comrcl is not null and p.comrcl == user)|length) }}
+									</span>
+								</td>
+								<td>
+									<span class="btn btn" style="background-color:rgb(122, 213, 255);">
+										{{ " %02d"|format(
+                    contrats|filter(c => c.user is same as(user) and c.status == 1)|length 
+                ) }}
+									</span>
+								</td>
+
+								<td>
+									<span class="btn btn-primary">
+										{{ contrats|filter(c => c.user is same as(user) and c.status == 1)|reduce((carry, c) => carry + (c.cotisation ?? 0), 0)|number_format(2, ',', ' ') }}
+										€
+									</span>
+								</td>
+
+								<td>
+									<span class="btn btn" style="background-color:	#FFA07A;">
+										{{ " %02d"|format(prospects|filter(p => p.source == 1 and p.comrcl == user)|length) }}
+									</span>
+								</td>
+								<td>
+									<span class="btn btn" style="background-color:	#FFA07A;">
+										{{ " %02d"|format(prospects|filter(p => p.source is null and p.comrcl == user)|length) }}
+									</span>
+								</td>
+								<td>
+									<span class="btn btn" style="background-color:	#FFA07A;">
+										{{ " %02d"|format(prospects|filter(p => p.source == 2  and p.comrcl == user)|length) }}
+									</span>
+								</td>
+								<td>
+									<span class="btn btn" style="background-color:	#98FB98;">
+										{{ " %02d"|format(prospects|filter(p => p.typeProspect == 1 and p.comrcl == user)|length) }}
+									</span>
+								</td>
+								<td style="background-color:warnig;">
+									<span class="btn btn" style="background-color:	#98FB98;">
+										{{ " %02d"|format(prospects|filter(p => p.typeProspect == 2 and p.comrcl == user)|length) }}
+									</span>
+								</td>
+								<td data-col="extra">
+									<span class="btn btn" style="background-color: #cde4e2;">{{ " %02d"|format( prospects|filter(p => p.motifSaise == 1 and p.comrcl == user )|length ) }}</span>
+								</td>
+								<td data-col="extra">
+									<span class="btn btn" style="background-color:#cde4e2;">{{ " %02d"|format( prospects|filter(p => p.motifSaise == 2 and p.comrcl == user )|length ) }}</span>
+								</td>
+								<td data-col="extra">
+									<span class="btn btn" style="background-color:#cde4e2;">{{ " %02d"|format( prospects|filter(p => p.motifSaise == 3 and p.comrcl == user )|length ) }}</span>
+								</td>
+								<td data-col="extra">
+									<span class="btn btn" style="background-color:#cde4e2;">{{ " %02d"|format( prospects|filter(p => p.motifSaise == 4 and p.comrcl == user )|length ) }}</span>
+								</td>
+								<td data-col="extra">
+									<span class="btn btn" style="background-color:#cde4e2;">{{ " %02d"|format( prospects|filter(p => p.motifSaise == 5 and p.comrcl == user )|length ) }}</span>
+								</td>
+								<td data-col="extra">
+									<span class="btn btn" style="background-color:#cde4e2;">{{ " %02d"|format( prospects|filter(p => p.motifSaise == 6 and p.comrcl == user )|length ) }}</span>
+								</td>
+								<td data-col="activites">
+									<span class='btn btn-warning'>{{ " %02d"|format( prospects|filter(p => p.activites == 1 and p.comrcl == user )|length ) }}</span>
+								</td>
+								<td data-col="activites">
+									<span class='btn btn-warning'>{{ " %02d"|format( prospects|filter(p => p.activites == 2 and p.comrcl == user )|length ) }}</span>
+								</td>
+								<td data-col="activites">
+									<span class='btn btn-warning'>{{ " %02d"|format( prospects|filter(p => p.activites == 3 and p.comrcl == user )|length ) }}</span>
+								</td>
+								<td data-col="activites">
+									<span class='btn btn-warning'>{{ " %02d"|format( prospects|filter(p => p.activites == 4 and p.comrcl == user )|length ) }}</span>
+								</td>
+								<td data-col="activites">
+									<span class='btn btn-warning'>{{ " %02d"|format( prospects|filter(p => p.activites == 5 and p.comrcl == user )|length ) }}</span>
+								</td>
+								<td data-col="activites">
+									<span class='btn btn-warning'>{{ " %02d"|format( prospects|filter(p => p.activites == 6  and p.comrcl == user )|length ) }}</span>
+								</td>
+								<td data-col="activites">
+									<span class='btn btn-warning'>{{ " %02d"|format( prospects|filter(p => p.activites == 7 and p.comrcl == user )|length ) }}</span>
+								</td>
+								<td data-col="activites">
+									<span class='btn btn-warning'>{{ " %02d"|format( prospects|filter(p => p.activites == 8 and p.comrcl == user )|length ) }}</span>
+								</td>
+							</tr>
+						{% endfor %}
+					{% endfor %}
+				</tbody>
+			</table>
+
+
+			<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+
+			<script>
+				{# Hide all rows comercials #}
 $(document).ready(function () {
 $('.expandable-row').click(function () {
 $('.expanded-content').not($(this).nextAll('.expanded-content')).hide();
@@ -421,6 +491,6 @@ extraCols.forEach(col => {
 col.style.display = (col.style.display === 'none' || col.style.display === '') ? 'table-cell' : 'none';
 });
 });
-	</script>
+			</script>
 
-{% endblock %}
+		{% endblock %}

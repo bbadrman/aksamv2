@@ -26,7 +26,9 @@
 		{% endblock %}
 	</head>
 	<body>
-		<div id="loader"></div>
+		<div id="loader">
+			<div class="spinner"></div>
+		</div>
 		<section
 			id="container">
 			<!-- HEADER -->
@@ -80,18 +82,38 @@
 
 			{% block javascripts %}
 				<script>
-
-					{
-# var loader = $('#loader');
-$(window).on('load', function () {
-setTimeout(function () {
-loader.fadeOut('fast', function () {
-$(this).remove();
-});
-}, 200)
-});
-#
+					// Version corrigée du script
+window.APP_LOADER = {
+hide: function () {
+const loader = document.getElementById('loader');
+if (loader && loader.style.display !== 'none') {
+loader.style.transition = 'opacity 0.3s ease';
+loader.style.opacity = '0';
+setTimeout(() => {
+loader.style.display = 'none';
+loader.remove(); // Supprime complètement l'élément
+}, 300);
 }
+},
+
+init: function () { // Auto-hide après chargement
+const hideLoader = () => this.hide();
+
+if (document.readyState === 'complete') {
+setTimeout(hideLoader, 100);
+} else {
+window.addEventListener('load', hideLoader);
+}
+
+// Timeout de sécurité
+setTimeout(hideLoader, 2000);
+}
+};
+
+// Initialiser quand le DOM est prêt
+document.addEventListener('DOMContentLoaded', () => {
+window.APP_LOADER.init();
+});
 				</script>
 			{% endblock %}
 		</body>

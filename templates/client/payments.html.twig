@@ -1,0 +1,209 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Paiements -
+	{{ client.nom }}
+	{{ client.prenom }}
+{% endblock %}
+
+{% block body %}
+	<section class="content-header">
+		<h2>Paiements</h2>
+		<ol class="breadcrumb">
+			<li>
+				<a href="{{ path('app_home') }}">
+					<i class="fa fa-dashboard"></i>
+					Tableau de bord
+				</a>
+			</li>
+			<li class="active">
+				<a href="{{ path('client_index') }}">
+					<i class="fa fa-object-fonction"></i>
+					Tous les clients
+				</a>
+			</li>
+		</ol>
+	</section>
+	<br>
+	<div class="container-fluid">
+		<div class="row">
+			<div class="col-md-12">
+				<div class="card">
+					<div class="card-header">
+						<h3 class="card-title">
+							<i class="fa fa-credit-card"></i>
+							Paiements de
+							{{ client.nom }}
+							{{ client.prenom }}
+						</h3>
+						<div class="card-tools">
+							<a href="{{ path('client_index') }}" class="btn btn-secondary btn-sm">
+								<i class="fa fa-arrow-left"></i>
+								Retour à la liste
+							</a>
+						</div>
+					</div>
+
+					<div class="card-body">
+						{% if payments|length > 0 %}
+							<!-- Résumé -->
+							<div class="row mb-3">
+								<div class="col-md-3">
+									<div class="info-box bg-warning">
+										<span class="info-box-icon">
+											<i class="fa fa-list"></i>
+										</span>
+										<div class="info-box-content">
+											<span class="info-box-text">Total Paiements :</span>
+											<strong>{{ payments|length }}</strong>
+										</div>
+									</div>
+								</div>
+								<div class="col-md-3">
+									<div class="info-box bg-warning">
+										<span class="info-box-icon">
+											<i class="fa fa-euro"></i>
+										</span>
+										<div class="info-box-content">
+											<span class="info-box-text">Total Frais :</span>
+											<strong>
+												{% set total_frais = 0 %}
+												{% for item in payments %}
+													{% set total_frais = total_frais + (item.payment.frais|default(0)) %}
+												{% endfor %}
+												{{ total_frais|number_format(2, ',', ' ') }}
+												€
+											</strong>
+										</div>
+									</div>
+								</div>
+								<div class="col-md-3">
+									<div class="info-box bg-warning">
+										<span class="info-box-icon">
+											<i class="fa fa-money"></i>
+										</span>
+										<div class="info-box-content">
+											<span class="info-box-text">Total Cotisations :</span>
+											<strong>
+												{% set total_cotisation = 0 %}
+												{% for item in payments %}
+													{% set total_cotisation = total_cotisation + (item.payment.cotisation|default(0)) %}
+												{% endfor %}
+												{{ total_cotisation|number_format(2, ',', ' ') }}
+												€
+											</strong>
+										</div>
+									</div>
+								</div>
+								<div class="col-md-3">
+									<div class="info-box bg-warning">
+										<span class="info-box-icon">
+											<i class="fa fa-calculator"></i>
+										</span>
+										<div class="info-box-content">
+											<span class="info-box-text">Total Montants :</span>
+											<strong>
+												{% set total_total_montants = 0 %}
+												{% for item in payments %}
+													{% set total_total_montants = total_total_montants + (item.total_valid_montants|default(0)) %}
+												{% endfor %}
+												{{ total_total_montants|number_format(2, ',', ' ') }}
+												€
+											</strong>
+										</div>
+									</div>
+								</div>
+							</div>
+
+							<!-- Tableau des paiements -->
+							<div class="table-responsive">
+								<table class="table table-striped table-hover">
+									<thead class="thead-dark">
+										<tr>
+											<th>ID Paiement</th>
+											<th>Contrat</th>
+											<th>Frais</th>
+											<th>Cotisation</th>
+											<th>Montant</th>
+											<th>Reste</th>
+											<th>Date de création</th>
+											<th>Actions</th>
+										</tr>
+									</thead>
+									<tbody>
+										{% for item in payments %}
+											{% set payment = item.payment %}
+											{% set contrat = item.contrat %}
+											{% set total_montants = item.total_valid_montants|default(0) %}
+											<tr>
+												<td>
+													<span class="badge badge-primary">#{{ payment.id }}</span>
+												</td>
+												<td>
+													<a href="{{ path('app_contrat_show', {'id': contrat.id}) }}" class="text-decoration-none">
+														Contrat #{{ contrat.id }}
+													</a>
+												</td>
+												<td>
+													<span class="text-success font-weight-bold">
+														{{ payment.frais ? payment.frais|number_format(2, ',', ' ') ~ ' €' : '—' }}
+													</span>
+												</td>
+												<td>
+													<span class="text-warning font-weight-bold">
+														{{ payment.cotisation ? payment.cotisation|number_format(2, ',', ' ') ~ ' €' : '—' }}
+													</span>
+												</td>
+												<td>
+													<span class="text-info font-weight-bold">
+														{{ total_montants ? total_montants|number_format(2, ',', ' ') ~ ' €' : '—' }}
+													</span>
+													{% if item.valid_montants|length > 0 %}
+														<small class="d-block text-muted">
+															{% for montant in item.valid_montants %}
+																{% if montant > 0 %}
+																	{{ montant|number_format(2, ',', ' ') }}€
+																	{% if not loop.last %}
+																		+
+																	{% endif %}
+																{% endif %}
+															{% endfor %}
+														</small>
+													{% endif %}
+												</td>
+												<td>
+													{% set reste = (payment.frais|default(0)) - (total_montants|default(0)) %}
+													<span class="text-primary font-weight-bold">
+														{{ reste|number_format(2, ',', ' ') }}
+														€
+													</span>
+												</td>
+												<td>
+													{{ payment.creatAt ? payment.creatAt|date('d/m/Y H:i') : '—' }}
+												</td>
+												<td>
+													<div class="btn-group btn-group-sm">
+														{% if is_granted('ROLE_ADMIN') %}
+															<a href="{{ path('app_payment_edit', {'id': payment.id}) }}" class="btn btn-warning btn-xs" title="Modifier">
+																<i class="fa fa-edit"></i>
+															</a>
+														{% endif %}
+													</div>
+												</td>
+											</tr>
+										{% endfor %}
+									</tbody>
+								</table>
+							</div>
+						{% else %}
+							<div class="alert alert-info text-center">
+								<i class="fa fa-info-circle fa-2x mb-2"></i>
+								<h4>Aucun paiement trouvé</h4>
+								<p>Ce client n'a aucun paiement associé à ses contrats.</p>
+							</div>
+						{% endif %}
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+{% endblock %}

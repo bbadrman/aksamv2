@@ -5,6 +5,7 @@ namespace App\Repository;
 
 use Knp\Component\Pager\PaginatorInterface;
 use App\Entity\Prospect;
+use App\Entity\Team;
 use App\Entity\User;
 use App\Search\SearchProspect;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
@@ -899,12 +900,14 @@ class ProspectRepository extends ServiceEntityRepository
 
     public function findByDateInterval(\DateTimeInterface $startDate, \DateTimeInterface $endDate): array
     {
+        $endDateAdjusted = \DateTime::createFromInterface($endDate);
+        $endDateAdjusted->setTime(23, 59, 59);
         return $this->createQueryBuilder('p')
 
 
             ->where('p.creatAt BETWEEN :startDate AND :endDate')
             ->setParameter('startDate', $startDate)
-            ->setParameter('endDate', $endDate)
+            ->setParameter('endDate', $endDateAdjusted)
             ->getQuery()
             ->getResult();
     }
@@ -1205,5 +1208,346 @@ class ProspectRepository extends ServiceEntityRepository
             $source,
             $relance
         )->getResult();
+    }
+
+
+    /**
+     * Compte le nombre total de prospects pour la recherche générale (ADMIN/DEV)
+     */
+    public function countSearch(SearchProspect $search): int
+    {
+        $query = $this->createQueryBuilder('p')
+            ->select('COUNT(p.id)');
+
+        // Ajouter les jointures seulement si nécessaire pour les filtres
+        $needsTeamJoin = !empty($search->team);
+        $needsUserJoin = !empty($search->r);
+
+        if ($needsTeamJoin) {
+            $query->leftJoin('p.team', 't');
+        }
+        if ($needsUserJoin) {
+            $query->leftJoin('p.comrcl', 'f');
+        }
+
+        $query = $this->applySearchFilters($query, $search);
+
+        return (int) $query->getQuery()->getSingleScalarResult();
+    }
+
+    /**
+     * Compte le nombre total de prospects pour un chef d'équipe
+     */
+    public function countAllChefSearch(SearchProspect $search, User $user): int
+    {
+        $teams = $user->getTeams();
+        if ($teams->isEmpty()) {
+            return 0;
+        }
+
+        $query = $this->createQueryBuilder('p')
+            ->select('COUNT(p.id)')
+            ->where('p.team IN (:teams)')
+            ->setParameter('teams', $teams);
+
+        // Jointures conditionnelles
+        $needsTeamJoin = !empty($search->team);
+        $needsUserJoin = !empty($search->r);
+
+        if ($needsTeamJoin) {
+            $query->leftJoin('p.team', 't');
+        }
+        if ($needsUserJoin) {
+            $query->leftJoin('p.comrcl', 'f');
+        }
+
+        $query = $this->applySearchFilters($query, $search);
+
+        return (int) $query->getQuery()->getSingleScalarResult();
+    }
+
+    /**
+     * Compte le nombre total de prospects pour un commercial
+     */
+    public function countByUserAffecterCmrcl(SearchProspect $search, $user): int
+    {
+        $query = $this->createQueryBuilder('p')
+            ->select('COUNT(p.id)')
+            ->andWhere('p.comrcl = :val')
+            ->setParameter('val', $user);
+
+        // Jointures conditionnelles (probablement pas nécessaires pour un commercial)
+        $needsTeamJoin = !empty($search->team);
+        $needsUserJoin = !empty($search->r);
+
+        if ($needsTeamJoin) {
+            $query->leftJoin('p.team', 't');
+        }
+        if ($needsUserJoin) {
+            $query->leftJoin('p.comrcl', 'f');
+        }
+
+        $query = $this->applySearchFilters($query, $search);
+
+        return (int) $query->getQuery()->getSingleScalarResult();
+    }
+
+    /**
+     * Trouve les prospects par équipe et plage de dates
+     */
+    public function findByTeamAndDateRange(Team $team, ?\DateTime $startDate = null, ?\DateTime $endDate = null): array
+    {
+        $qb = $this->createQueryBuilder('p')
+            ->andWhere('p.team = :team')
+            ->setParameter('team', $team);
+
+        if ($startDate && $endDate) {
+            $qb->andWhere('p.creatAt BETWEEN :startDate AND :endDate')
+                ->setParameter('startDate', $startDate)
+                ->setParameter('endDate', $endDate);
+        } elseif ($startDate) {
+            $qb->andWhere('p.creatAt >= :startDate')
+                ->setParameter('startDate', $startDate);
+        } elseif ($endDate) {
+            $qb->andWhere('p.creatAt <= :endDate')
+                ->setParameter('endDate', $endDate);
+        }
+
+        return $qb->orderBy('p.creatAt', 'DESC')
+            ->getQuery()
+            ->getResult();
+    }
+
+    /**
+     * Trouve les prospects par commercial et plage de dates
+     */
+    public function findByCommercialAndDateRange(User $commercial, ?\DateTime $startDate = null, ?\DateTime $endDate = null): array
+    {
+        $qb = $this->createQueryBuilder('p')
+            ->andWhere('p.comrcl = :comrcl')
+            ->setParameter('comrcl', $commercial);
+
+        if ($startDate && $endDate) {
+            $qb->andWhere('p.creatAt BETWEEN :startDate AND :endDate')
+                ->setParameter('startDate', $startDate)
+                ->setParameter('endDate', $endDate);
+        } elseif ($startDate) {
+            $qb->andWhere('p.creatAt >= :startDate')
+                ->setParameter('startDate', $startDate);
+        } elseif ($endDate) {
+            $qb->andWhere('p.creatAt <= :endDate')
+                ->setParameter('endDate', $endDate);
+        }
+
+        return $qb->orderBy('p.creatAt', 'DESC')
+            ->getQuery()
+            ->getResult();
+    }
+
+    /**
+     * Compte les prospects par plage de dates
+     */
+    public function countProspectsByDateRange(?\DateTime $startDate = null, ?\DateTime $endDate = null): int
+    {
+        $qb = $this->createQueryBuilder('p')
+            ->select('COUNT(p.id)');
+
+        if ($startDate && $endDate) {
+            $qb->andWhere('p.creatAt BETWEEN :startDate AND :endDate')
+                ->setParameter('startDate', $startDate)
+                ->setParameter('endDate', $endDate);
+        } elseif ($startDate) {
+            $qb->andWhere('p.creatAt >= :startDate')
+                ->setParameter('startDate', $startDate);
+        } elseif ($endDate) {
+            $qb->andWhere('p.creatAt <= :endDate')
+                ->setParameter('endDate', $endDate);
+        }
+
+        return $qb->getQuery()->getSingleScalarResult();
+    }
+
+    /**
+     * Trouve tous les prospects avec leurs relations pour optimiser les requêtes
+     */
+    public function findWithRelations(): array
+    {
+        return $this->createQueryBuilder('p')
+            ->leftJoin('p.team', 't')
+            ->leftJoin('p.comrcl', 'c')
+            ->addSelect('t', 'c')
+            ->orderBy('p.creatAt', 'DESC')
+            ->getQuery()
+            ->getResult();
+    }
+
+    /**
+     * Statistiques par source dans une plage de dates
+     */
+    public function getSourceStats(?\DateTime $startDate = null, ?\DateTime $endDate = null): array
+    {
+        $qb = $this->createQueryBuilder('p')
+            ->select('p.motifSaise as source, COUNT(p.id) as count')
+            ->groupBy('p.motifSaise');
+
+        if ($startDate && $endDate) {
+            $qb->andWhere('p.creatAt BETWEEN :startDate AND :endDate')
+                ->setParameter('startDate', $startDate)
+                ->setParameter('endDate', $endDate);
+        }
+
+        return $qb->getQuery()->getResult();
+    }
+
+    /**
+     * Statistiques par type dans une plage de dates
+     */
+    public function getTypeStats(?\DateTime $startDate = null, ?\DateTime $endDate = null): array
+    {
+        $qb = $this->createQueryBuilder('p')
+            ->select('p.typeProspect as type, COUNT(p.id) as count')
+            ->groupBy('p.typeProspect');
+
+        if ($startDate && $endDate) {
+            $qb->andWhere('p.creatAt BETWEEN :startDate AND :endDate')
+                ->setParameter('startDate', $startDate)
+                ->setParameter('endDate', $endDate);
+        }
+
+        return $qb->getQuery()->getResult();
+    }
+
+    /**
+     * Statistiques par activité dans une plage de dates
+     */
+    public function getActivityStats(?\DateTime $startDate = null, ?\DateTime $endDate = null): array
+    {
+        $qb = $this->createQueryBuilder('p')
+            ->select('p.activites as activity, COUNT(p.id) as count')
+            ->where('p.activites IS NOT NULL')
+            ->groupBy('p.activites');
+
+        if ($startDate && $endDate) {
+            $qb->andWhere('p.creatAt BETWEEN :startDate AND :endDate')
+                ->setParameter('startDate', $startDate)
+                ->setParameter('endDate', $endDate);
+        }
+
+        return $qb->getQuery()->getResult();
+    }
+
+    /**
+     * Statistiques mensuelles
+     */
+    public function getMonthlyStats(?\DateTime $startDate = null, ?\DateTime $endDate = null): array
+    {
+        $qb = $this->createQueryBuilder('p')
+            ->select("DATE_FORMAT(p.creatAt, '%Y-%m') as month, COUNT(p.id) as count")
+            ->where('p.creatAt IS NOT NULL')
+            ->groupBy('month')
+            ->orderBy('month', 'ASC');
+
+        if ($startDate && $endDate) {
+            $qb->andWhere('p.creatAt BETWEEN :startDate AND :endDate')
+                ->setParameter('startDate', $startDate)
+                ->setParameter('endDate', $endDate);
+        }
+
+        return $qb->getQuery()->getResult();
+    }
+
+    /**
+     * Prospects récents (derniers 30 jours)
+     */
+    public function findRecentProspects(int $limit = 10): array
+    {
+        $thirtyDaysAgo = new \DateTime('-30 days');
+
+        return $this->createQueryBuilder('p')
+            ->leftJoin('p.team', 't')
+            ->leftJoin('p.commercial', 'c')
+            ->addSelect('t', 'c')
+            ->where('p.creatAt >= :date')
+            ->setParameter('date', $thirtyDaysAgo)
+            ->orderBy('p.creatAt', 'DESC')
+            ->setMaxResults($limit)
+            ->getQuery()
+            ->getResult();
+    }
+
+    /**
+     * Prospects par statut
+     */
+    public function findByStatus(string $status): array
+    {
+        return $this->createQueryBuilder('p')
+            ->leftJoin('p.team', 't')
+            ->leftJoin('p.commercial', 'c')
+            ->addSelect('t', 'c')
+            ->where('p.statut = :status')
+            ->setParameter('status', $status)
+            ->orderBy('p.creatAt', 'DESC')
+            ->getQuery()
+            ->getResult();
+    }
+
+    /**
+     * Recherche de prospects par mot-clé
+     */
+    public function searchProspects(string $keyword): array
+    {
+        return $this->createQueryBuilder('p')
+            ->leftJoin('p.team', 't')
+            ->leftJoin('p.commercial', 'c')
+            ->addSelect('t', 'c')
+            ->where('p.nom LIKE :keyword OR p.prenom LIKE :keyword OR p.email LIKE :keyword')
+            ->setParameter('keyword', '%' . $keyword . '%')
+            ->orderBy('p.creatAt', 'DESC')
+            ->getQuery()
+            ->getResult();
+    }
+
+    /**
+     * Top équipes par nombre de prospects
+     */
+    public function getTopTeams(int $limit = 5, ?\DateTime $startDate = null, ?\DateTime $endDate = null): array
+    {
+        $qb = $this->createQueryBuilder('p')
+            ->select('t.nom as teamName, COUNT(p.id) as prospectCount')
+            ->leftJoin('p.team', 't')
+            ->where('t.id IS NOT NULL')
+            ->groupBy('t.id')
+            ->orderBy('prospectCount', 'DESC')
+            ->setMaxResults($limit);
+
+        if ($startDate && $endDate) {
+            $qb->andWhere('p.creatAt BETWEEN :startDate AND :endDate')
+                ->setParameter('startDate', $startDate)
+                ->setParameter('endDate', $endDate);
+        }
+
+        return $qb->getQuery()->getResult();
+    }
+
+    /**
+     * Top commerciaux par nombre de prospects
+     */
+    public function getTopCommercials(int $limit = 5, ?\DateTime $startDate = null, ?\DateTime $endDate = null): array
+    {
+        $qb = $this->createQueryBuilder('p')
+            ->select('c.nom as commercialNom, c.prenom as commercialPrenom, COUNT(p.id) as prospectCount')
+            ->leftJoin('p.commercial', 'c')
+            ->where('c.id IS NOT NULL')
+            ->groupBy('c.id')
+            ->orderBy('prospectCount', 'DESC')
+            ->setMaxResults($limit);
+
+        if ($startDate && $endDate) {
+            $qb->andWhere('p.creatAt BETWEEN :startDate AND :endDate')
+                ->setParameter('startDate', $startDate)
+                ->setParameter('endDate', $endDate);
+        }
+
+        return $qb->getQuery()->getResult();
     }
 }

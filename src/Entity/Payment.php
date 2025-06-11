@@ -81,6 +81,18 @@ class Payment
     #[ORM\OneToOne(mappedBy: 'payments', cascade: ['persist', 'remove'])]
     private ?Contrat $contrat = null;
 
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $moyen1 = null;
+
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $moyen2 = null;
+
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $moyen3 = null;
+
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $moyenAcompte = null;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -359,6 +371,54 @@ class Payment
         }
 
         $this->contrat = $contrat;
+
+        return $this;
+    }
+
+    public function getMoyen1(): ?string
+    {
+        return $this->moyen1;
+    }
+
+    public function setMoyen1(?string $moyen1): static
+    {
+        $this->moyen1 = $moyen1;
+
+        return $this;
+    }
+
+    public function getMoyen2(): ?string
+    {
+        return $this->moyen2;
+    }
+
+    public function setMoyen2(?string $moyen2): static
+    {
+        $this->moyen2 = $moyen2;
+
+        return $this;
+    }
+
+    public function getMoyen3(): ?string
+    {
+        return $this->moyen3;
+    }
+
+    public function setMoyen3(?string $moyen3): static
+    {
+        $this->moyen3 = $moyen3;
+
+        return $this;
+    }
+
+    public function getMoyenAcompte(): ?string
+    {
+        return $this->moyenAcompte;
+    }
+
+    public function setMoyenAcompte(?string $moyenAcompte): static
+    {
+        $this->moyenAcompte = $moyenAcompte;
 
         return $this;
     }

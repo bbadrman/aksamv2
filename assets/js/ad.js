@@ -619,6 +619,7 @@ function updateFields() {
 		motifField.options[1].style.display = 'block'; // Option 2
 		motifField.options[2].style.display = 'block'; // Option 3
 		motifField.options[3].style.display = 'block'; // Option 4
+		motifField.options[13].style.display = 'block'; // Option 4
 	} else if (selectedNature === '2') {
 		// Show options 4, 5, and 6
 
@@ -636,6 +637,11 @@ function updateFields() {
 		// Show options 7, 8, and 9
 		motifField.options[10].style.display = 'block'; // Option 11
 		motifField.options[11].style.display = 'block'; // Option 12
+	}
+	else if (selectedNature === '5') {
+
+		motifField.options[12].style.display = 'block'; // Option 11
+
 	}
 }
 

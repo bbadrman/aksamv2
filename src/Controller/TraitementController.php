@@ -81,6 +81,7 @@ final class TraitementController extends AbstractController
             'search_form' => $form->createView()
         ]);
     }
+
     // afficher les nouveaux prospects 
     #[Route('/newprospectchef', name: 'newprospectchef_index', methods: ['GET', 'POST'])]
 
@@ -152,10 +153,11 @@ final class TraitementController extends AbstractController
     }
 
 
+
+
     #[Route('/search', name: 'prospect_search', methods: ['GET'])]
     public function search(Request $request): Response
     {
-
         $data = new SearchProspect();
         $data->page = $request->get('page', 1);
 
@@ -165,33 +167,37 @@ final class TraitementController extends AbstractController
         $user = $this->security->getUser();
         $roles = $user->getRoles();
         $prospect = [];
-
-
+        $totalResults = 0;
 
         if ($form->isSubmitted() && $form->isValid() && !$form->isEmpty()) {
 
-            if (in_array('ROLE_DEV',  $roles, true) || in_array('ROLE_ADMIN',  $roles, true)) {
-                // admi peut chercher toutes les prospects
+            if (in_array('ROLE_DEV', $roles, true) || in_array('ROLE_ADMIN', $roles, true)) {
+                // Admin peut chercher tous les prospects
                 $prospect = $this->prospectRepository->findSearch($data, $user);
-            } else if (in_array('ROLE_CHEF',  $roles, true)) {
-                // chef peut chercher toutes les prospects atacher a leur equipe
+            } else if (in_array('ROLE_CHEF', $roles, true)) {
+                // Chef peut chercher tous les prospects attachés à leur équipe
                 $prospect = $this->prospectRepository->findAllChefSearch($data, $user);
-            } elseif (in_array('ROLE_USER',  $roles, true)) {
-                // cmrcl peut chercher seulement les prospects atacher a lui
+            } elseif (in_array('ROLE_USER', $roles, true)) {
+                // Commercial peut chercher seulement les prospects attachés à lui
                 $prospect = $this->prospectRepository->findByUserAffecterCmrcl($data, $user);
             }
 
+            // Calculer le total à partir de l'objet pagination
+            $totalResults = $prospect->getTotalItemCount();
+
             return $this->render('prospect/index.html.twig', [
                 'prospects' => $prospect,
-                'search_form' => $form->createView()
+                'search_form' => $form->createView(),
+                'totalResults' => $totalResults
             ]);
         }
+
         return $this->render('prospect/search.html.twig', [
             'prospects' => $prospect,
             'search_form' => $form->createView(),
+            'totalResults' => $totalResults
         ]);
     }
-
     /**
      * afficher les relance du jour 
      */

@@ -5,6 +5,8 @@ namespace App\Controller;
 use ApiPlatform\State\Pagination\PaginatorInterface;
 use App\Entity\Client;
 use App\Entity\Contrat;
+use App\Entity\Payment;
+use App\Entity\Transaction;
 use App\Form\ClientType;
 use App\Search\SearchClient;
 use App\Form\ClientValideType;
@@ -19,7 +21,7 @@ use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-
+use Symfony\Component\HttpFoundation\JsonResponse;
 
 #[IsGranted('IS_AUTHENTICATED')]
 #[Route('/client')]
@@ -48,9 +50,24 @@ final class ClientController extends AbstractController
         if ($form->isSubmitted() && $form->isValid() && !$form->isEmpty()) {
             $client =  $this->clientRepository->findClientAll($data,  null);
 
+            // Calculer le nombre de paiements pour chaque client
+            $clientsWithPayments = [];
+            foreach ($client as $c) {
+                $paymentsCount = 0;
+                foreach ($c->getContrats() as $contrat) {
+                    if ($contrat->getPayments()) {
+                        $paymentsCount++;
+                    }
+                }
+                $clientsWithPayments[] = [
+                    'client' => $c,
+                    'payments_count' => $paymentsCount
+                ];
+            }
+
             return $this->render('client/index.html.twig', [
                 'clients' => $client,
-
+                'clients_with_payments' => $clientsWithPayments,
                 'search_form' => $form->createView()
             ]);
         }
@@ -163,6 +180,124 @@ final class ClientController extends AbstractController
         ]);
     }
 
+
+    #[Route('/{id}/payments', name: 'client_payments', methods: ['GET'])]
+    public function getClientPayments(Client $client, EntityManagerInterface $entityManager): Response
+    {
+        // Récupérer tous les numéros de transaction existants dans la table Transaction
+        $transactionRepository = $entityManager->getRepository(Transaction::class);
+        $existingTransactions = $transactionRepository->createQueryBuilder('t')
+            ->select('t.transaction')
+            ->where('t.transaction IS NOT NULL')
+            ->getQuery()
+            ->getResult();
+
+        // Créer un tableau des numéros de transaction pour une recherche plus rapide
+        $transactionNumbers = array_map(function ($item) {
+            return $item['transaction'];
+        }, $existingTransactions);
+
+        // Récupérer tous les paiements du client via ses contrats
+        $payments = [];
+
+        foreach ($client->getContrats() as $contrat) {
+            if ($contrat->getPayments()) {
+                $payment = $contrat->getPayments();
+
+                // Vérifier si au moins une des transactions du payment existe dans la table Transaction
+                $hasMatchingTransaction = false;
+
+                // Tableau des champs de transaction à vérifier dans Payment
+                $paymentTransactions = [
+                    $payment->getTransaction(),
+                    $payment->getTransaction1(),
+                    $payment->getTransaction2(),
+                    $payment->getTransaction3()
+                    // Note: il manque getTransaction4() dans votre entité Payment
+                ];
+
+                // Vérifier si au moins une transaction du payment correspond à une transaction existante
+                foreach ($paymentTransactions as $paymentTransaction) {
+                    if ($paymentTransaction !== null && in_array($paymentTransaction, $transactionNumbers)) {
+                        $hasMatchingTransaction = true;
+                        break;
+                    }
+                }
+
+                // Ajouter le paiement seulement s'il a une transaction correspondante
+                if ($hasMatchingTransaction) {
+                    // Calculer les montants valides (qui ont des transactions correspondantes)
+                    $validMontants = [];
+                    if ($payment->getTransaction() && in_array($payment->getTransaction(), $transactionNumbers)) {
+                        $validMontants[] = $payment->getMontant() ?? 0;
+                    }
+                    if ($payment->getTransaction1() && in_array($payment->getTransaction1(), $transactionNumbers)) {
+                        $validMontants[] = $payment->getMontant1() ?? 0;
+                    }
+                    if ($payment->getTransaction2() && in_array($payment->getTransaction2(), $transactionNumbers)) {
+                        $validMontants[] = $payment->getMontant2() ?? 0;
+                    }
+                    if ($payment->getTransaction3() && in_array($payment->getTransaction3(), $transactionNumbers)) {
+                        $validMontants[] = $payment->getMontant3() ?? 0;
+                    }
+
+                    $payments[] = [
+                        'payment' => $payment,
+                        'contrat' => $contrat,
+                        'client' => $client,
+                        'valid_montants' => $validMontants,
+                        'total_valid_montants' => array_sum($validMontants)
+                    ];
+                }
+            }
+        }
+
+        // Trier les paiements par date de création (plus récent en premier)
+        usort($payments, function ($a, $b) {
+            $dateA = $a['payment']->getCreatAt() ?? new \DateTime('1970-01-01');
+            $dateB = $b['payment']->getCreatAt() ?? new \DateTime('1970-01-01');
+            return $dateB <=> $dateA;
+        });
+
+        return $this->render('client/payments.html.twig', [
+            'client' => $client,
+            'payments' => $payments,
+        ]);
+    }
+
+    // Optionnel : Méthode AJAX pour charger les paiements dynamiquement
+    #[Route('/{id}/payments/ajax', name: 'client_payments_ajax', methods: ['GET'])]
+    public function getClientPaymentsAjax(Client $client): JsonResponse
+    {
+        $payments = [];
+
+        foreach ($client->getContrats() as $contrat) {
+            if ($contrat->getPayments()) {
+                $payment = $contrat->getPayments();
+                $payments[] = [
+                    'id' => $payment->getId(),
+                    'frais' => $payment->getFrais(),
+                    'cotisation' => $payment->getCotisation(),
+                    'creatAt' => $payment->getCreatAt() ? $payment->getCreatAt()->format('Y-m-d H:i') : null,
+                    'contrat_id' => $contrat->getId(),
+                    'total' => floatval($payment->getFrais() ?? 0) + floatval($payment->getCotisation() ?? 0)
+                ];
+            }
+        }
+
+        // Trier par date
+        usort($payments, function ($a, $b) {
+            return ($b['creatAt'] ?? '1970-01-01') <=> ($a['creatAt'] ?? '1970-01-01');
+        });
+
+        return $this->json([
+            'success' => true,
+            'payments' => $payments,
+            'total_payments' => count($payments),
+            'client_name' => $client->getNom() . ' ' . $client->getPrenom()
+        ]);
+    }
+
     #[Route('/{id}', name: 'app_client_show', methods: ['GET'])]
     public function show(Client $client): Response
     {
@@ -170,6 +305,7 @@ final class ClientController extends AbstractController
             'client' => $client,
         ]);
     }
+
 
     #[Route('/{id}/edit', name: 'app_client_edit', methods: ['GET', 'POST'])]
     public function edit(Request $request, Client $client, EntityManagerInterface $entityManager): Response

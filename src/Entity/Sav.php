@@ -55,9 +55,16 @@ class Sav
     #[ORM\Column(type: Types::DATETIME_MUTABLE, nullable: true)]
     private ?\DateTimeInterface $dateAjout = null;
 
+    /**
+     * @var Collection<int, RelanceSav>
+     */
+    #[ORM\OneToMany(targetEntity: RelanceSav::class, mappedBy: 'sav')]
+    private Collection $relanceSavs;
+
     public function __construct()
     {
         $this->afect = new ArrayCollection();
+        $this->relanceSavs = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -217,6 +224,36 @@ class Sav
     public function setDateAjout(?\DateTimeInterface $dateAjout): static
     {
         $this->dateAjout = $dateAjout;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, RelanceSav>
+     */
+    public function getRelanceSavs(): Collection
+    {
+        return $this->relanceSavs;
+    }
+
+    public function addRelanceSav(RelanceSav $relanceSav): static
+    {
+        if (!$this->relanceSavs->contains($relanceSav)) {
+            $this->relanceSavs->add($relanceSav);
+            $relanceSav->setSav($this);
+        }
+
+        return $this;
+    }
+
+    public function removeRelanceSav(RelanceSav $relanceSav): static
+    {
+        if ($this->relanceSavs->removeElement($relanceSav)) {
+            // set the owning side to null (unless already changed)
+            if ($relanceSav->getSav() === $this) {
+                $relanceSav->setSav(null);
+            }
+        }
 
         return $this;
     }

@@ -586,6 +586,11 @@ function updateFields() {
 		motifField.options[10].style.display = 'block'; // Option 11
 		motifField.options[11].style.display = 'block'; // Option 12
 	}
+	else if (selectedNature === '5') {
+		// Show options 7, 8, and 9
+		motifField.options[12].style.display = 'block'; // Option 11
+
+	}
 }
 
 // Attach event listener to the nature field

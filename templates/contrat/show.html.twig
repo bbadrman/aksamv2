@@ -187,23 +187,23 @@
 			</tr>
 
 			<tr>
-				<th>regelement</th>
+				<th>Payments</th>
 				<td>
 					<ul>
-						{% for reglement in contrat.regelement %}
+						{% for payment in contrat.payments %}
 							<li>
 
 								date:
-								{{ reglement.dateReglement ? reglement.dateReglement|date('Y-m-d H:i') : '' }}
+								{{ payment.dateReglement ? reglement.dateReglement|date('Y-m-d H:i') : '' }}
 								<br>
 								montant:
-								{{ reglement.montantReglement }}
+								{{ payment.frais }}
 								<br>
 								Nr transaction
-								{{ reglement.transaction }}
+								{{ payment.transaction }}
 								<br>
 								Moyen:
-								{{ reglement.moyen }}</li>
+								{{ payment.moyen }}</li>
 						{% else %}
 							<li>Aucun règlement</li>
 						{% endfor %}

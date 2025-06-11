@@ -11,7 +11,6 @@
 					{% for message in messages %}
 						{{ message | raw }}
 					{% endfor %}
-
 				</div>
 			</div>
 		{% endfor %}
@@ -49,12 +48,12 @@
 		</section>
 		<div class="row mt">
 			<div class="col-xs-12 mx-auto d-flex justify-content-center">
-
 				<div class="row" style="margin-right: 12px;  ">
 					{% include 'transaction/_search_form.html.twig' with {search_form: search_form} only %}
 				</div>
 			</div>
 		</div>
+
 		<div class="row mt">
 			<div class="col-lg-12">
 				<div class="content-panel">
@@ -66,50 +65,88 @@
 								<th>Nom</th>
 								<th>DatePaiement</th>
 								<th>Motif</th>
-								<th>Debit</th>
-								<th>Credit</th>
+								<th class="text-right">Debit</th>
+								<th class="text-right">Credit</th>
 								<th>Moyen</th>
 								<th>Transaction</th>
-								<th>actions</th>
+								<th>Actions</th>
 							</tr>
 						</thead>
 						<tbody>
+							{# Calcul des totaux #}
+							{% set totalDebit = 0 %}
+							{% set totalCredit = 0 %}
 
 							{% for transaction in transactions %}
+								{% set totalDebit = totalDebit + (transaction.debit|default(0)) %}
+								{% set totalCredit = totalCredit + (transaction.credit|default(0)) %}
+
 								<tr>
 									<td>{{ transaction.comrcl }}</td>
 									<td>{{ transaction.commande }}</td>
 									<td>{{ transaction.datePaiement ? transaction.datePaiement|date('Y-m-d H:i:s') : '' }}</td>
 									<td>{{ transaction.motif }}</td>
-									<td>{{ transaction.debit }}</td>
-									<td>{{ transaction.credit }}</td>
+									<td class="text-right">
+										{% if transaction.debit %}
+											<span class="text-danger">{{ transaction.debit|number_format(2, ',', ' ') }}
+												€</span>
+										{% else %}
+											-
+										{% endif %}
+									</td>
+									<td class="text-right">
+										{% if transaction.credit %}
+											<span class="text-success">{{ transaction.credit|number_format(2, ',', ' ') }}
+												€</span>
+										{% else %}
+											-
+										{% endif %}
+									</td>
 									<td>{{ transaction.moyen }}</td>
 									<td>{{ transaction.transaction }}</td>
 									<td>
 										<a href="{{ path('app_transaction_show', {'id': transaction.id}) }}" class="btn btn-success btn-xs">
 											<i class="fa fa-eye fa-2x text-primary" aria-hidden="true"></i>
 										</a>
-
-
 									</td>
 								</tr>
 							{% else %}
 								<tr>
-									<td colspan="10">no records found</td>
+									<td colspan="9">Aucun enregistrement trouvé</td>
 								</tr>
 							{% endfor %}
 						</tbody>
+
+						{# Ligne de totaux sous le tableau #}
+						{% if transactions|length > 0 %}
+							<tfoot style="border-top: 3px solid #007bff; background-color: #f1f3f4;">
+								<tr>
+									<td colspan="4" class="text-right" style="font-weight: bold; padding: 12px; font-size: 16px;">
+										<strong>TOTAL :</strong>
+									</td>
+									<td class="text-right" style="font-weight: bold; padding: 12px; font-size: 16px;">
+										<strong class="text-danger">{{ totalDebit|number_format(2, ',', ' ') }}
+											€</strong>
+									</td>
+									<td class="text-right" style="font-weight: bold; padding: 12px; font-size: 16px;">
+										<strong class="text-success">{{ totalCredit|number_format(2, ',', ' ') }}
+											€</strong>
+									</td>
+									<td colspan="3" style="padding: 12px;"></td>
+								</tr>
+							</tfoot>
+						{% endif %}
+
 						<tfoot class="text-center">
 							<tr>
-								<td colspan="7">
+								<td colspan="9">
 									{{ knp_pagination_render(transactions, 'pagination.html.twig') }}
 								</td>
 							</tr>
 						</tfoot>
-
 					</table>
-
 				</div>
 			</div>
 		</div>
-	{% endblock %}
+	</div>
+{% endblock %}

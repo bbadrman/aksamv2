@@ -32,15 +32,58 @@ body {
     font-size: 15px;
 }
 
-/* #loader {
+/*  loader */
+#loader {
     position: fixed;
+    top: 0;
+    left: 0;
     width: 100%;
     height: 100vh;
-    background-color: transparent;
-    background: url("../images/Loading.gif") no-repeat center;
+    /* background-color: rgba(255, 255, 255, 0.9); */
+    display: flex;
+    justify-content: center;
+    align-items: center;
     z-index: 9999;
-    animation: loader 1s infinite ease;
-} */
+    transition: opacity 0.5s ease;
+}
+
+/* Animation de rotation pour le loader */
+.spinner {
+    width: 50px;
+    height: 50px;
+    border: 5px solid #f3f3f3;
+    border-top: 5px solid #3498db;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    0% {
+        transform: rotate(0deg);
+    }
+
+    100% {
+        transform: rotate(360deg);
+    }
+}
+
+/* Contenu de la page */
+.content {
+    padding: 50px;
+    text-align: center;
+}
+
+.hidden {
+    opacity: 0;
+    pointer-events: none;
+}
+
+/* Force la suppression si JavaScript échoue */
+body.loaded #loader {
+    display: none !important;
+}
+
+/* Fin loader */
 
 body search {
     color: #0b29af;

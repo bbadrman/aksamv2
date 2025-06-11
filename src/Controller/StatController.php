@@ -31,43 +31,83 @@ final class StatController extends AbstractController
 
 
 
+
     #[Route('/calendrie', name: 'prospects_calandri')]
-    public function prospectsCalendrie(): Response
+    public function prospectsCalendrie(Request $request): Response
     {
+        // Récupération des paramètres URL
+        $urlStartDate = $request->query->get('startDate');
+        $urlEndDate = $request->query->get('endDate');
 
+        // Création du formulaire
         $form = $this->createForm(SearchDateClaudType::class);
-        $form->handleRequest($this->requestStack->getCurrentRequest());
 
+        // Pré-remplissage automatique si des dates URL existent
+        if ($urlStartDate && $urlEndDate) {
+            try {
+                $startDateObj = new \DateTime($urlStartDate);
+                $endDateObj = new \DateTime($urlEndDate);
+
+                $form->get('startDate')->setData($startDateObj);
+                $form->get('endDate')->setData($endDateObj);
+            } catch (\Exception $e) {
+                // Dates URL invalides, ignorer
+                $urlStartDate = null;
+                $urlEndDate = null;
+            }
+        }
+
+        $form->handleRequest($request);
+
+        // Initialisation
         $contrats = [];
         $teams = $this->teamRepository->findAll();
         $prospects = [];
+        $searchExecuted = false;
+
+        // Déterminer si on doit exécuter une recherche
+        $shouldExecuteSearch = false;
+        $searchStartDate = null;
+        $searchEndDate = null;
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $startDate = $form->get('startDate')->getData();
-            $endDate = $form->get('endDate')->getData();
+            // Formulaire soumis = priorité absolue
+            $searchStartDate = $form->get('startDate')->getData();
+            $searchEndDate = $form->get('endDate')->getData();
+            $shouldExecuteSearch = true;
+        } elseif ($urlStartDate && $urlEndDate) {
+            // Dates dans l'URL = exécution automatique
+            try {
+                $searchStartDate = new \DateTime($urlStartDate);
+                $searchEndDate = new \DateTime($urlEndDate);
+                $shouldExecuteSearch = true;
+            } catch (\Exception $e) {
+                // Dates invalides, pas d'exécution
+            }
+        }
 
-            if (!$startDate instanceof \DateTimeInterface || !$endDate instanceof \DateTimeInterface) {
+        // Exécution de la recherche
+        if ($shouldExecuteSearch && $searchStartDate && $searchEndDate) {
+            if (!$searchStartDate instanceof \DateTimeInterface || !$searchEndDate instanceof \DateTimeInterface) {
                 throw new \InvalidArgumentException('Les dates doivent être des instances de DateTimeInterface');
             }
 
 
-            $prospects = $this->prospectRepository->findByDateInterval($startDate, $endDate);
-            $contrats = $this->contratRepository->findByDateInterval($startDate, $endDate);
-        } else {
-            // Sinon, affichez tous les prospects
-            $prospects = [];
-            $contrats = [];
+
+            $prospects = $this->prospectRepository->findByDateInterval($searchStartDate, $searchEndDate);
+            $contrats = $this->contratRepository->findByDateInterval($searchStartDate, $searchEndDate);
+            $searchExecuted = true;
         }
 
-
-
         return $this->render('stat/calendrie.html.twig', [
-            // 'calendrie' => $calendrie,
             'prospects' => $prospects,
             'teams' => $teams,
             'contrats' => $contrats,
-
-            'search_form' => $form->createView()
+            'search_form' => $form->createView(),
+            'searchExecuted' => $searchExecuted,
+            'searchStartDate' => $searchStartDate,
+            'searchEndDate' => $searchEndDate,
+            'fromUrl' => ($urlStartDate && $urlEndDate && !$form->isSubmitted()),
         ]);
     }
 

@@ -401,5 +401,35 @@ console.log('Modal ouvert');
 });
 }
 });
+
+// Force suppression du loader sur cette page
+document.addEventListener('DOMContentLoaded', function () {
+console.log('🔧 Page show.html.twig - suppression loader');
+
+// Multiple tentatives
+function killLoader() {
+const loader = document.getElementById('loader');
+if (loader) {
+loader.remove();
+console.log('💀 Loader tué sur page show');
+}
+
+// CSS killer spécifique
+const style = document.createElement('style');
+style.textContent = '#loader { display: none !important; }';
+document.head.appendChild(style);
+}
+
+// Exécution immédiate et répétée
+killLoader();
+setTimeout(killLoader, 100);
+setTimeout(killLoader, 500);
+setTimeout(killLoader, 1000);
+
+// Force via fonction globale si disponible
+if (window.FORCE_DESTROY_LOADER) {
+setTimeout(window.FORCE_DESTROY_LOADER, 200);
+}
+});
 	</script>
 {% endblock %}

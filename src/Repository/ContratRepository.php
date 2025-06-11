@@ -164,10 +164,13 @@ class ContratRepository extends ServiceEntityRepository
     // }
     public function findByDateInterval(\DateTimeInterface $startDate, \DateTimeInterface $endDate): array
     {
+        $endDateAdjusted = \DateTime::createFromInterface($endDate);
+        $endDateAdjusted->setTime(23, 59, 59);
+
         return $this->createQueryBuilder('c')
             ->where('c.dateSouscrpt BETWEEN :start AND :end')
             ->setParameter('start', $startDate)
-            ->setParameter('end', $endDate)
+            ->setParameter('end', $endDateAdjusted)
             ->getQuery()
             ->getResult();
     }

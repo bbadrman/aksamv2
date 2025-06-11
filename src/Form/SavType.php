@@ -42,7 +42,9 @@ class SavType extends AbstractType
                         'Avenant' =>  1,
                         'Remboursement' =>  2,
                         'Sinistre' => 3,
-                        'Demande documents' => 4
+                        'Demande documents' => 4,
+                        'Renouvellement' => 5,
+
                     ],
                     'expanded' => false,
                     'multiple' => false,
@@ -68,6 +70,8 @@ class SavType extends AbstractType
                         'Remboursement sinistre' => 9,
                         'Relevé information' => 10,
                         'Attestation' => 11,
+                        'Frais Renouvellement' => 12,
+                        'changement compagnie' => 13,
                     ],
                     'expanded' => false,
                     'multiple' => false,

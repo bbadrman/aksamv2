@@ -2,12 +2,17 @@
 
 namespace App\Form;
 
+use App\Entity\User;
 use App\Search\SearchTransaction;
 use App\Search\SearchUser;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type as Type;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Validator\Constraints\GreaterThanOrEqual;
+use Symfony\Component\Validator\Constraints\LessThanOrEqual;
+use Symfony\Component\Validator\Constraints\NotBlank;
 
 class SearchTransactionType extends AbstractType
 {
@@ -42,25 +47,38 @@ class SearchTransactionType extends AbstractType
                 ]
             )
             ->add('d', Type\DateType::class, [
-                'label' => "Date Du :",
-
                 'widget' => 'single_text',
-
-
-                'attr' => [
-                    'placeholder' => "date format: yyyy-mm-dd."
-                ],
-                'required' => false
+                'required' => true,
+                'constraints' => [
+                    new NotBlank([
+                        'message' => 'Veuillez sélectionner une date de début'
+                    ]),
+                    new LessThanOrEqual([
+                        'propertyPath' => 'parent.all[dd].data',
+                        'message' => 'La date de début doit être antérieure ou égale à la date de fin'
+                    ])
+                ]
             ])
 
             ->add('dd', Type\DateType::class, [
-                'label' => "Ou :",
-
                 'widget' => 'single_text',
-                'attr' => [
-                    'placeholder' => "date format: yyyy-mm-dd."
-                ],
-                'required' => false
+                'required' => true,
+                'constraints' => [
+                    new NotBlank([
+                        'message' => 'Veuillez sélectionner une date de fin'
+                    ]),
+                    new GreaterThanOrEqual([
+                        'propertyPath' => 'parent.all[d].data',
+                        'message' => 'La date de fin doit être postérieure ou égale à la date de début'
+                    ])
+                ]
+            ])
+            ->add('comrcl', EntityType::class, [
+                'class' => User::class,
+                'placeholder' => 'Sélectionnez un Commercial',
+                'choice_label' => 'username',
+                'required' => false,
+                'label' => 'Commercial'
             ])
             ->add(
                 'motif',
@@ -68,6 +86,7 @@ class SearchTransactionType extends AbstractType
                 [
                     'label' => 'Motif ',
                     'required' => false,
+
                     'placeholder' => '--Merci de selectie-- ',
                     'choices' => [
                         '1er reglement' =>  '1er reglement',

@@ -23,7 +23,6 @@ final class TransactionController extends AbstractController
         private RequestStack $requestStack,
         private EntityManagerInterface $entityManager,
         private TransactionRepository $transactionRepository,
-
     ) {}
 
     #[Route(name: 'app_transaction_index', methods: ['GET'])]
@@ -35,22 +34,47 @@ final class TransactionController extends AbstractController
         $form->handleRequest($this->requestStack->getCurrentRequest());
 
         $transaction = [];
+        $totals = ['totalDebit' => 0, 'totalCredit' => 0];
 
         if ($form->isSubmitted() && $form->isValid() && !$form->isEmpty()) {
             $transaction = $this->transactionRepository->findSearchTransaction($data, null);
 
+            // Calculer les totaux des transactions affichées
+            $totals = $this->calculateTotals($transaction);
 
             return $this->render('transaction/index.html.twig', [
                 'transactions' => $transaction,
-                'search_form' => $form->createView()
-
+                'search_form' => $form->createView(),
+                'totalDebit' => $totals['totalDebit'],
+                'totalCredit' => $totals['totalCredit'],
             ]);
         }
+
         return $this->render('transaction/search.html.twig', [
             'transactions' => $transaction,
-            'search_form' => $form->createView()
-
+            'search_form' => $form->createView(),
+            'totalDebit' => $totals['totalDebit'],
+            'totalCredit' => $totals['totalCredit'],
         ]);
+    }
+
+    /**
+     * Calcule les totaux des transactions
+     */
+    private function calculateTotals($transactions): array
+    {
+        $totalDebit = 0;
+        $totalCredit = 0;
+
+        foreach ($transactions as $transaction) {
+            $totalDebit += $transaction->getDebit() ?? 0;
+            $totalCredit += $transaction->getCredit() ?? 0;
+        }
+
+        return [
+            'totalDebit' => $totalDebit,
+            'totalCredit' => $totalCredit
+        ];
     }
 
     #[Route('/new', name: 'app_transaction_new', methods: ['GET', 'POST'])]

@@ -12,6 +12,9 @@ use Symfony\Component\Security\Core\Security;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\Extension\Core\Type as Type;
+use Symfony\Component\Validator\Constraints\GreaterThanOrEqual;
+use Symfony\Component\Validator\Constraints\LessThanOrEqual;
+use Symfony\Component\Validator\Constraints\NotBlank;
 
 class SearchProspectType extends AbstractType
 {
@@ -105,26 +108,32 @@ class SearchProspectType extends AbstractType
                 'required' => false
             ])
 
-            ->add('d', Type\DateType::class, [
-                'label' => "Du :",
-
+            ->add('d',  Type\DateType::class, [
                 'widget' => 'single_text',
-
-
-                'attr' => [
-                    'placeholder' => "date format: yyyy-mm-dd."
-                ],
-                'required' => false
+                'required' => true,
+                'constraints' => [
+                    new NotBlank([
+                        'message' => 'Veuillez sélectionner une date de début'
+                    ]),
+                    new LessThanOrEqual([
+                        'propertyPath' => 'parent.all[dd].data',
+                        'message' => 'La date de début doit être antérieure ou égale à la date de fin'
+                    ])
+                ]
             ])
 
             ->add('dd', Type\DateType::class, [
-                'label' => "Ou :",
-
                 'widget' => 'single_text',
-                'attr' => [
-                    'placeholder' => "date format: yyyy-mm-dd."
-                ],
-                'required' => false
+                'required' => true,
+                'constraints' => [
+                    new NotBlank([
+                        'message' => 'Veuillez sélectionner une date de fin'
+                    ]),
+                    new GreaterThanOrEqual([
+                        'propertyPath' => 'parent.all[d].data',
+                        'message' => 'La date de fin doit être postérieure ou égale à la date de début'
+                    ])
+                ]
             ])
 
 

@@ -31,4 +31,8 @@ class SearchTransaction
      * @var string
      */
     public $dd;
+    /**
+     * @var string
+     */
+    public $comrcl;
 }
