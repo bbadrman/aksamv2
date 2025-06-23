@@ -51,6 +51,7 @@ class SavController extends AbstractController
         ]);
     }
 
+    //ajouter SAV a partir d'un contrat
     #[Route('/new/{id}', name: 'contrat_sav_new', methods: ['GET', 'POST'])]
     public function addcontrat(int $id, Request $request, EntityManagerInterface $entityManager, ContratRepository $contratRepository): Response
     {
@@ -79,26 +80,26 @@ class SavController extends AbstractController
         ]);
     }
 
-    #[Route('/{id}', name: 'app_sav_show', methods: ['GET'])]
-    public function show(Request $request, Sav $sav): Response
-    {
+    // #[Route('/{id}', name: 'app_sav_show', methods: ['GET'])]
+    // public function show(Request $request, Sav $sav): Response
+    // {
 
 
-        $form = $this->createForm(SavTraiterType::class, $sav);
-        $form->handleRequest($request);
+    //     $form = $this->createForm(SavTraiterType::class, $sav);
+    //     $form->handleRequest($request);
 
-        if ($form->isSubmitted() && $form->isValid()) {
-            $this->entityManager->flush();
+    //     if ($form->isSubmitted() && $form->isValid()) {
+    //         $this->entityManager->flush();
 
-            return $this->redirectToRoute('app_sav_index', [], Response::HTTP_SEE_OTHER);
-        }
+    //         return $this->redirectToRoute('app_sav_index', [], Response::HTTP_SEE_OTHER);
+    //     }
 
 
-        return $this->render('sav/show.html.twig', [
-            'sav' => $sav,
-            'form' => $form->createView(),
-        ]);
-    }
+    //     return $this->render('sav/show.html.twig', [
+    //         'sav' => $sav,
+    //         'form' => $form->createView(),
+    //     ]);
+    // }
 
     #[Route('/show/{id}', name: 'app_afficher_show', methods: ['GET', 'POST'])]
     public function afficher(Request $request, Sav $sav): Response

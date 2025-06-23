@@ -1,0 +1,426 @@
+/* ===================================================================
+   CSS SPÉCIFIQUE POUR LE MODAL DES APPELS UNIQUEMENT
+   ================================================================= */
+
+/* ===== VARIABLES CSS ===== */
+:root {
+    --border-radius: 20px;
+    --card-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+    --card-hover-shadow: 0 12px 40px rgba(0, 0, 0, 0.15);
+    --primary-gradient: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    --secondary-gradient: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+    --success-gradient: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%);
+    --warning-gradient: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+    --danger-gradient: linear-gradient(135deg, #fa709a 0%, #fee140 100%);
+    --info-gradient: linear-gradient(135deg, #a8edea 0%, #fed6e3 100%);
+    --transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+}
+
+/* ===================================================================
+   STYLES GÉNÉRAUX (NON MODALS) - CONSERVÉS
+   ================================================================= */
+
+/* ===== SECTION HEADER DU CONTENU ===== */
+.content-header {
+    background: var(--primary-gradient) !important;
+    color: white !important;
+    padding: 2rem !important;
+    margin: -2rem -2rem 2rem -2rem !important;
+    border-radius: 0 0 25px 25px !important;
+    box-shadow: var(--card-shadow) !important;
+    position: relative !important;
+    overflow: hidden !important;
+}
+
+.content-header::before {
+    content: '' !important;
+    position: absolute !important;
+    top: 0 !important;
+    left: 0 !important;
+    right: 0 !important;
+    bottom: 0 !important;
+    background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><pattern id="grain" width="60" height="60" patternUnits="userSpaceOnUse"><circle cx="50" cy="50" r="1" fill="rgba(255,255,255,0.1)"/></pattern></defs><rect width="60" height="60" fill="url(%23grain)"/></svg>') !important;
+    opacity: 0.1 !important;
+}
+
+.content-header h2 {
+    font-size: 2.5rem !important;
+    font-weight: 700 !important;
+    margin: 0 0 1rem 0 !important;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3) !important;
+    position: relative !important;
+    z-index: 1 !important;
+}
+
+.content-header .breadcrumb {
+    background: rgba(255, 255, 255, 0.1) !important;
+    border: 1px solid rgba(255, 255, 255, 0.1) !important;
+    border-radius: 15px !important;
+    backdrop-filter: blur(10px) !important;
+    position: relative !important;
+    z-index: 1 !important;
+    top: auto !important;
+    right: auto !important;
+    float: none !important;
+    margin: 0 !important;
+    padding: 0.5rem 1rem !important;
+}
+
+/* ===== STATISTIQUES DU TABLEAU ===== */
+.stats-container {
+    background: white !important;
+    border-radius: var(--border-radius) !important;
+    box-shadow: var(--card-shadow) !important;
+    padding: 1.5rem !important;
+    margin-bottom: 2rem !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: space-between !important;
+    flex-wrap: wrap !important;
+    gap: 1rem !important;
+}
+
+.stats-item {
+    display: flex !important;
+    align-items: center !important;
+    background: var(--primary-gradient) !important;
+    color: white !important;
+    padding: 1rem 1.5rem !important;
+    border-radius: 15px !important;
+    box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3) !important;
+    transition: var(--transition) !important;
+}
+
+/* ===== STYLES DU TABLEAU ===== */
+.table-container {
+    background: white !important;
+    border-radius: var(--border-radius) !important;
+    box-shadow: var(--card-shadow) !important;
+    overflow: hidden !important;
+    margin-bottom: 2rem !important;
+}
+
+.table thead {
+    background: var(--primary-gradient) !important;
+}
+
+.table thead th {
+    background: transparent !important;
+    color: white !important;
+    font-weight: 600 !important;
+    font-size: 0.9rem !important;
+    text-transform: uppercase !important;
+    letter-spacing: 0.5px !important;
+    padding: 1.2rem 1rem !important;
+    border: none !important;
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.2) !important;
+    white-space: nowrap !important;
+}
+
+.table tbody tr:hover {
+    background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%) !important;
+    transform: scale(1.001) !important;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08) !important;
+}
+
+/* ===== BADGES ET STATUTS ===== */
+.status-badge {
+    display: inline-block !important;
+    padding: 0.4rem 0.8rem !important;
+    border-radius: 20px !important;
+    font-size: 0.75rem !important;
+    font-weight: 600 !important;
+    text-transform: uppercase !important;
+    letter-spacing: 0.5px !important;
+}
+
+.status-rendez-vous {
+    background: var(--success-gradient) !important;
+    color: white !important;
+}
+
+.status-injoignable {
+    background: var(--danger-gradient) !important;
+    color: white !important;
+}
+
+.status-attente {
+    background: var(--warning-gradient) !important;
+    color: white !important;
+}
+
+.status-tarification {
+    background: var(--info-gradient) !important;
+    color: #333 !important;
+}
+
+/* ===== BOUTONS D'ACTION ===== */
+.btn-toolbar {
+    display: flex !important;
+    gap: 0.5rem !important;
+    align-items: center !important;
+    justify-content: center !important;
+    flex-wrap: wrap !important;
+}
+
+.btn-xs {
+    padding: 0.4rem 0.8rem !important;
+    font-size: 0.75rem !important;
+    border-radius: 8px !important;
+    transition: var(--transition) !important;
+    border: none !important;
+    font-weight: 500 !important;
+    min-width: 35px !important;
+    text-align: center !important;
+}
+
+/* ===================================================================
+   STYLES SPÉCIFIQUES AU MODAL DES APPELS UNIQUEMENT
+   ================================================================= */
+
+/* ===== BACKDROP SPÉCIFIQUE AU MODAL APPELS ===== */
+#callsModal.modal-backdrop,
+#callsModal~.modal-backdrop {
+    position: fixed !important;
+    top: 0 !important;
+    left: 0 !important;
+    width: 100vw !important;
+    height: 100vh !important;
+    background-color: rgba(0, 0, 0, 0.5) !important;
+    z-index: 1040 !important;
+}
+
+/* ===== MODAL APPELS PRINCIPAL ===== */
+#callsModal.modal {
+    position: fixed !important;
+    top: 0 !important;
+    left: 0 !important;
+    width: 100vw !important;
+    height: 100vh !important;
+    z-index: 1050 !important;
+    display: none !important;
+    overflow: hidden !important;
+    outline: 0 !important;
+}
+
+/* ===== MODAL APPELS VISIBLE ===== */
+#callsModal.modal.show {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+}
+
+/* ===== DIALOG DU MODAL APPELS ===== */
+#callsModal .modal-dialog {
+    position: relative !important;
+    width: auto !important;
+    margin: 1rem !important;
+    pointer-events: none !important;
+    max-width: 800px !important;
+}
+
+/* ===== CONTENU DU MODAL APPELS ===== */
+#callsModal .modal-content {
+    position: relative !important;
+    display: flex !important;
+    flex-direction: column !important;
+    width: 100% !important;
+    pointer-events: auto !important;
+    background-color: #fff !important;
+    background-clip: padding-box !important;
+    border: none !important;
+    border-radius: var(--border-radius) !important;
+    box-shadow: var(--card-hover-shadow) !important;
+    outline: 0 !important;
+}
+
+/* ===== HEADER DU MODAL APPELS ===== */
+#callsModal .modal-header {
+    display: flex !important;
+    align-items: flex-start !important;
+    justify-content: space-between !important;
+    padding: 1rem 1rem !important;
+    background: var(--primary-gradient) !important;
+    color: white !important;
+    border-bottom: none !important;
+    border-radius: var(--border-radius) var(--border-radius) 0 0 !important;
+}
+
+#callsModal .modal-title {
+    margin-bottom: 0 !important;
+    line-height: 1.5 !important;
+    color: white !important;
+    font-weight: 600 !important;
+}
+
+/* ===== BOUTON DE FERMETURE DU MODAL APPELS ===== */
+#callsModal .modal-header .close {
+    padding: 1rem 1rem !important;
+    margin: -1rem -1rem -1rem auto !important;
+    color: white !important;
+    background: transparent !important;
+    border: none !important;
+    font-size: 1.5rem !important;
+    font-weight: 700 !important;
+    line-height: 1 !important;
+    opacity: 0.8 !important;
+    text-shadow: none !important;
+}
+
+#callsModal .modal-header .close:hover {
+    color: white !important;
+    opacity: 1 !important;
+    text-decoration: none !important;
+    background: rgba(255, 255, 255, 0.1) !important;
+    border-radius: 50% !important;
+}
+
+/* ===== BODY DU MODAL APPELS ===== */
+#callsModal .modal-body {
+    position: relative !important;
+    flex: 1 1 auto !important;
+    padding: 2rem !important;
+    background: white !important;
+}
+
+/* ===== CONTENU SPÉCIFIQUE DES APPELS ===== */
+#callsContent {
+    min-height: 200px !important;
+    position: relative !important;
+}
+
+#callsContent .fa-spinner {
+    color: #667eea !important;
+}
+
+/* ===================================================================
+   LAISSER LES AUTRES MODALS INTACTS (RELANCE/AFFECTATION)
+   ================================================================= */
+
+/* Les modals de relance et affectation gardent leurs styles Bootstrap par défaut */
+/* Seulement quelques ajustements mineurs si nécessaire */
+
+.modal:not(#callsModal) .modal-content {
+    border-radius: 8px !important;
+}
+
+.modal:not(#callsModal) .modal-header {
+    background: #f8f9fa !important;
+    border-bottom: 1px solid #dee2e6 !important;
+}
+
+/* ===== RESPONSIVE POUR LE MODAL APPELS ===== */
+@media (max-width: 768px) {
+    #callsModal .modal-dialog {
+        margin: 1rem !important;
+        max-width: calc(100vw - 2rem) !important;
+    }
+
+    #callsModal .modal-body {
+        padding: 1rem !important;
+    }
+}
+
+/* ===== CORRECTIONS POUR BODY QUAND MODAL APPELS OUVERT ===== */
+body.modal-open {
+    overflow: hidden !important;
+}
+
+/* ===== STYLES POUR LE BOUTON QUI DÉCLENCHE LE MODAL APPELS ===== */
+button[data-target="#callsModal"] {
+    cursor: pointer !important;
+    border: none !important;
+    outline: none !important;
+}
+
+button[data-target="#callsModal"]:focus {
+    outline: none !important;
+    box-shadow: 0 0 0 2px rgba(102, 126, 234, 0.3) !important;
+}
+
+/* ===== TEXTES PERSONNALISÉS ===== */
+.custom-red-text,
+.custom-blue-text,
+.custom-gren-text {
+    font-weight: 600 !important;
+    padding: 0.2rem 0.5rem !important;
+    border-radius: 6px !important;
+    display: inline-block !important;
+}
+
+.custom-red-text {
+    color: white !important;
+    background: var(--danger-gradient) !important;
+}
+
+.custom-blue-text {
+    color: white !important;
+    background: var(--primary-gradient) !important;
+}
+
+.custom-gren-text {
+    color: white !important;
+    background: var(--success-gradient) !important;
+}
+
+/* ===== STYLE POUR LES ÉQUIPES ===== */
+.team-badgetable {
+    background: var(--secondary-gradient) !important;
+    color: white !important;
+    padding: 0.3rem 0.8rem !important;
+    border-radius: 15px !important;
+    font-size: 0.75rem !important;
+    font-weight: 600 !important;
+    display: inline-block !important;
+    text-transform: uppercase !important;
+}
+
+/* ===== RESPONSIVE DESIGN GÉNÉRAL ===== */
+@media (max-width: 1200px) {
+
+    .table thead th,
+    .table tbody td {
+        padding: 0.8rem 0.6rem !important;
+        font-size: 0.8rem !important;
+    }
+
+    .content-header h2 {
+        font-size: 2rem !important;
+    }
+}
+
+@media (max-width: 992px) {
+    .table-container {
+        border-radius: 0 !important;
+        margin: 0 -1rem !important;
+    }
+
+    .stats-container {
+        flex-direction: column !important;
+        align-items: stretch !important;
+    }
+
+    .stats-item {
+        justify-content: center !important;
+    }
+}
+
+@media (max-width: 768px) {
+    .content-header {
+        margin: -2rem -1rem 2rem -1rem !important;
+        padding: 1.5rem !important;
+        border-radius: 0 0 15px 15px !important;
+    }
+
+    .content-header h2 {
+        font-size: 1.5rem !important;
+    }
+
+    .table-container {
+        overflow-x: auto !important;
+    }
+
+    .wrapper {
+        padding: 1rem !important;
+    }
+}

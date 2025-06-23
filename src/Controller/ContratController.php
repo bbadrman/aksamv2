@@ -54,38 +54,30 @@ final class ContratController extends AbstractController
 
         $data = new SearchContrat();
         $data->page = $request->query->get('page', 1);
-        $form = $this->createForm(SearchContratType::class, $data);
-        $form->handleRequest($this->requestStack->getCurrentRequest());
+
         $contrats = [];
 
 
-        if ($form->isSubmitted() && $form->isValid() && !$form->isEmpty()) {
-            $user = $this->security->getUser();
-            $logger->info('User roles: ' . json_encode($user->getRoles()));
-            if (in_array('ROLE_DEV', $user->getRoles(), true)  || in_array('ROLE_ADMIN', $user->getRoles(), true)  || in_array('ROLE_VALID', $user->getRoles(), true)) {
-                // admi peut voire toutes les nouveaux client
-                $contrats =  $contratRepository->findByContartValid($data,  null);
-            } elseif (in_array('ROLE_CHEF', $user->getRoles(), true)) {
-                // Rôle spécifique pour ROLE_VALIDE
-                $contrats = $contratRepository->findByContartValid($data,  $user, null);
-            } elseif (in_array('ROLE_TEAM', $user->getRoles(), true)) {
-                // chef peut voire toutes les nouveaux client atacher a leur equipe
-                $contrats =  $contratRepository->findByContartValid($data, $user,  null);
-            } else {
-                // cmrcl peut voire seulement les nouveaux client atacher a lui
-                $contrats =  $contratRepository->findByContartValidComrcl($data, $user, null);
-            }
 
-
-
-            return $this->render('contrat/index.html.twig', [
-                'contrats' => $contrats,
-                'search_form' => $form->createView()
-            ]);
+        $user = $this->security->getUser();
+        $logger->info('User roles: ' . json_encode($user->getRoles()));
+        if (in_array('ROLE_DEV', $user->getRoles(), true)  || in_array('ROLE_ADMIN', $user->getRoles(), true)  || in_array('ROLE_VALID', $user->getRoles(), true)) {
+            // admi peut voire toutes les nouveaux client
+            $contrats =  $contratRepository->findByContartValid($data,  null);
+        } elseif (in_array('ROLE_CHEF', $user->getRoles(), true)) {
+            // Rôle spécifique pour ROLE_VALIDE
+            $contrats = $contratRepository->findByContartValid($data,  $user, null);
+        } elseif (in_array('ROLE_TEAM', $user->getRoles(), true)) {
+            // chef peut voire toutes les nouveaux client atacher a leur equipe
+            $contrats =  $contratRepository->findByContartValid($data, $user,  null);
+        } else {
+            // cmrcl peut voire seulement les nouveaux client atacher a lui
+            $contrats =  $contratRepository->findByContartValidComrcl($data, $user, null);
         }
-        return $this->render('contrat/search.html.twig', [
+
+        return $this->render('contrat/index.html.twig', [
             'contrats' => $contrats,
-            'search_form' => $form->createView()
+
         ]);
     }
 

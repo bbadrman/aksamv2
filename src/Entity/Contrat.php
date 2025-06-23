@@ -177,6 +177,9 @@ class Contrat
     #[ORM\OneToOne(inversedBy: 'contrat', cascade: ['persist', 'remove'])]
     private ?Payment $payments = null;
 
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $forceJuridique = null;
+
 
     public function __construct()
     {
@@ -830,6 +833,18 @@ class Contrat
     public function setPayments(?Payment $payments): static
     {
         $this->payments = $payments;
+
+        return $this;
+    }
+
+    public function getForceJuridique(): ?string
+    {
+        return $this->forceJuridique;
+    }
+
+    public function setForceJuridique(?string $forceJuridique): static
+    {
+        $this->forceJuridique = $forceJuridique;
 
         return $this;
     }

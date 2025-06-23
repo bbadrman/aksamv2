@@ -51,9 +51,6 @@ class Client
     #[ORM\Column(nullable: true)]
     private ?bool $isModifie = null;
 
-    #[ORM\Column(length: 255, nullable: true)]
-    private ?string $forceJuridique = null;
-
     #[ORM\ManyToOne(inversedBy: 'clients')]
     private ?Team $team = null;
 
@@ -211,17 +208,7 @@ class Client
         return $this;
     }
 
-    public function getForceJuridique(): ?string
-    {
-        return $this->forceJuridique;
-    }
 
-    public function setForceJuridique(?string $forceJuridique): static
-    {
-        $this->forceJuridique = $forceJuridique;
-
-        return $this;
-    }
 
     public function getTeam(): ?Team
     {

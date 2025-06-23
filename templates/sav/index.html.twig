@@ -1,97 +1,578 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Sav index
+{% block title %}Liste des SAV
 {% endblock %}
 
 {% block body %}
-	<h1>Sav index</h1>
+	<style>:root
+	{
+		--primary-color: #2c3e50;
+		--secondary-color: #3498db;
+		--accent-color: #e74c3c;
+		--success-color: #27ae60;
+		--warning-color: #f39c12;
+		--light-bg: #f8f9fa;
+		--card-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+		--border-radius: 12px;
+	}
 
-	<table class="table">
-		<thead>
-			<tr>
+	body {
+		background-color: var(--light-bg);
+		font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+		line-height: 1.6;
+	}
 
-				<th>CreatAt</th>
-				<th>affect au
-				</th>
-				<th>Nature Demande</th>
-				<th>Motif</th>
-				<th>actions</th>
-			</tr>
-		</thead>
-		<tbody>
-			{% for sav in savs %}
-				<tr>
+	.header-section {
+		background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+		color: white;
+		padding: 2rem 0;
+		margin-bottom: 2rem;
+		border-radius: 0 0 var(--border-radius) var(--border-radius);
+		box-shadow: var(--card-shadow);
+	}
 
-					<td>{{ sav.creatAt ? sav.creatAt|date('Y-m-d H:i:s') : '' }}</td>
+	.header-section h1 {
+		font-size: 2.5rem;
+		font-weight: 300;
+		margin: 0;
+	}
 
-					<td>
-						{% if sav.afect is not empty %}
+	.sav-icon {
+		width: 80px;
+		height: 80px;
+		background: rgba(255, 255, 255, 0.2);
+		border-radius: 50%;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		margin: 0 auto 1rem;
+		font-size: 2rem;
+	}
 
-							{% for user in sav.afect %}
-								{{ user.username }}
-							{% endfor %}
+	.main-card {
+		background: white;
+		border-radius: var(--border-radius);
+		box-shadow: var(--card-shadow);
+		margin-bottom: 2rem;
+		overflow: hidden;
+	}
 
-						{% else %}
-							...
-						{% endif %}
-					</td>
-					<td>
-						{% if  sav.motif is not empty %}
-							{% if sav.motif == 1 %}
-								Avenant
-							{% elseif sav.motif == 2 %}
-								Remboursement
-							{% elseif sav.motif == 3 %}
-								Sinistre
-							{% elseif sav.motif == 4 %}
-								Demande documents
-							{% endif %}
-							<br>
-						{% endif %}
+	.card-header {
+		background: linear-gradient(90deg, var(--primary-color), #34495e);
+		color: white;
+		padding: 1.5rem;
+		border: none;
+	}
 
-					</td>
-					<td>
-						{% if  sav.natureDemande is not empty %}
-							{% if sav.natureDemande == 1 %}
-								Changement adresse
-							{% elseif sav.natureDemande == 2 %}
-								Changement RIB
-							{% elseif sav.natureDemande == 3 %}
-								Changement véhicule
-							{% elseif sav.natureDemande == 4 %}
-								Frais dossier
-							{% elseif sav.natureDemande == 5 %}
-								Acompte
-							{% elseif sav.natureDemande == 6 %}
-								Prorata suite résiliation
-							{% elseif sav.natureDemande == 7 %}
-								Ouverture sinistre
-							{% elseif sav.natureDemande == 8 %}
-								Mandaté expert
-							{% elseif sav.natureDemande == 9 %}
-								Remboursement sinistre
-							{% elseif sav.natureDemande == 10 %}
-								Relevé information
-							{% elseif sav.natureDemande == 11 %}
-								Attestation
+	.card-header h2 {
+		margin: 0;
+		font-size: 1.5rem;
+		font-weight: 600;
+	}
 
-							{% endif %}
-							<br>
-						{% endif %}
-					</td>
+	.card-header .stats {
+		margin-top: 0.5rem;
+		opacity: 0.9;
+	}
 
-					<td>
-						<a href="{{ path('app_sav_show', {'id': sav.id}) }}">show</a>
-						<a href="{{ path('app_sav_edit', {'id': sav.id}) }}">edit</a>
-					</td>
-				</tr>
-			{% else %}
-				<tr>
-					<td colspan="4">no records found</td>
-				</tr>
-			{% endfor %}
-		</tbody>
-	</table>
+	.table-container {
+		overflow-x: auto;
+	}
+
+	.custom-table {
+		margin: 0;
+		background: white;
+	}
+
+	.custom-table thead th {
+		background: linear-gradient(90deg, var(--secondary-color), #5dade2);
+		color: white;
+		border: none;
+		padding: 1rem;
+		font-weight: 600;
+		font-size: 0.95rem;
+		text-align: center;
+		white-space: nowrap;
+	}
+
+	.custom-table tbody td {
+		padding: 0.75rem;
+		border-top: 1px solid #e9ecef;
+		vertical-align: middle;
+		text-align: center;
+	}
+
+	.custom-table tbody tr:hover {
+		background-color: #f8f9fa;
+		transform: scale(1.01);
+		transition: all 0.2s ease;
+	}
+
+	.custom-table tbody tr:nth-child(even) {
+		background-color: #fdfdfd;
+	}
+
+	.status-badge {
+		padding: 0.4rem 0.8rem;
+		border-radius: 20px;
+		font-size: 0.8rem;
+		font-weight: 500;
+		white-space: nowrap;
+		display: inline-block;
+	}
+
+	.status-avenant {
+		background-color: #e3f2fd;
+		color: #1976d2;
+	}
+	.status-remboursement {
+		background-color: #e8f5e8;
+		color: #388e3c;
+	}
+	.status-sinistre {
+		background-color: #ffebee;
+		color: #d32f2f;
+	}
+	.status-documents {
+		background-color: #fff3e0;
+		color: #f57c00;
+	}
+
+	.nature-badge {
+		padding: 0.3rem 0.6rem;
+		border-radius: 15px;
+		font-size: 0.75rem;
+		font-weight: 500;
+		white-space: nowrap;
+		display: inline-block;
+		margin: 0.1rem;
+	}
+
+	.nature-changement {
+		background-color: #e1f5fe;
+		color: #0277bd;
+	}
+	.nature-financier {
+		background-color: #f3e5f5;
+		color: #7b1fa2;
+	}
+	.nature-sinistre {
+		background-color: #ffebee;
+		color: #c62828;
+	}
+	.nature-document {
+		background-color: #fff8e1;
+		color: #ef6c00;
+	}
+
+	.user-badge {
+		background: linear-gradient(135deg, #667eea, #764ba2);
+		color: white;
+		padding: 0.3rem 0.8rem;
+		border-radius: 15px;
+		font-size: 0.8rem;
+		font-weight: 500;
+		display: inline-block;
+	}
+
+	.no-assignment {
+		color: #999;
+		font-style: italic;
+		font-size: 0.9rem;
+	}
+
+	.action-buttons {
+		display: flex;
+		gap: 0.3rem;
+		justify-content: center;
+		flex-wrap: wrap;
+	}
+
+	.btn-action {
+		padding: 0.4rem 0.8rem;
+		border-radius: 6px;
+		text-decoration: none;
+		font-size: 0.8rem;
+		font-weight: 500;
+		transition: all 0.2s ease;
+		border: none;
+		white-space: nowrap;
+	}
+
+	.btn-show {
+		background: linear-gradient(135deg, var(--secondary-color), #5dade2);
+		color: white;
+	}
+
+	.btn-show:hover {
+		background: linear-gradient(135deg, #2980b9, #3498db);
+		transform: translateY(-1px);
+		box-shadow: 0 4px 8px rgba(52, 152, 219, 0.3);
+		color: white;
+		text-decoration: none;
+	}
+
+	.btn-edit {
+		background: linear-gradient(135deg, var(--warning-color), #e67e22);
+		color: white;
+	}
+
+	.btn-edit:hover {
+		background: linear-gradient(135deg, #d68910, var(--warning-color));
+		transform: translateY(-1px);
+		box-shadow: 0 4px 8px rgba(243, 156, 18, 0.3);
+		color: white;
+		text-decoration: none;
+	}
+
+	.empty-state {
+		text-align: center;
+		padding: 3rem;
+		color: #6c757d;
+	}
+
+	.empty-state i {
+		font-size: 3rem;
+		margin-bottom: 1rem;
+		opacity: 0.5;
+	}
+
+	.date-cell {
+		font-family: 'Courier New', monospace;
+		font-size: 0.85rem;
+		color: #495057;
+	}
+
+	.stats-bar {
+		display: flex;
+		gap: 2rem;
+		justify-content: center;
+		margin-bottom: 2rem;
+		flex-wrap: wrap;
+	}
+
+	.stat-item {
+		background: white;
+		padding: 1rem 2rem;
+		border-radius: var(--border-radius);
+		box-shadow: var(--card-shadow);
+		text-align: center;
+		min-width: 120px;
+	}
+
+	.stat-number {
+		font-size: 2rem;
+		font-weight: bold;
+		color: var(--secondary-color);
+		display: block;
+	}
+
+	.stat-label {
+		font-size: 0.9rem;
+		color: #6c757d;
+		margin-top: 0.5rem;
+	}
+
+	@media(max-width: 768px) {
+		.header-section h1 {
+			font-size: 2rem;
+		}
+
+		.custom-table {
+			font-size: 0.85rem;
+		}
+
+		.custom-table thead th,
+		.custom-table tbody td {
+			padding: 0.5rem 0.3rem;
+		}
+
+		.action-buttons {
+			flex-direction: column;
+		}
+
+		.stats-bar {
+			gap: 1rem;
+		}
+
+		.stat-item {
+			min-width: 100px;
+			padding: 0.75rem 1rem;
+		}
+	}
+
+	.filter-section {
+		background: white;
+		border-radius: var(--border-radius);
+		box-shadow: var(--card-shadow);
+		padding: 1.5rem;
+		margin-bottom: 2rem;
+	}
+
+	.search-box {
+		max-width: 300px;
+		margin: 0 auto;
+	}
+
+	.search-input {
+		border-radius: 25px;
+		border: 2px solid #e9ecef;
+		padding: 0.75rem 1rem 0.75rem 2.5rem;
+		width: 100%;
+		transition: border-color 0.2s ease;
+	}
+
+	.search-input:focus {
+		border-color: var(--secondary-color);
+		box-shadow: 0 0 0 0.2rem rgba(52, 152, 219, 0.25);
+		outline: none;
+	}
+
+	.search-icon {
+		position: absolute;
+		left: 1rem;
+		top: 50%;
+		transform: translateY(-50%);
+		color: #6c757d;
+	}
+</style>
+
+<!-- Header Section -->
+<div class="header-section">
+	<div class="container">
+		<div class="text-center">
+			<div class="sav-icon">
+				<i class="fas fa-list-alt"></i>
+			</div>
+			<h1>Gestion des SAV</h1>
+			<p class="mb-0">Vue d'ensemble de tous les dossiers SAV</p>
+		</div>
+	</div>
+</div>
+
+<div
+	class="container">
+	<!-- Section de statistiques -->
+	<div class="stats-bar">
+		<div class="stat-item">
+			<span class="stat-number">{{ savs|length }}</span>
+			<div class="stat-label">Total SAV</div>
+		</div>
+		<div class="stat-item">
+			<span class="stat-number">
+				{% set sinistres = 0 %}
+				{% for sav in savs %}
+					{% if sav.motif == 3 %}
+						{% set sinistres = sinistres + 1 %}
+					{% endif %}
+				{% endfor %}
+				{{ sinistres }}
+			</span>
+			<div class="stat-label">Sinistres</div>
+		</div>
+		<div class="stat-item">
+			<span class="stat-number">
+				{% set enCours = 0 %}
+				{% for sav in savs %}
+					{% if sav.afect is not empty %}
+						{% set enCours = enCours + 1 %}
+					{% endif %}
+				{% endfor %}
+				{{ enCours }}
+			</span>
+			<div class="stat-label">Affectés</div>
+		</div>
+	</div>
+
+	<!-- Section de recherche -->
+	<div class="filter-section">
+		<div class="search-box position-relative">
+			<i class="fas fa-search search-icon"></i>
+			<input type="text" class="search-input" placeholder="Rechercher un SAV..." id="searchInput">
+		</div>
+	</div>
+
+	<!-- Table principale -->
+	<div class="main-card">
+		<div class="card-header">
+			<h2>
+				<i class="fas fa-table me-2"></i>Liste des dossiers SAV</h2>
+			<div class="stats">Dernière mise à jour :
+				{{ "now"|date("d/m/Y à H:i") }}</div>
+		</div>
+
+		<div class="table-container">
+			<table class="table custom-table" id="savTable">
+				<thead>
+					<tr>
+						<th>
+							<i class="fas fa-calendar me-2"></i>Date de création</th>
+						<th>
+							<i class="fas fa-user-check me-2"></i>Affecté à</th>
+						<th>
+							<i class="fas fa-tag me-2"></i>Motif</th>
+						<th>
+							<i class="fas fa-list me-2"></i>Nature demande</th>
+						<th>
+							<i class="fas fa-cogs me-2"></i>Actions</th>
+					</tr>
+				</thead>
+				<tbody>
+					{% for sav in savs %}
+						<tr>
+							<td class="date-cell">
+								{{ sav.creatAt ? sav.creatAt|date('d/m/Y H:i:s') : '' }}
+							</td>
+
+							<td>
+								{% if sav.afect is not empty %}
+									{% for user in sav.afect %}
+										<span class="user-badge">
+											<i class="fas fa-user me-1"></i>
+											{{ user.username }}
+										</span>
+									{% endfor %}
+								{% else %}
+									<span class="no-assignment">
+										<i class="fas fa-user-slash me-1"></i>
+										Non affecté
+									</span>
+								{% endif %}
+							</td>
+
+							<td>
+								{% if sav.motif is not empty %}
+									{% if sav.motif == 1 %}
+										<span class="status-badge status-avenant">
+											<i class="fas fa-edit me-1"></i>
+											Avenant
+										</span>
+									{% elseif sav.motif == 2 %}
+										<span class="status-badge status-remboursement">
+											<i class="fas fa-money-bill-wave me-1"></i>
+											Remboursement
+										</span>
+									{% elseif sav.motif == 3 %}
+										<span class="status-badge status-sinistre">
+											<i class="fas fa-exclamation-triangle me-1"></i>
+											Sinistre
+										</span>
+									{% elseif sav.motif == 4 %}
+										<span class="status-badge status-documents">
+											<i class="fas fa-file-alt me-1"></i>
+											Demande documents
+										</span>
+									{% endif %}
+								{% endif %}
+							</td>
+
+							<td>
+								{% if sav.natureDemande is not empty %}
+									{% if sav.natureDemande == 1 %}
+										<span class="nature-badge nature-changement">
+											<i class="fas fa-map-marker-alt me-1"></i>
+											Changement adresse
+										</span>
+									{% elseif sav.natureDemande == 2 %}
+										<span class="nature-badge nature-financier">
+											<i class="fas fa-university me-1"></i>
+											Changement RIB
+										</span>
+									{% elseif sav.natureDemande == 3 %}
+										<span class="nature-badge nature-changement">
+											<i class="fas fa-car me-1"></i>
+											Changement véhicule
+										</span>
+									{% elseif sav.natureDemande == 4 %}
+										<span class="nature-badge nature-financier">
+											<i class="fas fa-folder me-1"></i>
+											Frais dossier
+										</span>
+									{% elseif sav.natureDemande == 5 %}
+										<span class="nature-badge nature-financier">
+											<i class="fas fa-hand-holding-usd me-1"></i>
+											Acompte
+										</span>
+									{% elseif sav.natureDemande == 6 %}
+										<span class="nature-badge nature-financier">
+											<i class="fas fa-calculator me-1"></i>
+											Prorata suite résiliation
+										</span>
+									{% elseif sav.natureDemande == 7 %}
+										<span class="nature-badge nature-sinistre">
+											<i class="fas fa-plus-circle me-1"></i>
+											Ouverture sinistre
+										</span>
+									{% elseif sav.natureDemande == 8 %}
+										<span class="nature-badge nature-sinistre">
+											<i class="fas fa-user-check me-1"></i>
+											Mandaté expert
+										</span>
+									{% elseif sav.natureDemande == 9 %}
+										<span class="nature-badge nature-sinistre">
+											<i class="fas fa-money-check me-1"></i>
+											Remboursement sinistre
+										</span>
+									{% elseif sav.natureDemande == 10 %}
+										<span class="nature-badge nature-document">
+											<i class="fas fa-info me-1"></i>
+											Relevé information
+										</span>
+									{% elseif sav.natureDemande == 11 %}
+										<span class="nature-badge nature-document">
+											<i class="fas fa-certificate me-1"></i>
+											Attestation
+										</span>
+									{% endif %}
+								{% endif %}
+							</td>
+
+							<td>
+								<div class="action-buttons">
+									<a href="{{ path('app_afficher_show', {'id': sav.id}) }}" class="btn-action btn-edit">
+										<i class="fas fa-edit me-1"></i>Traiter
+									</a>
+									{# <a href="{{ path('app_sav_edit', {'id': sav.id}) }}" class="btn-action btn-edit">
+																												<i class="fas fa-edit me-1"></i>Modifier
+																											</a> #}
+								</div>
+							</td>
+						</tr>
+					{% else %}
+						<tr>
+							<td colspan="5" class="empty-state">
+								<i class="fas fa-inbox"></i>
+								<h4>Aucun dossier SAV trouvé</h4>
+								<p>Il n'y a actuellement aucun dossier SAV dans le système.</p>
+							</td>
+						</tr>
+					{% endfor %}
+				</tbody>
+			</table>
+		</div>
+	</div>
+</div>
+
+<script>
+	// Fonction de recherche en temps réel
+document.getElementById('searchInput').addEventListener('input', function () {
+const searchTerm = this.value.toLowerCase();
+const tableRows = document.querySelectorAll('#savTable tbody tr');
+
+tableRows.forEach(row => {
+if (row.querySelector('.empty-state')) 
+return;
 
 
-{% endblock %}
+
+// Ignorer la ligne "aucun résultat"
+
+const text = row.textContent.toLowerCase();
+if (text.includes(searchTerm)) {
+row.style.display = '';
+} else {
+row.style.display = 'none';
+}
+});
+});
+</script>{% endblock %}

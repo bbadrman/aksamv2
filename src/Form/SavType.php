@@ -85,23 +85,24 @@ class SavType extends AbstractType
                 'label' => "Votre Commentaire",
                 'required' => false
             ])
-            ->add('afect', EntityType::class, [
-                'class' => User::class,
-                'label' => 'Affect',
-                'placeholder' => '--Merci de sélectionner--',
+            ->add('afect');
+        // ->add('afect', EntityType::class, [
+        //     'class' => User::class,
+        //     'label' => 'Affect',
+        //     'placeholder' => '--Merci de sélectionner--',
 
 
-                'query_builder' => function (UserRepository $er) use ($user) {
-                    return $er->createQueryBuilder('u')
-                        ->where('u.id = :current_user_id')
-                        ->orwhere('u.roles LIKE :role')
-                        ->setParameter('role', '%ROLE_STAND%')
-                        ->setParameter('current_user_id', $user->getId());
-                },
-                'choice_label' => 'username',
-                'multiple' => true,
-                'expanded' => false,
-            ]);
+        //     'query_builder' => function (UserRepository $er) use ($user) {
+        //         return $er->createQueryBuilder('u')
+        //             ->where('u.id = :current_user_id')
+        //             ->orwhere('u.roles LIKE :role')
+        //             ->setParameter('role', '%ROLE_COMRC%')
+        //             ->setParameter('current_user_id', $user->getId());
+        //     },
+        //     'choice_label' => 'username',
+        //     'multiple' => true,
+        //     'expanded' => false,
+        // ]);
     }
 
     public function configureOptions(OptionsResolver $resolver): void

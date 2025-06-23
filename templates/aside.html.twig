@@ -1,132 +1,106 @@
 {% if is_granted('IS_AUTHENTICATED_FULLY') %}
-
 	{% set page = app.request.get('_route') %}
 
+	<!-- Profil Utilisateur -->
+	<li class="user-profile">
+		<p class="centered">
+			<a href="#">
+				<img src="{{ asset('../images/logo.png') }}" alt="">
 
-	<p class="centered">
-		<a href="#">
-			<img src=" {{ asset('../images/newLogo.jpg') }}" class="img-circle" width="80" alt="">
-		</a>
-	</p>
-
-	<h5 class="centered">{{ app.user.username  }}</h5>
-	<h5 class="centered">
-
-
-		<p>
-			{{ app.user.fonction  }}
-
+			</a>
 		</p>
+		{% for team in app.user.teams %}
+			<h4 class="centered team-badge">{{ team }}</h4>
+		{% endfor %}
+		<h5 class="centered">{{ app.user.username }}</h5>
+		<h5 class="centered">
+			{{ app.user.fonction }}
+		</h5>
 
-	</h5>
+	</li>
 
-	{% for team in app.user.teams %}
-		<h5 class="centered">{{  team  }}</h5>
-	{% endfor %}
 	<!-- DASHBOARD -->
-
 	<li class="sub-menu">
-		<a class="nav-link " href="/">
+		<a class="nav-link" href="/">
 			<i class="fa fa-dashboard"></i>
-			<span>Dashboard
-			</span>
+			<span>Accueil</span>
 		</a>
 	</li>
 
-	<!-- END DASHBOARD -->
-
-
 	<!-- Traitement Prospect -->
-	{% if is_granted('ROLE_TRAITEMENT') == true %}
-
+	{% if is_granted('ROLE_TRAITEMENT') %}
 		<li class="sub-menu">
-			<a class="nav-link " href="{{ path('app_traitement') }} ">
+			<a class="nav-link" href="{{ path('app_traitement') }}">
 				<i class="fa-regular fa-gem"></i>
-				<span>Traitement
-				</span>
+				<span>Traitement</span>
 			</a>
 		</li>
 	{% endif %}
-	<!-- END Traitement Prospect -->
 
-	<!--  Stat -->
-	{% if is_granted('ROLE_STATIQUE')  == true %}
+	<!-- Statistiques -->
+	{% if is_granted('ROLE_STATIQUE') %}
 		<li class="sub-menu">
-			<a class="nav-link " href="{{ path('app_search_dates') }} ">
+			<a class="nav-link" href="{{ path('app_search_dates') }}">
 				<i class="fa fa-pie-chart" aria-hidden="true"></i>
-				<span>Statistique</span>
+				<span>Statistiques</span>
 			</a>
-
 		</li>
 	{% endif %}
-	<!-- END  Stat -->
-	{# <h1 id="notif">{{ " %02d"|format(stats.prospectspasaffect ) }}</h1> #}
-	<!-- RH< -->
-		{% if is_granted("ROLE_RH") == true %}
-			<li class="sub-menu"> <a class="nav-link {% if page in ['attributte_index', 'attributte_new', '#', '#'] %}active{% endif %}" href="javascript:;">
+
+	<!-- Gestion RH -->
+	{% if is_granted("ROLE_RH") %}
+		<li class="sub-menu">
+			<a class="nav-link {% if page in ['attributte_index', 'attributte_new', '#', '#'] %}active{% endif %}" href="javascript:;" onclick="toggleSubMenu(this)">
 				<i class="fa fa-address-card"></i>
 				<span>Gestion RH</span>
+				<i class="fas fa-chevron-right sub-menu-arrow"></i>
 			</a>
-
 			<ul class="sub">
-				{% if is_granted('ROLE_ADD_RH') == true %}
+				{% if is_granted('ROLE_ADD_RH') %}
 					<li>
-						<a href="#">Ajouter
-						</a>
+						<a href="#">Ajouter</a>
 					</li>
 				{% endif %}
-				{% if is_granted('ROLE_EDIT_RH') == true %}
+				{% if is_granted('ROLE_EDIT_RH') %}
 					<li>
-						<a href="#">Gérer
-						</a>
+						<a href="#">Gérer</a>
 					</li>
 				{% endif %}
 			</ul>
 		</li>
 	{% endif %}
-	<!-- END RH< -->
-
 
 	<!-- Clients -->
-
-	{% if is_granted('ROLE_CLIENT')  == true %}
-
+	{% if is_granted('ROLE_CLIENT') %}
 		<li class="sub-menu">
-			<a class="nav-link " href="{{path('client_index')}}">
-				<i class="fa fa-diamond "></i>
-				<span>Clients
-				</span>
+			<a class="nav-link" href="{{ path('client_index') }}">
+				<i class="fa fa-diamond"></i>
+				<span>Clients</span>
 			</a>
 		</li>
 	{% endif %}
 
-	<!-- END Clients -->
-
-
-	<!-- Pramétres -->
-
-	{% if is_granted('ROLE_PARAMETTRE')  == true %}
+	<!-- Paramètres -->
+	{% if is_granted('ROLE_PARAMETTRE') %}
 		<li class="sub-menu">
-
-			<a class="nav-link {% if page in ['user_index', 'user_new', 'user_edit', 'user_show', 'app_team_new', 'app_team_index', 'app_team_show', 'app_team_edit', 'fonction_index', 'fonction_new', 'fonction_show', 'fonction_edit','app_product_index', 'app_product_new', 'app_product_show', 'app_product_edit'] %}active{% endif %}" href="javascript:;">
+			<a class="nav-link {% if page in ['user_index', 'user_new', 'user_edit', 'user_show', 'app_team_new', 'app_team_index', 'app_team_show', 'app_team_edit', 'fonction_index', 'fonction_new', 'fonction_show', 'fonction_edit','app_product_index', 'app_product_new', 'app_product_show', 'app_product_edit'] %}active{% endif %}" href="javascript:;" onclick="toggleSubMenu(this)">
 				<i class="fa fa-cogs"></i>
-				<span>Paramettre</span>
+				<span>Paramètres</span>
+				<i class="fas fa-chevron-right sub-menu-arrow"></i>
 			</a>
 
 			<ul
 				class="sub">
-
-				<!-- USERS -->
-				{% if is_granted('ROLE_GESTION_USER')  == true %}
+				<!-- UTILISATEURS -->
+				{% if is_granted('ROLE_GESTION_USER') %}
 					<li class="sub-menu">
-
-						<a class="nav-link {% if page in ['app_user_index', 'app_user_new', 'user_edit', 'user_show'] %}active{% endif %}" href="javascript:;">
+						<a class="nav-link {% if page in ['app_user_index', 'app_user_new', 'user_edit', 'user_show'] %}active{% endif %}" href="javascript:;" onclick="toggleSubMenu(this)">
 							<i class="fa fa-user-circle"></i>
 							<span>Utilisateurs</span>
+							<i class="fas fa-chevron-right sub-menu-arrow"></i>
 						</a>
-
 						<ul class="sub">
-							{% if is_granted('ROLE_AJOUT_USER')  == true %}
+							{% if is_granted('ROLE_AJOUT_USER') %}
 								<li>
 									<a href="{{ path('app_user_new') }}">Ajouter un user</a>
 								</li>
@@ -134,115 +108,99 @@
 							<li>
 								<a href="{{ path('app_user_index') }}">Gérer les Users</a>
 							</li>
-							{# <li>
-																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																<a href="{{ path('user_acces') }}">Gérer les Sessions</a>
-																																																																																																																																																																																																																																																																																																																																																																																																																																																																																															</li> #}
 						</ul>
 					</li>
-
 				{% endif %}
-				<!-- END USERS -->
 
-				<!-- Produits -->
-				{% if is_granted('ROLE_PRODUIT')  == true %}
+				<!-- PRODUITS -->
+				{% if is_granted('ROLE_PRODUIT') %}
 					<li class="sub-menu">
-						<a class="nav-link {% if page in ['app_product_index', 'app_product_new', 'app_product_show', 'app_product_edit'] %}active{% endif %}" href="javascript:;">
+						<a class="nav-link {% if page in ['app_product_index', 'app_product_new', 'app_product_show', 'app_product_edit'] %}active{% endif %}" href="javascript:;" onclick="toggleSubMenu(this)">
 							<i class="fa fa-product-hunt"></i>
 							<span>Produits</span>
+							<i class="fas fa-chevron-right sub-menu-arrow"></i>
 						</a>
-
 						<ul class="sub">
-							{% if is_granted('ROLE_AJOUT_PRODUIT')  == true %}
+							{% if is_granted('ROLE_AJOUT_PRODUIT') %}
 								<li>
 									<a href="{{ path('app_product_new') }}">Ajouter un Produit</a>
 								</li>
 							{% endif %}
 							<li>
-								<a href="{{ path('app_product_index') }} ">Gérer les Produits</a>
+								<a href="{{ path('app_product_index') }}">Gérer les Produits</a>
 							</li>
 						</ul>
 					</li>
 				{% endif %}
-				<!-- END Produits -->
 
-				<!-- USERS -->
-				{% if is_granted('ROLE_UNITE')  == true %}
+				<!-- UNITÉ -->
+				{% if is_granted('ROLE_UNITE') %}
 					<li class="sub-menu">
-
-						<a class="nav-link {% if page in ['app_user_index', 'app_user_new', 'user_edit', 'user_show'] %}active{% endif %}" href="javascript:;">
+						<a class="nav-link {% if page in ['app_user_index', 'app_user_new', 'user_edit', 'user_show'] %}active{% endif %}" href="javascript:;" onclick="toggleSubMenu(this)">
 							<i class="fa fa-user-circle"></i>
-							<span>Unite</span>
+							<span>Unité</span>
+							<i class="fas fa-chevron-right sub-menu-arrow"></i>
 						</a>
-
 						<ul class="sub">
-							{% if is_granted('ROLE_AJOUT_UNITE')  == true %}
+							{% if is_granted('ROLE_AJOUT_UNITE') %}
 								<li>
-									<a href="{{ path('app_unite_travail_new') }}">Ajouter unite
-									</a>
+									<a href="{{ path('app_unite_travail_new') }}">Ajouter unité</a>
 								</li>
 							{% endif %}
 							<li>
-								<a href="{{ path('app_unite_travail_index') }}">Gérer les Unites</a>
+								<a href="{{ path('app_unite_travail_index') }}">Gérer les Unités</a>
 							</li>
-							{# <li>
-																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																<a href="{{ path('user_acces') }}">Gérer les Sessions</a>
-																																																																																																																																																																																																																																																																																																																																																																																																																																																																																															</li> #}
 						</ul>
 					</li>
 				{% endif %}
-				<!-- END USERS -->
 
-				<!-- Equipe -->
-				{% if is_granted('ROLE_EQUIPE')  == true %}
+				<!-- ÉQUIPE -->
+				{% if is_granted('ROLE_EQUIPE') %}
 					<li class="sub-menu">
-						<a class="nav-link {% if page in ['app_team_new', 'app_team_index', 'app_team_show', 'app_team_edit'] %}active{% endif %}" href="javascript:;">
+						<a class="nav-link {% if page in ['app_team_new', 'app_team_index', 'app_team_show', 'app_team_edit'] %}active{% endif %}" href="javascript:;" onclick="toggleSubMenu(this)">
 							<i class="fa fa-users"></i>
-							<span>Equipe</span>
+							<span>Équipe</span>
+							<i class="fas fa-chevron-right sub-menu-arrow"></i>
 						</a>
-
 						<ul class="sub">
-							{% if is_granted('ROLE_AJOUT_EQUIPE')  == true %}
+							{% if is_granted('ROLE_AJOUT_EQUIPE') %}
 								<li>
-									<a href="{{ path('app_team_new') }}">Ajouter un Equipe</a>
+									<a href="{{ path('app_team_new') }}">Ajouter une Équipe</a>
 								</li>
 							{% endif %}
 							<li>
-								<a href="{{ path('app_team_index') }}">Gérer les Equipes</a>
+								<a href="{{ path('app_team_index') }}">Gérer les Équipes</a>
 							</li>
 						</ul>
 					</li>
 				{% endif %}
-				<!-- END Equipe -->
 			</ul>
 		</li>
 	{% endif %}
-	<!-- END Prammetre -->
 
-
-	<!-- bibliothèque -->
+	<!-- Bibliothèque -->
 	<li class="sub-menu">
-		<a class="nav-link {% if page in ['red_bebltq', 'aide_show'  ] %}active{% endif %}" href="javascript:;">
+		<a class="nav-link {% if page in ['red_bebltq', 'aide_show'] %}active{% endif %}" href="javascript:;" onclick="toggleSubMenu(this)">
 			<i class="fa fa-tags"></i>
-			<span>bibliothèque</span>
+			<span>Bibliothèque</span>
+			<i class="fas fa-chevron-right sub-menu-arrow"></i>
 		</a>
 
 		<ul class="sub">
-
 			<li>
-				<a class="nav-link " href="{{ path('red_bebltq') }}" target="_blank" rel="noopener noreferrer">
+				<a class="nav-link" href="{{ path('red_bebltq') }}" target="_blank" rel="noopener noreferrer">
 					<i class="fa fa-book" aria-hidden="true"></i>
-					<span>Règles souscription
-					</span>
+
+					<span>Règles souscription</span>
+
 				</a>
 			</li>
 			<li>
-				<a class="nav-link " href="{{ path('bebltq_garage') }}" target="_blank" rel="noopener noreferrer">
+				<a class="nav-link" href="{{ path('bebltq_garage') }}" target="_blank" rel="noopener noreferrer">
 					<i class="fa fa-book" aria-hidden="true"></i>
-					<span>Souscription Garage
-					</span>
+					<span>Souscription Garage</span>
 				</a>
 			</li>
-
 			<li class="sub-menu">
 				<a href="{{ path('aide_show') }}" target="_blank" rel="noopener noreferrer">
 					<i class="fa fa-question-circle" aria-hidden="true" style="font-size: 20px;"></i>
@@ -251,5 +209,36 @@
 			</li>
 		</ul>
 	</li>
-	<!-- END bibliothèque -->
 {% endif %}
+
+
+<!-- JavaScript pour les sous-menus -->
+<script>
+	function toggleSubMenu(element) {
+const menuItem = element.closest('li');
+const isOpen = menuItem.classList.contains('open');
+
+// Fermer tous les autres sous-menus du même niveau
+const siblings = menuItem.parentElement.children;
+for (let sibling of siblings) {
+if (sibling !== menuItem && sibling.classList.contains('sub-menu')) {
+sibling.classList.remove('open');
+}
+}
+
+// Toggle le menu courant
+menuItem.classList.toggle('open', ! isOpen);
+}
+
+// Ouvrir automatiquement les sous-menus actifs au chargement
+document.addEventListener('DOMContentLoaded', function () {
+const activeLinks = document.querySelectorAll('.nav-link.active');
+activeLinks.forEach(link => {
+let parent = link.closest('li.sub-menu');
+while (parent) {
+parent.classList.add('open');
+parent = parent.parentElement.closest('li.sub-menu');
+}
+});
+});
+</script>

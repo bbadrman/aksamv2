@@ -1,0 +1,1269 @@
+/* ===================================================================
+   AKSAM V2 - STYLES UNIFIÉS POUR TABLE PROSPECTS
+   Extension du design header/sidebar pour les pages de prospects
+   ================================================================= */
+
+/* ===== VARIABLES CSS HÉRITÉES ===== */
+:root {
+    /* Variables existantes du design principal */
+    --sidebar-width: 280px;
+    --header-height: 70px;
+    --transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+
+    /* Gradients pour cohérence */
+    --primary-gradient: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    --secondary-gradient: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+    --success-gradient: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%);
+    --warning-gradient: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+    --danger-gradient: linear-gradient(135deg, #fa709a 0%, #fee140 100%);
+    --info-gradient: linear-gradient(135deg, #a8edea 0%, #fed6e3 100%);
+
+    /* Ombres et effets */
+    --card-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+    --card-hover-shadow: 0 12px 40px rgba(0, 0, 0, 0.15);
+    --border-radius: 20px;
+    --border-radius-small: 12px;
+
+    /* Nouvelles variables pour les tables */
+    --table-header-gradient: linear-gradient(135deg, #956db9 0%, #673AB7 100%);
+    --table-row-hover: rgba(102, 126, 234, 0.05);
+    --table-border: rgba(255, 255, 255, 0.1);
+}
+
+/* ===================================================================
+   SECTION 1: STRUCTURE PRINCIPALE DE LA PAGE PROSPECTS
+   ================================================================= */
+
+/* Container principal pour la page prospects */
+.prospects-page {
+    background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%) !important;
+    min-height: calc(100vh - var(--header-height)) !important;
+    padding: 2rem !important;
+}
+
+/* Header de section moderne */
+.content-header {
+    background: white !important;
+    border-radius: var(--border-radius) !important;
+    box-shadow: var(--card-shadow) !important;
+    padding: 2rem !important;
+    margin-bottom: 2rem !important;
+    position: relative !important;
+    overflow: hidden !important;
+}
+
+.content-header::before {
+    content: '' !important;
+    position: absolute !important;
+    top: 0 !important;
+    left: 0 !important;
+    right: 0 !important;
+    height: 5px !important;
+    background: var(--primary-gradient) !important;
+}
+
+.content-header h2 {
+    margin: 0 0 1rem 0 !important;
+    font-size: 2rem !important;
+    font-weight: 700 !important;
+    background: var(--primary-gradient) !important;
+    -webkit-background-clip: text !important;
+    -webkit-text-fill-color: transparent !important;
+    background-clip: text !important;
+    display: flex !important;
+    align-items: center !important;
+}
+
+.content-header h2 i {
+    margin-right: 1rem !important;
+    color: #667eea !important;
+    font-size: 1.8rem !important;
+}
+
+/* Breadcrumb moderne */
+.breadcrumb {
+    background: rgba(102, 126, 234, 0.1) !important;
+    border: none !important;
+    border-radius: 25px !important;
+    padding: 0.8rem 1.5rem !important;
+    margin: 0 !important;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05) !important;
+}
+
+.breadcrumb li a {
+    color: #667eea !important;
+    text-decoration: none !important;
+    font-weight: 500 !important;
+    transition: var(--transition) !important;
+}
+
+.breadcrumb li a:hover {
+    color: #764ba2 !important;
+    text-decoration: none !important;
+}
+
+.breadcrumb .active {
+    color: #333 !important;
+    font-weight: 600 !important;
+}
+
+/* ===================================================================
+   SECTION 2: STATISTIQUES ET COMPTEURS
+   ================================================================= */
+
+/* Container pour les statistiques */
+.stats-container {
+    background: white !important;
+    border-radius: var(--border-radius) !important;
+    box-shadow: var(--card-shadow) !important;
+    padding: 1.5rem !important;
+    margin-bottom: 2rem !important;
+    display: flex !important;
+    justify-content: flex-end !important;
+    align-items: center !important;
+    gap: 1rem !important;
+}
+
+/* Badges de statistiques */
+.stat-badge {
+    display: inline-flex !important;
+    align-items: center !important;
+    padding: 0.8rem 1.5rem !important;
+    border-radius: 25px !important;
+    font-weight: 600 !important;
+    color: white !important;
+    text-decoration: none !important;
+    transition: var(--transition) !important;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1) !important;
+}
+
+.stat-badge.prospects-count {
+    background: var(--primary-gradient) !important;
+}
+
+.stat-badge.pages-count {
+    background: var(--success-gradient) !important;
+}
+
+.stat-badge:hover {
+    transform: translateY(-2px) scale(1.05) !important;
+    box-shadow: var(--card-hover-shadow) !important;
+}
+
+.stat-badge i {
+    margin-right: 0.5rem !important;
+    font-size: 1.1rem !important;
+}
+
+.stat-badge strong {
+    margin-left: 0.5rem !important;
+    font-size: 1.1rem !important;
+}
+
+/* ===================================================================
+   SECTION 3: FORMULAIRE DE RECHERCHE MODERNE
+   ================================================================= */
+
+/* Container du formulaire de recherche */
+.search-container {
+    background: white !important;
+    border-radius: var(--border-radius) !important;
+    box-shadow: var(--card-shadow) !important;
+    padding: 2rem !important;
+    margin-bottom: 2rem !important;
+    position: relative !important;
+    overflow: hidden !important;
+}
+
+.search-container::before {
+    content: '' !important;
+    position: absolute !important;
+    top: 0 !important;
+    left: 0 !important;
+    right: 0 !important;
+    height: 4px !important;
+    background: var(--secondary-gradient) !important;
+}
+
+.search-form {
+    display: grid !important;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)) !important;
+    gap: 1.5rem !important;
+    align-items: end !important;
+}
+
+.form-group {
+    margin-bottom: 0 !important;
+}
+
+.form-group label {
+    display: block !important;
+    margin-bottom: 0.5rem !important;
+    font-weight: 600 !important;
+    color: #333 !important;
+    font-size: 0.9rem !important;
+}
+
+.form-control {
+    width: 100% !important;
+    padding: 1rem !important;
+    border: 2px solid #e1e8ed !important;
+    border-radius: var(--border-radius-small) !important;
+    font-size: 1rem !important;
+    transition: var(--transition) !important;
+    background: #f8f9fa !important;
+}
+
+.form-control:focus {
+    outline: none !important;
+    border-color: #667eea !important;
+    background: white !important;
+    box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1) !important;
+}
+
+/* Boutons du formulaire */
+.search-buttons {
+    display: flex !important;
+    gap: 1rem !important;
+    justify-content: center !important;
+    grid-column: 1 / -1 !important;
+    margin-top: 1rem !important;
+}
+
+.btn-modern {
+    padding: 1rem 2rem !important;
+    border: none !important;
+    border-radius: 25px !important;
+    font-weight: 600 !important;
+    text-decoration: none !important;
+    transition: var(--transition) !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    gap: 0.5rem !important;
+    cursor: pointer !important;
+    font-size: 1rem !important;
+}
+
+.btn-search {
+    background: var(--primary-gradient) !important;
+    color: white !important;
+}
+
+.btn-reset {
+    background: var(--warning-gradient) !important;
+    color: white !important;
+}
+
+.btn-modern:hover {
+    transform: translateY(-2px) !important;
+    box-shadow: var(--card-hover-shadow) !important;
+    text-decoration: none !important;
+    color: white !important;
+}
+
+/* ===================================================================
+   SECTION 4: TABLE MODERNE
+   ================================================================= */
+
+/* Container principal de la table */
+.table-container {
+    background: white !important;
+    border-radius: var(--border-radius) !important;
+    box-shadow: var(--card-shadow) !important;
+    overflow: hidden !important;
+    margin-bottom: 2rem !important;
+}
+
+/* Header de la table */
+.table-header {
+    background: var(--table-header-gradient) !important;
+    color: white !important;
+    padding: 1.5rem 2rem !important;
+    display: flex !important;
+    justify-content: space-between !important;
+    align-items: center !important;
+}
+
+.table-title {
+    font-size: 1.2rem !important;
+    font-weight: 600 !important;
+    margin: 0 !important;
+    display: flex !important;
+    align-items: center !important;
+}
+
+.table-title i {
+    margin-right: 1rem !important;
+}
+
+/* Wrapper avec scroll horizontal */
+.table-wrapper {
+    overflow-x: auto !important;
+    max-height: 70vh !important;
+    overflow-y: auto !important;
+}
+
+/* Table principale */
+.table {
+    width: 100% !important;
+    border-collapse: collapse !important;
+    margin: 0 !important;
+    background: white !important;
+    font-size: 0.9rem !important;
+}
+
+/* En-têtes de colonnes */
+.table thead th {
+    background: linear-gradient(135deg, #5626ec 0%, #9C27B0 100%) !important;
+    color: white !important;
+    padding: 1.5rem 1rem !important;
+    text-align: left !important;
+    font-weight: 600 !important;
+    font-size: 0.85rem !important;
+    text-transform: uppercase !important;
+    letter-spacing: 0.5px !important;
+    border: none !important;
+    position: sticky !important;
+    top: 0 !important;
+    z-index: 10 !important;
+    white-space: nowrap !important;
+}
+
+.table thead th:first-child {
+    border-top-left-radius: 0 !important;
+}
+
+.table thead th:last-child {
+    border-top-right-radius: 0 !important;
+}
+
+/* Lignes du tableau */
+.table tbody tr {
+    transition: var(--transition) !important;
+    border-bottom: 1px solid #f1f3f4 !important;
+}
+
+.table tbody tr:hover {
+    background: var(--table-row-hover) !important;
+    transform: scale(1.001) !important;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05) !important;
+}
+
+.table tbody tr:nth-child(even) {
+    background: #fafbfc !important;
+}
+
+.table tbody tr:nth-child(even):hover {
+    background: var(--table-row-hover) !important;
+}
+
+/* Cellules */
+.table td {
+    padding: 1rem !important;
+    vertical-align: middle !important;
+    border: none !important;
+    color: #333 !important;
+    line-height: 1.4 !important;
+}
+
+/* Liens dans les cellules */
+.table td a {
+    color: #667eea !important;
+    text-decoration: none !important;
+    font-weight: 500 !important;
+    transition: var(--transition) !important;
+}
+
+.table td a:hover {
+    color: #764ba2 !important;
+    text-decoration: none !important;
+}
+
+/* ===================================================================
+   SECTION 5: STYLES SPÉCIFIQUES AUX DONNÉES
+   ================================================================= */
+
+/* Dates passées avec animation */
+.date-passee {
+    color: #e74c3c !important;
+    font-weight: 700 !important;
+    background: rgba(231, 76, 60, 0.1) !important;
+    padding: 0.3rem 0.6rem !important;
+    border-radius: 15px !important;
+    animation: pulse-date 2s infinite !important;
+    border: 1px solid rgba(231, 76, 60, 0.3) !important;
+}
+
+@keyframes pulse-date {
+
+    0%,
+    100% {
+        transform: scale(1);
+        opacity: 1;
+    }
+
+    50% {
+        transform: scale(1.05);
+        opacity: 0.8;
+    }
+}
+
+/* Textes colorés spéciaux */
+.custom-red-text {
+    color: #e74c3c !important;
+    font-weight: 700 !important;
+    background: rgba(231, 76, 60, 0.1) !important;
+    padding: 0.2rem 0.5rem !important;
+    border-radius: 10px !important;
+    font-size: 0.9rem !important;
+}
+
+.custom-blue-text {
+    color: #3498db !important;
+    font-weight: 700 !important;
+    background: rgba(52, 152, 219, 0.1) !important;
+    padding: 0.2rem 0.5rem !important;
+    border-radius: 10px !important;
+    font-size: 0.9rem !important;
+}
+
+.custom-green-text {
+    color: #9b59b6 !important;
+    font-weight: 700 !important;
+    background: rgba(155, 89, 182, 0.1) !important;
+    padding: 0.2rem 0.5rem !important;
+    border-radius: 10px !important;
+    font-size: 0.9rem !important;
+}
+
+/* ===================================================================
+   SECTION 6: BOUTONS D'ACTIONS
+   ================================================================= */
+
+/* Container des boutons d'actions */
+.btn-toolbar {
+    display: flex !important;
+    gap: 0.5rem !important;
+    justify-content: center !important;
+    flex-wrap: wrap !important;
+    align-items: center !important;
+}
+
+/* Boutons d'actions modernisés */
+.btn-xs {
+    padding: 0.5rem 0.8rem !important;
+    border-radius: 8px !important;
+    border: none !important;
+    font-size: 0.8rem !important;
+    font-weight: 600 !important;
+    text-decoration: none !important;
+    transition: var(--transition) !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    min-width: 35px !important;
+    height: 35px !important;
+}
+
+.btn-info {
+    background: var(--info-gradient) !important;
+    color: white !important;
+}
+
+.btn-primary {
+    background: var(--primary-gradient) !important;
+    color: white !important;
+}
+
+.btn-danger {
+    background: var(--danger-gradient) !important;
+    color: white !important;
+}
+
+.btn-success {
+    background: var(--success-gradient) !important;
+    color: white !important;
+}
+
+.btn-warning {
+    background: var(--warning-gradient) !important;
+    color: white !important;
+}
+
+.btn-xs:hover {
+    transform: translateY(-2px) scale(1.1) !important;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2) !important;
+    text-decoration: none !important;
+    color: white !important;
+}
+
+/* Bouton de chat spécial */
+.btn-xs img {
+    width: 20px !important;
+    height: 20px !important;
+    filter: brightness(0) invert(1) !important;
+}
+
+/* ===================================================================
+   SECTION 7: PAGINATION MODERNE
+   ================================================================= */
+
+/* Container de pagination */
+.pagination-container {
+    background: white !important;
+    border-radius: var(--border-radius) !important;
+    box-shadow: var(--card-shadow) !important;
+    padding: 1.5rem !important;
+    display: flex !important;
+    justify-content: center !important;
+    margin-top: 2rem !important;
+}
+
+/* Styles de pagination */
+.pagination {
+    display: flex !important;
+    gap: 0.5rem !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    list-style: none !important;
+}
+
+.pagination li {
+    margin: 0 !important;
+}
+
+.pagination li a,
+.pagination li span {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    min-width: 40px !important;
+    height: 40px !important;
+    padding: 0.5rem !important;
+    border-radius: 10px !important;
+    text-decoration: none !important;
+    font-weight: 600 !important;
+    transition: var(--transition) !important;
+    border: 2px solid #e1e8ed !important;
+    color: #667eea !important;
+    background: white !important;
+}
+
+.pagination li a:hover {
+    background: var(--primary-gradient) !important;
+    color: white !important;
+    border-color: transparent !important;
+    transform: translateY(-2px) !important;
+}
+
+.pagination li.active a,
+.pagination li.active span {
+    background: var(--primary-gradient) !important;
+    color: white !important;
+    border-color: transparent !important;
+    box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3) !important;
+}
+
+/* ===================================================================
+   SECTION 8: MODAL MODERNE
+   ================================================================= */
+/* ===== MODAL BOOTSTRAP AMÉLIORÉ ===== */
+/* ===================================================================
+   CSS MODERNE POUR MODAL + CORRECTIONS PROBLÈMES
+   ================================================================= */
+
+/* ===== MODAL BOOTSTRAP AMÉLIORÉ ===== */
+.modal {
+    z-index: 1055 !important;
+    backdrop-filter: blur(10px) !important;
+    background: rgba(0, 0, 0, 0.5) !important;
+}
+
+.modal.fade .modal-dialog {
+    transition: transform 0.4s ease-out !important;
+    transform: translate(0, -50px) scale(0.9) !important;
+}
+
+.modal.show .modal-dialog {
+    transform: none !important;
+}
+
+/* Container du modal */
+.modal-dialog {
+    margin: 2rem auto !important;
+    max-width: 900px !important;
+    width: 95% !important;
+    animation: modalSlideIn 0.4s ease-out !important;
+}
+
+@keyframes modalSlideIn {
+    from {
+        opacity: 0;
+        transform: translateY(-50px) scale(0.9);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+}
+
+/* Contenu du modal */
+.modal-content {
+    border: none !important;
+    border-radius: var(--border-radius, 20px) !important;
+    box-shadow: 0 25px 50px rgba(0, 0, 0, 0.25) !important;
+    overflow: hidden !important;
+    background: white !important;
+}
+
+/* Header du modal */
+.modal-header {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%) !important;
+    color: white !important;
+    border: none !important;
+    padding: 2rem !important;
+    position: relative !important;
+}
+
+.modal-header::before {
+    content: '' !important;
+    position: absolute !important;
+    top: 0 !important;
+    left: 0 !important;
+    right: 0 !important;
+    bottom: 0 !important;
+    background: rgba(255, 255, 255, 0.1) !important;
+    transform: skewY(-2deg) !important;
+    transform-origin: top left !important;
+}
+
+.modal-title {
+    font-weight: 600 !important;
+    margin: 0 !important;
+    font-size: 1.4rem !important;
+    position: relative !important;
+    z-index: 1 !important;
+    display: flex !important;
+    align-items: center !important;
+}
+
+.modal-title i {
+    margin-right: 1rem !important;
+    font-size: 1.2rem !important;
+}
+
+/* Bouton de fermeture */
+.close {
+    color: white !important;
+    opacity: 0.8 !important;
+    font-size: 2rem !important;
+    transition: all 0.3s ease !important;
+    position: relative !important;
+    z-index: 2 !important;
+    background: none !important;
+    border: none !important;
+    width: 40px !important;
+    height: 40px !important;
+    border-radius: 50% !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+}
+
+.close:hover {
+    opacity: 1 !important;
+    color: white !important;
+    background: rgba(255, 255, 255, 0.1) !important;
+    transform: scale(1.1) !important;
+}
+
+/* Corps du modal */
+.modal-body {
+    padding: 2rem !important;
+    background: white !important;
+    min-height: 300px !important;
+    max-height: 60vh !important;
+    overflow-y: auto !important;
+}
+
+/* ===== CONTENU DES APPELS ===== */
+.calls-timeline {
+    position: relative !important;
+    padding-left: 2rem !important;
+}
+
+.calls-timeline::before {
+    content: '' !important;
+    position: absolute !important;
+    left: 1rem !important;
+    top: 0 !important;
+    bottom: 0 !important;
+    width: 2px !important;
+    background: linear-gradient(to bottom, #667eea, #764ba2) !important;
+}
+
+.call-item {
+    position: relative !important;
+    margin-bottom: 2rem !important;
+    background: white !important;
+    border-radius: 15px !important;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1) !important;
+    padding: 1.5rem !important;
+    margin-left: 1rem !important;
+    transition: all 0.3s ease !important;
+}
+
+.call-item:hover {
+    transform: translateY(-2px) !important;
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15) !important;
+}
+
+.call-item::before {
+    content: '' !important;
+    position: absolute !important;
+    left: -2rem !important;
+    top: 1.5rem !important;
+    width: 12px !important;
+    height: 12px !important;
+    border-radius: 50% !important;
+    background: linear-gradient(135deg, #667eea, #764ba2) !important;
+    border: 3px solid white !important;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1) !important;
+}
+
+.call-icon {
+    position: absolute !important;
+    top: 1rem !important;
+    right: 1rem !important;
+    width: 40px !important;
+    height: 40px !important;
+    border-radius: 50% !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    background: rgba(102, 126, 234, 0.1) !important;
+    color: #667eea !important;
+    font-size: 1.2rem !important;
+}
+
+.call-header {
+    display: flex !important;
+    justify-content: space-between !important;
+    align-items: center !important;
+    margin-bottom: 1rem !important;
+    padding-right: 3rem !important;
+}
+
+.call-header strong {
+    font-size: 1.1rem !important;
+    color: #333 !important;
+}
+
+.call-date {
+    color: #666 !important;
+    font-size: 0.9rem !important;
+    background: rgba(102, 126, 234, 0.1) !important;
+    padding: 0.3rem 0.8rem !important;
+    border-radius: 15px !important;
+}
+
+.call-details {
+    color: #555 !important;
+    line-height: 1.6 !important;
+}
+
+.call-details p {
+    margin: 0.5rem 0 !important;
+}
+
+.call-details strong {
+    color: #333 !important;
+}
+
+/* État vide */
+.empty-calls {
+    text-align: center !important;
+    padding: 3rem !important;
+    color: #666 !important;
+}
+
+.empty-calls i {
+    font-size: 4rem !important;
+    color: #ddd !important;
+    margin-bottom: 1rem !important;
+}
+
+.empty-calls h4 {
+    color: #333 !important;
+    margin-bottom: 0.5rem !important;
+}
+
+/* ===== BOUTON D'OUVERTURE DU MODAL ===== */
+.btn-calls {
+    background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%) !important;
+    border: none !important;
+    color: white !important;
+    padding: 0.5rem 0.8rem !important;
+    border-radius: 8px !important;
+    transition: all 0.3s ease !important;
+    position: relative !important;
+    overflow: hidden !important;
+    cursor: pointer !important;
+}
+
+.btn-calls:hover {
+    transform: translateY(-2px) scale(1.05) !important;
+    box-shadow: 0 8px 25px rgba(67, 233, 123, 0.3) !important;
+    color: white !important;
+    text-decoration: none !important;
+}
+
+.btn-calls:focus {
+    outline: none !important;
+    box-shadow: 0 0 0 3px rgba(67, 233, 123, 0.3) !important;
+}
+
+.btn-calls:disabled {
+    opacity: 0.6 !important;
+    cursor: not-allowed !important;
+    transform: none !important;
+}
+
+/* Animation de chargement pour le bouton */
+.btn-calls.loading {
+    pointer-events: none !important;
+}
+
+.btn-calls.loading::after {
+    content: '' !important;
+    position: absolute !important;
+    top: 0 !important;
+    left: -100% !important;
+    width: 100% !important;
+    height: 100% !important;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent) !important;
+    animation: shimmer 1s infinite !important;
+}
+
+@keyframes shimmer {
+    0% {
+        left: -100%;
+    }
+
+    100% {
+        left: 100%;
+    }
+}
+
+/* ===== LOADER MODERNE ===== */
+.modal-loader {
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: center !important;
+    justify-content: center !important;
+    padding: 3rem !important;
+    color: #667eea !important;
+}
+
+.spinner-modern {
+    width: 40px !important;
+    height: 40px !important;
+    border: 3px solid rgba(102, 126, 234, 0.1) !important;
+    border-top: 3px solid #667eea !important;
+    border-radius: 50% !important;
+    animation: spin 1s linear infinite !important;
+    margin-bottom: 1rem !important;
+}
+
+@keyframes spin {
+    0% {
+        transform: rotate(0deg);
+    }
+
+    100% {
+        transform: rotate(360deg);
+    }
+}
+
+.loader-text {
+    font-size: 1.1rem !important;
+    font-weight: 500 !important;
+    color: #667eea !important;
+}
+
+/* ===== MODAL CUSTOM (ALTERNATIVE À BOOTSTRAP) ===== */
+.custom-modal-overlay {
+    position: fixed !important;
+    top: 0 !important;
+    left: 0 !important;
+    width: 100% !important;
+    height: 100% !important;
+    background: rgba(0, 0, 0, 0.5) !important;
+    backdrop-filter: blur(10px) !important;
+    z-index: 1055 !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    padding: 1rem !important;
+    animation: fadeIn 0.3s ease-out !important;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
+}
+
+.custom-modal {
+    background: white !important;
+    border-radius: var(--border-radius, 20px) !important;
+    box-shadow: 0 25px 50px rgba(0, 0, 0, 0.25) !important;
+    max-width: 900px !important;
+    width: 100% !important;
+    max-height: 90vh !important;
+    overflow: hidden !important;
+    animation: modalSlideIn 0.4s ease-out !important;
+}
+
+.custom-modal-header {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%) !important;
+    color: white !important;
+    padding: 2rem !important;
+    display: flex !important;
+    justify-content: space-between !important;
+    align-items: center !important;
+}
+
+.custom-modal-close {
+    background: none !important;
+    border: none !important;
+    color: white !important;
+    font-size: 2rem !important;
+    cursor: pointer !important;
+    width: 40px !important;
+    height: 40px !important;
+    border-radius: 50% !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    transition: all 0.3s ease !important;
+}
+
+.custom-modal-close:hover {
+    background: rgba(255, 255, 255, 0.1) !important;
+    transform: scale(1.1) !important;
+}
+
+.custom-modal-body {
+    padding: 2rem !important;
+    max-height: 60vh !important;
+    overflow-y: auto !important;
+}
+
+/* ===== CORRECTIONS POUR LES CONFLITS ===== */
+
+/* Empêcher les doubles clics */
+.no-double-click {
+    pointer-events: none !important;
+}
+
+/* Overlay de protection pendant le chargement */
+.modal-loading-overlay {
+    position: absolute !important;
+    top: 0 !important;
+    left: 0 !important;
+    right: 0 !important;
+    bottom: 0 !important;
+    background: rgba(255, 255, 255, 0.8) !important;
+    z-index: 10 !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+}
+
+/* ===== RESPONSIVE ===== */
+@media (max-width: 768px) {
+    .modal-dialog {
+        margin: 1rem !important;
+        width: calc(100% - 2rem) !important;
+        max-width: none !important;
+    }
+
+    .modal-header {
+        padding: 1.5rem !important;
+    }
+
+    .modal-title {
+        font-size: 1.2rem !important;
+    }
+
+    .modal-body {
+        padding: 1.5rem !important;
+        max-height: 50vh !important;
+    }
+
+    .calls-timeline {
+        padding-left: 1.5rem !important;
+    }
+
+    .call-item {
+        margin-left: 0.5rem !important;
+        padding: 1rem !important;
+    }
+
+    .call-header {
+        flex-direction: column !important;
+        align-items: flex-start !important;
+        gap: 0.5rem !important;
+    }
+
+    .call-icon {
+        top: 0.5rem !important;
+        right: 0.5rem !important;
+        width: 30px !important;
+        height: 30px !important;
+        font-size: 1rem !important;
+    }
+}
+
+/* ===== ÉTAT DE DEBUG ===== */
+.debug-modal {
+    border: 3px solid red !important;
+    background: rgba(255, 0, 0, 0.1) !important;
+}
+
+.debug-modal * {
+    border: 1px solid blue !important;
+}
+
+/* ===== ACCESSIBILITÉ ===== */
+.modal[aria-hidden="true"] {
+    display: none !important;
+}
+
+.modal[aria-hidden="false"] {
+    display: flex !important;
+}
+
+/* Focus visible pour l'accessibilité */
+.modal:focus-visible {
+    outline: 2px solid #667eea !important;
+    outline-offset: 2px !important;
+}
+
+.close:focus-visible {
+    outline: 2px solid white !important;
+    outline-offset: 2px !important;
+}
+
+/* ===================================================================
+   SECTION 9: RESPONSIVE DESIGN
+   ================================================================= */
+
+@media (max-width: 768px) {
+    .prospects-page {
+        padding: 1rem !important;
+    }
+
+    .content-header {
+        padding: 1.5rem !important;
+    }
+
+    .content-header h2 {
+        font-size: 1.5rem !important;
+    }
+
+    .stats-container {
+        flex-direction: column !important;
+        gap: 0.5rem !important;
+    }
+
+    .search-form {
+        grid-template-columns: 1fr !important;
+        gap: 1rem !important;
+    }
+
+    .search-buttons {
+        flex-direction: column !important;
+    }
+
+    .table-wrapper {
+        max-height: 50vh !important;
+    }
+
+    .table {
+        font-size: 0.8rem !important;
+    }
+
+    .table thead th {
+        padding: 1rem 0.5rem !important;
+        font-size: 0.75rem !important;
+    }
+
+    .table td {
+        padding: 0.8rem 0.5rem !important;
+    }
+
+    .btn-toolbar {
+        flex-direction: column !important;
+        gap: 0.3rem !important;
+    }
+
+    .btn-xs {
+        width: 100% !important;
+        min-width: auto !important;
+    }
+}
+
+@media (max-width: 480px) {
+    .stat-badge {
+        padding: 0.6rem 1rem !important;
+        font-size: 0.9rem !important;
+    }
+
+    .form-control {
+        padding: 0.8rem !important;
+    }
+
+    .btn-modern {
+        padding: 0.8rem 1.5rem !important;
+        font-size: 0.9rem !important;
+    }
+}
+
+/* ===================================================================
+   SECTION 10: ANIMATIONS ET MICRO-INTERACTIONS
+   ================================================================= */
+
+/* Animation d'apparition pour les lignes */
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.table tbody tr {
+    animation: fadeInUp 0.3s ease-out !important;
+}
+
+/* Animation pour les boutons de chargement */
+.loading-btn {
+    position: relative !important;
+    overflow: hidden !important;
+}
+
+.loading-btn::after {
+    content: '' !important;
+    position: absolute !important;
+    top: 0 !important;
+    left: -100% !important;
+    width: 100% !important;
+    height: 100% !important;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent) !important;
+    animation: shimmer 1.5s infinite !important;
+}
+
+@keyframes shimmer {
+    0% {
+        left: -100%;
+    }
+
+    100% {
+        left: 100%;
+    }
+}
+
+/* Animation de notification pour les nouveaux éléments */
+.new-item {
+    animation: highlight 2s ease-out !important;
+}
+
+@keyframes highlight {
+    0% {
+        background: rgba(67, 233, 123, 0.3) !important;
+    }
+
+    100% {
+        background: transparent !important;
+    }
+}
+
+/* ===================================================================
+   SECTION 11: UTILITAIRES ET CORRECTIONS FINALES
+   ================================================================= */
+
+/* Corrections pour les icônes */
+.fa {
+    font-family: 'FontAwesome' !important;
+}
+
+/* Corrections pour les tooltips */
+[title] {
+    position: relative !important;
+}
+
+/* Corrections pour les alertes */
+.alert {
+    border-radius: var(--border-radius-small) !important;
+    border: none !important;
+    padding: 1rem 1.5rem !important;
+    margin-bottom: 1.5rem !important;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1) !important;
+}
+
+.alert-success {
+    background: var(--success-gradient) !important;
+    color: white !important;
+}
+
+.alert-warning {
+    background: var(--warning-gradient) !important;
+    color: white !important;
+}
+
+.alert-danger {
+    background: var(--danger-gradient) !important;
+    color: white !important;
+}
+
+.alert-info {
+    background: var(--info-gradient) !important;
+    color: white !important;
+}
+
+/* Masquer les éléments sur mobile si nécessaire */
+.hide-mobile {
+    display: block !important;
+}
+
+@media (max-width: 768px) {
+    .hide-mobile {
+        display: none !important;
+    }
+}
+
+/* Afficher uniquement sur mobile */
+.show-mobile {
+    display: none !important;
+}
+
+@media (max-width: 768px) {
+    .show-mobile {
+        display: block !important;
+    }
+}
+
+/* ===================================================================
+   FIN DES STYLES POUR TABLE PROSPECTS
+   ================================================================= */

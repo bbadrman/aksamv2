@@ -1,0 +1,401 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Stat Caldrie
+{% endblock %}
+
+{% block body %}
+
+	<section class="content-header">
+		<ol class="breadcrumb">
+			<li>
+				<a href="{{ path('app_home') }}">
+					<i class="fa fa-dashboard"></i>
+					Tableau de bord</a>
+			</li>
+			<!-- NOTIFICATION DROPDOWN -->
+			<li id="header_notification_bar" class="dropdown">
+				<a data-toggle="dropdown" class="dropdown-toggle" href="#">
+					<i class="fa fa-shopping-cart"></i>
+				</a>
+			</li>
+			<!-- END NOTIFICATION DROPDOWN -->
+		</ol>
+		<br>
+	</section>
+
+	<div class="row">
+		<div class="col-12">
+			<h1 class="mb-4">
+				📊 Statistiques
+				{% if fromUrl %}
+					<small class="text-muted">(Dates pré-sélectionnées)</small>
+				{% endif %}
+			</h1>
+		</div>
+	</div>
+
+	<style>
+		.expanded-content {
+			display: none;
+		}
+		[data-col="extra"] {
+			display: none;
+		}
+		[data-col="activites"] {
+			display: none;
+		}
+	</style>
+
+	<br>
+	<!-- Formulaire de recherche -->
+	<div class="row mb-4">
+		<div class="col-12">
+			<div class="card">
+				<div class="card-header d-flex justify-content-between align-items-center">
+					<h5 class="mb-0">
+						🔍 Recherche par dates
+						{% if fromUrl %}
+							<span class="badge badge-info ml-2">Dates chargées depuis l'interface</span>
+						{% endif %}
+					</h5>
+					{% if searchExecuted %}
+						<div class="badge badge-success">
+							Recherche exécutée :
+							{{ searchStartDate|date('d/m/Y') }}
+							-
+							{{ searchEndDate|date('d/m/Y') }}
+						</div>
+					{% endif %}
+				</div>
+				<div class="card-body">
+					{{ form_start(search_form, {'attr': {'class': 'row g-3'}}) }}
+					<div class="col-md-4">
+						{{ form_row(search_form.startDate, {
+                        'label': 'Date de début', 
+                        'attr': {'class': 'form-control'}
+                    }) }}
+					</div>
+					<div class="col-md-4">
+						{{ form_row(search_form.endDate, {
+                        'label': 'Date de fin', 
+                        'attr': {'class': 'form-control'}
+                    }) }}
+					</div>
+					<div class="col-md-4 d-flex align-items-end">
+						<div class="w-100">
+							<button type="submit" class="btn btn-primary w-100 mb-2">
+								<i class="fas fa-search"></i>
+								Rechercher
+							</button>
+							<a href="{{ path('prospects_calandri') }}" class="btn btn-secondary w-100">
+								<i class="fas fa-refresh"></i>
+								Reset
+							</a>
+						</div>
+					</div>
+					{{ form_end(search_form) }}
+
+					{% if fromUrl %}
+						<div class="alert alert-info mt-3">
+							<i class="fas fa-info-circle"></i>
+							<strong>Recherche automatique :</strong>
+							Les dates ont été chargées depuis l'interface de recherche et les résultats affichés automatiquement.
+														                        Du
+							{{ searchStartDate|date('d/m/Y') }}
+							au
+							{{ searchEndDate|date('d/m/Y') }}.
+						</div>
+					{% endif %}
+				</div>
+			</div>
+
+			<div class="d-flex justify-content-between align-items-center mb-4">
+				<a href="{{ path('app_search_dates') }}" class="btn btn-outline-secondary">
+					<i class="fas fa-arrow-left"></i>
+					Retour à la recherche
+				</a>
+			</div>
+			<hr>
+
+			<table id="ma-table" class="table table-striped table-advance table-hover">
+				<thead>
+					<tr style="text-align: center;">
+						<th rowspan="2">Equipe</th>
+						<th rowspan="2">Prospects</th>
+						<th rowspan="2">Contrats</th>
+						<th rowspan="2">Cotisation</th>
+						<th colspan="3">Source</th>
+						<th colspan="2">Type Prospect</th>
+						<th data-col="extra" colspan="6">Motive de saisir</th>
+						<th data-col="activites" colspan="8">Activites</th>
+					</tr>
+					<tr style="text-align: center;">
+						<th>
+							<button id="toggleColumns">Saisir</button>
+						</th>
+						<th>Site Pub</th>
+						<th>Revendeur</th>
+						<th>Particulier</th>
+						<th>
+							<button id="toggleColumnsActivite">Professionel</button>
+						</th>
+						<th data-col="extra">Parrainage</th>
+						<th data-col="extra">Appel</th>
+						<th data-col="extra">Avenant</th>
+						<th data-col="extra">Ancienne</th>
+						<th data-col="extra">Propre site</th>
+						<th data-col="extra">Revendeur</th>
+						<th data-col="activites">TPM</th>
+						<th data-col="activites">VTC</th>
+						<th data-col="activites">Sociéte</th>
+						<th data-col="activites">Décenale</th>
+						<th data-col="activites">Dommage</th>
+						<th data-col="activites">Marchandise</th>
+						<th data-col="activites">Négociant</th>
+						<th data-col="activites">Prof Auto</th>
+					</tr>
+				</thead>
+				<tbody>
+					{% if searchExecuted %}
+						{# Total Row #}
+						<tr>
+							<td>
+								<button class="btn btn" style="background-color:#B0E0E6;">Total</button>
+							</td>
+							<td>
+								<span class="btn btn" style="background-color:#00BFFF;">
+									{{ "%02d"|format(statistics.total.prospects_count) }}
+								</span>
+							</td>
+							<td>
+								<span class="btn btn" style="background-color:rgb(122, 213, 255);">
+									{{ "%02d"|format(statistics.total.contrats_count) }}
+								</span>
+							</td>
+							<td>
+								<span class="btn btn-primary">
+									{{ statistics.total.cotisation_total|number_format(2, ',', ' ') }}
+									€
+								</span>
+							</td>
+							<td>
+								<span class="btn btn" style="background-color:#FFA07A;">
+									{{ "%02d"|format(statistics.total.source.saisir) }}
+								</span>
+							</td>
+							<td>
+								<span class="btn btn" style="background-color:#FFA07A;">
+									{{ "%02d"|format(statistics.total.source.site_pub) }}
+								</span>
+							</td>
+							<td>
+								<span class="btn btn" style="background-color:#FFA07A;">
+									{{ "%02d"|format(statistics.total.source.revendeur) }}
+								</span>
+							</td>
+							<td>
+								<span class="btn btn" style="background-color:#98FB98;">
+									{{ "%02d"|format(statistics.total.type_prospect.particulier) }}
+								</span>
+							</td>
+							<td>
+								<span class="btn btn" style="background-color:#98FB98;">
+									{{ "%02d"|format(statistics.total.type_prospect.professionnel) }}
+								</span>
+							</td>
+							{% for i in 1..6 %}
+								<td data-col="extra">
+									<span class="btn btn" style="background-color:#cde4e2;">
+										{{ "%02d"|format(statistics.total.motif_saise[i]) }}
+									</span>
+								</td>
+							{% endfor %}
+							{% for i in 1..8 %}
+								<td data-col="activites">
+									<span class='btn btn-warning'>
+										{{ "%02d"|format(statistics.total.activites[i]) }}
+									</span>
+								</td>
+							{% endfor %}
+						</tr>
+
+						{# Teams Rows #}
+						{% for team in teams %}
+							{% set teamStats = statistics.teams[team.id] ?? null %}
+							{% if teamStats %}
+								<tr class="expandable-row">
+									<td>
+										<button class="btn btn" style="background-color:#B0E0E6;">{{ team.name }}</button>
+									</td>
+									<td>
+										<span class="btn btn" style="background-color:#00BFFF;">
+											{{ "%02d"|format(teamStats.prospects_count) }}
+										</span>
+									</td>
+									<td>
+										<span class="btn btn" style="background-color:rgb(122, 213, 255);">
+											{{ "%02d"|format(teamStats.contrats_count) }}
+										</span>
+									</td>
+									<td>
+										<span class="btn btn-primary">
+											{{ teamStats.cotisation_total|number_format(2, ',', ' ') }}
+											€
+										</span>
+									</td>
+									<td>
+										<span class="btn btn" style="background-color:#FFA07A;">
+											{{ "%02d"|format(teamStats.source.saisir) }}
+										</span>
+									</td>
+									<td>
+										<span class="btn btn" style="background-color:#FFA07A;">
+											{{ "%02d"|format(teamStats.source.site_pub) }}
+										</span>
+									</td>
+									<td>
+										<span class="btn btn" style="background-color:#FFA07A;">
+											{{ "%02d"|format(teamStats.source.revendeur) }}
+										</span>
+									</td>
+									<td>
+										<span class="btn btn" style="background-color:#98FB98;">
+											{{ "%02d"|format(teamStats.type_prospect.particulier) }}
+										</span>
+									</td>
+									<td>
+										<span class="btn btn" style="background-color:#98FB98;">
+											{{ "%02d"|format(teamStats.type_prospect.professionnel) }}
+										</span>
+									</td>
+									{% for i in 1..6 %}
+										<td data-col="extra">
+											<span class="btn btn" style="background-color:#cde4e2;">
+												{{ "%02d"|format(teamStats.motif_saise[i]) }}
+											</span>
+										</td>
+									{% endfor %}
+									{% for i in 1..8 %}
+										<td data-col="activites">
+											<span class='btn btn-warning'>
+												{{ "%02d"|format(teamStats.activites[i]) }}
+											</span>
+										</td>
+									{% endfor %}
+								</tr>
+
+								{# Users in Team #}
+								{% for user in team.users %}
+									{% set userStats = statistics.users[user.id] ?? null %}
+									{% if userStats %}
+										<tr class="expanded-content">
+											<td>
+												<button class="btn btn">{{ user.username }}</button>
+											</td>
+											<td>
+												<span class="btn btn" style="background-color:#00BFFF;">
+													{{ "%02d"|format(userStats.prospects_count) }}
+												</span>
+											</td>
+											<td>
+												<span class="btn btn" style="background-color:rgb(122, 213, 255);">
+													{{ "%02d"|format(userStats.contrats_count) }}
+												</span>
+											</td>
+											<td>
+												<span class="btn btn-primary">
+													{{ userStats.cotisation_total|number_format(2, ',', ' ') }}
+													€
+												</span>
+											</td>
+											<td>
+												<span class="btn btn" style="background-color:#FFA07A;">
+													{{ "%02d"|format(userStats.source.saisir) }}
+												</span>
+											</td>
+											<td>
+												<span class="btn btn" style="background-color:#FFA07A;">
+													{{ "%02d"|format(userStats.source.site_pub) }}
+												</span>
+											</td>
+											<td>
+												<span class="btn btn" style="background-color:#FFA07A;">
+													{{ "%02d"|format(userStats.source.revendeur) }}
+												</span>
+											</td>
+											<td>
+												<span class="btn btn" style="background-color:#98FB98;">
+													{{ "%02d"|format(userStats.type_prospect.particulier) }}
+												</span>
+											</td>
+											<td>
+												<span class="btn btn" style="background-color:#98FB98;">
+													{{ "%02d"|format(userStats.type_prospect.professionnel) }}
+												</span>
+											</td>
+											{% for i in 1..6 %}
+												<td data-col="extra">
+													<span class="btn btn" style="background-color:#cde4e2;">
+														{{ "%02d"|format(userStats.motif_saise[i]) }}
+													</span>
+												</td>
+											{% endfor %}
+											{% for i in 1..8 %}
+												<td data-col="activites">
+													<span class='btn btn-warning'>
+														{{ "%02d"|format(userStats.activites[i]) }}
+													</span>
+												</td>
+											{% endfor %}
+										</tr>
+									{% endif %}
+								{% endfor %}
+							{% endif %}
+						{% endfor %}
+					{% else %}
+						{# Message d'information quand aucune recherche n'a été effectuée #}
+						<tr>
+							<td colspan="21" class="text-center py-5">
+								<div class="alert alert-info">
+									<i class="fas fa-info-circle"></i>
+									<strong>Aucune recherche effectuée</strong><br>
+									Veuillez sélectionner une période pour afficher les statistiques.
+								</div>
+							</td>
+						</tr>
+					{% endif %}
+				</tbody>
+			</table>
+
+			<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+			<script>
+				$(document).ready(function () { // Hide all expanded content on load
+$('.expanded-content').hide();
+
+// Toggle expanded content when clicking on expandable rows
+$('.expandable-row').click(function () {
+$('.expanded-content').not($(this).nextAll('.expanded-content')).hide();
+$(this).nextUntil('.expandable-row').toggle();
+});
+});
+
+// Toggle extra columns
+document.getElementById('toggleColumns').addEventListener('click', function () {
+const extraCols = document.querySelectorAll('[data-col="extra"]');
+extraCols.forEach(col => {
+col.style.display = (col.style.display === 'none' || col.style.display === '') ? 'table-cell' : 'none';
+});
+});
+
+// Toggle activities columns
+document.getElementById('toggleColumnsActivite').addEventListener('click', function () {
+const extraCols = document.querySelectorAll('[data-col="activites"]');
+extraCols.forEach(col => {
+col.style.display = (col.style.display === 'none' || col.style.display === '') ? 'table-cell' : 'none';
+});
+});
+			</script>
+		</div>
+	</div>
+
+{% endblock %}

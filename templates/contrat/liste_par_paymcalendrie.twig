@@ -19,7 +19,7 @@
 			<div class="content-panel">
 				<section class="content-header">
 					<h1 style="text-align: center;">
-						Chiffres d'Affaires
+						PRODUCTION
 						<br>
 					</h1>
 
@@ -79,7 +79,7 @@
 								<i class="fa-solid fa-sort"></i>
 							</th>
 							<th class="text-right sortable" data-sort="reste" style="cursor:pointer;">
-								Reste
+								Différence
 								<i class="fa-solid fa-sort"></i>
 							</th>
 						</tr>
@@ -198,14 +198,15 @@
 											<table class="table table-hover mb-0">
 												<thead class="table-dark">
 													<tr>
-														<th style="width: 8%;">ID Contrat</th>
-														<th style="width: 18%;">Nom Contrat</th>
+														<th style="width: 8%;">N° Contrat</th>
+														<th style="width: 18%;">Nom
+														</th>
 														<th style="width: 12%;">Date Souscription</th>
-														<th style="width: 12%;">Matricule</th>
+
 														<th style="width: 12%;" class="text-right">Frais Déclarés</th>
 														<th style="width: 13%;" class="text-right">Frais Encaissé</th>
 														<th style="width: 10%;" class="text-right">Reste</th>
-														<th style="width: 22%;">Détail Calcul</th>
+														{# <th style="width: 22%;">Détail Calcul</th> #}
 													</tr>
 												</thead>
 												<tbody>
@@ -232,13 +233,13 @@
 																	<span class="badge bg-secondary">Non définie</span>
 																{% endif %}
 															</td>
-															<td>
-																{% if contrat.imatriclt %}
-																	<code>{{ contrat.imatriclt }}</code>
-																{% else %}
-																	<em class="text-muted">Non défini</em>
-																{% endif %}
-															</td>
+															{# <td>
+																																														{% if contrat.imatriclt %}
+																																															<code>{{ contrat.imatriclt }}</code>
+																																														{% else %}
+																																															<em class="text-muted">Non défini</em>
+																																														{% endif %}
+																																													</td> #}
 															<td class="text-right">
 																{% if payment and payment.frais %}
 																	<strong class="text-info">{{ payment.frais|number_format(2, ',', ' ') }}
@@ -255,21 +256,21 @@
 																<strong class="text-primary">{{ resteContrat|number_format(2, ',', ' ') }}
 																	€</strong>
 															</td>
-															<td>
-																<small class="text-muted">
-																	{% for i, amount in contratData.amounts %}
-																		{% if i > 0 %}
-																			+
-																		{% endif %}
-																		<span class="badge bg-light text-dark">{{ amount|number_format(2, ',', ' ') }}</span>
-																	{% endfor %}
-																</small>
-																<br>
-																<small class="text-info">
-																	Transactions:
-																	{{ contratData.transactionNumbers|join(', ') }}
-																</small>
-															</td>
+															{# <td>
+																															<small class="text-muted">
+																																{% for i, amount in contratData.amounts %}
+																																	{% if i > 0 %}
+																																		+
+																																	{% endif %}
+																																	<span class="badge bg-light text-dark">{{ amount|number_format(2, ',', ' ') }}</span>
+																																{% endfor %}
+																															</small>
+																															<br>
+																															<small class="text-info">
+																																Transactions:
+																																{{ contratData.transactionNumbers|join(', ') }}
+																															</small>
+																														</td> #}
 														</tr>
 													{% endfor %}
 												</tbody>

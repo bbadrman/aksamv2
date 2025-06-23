@@ -66,10 +66,15 @@ class SavTraiterType extends AbstractType
                     ]
                 ]
             )
-            ->add('comentTraiter', Type\TextareaType::class, [
+            ->add('comment', Type\TextareaType::class, [
                 'attr' => ['class' => 'tinymce'],
                 'label' => "Votre Commentaire",
                 'required' => false
+            ])
+            ->add('contrat', EntityType::class, [
+                'class' => 'App\Entity\Contrat',
+                'choice_label' => 'nom',
+                'required' => false,
             ])
             ->add('status', Type\ChoiceType::class, [
                 'label' => 'Status',

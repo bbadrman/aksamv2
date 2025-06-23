@@ -48,6 +48,7 @@ class SearchTransactionType extends AbstractType
             )
             ->add('d', Type\DateType::class, [
                 'widget' => 'single_text',
+                'label' => "Date de début :",
                 'required' => true,
                 'constraints' => [
                     new NotBlank([
@@ -62,6 +63,7 @@ class SearchTransactionType extends AbstractType
 
             ->add('dd', Type\DateType::class, [
                 'widget' => 'single_text',
+                'label' => "Date de fin :",
                 'required' => true,
                 'constraints' => [
                     new NotBlank([
@@ -84,7 +86,7 @@ class SearchTransactionType extends AbstractType
                 'motif',
                 Type\ChoiceType::class,
                 [
-                    'label' => 'Motif ',
+                    'label' => 'Motif de paiement ',
                     'required' => false,
 
                     'placeholder' => '--Merci de selectie-- ',

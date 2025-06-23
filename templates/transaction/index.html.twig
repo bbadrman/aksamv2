@@ -46,6 +46,7 @@
 				</a>
 			{% endif %}
 		</section>
+		<br><br>
 		<div class="row mt">
 			<div class="col-xs-12 mx-auto d-flex justify-content-center">
 				<div class="row" style="margin-right: 12px;  ">
@@ -63,7 +64,7 @@
 							<tr>
 								<th>Commercial</th>
 								<th>Nom</th>
-								<th>DatePaiement</th>
+								<th>Date de Paiement</th>
 								<th>Motif</th>
 								<th class="text-right">Debit</th>
 								<th class="text-right">Credit</th>
@@ -119,24 +120,23 @@
 
 						{# Ligne de totaux sous le tableau #}
 						{% if transactions|length > 0 %}
-							<tfoot style="border-top: 3px solid #007bff; background-color: #f1f3f4;">
-								<tr>
-									<td colspan="4" class="text-right" style="font-weight: bold; padding: 12px; font-size: 16px;">
-										<strong>TOTAL :</strong>
-									</td>
-									<td class="text-right" style="font-weight: bold; padding: 12px; font-size: 16px;">
-										<strong class="text-danger">{{ totalDebit|number_format(2, ',', ' ') }}
-											€</strong>
-									</td>
-									<td class="text-right" style="font-weight: bold; padding: 12px; font-size: 16px;">
-										<strong class="text-success">{{ totalCredit|number_format(2, ',', ' ') }}
-											€</strong>
-									</td>
-									<td colspan="3" style="padding: 12px;"></td>
-								</tr>
-							</tfoot>
-						{% endif %}
 
+							<tr>
+								<td colspan="4" class="text-right" style="font-weight: bold; padding: 12px; font-size: 16px;">
+									<strong>TOTAL :</strong>
+								</td>
+								<td class="text-right" style="font-weight: bold; padding: 12px; font-size: 16px;">
+									<strong class="text-danger">{{ totalDebit|number_format(2, ',', ' ') }}
+										€</strong>
+								</td>
+								<td class="text-right" style="font-weight: bold; padding: 12px; font-size: 16px;">
+									<strong class="text-success">{{ totalCredit|number_format(2, ',', ' ') }}
+										€</strong>
+								</td>
+								<td colspan="3" style="padding: 12px;"></td>
+							</tr>
+
+						{% endif %}
 						<tfoot class="text-center">
 							<tr>
 								<td colspan="9">

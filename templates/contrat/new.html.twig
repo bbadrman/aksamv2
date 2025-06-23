@@ -142,6 +142,7 @@ const subcategoryContainer = document.getElementById("subcategory-container");
 const subcategoryActivites = document.getElementById("subcategory-activite");
 const subcategorytypeConducteur = document.getElementById("subcategory-typeConducteur");
 const subcategoryimatriclt = document.getElementById("subcategory-imatriclt");
+const subcategoryForceJuridique = document.getElementById("subcategory-forceJuridique");
 
 const subcategoryconducteur = document.getElementById("subcategory-conducteur");
 const subcategorytypePermis = document.getElementById("subcategory-typePermis");
@@ -156,6 +157,7 @@ function handleTypeContratChange() {
 const isParticulier = typeContratField.value === 'Particulier';
 subcategoryContainer.style.display = isParticulier ? "none" : "block";
 subcategoryActivites.style.display = isParticulier ? "none" : "block";
+subcategoryForceJuridique.style.display = isParticulier ? "none" : "block";
 }
 
 function handleTypeConducteurChange() {

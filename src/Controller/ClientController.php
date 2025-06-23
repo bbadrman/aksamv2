@@ -127,35 +127,25 @@ final class ClientController extends AbstractController
 
         $data = new SearchClient();
         $data->page = $request->query->get('page', 1);
-        $form = $this->createForm(SearchClientType::class, $data);
-        $form->handleRequest($this->requestStack->getCurrentRequest());
+
         $client = [];
 
-        if ($form->isSubmitted() && $form->isValid() && !$form->isEmpty()) {
 
-            $user = $security->getUser();
-            if (in_array('ROLE_DEV', $user->getRoles(), true) || in_array('ROLE_ADMIN', $user->getRoles(), true) || in_array('ROLE_VALID', $user->getRoles(), true)) {
-                // admit peut voire toutes les nouveaux client
-                $client =  $this->clientRepository->findClientAdmin($data, null);
-            } elseif (in_array('ROLE_CHEF', $user->getRoles(), true)) {
-                // chef peut voire toutes les nouveaux client atacher a leur equipe
-                $client =  $this->clientRepository->findClientChef($data,  $user, null);
-            } else {
-                // cmrcl peut voire seulement les nouveaux client atacher a lui
-                $client =  $this->clientRepository->findClientCmrcl($data, $user, null);
-            }
-
-
-            return $this->render('client/index.html.twig', [
-                'clients' => $client,
-
-                'search_form' => $form->createView()
-            ]);
+        $user = $security->getUser();
+        if (in_array('ROLE_DEV', $user->getRoles(), true) || in_array('ROLE_ADMIN', $user->getRoles(), true) || in_array('ROLE_VALID', $user->getRoles(), true)) {
+            // admit peut voire toutes les nouveaux client
+            $client =  $this->clientRepository->findClientAdmin($data, null);
+        } elseif (in_array('ROLE_CHEF', $user->getRoles(), true)) {
+            // chef peut voire toutes les nouveaux client atacher a leur equipe
+            $client =  $this->clientRepository->findClientChef($data,  $user, null);
+        } else {
+            // cmrcl peut voire seulement les nouveaux client atacher a lui
+            $client =  $this->clientRepository->findClientCmrcl($data, $user, null);
         }
-        return $this->render('client/search.html.twig', [
+
+        return $this->render('client/index.html.twig', [
             'clients' => $client,
 
-            'search_form' => $form->createView()
         ]);
     }
 

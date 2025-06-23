@@ -2,6 +2,8 @@
 
 namespace App\Controller;
 
+use App\Form\FlexibleSearchType;
+use App\Form\SearchCriteria;
 use App\Form\SearchDateClaudType;
 use App\Form\SearchDateType;
 use App\Repository\CompartenaireRepository;

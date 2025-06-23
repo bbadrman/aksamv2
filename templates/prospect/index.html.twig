@@ -2,7 +2,10 @@
 
 {% block title %}Prospect index
 {% endblock %}
-
+{% block stylesheets %}
+	{{parent()}}
+	{# <link rel="stylesheet" href="{{ asset('../css/table.css') }}"> #}
+{% endblock %}
 {% block body %}
 	{% for label,  messages in app.flashes  %}
 		<div class="container">
@@ -18,7 +21,7 @@
 	<section class="content-header">
 		{% if app.request.get('_route') == 'app_prospect_index'  %}
 
-			<h2>Les Prospects a affecter</h2>
+			<h2>Affectations</h2>
 
 		{% elseif app.request.get('_route') == 'newprospect_index' and is_granted('ROLE_COMERC') %}
 
@@ -99,364 +102,378 @@
 
 		</div>
 	</div>
-	<div class="row mt">
-		<div class="col-lg-12">
-			<div class="content-panel">
-				<table class="table table-striped table-advance table-hover">
-					<thead>
-						<tr>
-							{% if is_granted('ROLE_ADMIN')   or is_granted('ROLE_AFFECTALL') %}
-								<th>Source</th>
-								<th>Autor</th>
-								{% if app.request.get('_route') != 'newprospect_index' and app.request.get('_route') != 'newprospectchef_index' %}
 
-									<th>Commercial</th>
-									<th>Equipe</th>
-									<th>Status</th>
-								{% endif %}
+	<div class="table-containe">
+		<div class="content-panel">
+			<table class="table table-striped table-advance table-hover">
+				<thead>
+					<tr>
+						{% if is_granted('ROLE_ADMIN')   or is_granted('ROLE_AFFECTALL') %}
+							<th>
+								<i class="fa fa-globe"></i>
+								Source</th>
+							<th>
+								<i class="fa fa-user"></i>
+								Auteur</th>
+							{% if app.request.get('_route') != 'newprospect_index' and app.request.get('_route') != 'newprospectchef_index' %}
+
+								<th>
+									<i class="fa fa-briefcase"></i>
+									Commercial</th>
+								<th>
+									<i class="fa fa-users"></i>
+									Équipe</th>
+
 							{% endif %}
-							<th>Produit</th>
-							<th>Activité</th>
-							<th>Type Prospect</th>
-							<th>Date Creation</th>
-							<th>Nom</th>
-							<th>Prenom</th>
-							<th>Raison Sociale</th>
-							<th>Téléphone</th>
-							<th>Email</th>
-							<th>Relance</th>
-							<th>Date Relance</th>
-							<th>Actions</th>
-						</tr>
-					</thead>
-				</tr>
+						{% endif %}
+						<th>
+							<i class="fa fa-cube"></i>
+							Produit</th>
+						<th>
+							<i class="fa fa-industry"></i>
+							Activité</th>
+						<th>
+							<i class="fa fa-tag"></i>
+							Type Prospect</th>
+						<th>
+							<i class="fa fa-calendar"></i>
+							Date Création</th>
+						<th>
+							<i class="fa fa-user"></i>
+							Nom</th>
+						<th>
+							<i class="fa fa-user"></i>
+							Prénom</th>
+						<th>
+							<i class="fa fa-building"></i>
+							Raison Sociale</th>
+						<th>
+							<i class="fa fa-phone"></i>
+							Téléphone</th>
+						<th>
+							<i class="fa fa-envelope"></i>
+							Email</th>
+						<th>
+							<i class="fa fa-refresh"></i>
+							Status Relance</th>
+						<th>
+							<i class="fa fa-clock-o"></i>
+							Date Relance</th>
+						<th>
+							<i class="fa fa-cogs"></i>
+							Actions</th>
+					</tr>
+				</thead>
 			</tr>
-		</thead>
-		<tbody>
-			{% for prospect in prospects %}
-				<tr>
-					{% if is_granted('ROLE_ADMIN')   or is_granted('ROLE_AFFECTALL') %}
-						<td>
-							{% if prospect.source  == 3 %}
-								{% if prospect.url  is null and prospect  == 3  %}
-									Autre Site
-								{% elseif prospect.url == 1 %}
-									<a href="https://www.assurance-des-vtc.fr" target="_blank" title="https://www.assurance-des-vtc.fr">des-vtc</a>
-								{% elseif prospect.url == 2 %}
-									<a href="https://www.assurance-garage-pro.fr" target="_blank" title="https://www.assurance-garage-pro.fr">garage-pro</a>
-								{% elseif prospect.url == 3 %}
-									<a href="https://www.assurance-pour-taxi.fr" target="_blank" title="https://www.assurance-pour-taxi.fr">pour-taxi</a>
-								{% elseif prospect.url == 4 %}
-									<a href="https://assurance-pour-vtc.fr/" target="_blank" title="https://assurance-pour-vtc.fr/">pour-vtc</a>
-								{% elseif prospect.url == 5 %}
-									<a href="https://lassurance-des-resilies.fr" target="_blank" title="https://lassurance-des-resilies.fr">des-resilies</a>
-								{% elseif prospect.url == 6 %}
-									<a href="https://lassurance-garantie-decennale.fr" target="_blank" title="https://lassurance-garantie-decennale.fr">decennale</a>
-								{% elseif prospect.url == 7 %}
-									<a href="https://comparez-en-ligne.fr" target="_blank" title="https://comparez-en-ligne.fr">comparez</a>
-								{% elseif prospect.url == 8 %}
-									<a href="https://assurance-pour-camion.fr" target="_blank" title="https://assurance-pour-camion.fr/">camion</a>
-								{% elseif prospect.url == 9 %}
-									<a href="https://assurance-flotte-entreprise.fr" target="_blank" title="https://assurance-flotte-entreprise.fr">flotte</a>
-								{% elseif prospect.url == 10 %}
-									<a href="https://assurance-vehicule-pro.fr" target="_blank" title="https://assurance-vehicule-pro.fr">vehicule-pro</a>
-								{% elseif prospect.url == 11 %}
-									<a href="https://lassurance-des-transporteurs.fr" target="_blank" title="https://lassurance-des-transporteurs.fr/">transporteurs</a>
-								{% elseif prospect.url == 12 %}
-									<a href="https://assurance-vehicules-professionnels.fr" target="_blank" title="https://assurance-vehicules-professionnels.fr">vehicules-prof</a>
-								{% elseif prospect.url == 13 %}
-									<a href="https://assurance-engins-chantier.fr" target="_blank" title="https://assurance-engins-chantier.fr">engins</a>
-								{% elseif prospect.url == 14 %}
-									<a href="https://assurance-professionnels-auto.fr" target="_blank" title="https://assurance-professionnels-auto.fr">prof-auto</a>
-								{% elseif prospect.url == 15 %}
-									<a href="https://assurance-professionnels-auto.fr/auto-ecole" target="_blank" title="https://assurance-professionnels-auto.fr">auto-ecole</a>
-								{% elseif prospect.url == 16 %}
-									<a href="https://assurance-professionnels-auto.fr/negociants-auto" target="_blank" title="https://assurance-professionnels-auto.fr/negociants-auto">negociants-auto</a>
-								{% elseif prospect.url == 17 %}
-									<a href="https://assurance-professionnels-auto.fr/negociants-auto" target="_blank" title="https://assurance-professionnels-auto.fr/garage-automobile">garage-auto</a>
-								{% endif %}
+		</tr>
+	</thead>
+	<tbody>
+		{% for prospect in prospects %}
+			<tr>
+				{% if is_granted('ROLE_ADMIN')   or is_granted('ROLE_AFFECTALL') %}
+					<td>
+						{% if prospect.source  == 3 %}
+							{% if prospect.url  is null and prospect  == 3  %}
+								<span class="status-badge">Autre Site</span>
+							{% elseif prospect.url == 1 %}
+								<a href="https://www.assurance-des-vtc.fr" target="_blank" title="https://www.assurance-des-vtc.fr">des-vtc</a>
+							{% elseif prospect.url == 2 %}
+								<a href="https://www.assurance-garage-pro.fr" target="_blank" title="https://www.assurance-garage-pro.fr">garage-pro</a>
+							{% elseif prospect.url == 3 %}
+								<a href="https://www.assurance-pour-taxi.fr" target="_blank" title="https://www.assurance-pour-taxi.fr">pour-taxi</a>
+							{% elseif prospect.url == 4 %}
+								<a href="https://assurance-pour-vtc.fr/" target="_blank" title="https://assurance-pour-vtc.fr/">pour-vtc</a>
+							{% elseif prospect.url == 5 %}
+								<a href="https://lassurance-des-resilies.fr" target="_blank" title="https://lassurance-des-resilies.fr">des-resilies</a>
+							{% elseif prospect.url == 6 %}
+								<a href="https://lassurance-garantie-decennale.fr" target="_blank" title="https://lassurance-garantie-decennale.fr">decennale</a>
+							{% elseif prospect.url == 7 %}
+								<a href="https://comparez-en-ligne.fr" target="_blank" title="https://comparez-en-ligne.fr">comparez</a>
+							{% elseif prospect.url == 8 %}
+								<a href="https://assurance-pour-camion.fr" target="_blank" title="https://assurance-pour-camion.fr/">camion</a>
+							{% elseif prospect.url == 9 %}
+								<a href="https://assurance-flotte-entreprise.fr" target="_blank" title="https://assurance-flotte-entreprise.fr">flotte</a>
+							{% elseif prospect.url == 10 %}
+								<a href="https://assurance-vehicule-pro.fr" target="_blank" title="https://assurance-vehicule-pro.fr">vehicule-pro</a>
+							{% elseif prospect.url == 11 %}
+								<a href="https://lassurance-des-transporteurs.fr" target="_blank" title="https://lassurance-des-transporteurs.fr/">transporteurs</a>
+							{% elseif prospect.url == 12 %}
+								<a href="https://assurance-vehicules-professionnels.fr" target="_blank" title="https://assurance-vehicules-professionnels.fr">vehicules-prof</a>
+							{% elseif prospect.url == 13 %}
+								<a href="https://assurance-engins-chantier.fr" target="_blank" title="https://assurance-engins-chantier.fr">engins</a>
+							{% elseif prospect.url == 14 %}
+								<a href="https://assurance-professionnels-auto.fr" target="_blank" title="https://assurance-professionnels-auto.fr">prof-auto</a>
+							{% elseif prospect.url == 15 %}
+								<a href="https://assurance-professionnels-auto.fr/auto-ecole" target="_blank" title="https://assurance-professionnels-auto.fr">auto-ecole</a>
+							{% elseif prospect.url == 16 %}
+								<a href="https://assurance-professionnels-auto.fr/negociants-auto" target="_blank" title="https://assurance-professionnels-auto.fr/negociants-auto">negociants-auto</a>
+							{% elseif prospect.url == 17 %}
+								<a href="https://assurance-professionnels-auto.fr/negociants-auto" target="_blank" title="https://assurance-professionnels-auto.fr/garage-automobile">garage-auto</a>
 							{% endif %}
-							{% if prospect.source == 2 %}
+						{% endif %}
+						{% if prospect.source == 2 %}
+							<span class="status-badge status-tarification">Revendeur</span>
+						{% endif %}
+						{# si source est saisi maniale  #}
+						{% if prospect.source == 1 %}
+							{% if prospect.motifSaise is null %}
+								<span class="status-badge status-rendez-vous">LEADS</span>
+							{% endif %}
+							{% if prospect.motifSaise == 1 %}
+								<span class="status-badge status-attente">Parrainage</span>
+							{% endif %}
+							{% if prospect.motifSaise == 2 %}
+								Appel Entrant
+							{% endif %}
+							{% if prospect.motifSaise == 3 %}
+								Avenant
+							{% endif %}
+							{% if prospect.motifSaise == 4 %}
+								Ancienne Contrat
+							{% endif %}
+							{% if prospect.motifSaise == 5 %}
+								Propre site
+							{% endif %}
+							{% if prospect.motifSaise == 6 %}
 								Revendeur
 							{% endif %}
-							{# si source est saisi maniale  #}
-							{% if prospect.source == 1 %}
-								{% if prospect.motifSaise is null %}
-									LEADS
+						{% endif %}
+					</td>
+					<td>
+						{% if prospect.autor  is not empty %}
+							<a href="#">
+								{{ prospect.autor }}
+							</a>
+						{% else %}
+							<span class="status-badge status-tarification">Site</span>
+						{% endif %}
+
+					</td>
+					{% if app.request.get('_route') != 'newprospect_index' and app.request.get('_route') != 'newprospectchef_index' %}
+
+						<td>
+							{% if prospect.comrcl is not empty %}
+
+								{% if  app.user and app.user == prospect.comrcl %}
+									<a href="#" style="color:red">
+										{{ prospect.comrcl  }}</a>
+								{% else %}
+									<a href="#">{{ prospect.comrcl  }}</a>
 								{% endif %}
-								{% if prospect.motifSaise == 1 %}
-									Parrainage
-								{% endif %}
-								{% if prospect.motifSaise == 2 %}
-									Appel Entrant
-								{% endif %}
-								{% if prospect.motifSaise == 3 %}
-									Avenant
-								{% endif %}
-								{% if prospect.motifSaise == 4 %}
-									Ancienne Contrat
-								{% endif %}
-								{% if prospect.motifSaise == 5 %}
-									Propre site
-								{% endif %}
-								{% if prospect.motifSaise == 6 %}
-									Revendeur
-								{% endif %}
+
+							{% else %}
+								<span class="status-badge status-attente">En attente</span>
 							{% endif %}
 						</td>
 						<td>
-							{% if prospect.autor  is not empty %}
-								<a href="#">
-									{{ prospect.autor }}
-								</a>
+							{% if prospect.team is not empty %}
+								<span class="team-badgetable">{{ prospect.team }}</span>
 							{% else %}
-								<a href="#">
-									Site
-								</a>
+								<span class="status-badge">Aucun</span>
 							{% endif %}
 
 						</td>
-						{% if app.request.get('_route') != 'newprospect_index' and app.request.get('_route') != 'newprospectchef_index' %}
 
-							<td>
-								{% if prospect.comrcl is not empty %}
-
-									{% if  app.user and app.user == prospect.comrcl %}
-										<a href="#" style="color:red">
-											{{ prospect.comrcl  }}</a>
-									{% else %}
-										<a href="#">{{ prospect.comrcl  }}</a>
-									{% endif %}
-
-								{% else %}
-									<a href="#">
-										En attend
-									</a>
-								{% endif %}
-							</td>
-							<td>
-								{% if prospect.team is not empty %}
-									{{ prospect.team }}
-								{% else %}
-									Aucun
-								{% endif %}
-
-							</td>
-							<td>
-								{% if prospect.comrcl and prospect.team is not empty %}
-									<button class="btn btn-primary">Commercial
-									</button>
-								{% elseif prospect.comrcl is  empty and prospect.team is not empty  %}
-									<button class="btn btn-info">Chef d'Equipe
-									{% else %}
-										<button class="btn btn-success">Nouveau
-										</button>
-									{% endif %}
-								</td>
-							</td>
-						{% endif %}
 					{% endif %}
-					<td>
-						{% if prospect.product is not empty %}
-							{{ prospect.product }}
-						{% else %}
-							{% if prospect.url == 1 %}
-								AUTO
-							{% elseif prospect.url == 2 %}
-								RCPRO
-							{% elseif prospect.url == 3 %}
-								AUTO
-							{% elseif prospect.url == 4 %}
-								AUTO
-							{% elseif prospect.url == 5 %}
-								AUTO
-							{% elseif prospect.url == 6 %}
-								CONSTRUCTION
-							{% elseif prospect.url == 7 %}
-								AUTO
-							{% elseif prospect.url == 8 %}
-								camion
-							{% elseif prospect.url == 9 %}
-								AUTO
-							{% elseif prospect.url == 10 %}
-								AUTO
-							{% elseif prospect.url == 11 %}
-								AUTO
-							{% elseif prospect.url == 12 %}
-								AUTO
-							{% elseif prospect.url == 13 %}
-								ENGINS
-							{% elseif prospect.url == 14 %}
-								RCPRO
-							{% elseif prospect.url == 15 %}
-								RCPRO-EC
-							{% elseif prospect.url == 16 %}
-								RCPRO-NG
-							{% elseif prospect.url == 17 %}
-								RCPRO-GA
-							{% endif %}
-
-						{% endif %}
-					</td>
-					<td>
-						{% if prospect.activites is null %}
-							Pas encore rempli
-						{% elseif  prospect.activites == 1 %}
-							TPM
-						{% elseif prospect.activites == 2 %}
-							VTC
-						{% elseif prospect.activites == 3 %}
-							Sociéte
-						{% elseif prospect.activites == 4 %}
-							Décenale
-						{% elseif prospect.activites == 5 %}
-							Dommage
-						{% elseif prospect.activites == 6 %}
-							Marchandise
-						{% elseif prospect.activites == 7 %}
-							Négociant
-						{% elseif prospect.activites == 8 %}
-							Professionnel Auto
-						{% elseif prospect.activites == 9 %}
-							Auto-ecole
-						{% elseif prospect.activites == 10 %}
-							Garage-auto
-						{% endif %}
-					</td>
-					<td>
-						{% if prospect.typeProspect == 1 %}
-							Particulier
-						{% endif %}
-						{% if prospect.typeProspect == 2 %}
-							Professionnel
-						{% endif %}
-					</td>
-					<td>{{ prospect.creatAt ? prospect.creatAt|date('Y-m-d H:i') : '' }}</td>
-
-					<td>{{ prospect.nom }}</td>
-					<td>{{ prospect.prenom }}</td>
-					<td>{{ prospect.raisonSociale }}</td>
-
-					{% if prospect.gsm is not empty  %}
-						<td>{{ prospect.gsm }}</td>
+				{% endif %}
+				<td>
+					{% if prospect.product is not empty %}
+						{{ prospect.product }}
 					{% else %}
-						{# verifie si phone Doublon #}
-						{% if app.request.get('_route') == 'app_prospect_index' and prospect.phone is not empty and duplicates.phones[prospect.phone] %}
-							<td style="color:red">{{ prospect.phone }}</td>
-						{% else %}
-							<td>{{ prospect.phone }}</td>
-							{# {% set phones = phones|merge([prospect.phone]) %} #}
+						{% if prospect.url == 1 %}
+							AUTO
+						{% elseif prospect.url == 2 %}
+							RCPRO
+						{% elseif prospect.url == 3 %}
+							AUTO
+						{% elseif prospect.url == 4 %}
+							AUTO
+						{% elseif prospect.url == 5 %}
+							AUTO
+						{% elseif prospect.url == 6 %}
+							CONSTRUCTION
+						{% elseif prospect.url == 7 %}
+							AUTO
+						{% elseif prospect.url == 8 %}
+							camion
+						{% elseif prospect.url == 9 %}
+							AUTO
+						{% elseif prospect.url == 10 %}
+							AUTO
+						{% elseif prospect.url == 11 %}
+							AUTO
+						{% elseif prospect.url == 12 %}
+							AUTO
+						{% elseif prospect.url == 13 %}
+							ENGINS
+						{% elseif prospect.url == 14 %}
+							RCPRO
+						{% elseif prospect.url == 15 %}
+							RCPRO-EC
+						{% elseif prospect.url == 16 %}
+							RCPRO-NG
+						{% elseif prospect.url == 17 %}
+							RCPRO-GA
 						{% endif %}
+
 					{% endif %}
-					<td>
-						{% if app.request.get('_route') == 'app_prospect_index' and is_granted('ROLE_ADMIN') %}
-							<a href="mailto:{{ prospect.email }}">{{ prospect.email }}</a>
-							{% if duplicates.emails[prospect.email] %}
-								<span style="color:red">Doublon</span>
-							{% endif %}
-						{% else %}
-							<a href="mailto:{{ prospect.email }}">{{ prospect.email }}</a>
-						{% endif %}
-					</td>
-					<td>
-						<a>
-							{% if prospect.relance is null %}
+				</td>
+				<td>
+					{% if prospect.activites is null %}
+						Pas encore rempli
+					{% elseif  prospect.activites == 1 %}
+						TPM
+					{% elseif prospect.activites == 2 %}
+						VTC
+					{% elseif prospect.activites == 3 %}
+						Sociéte
+					{% elseif prospect.activites == 4 %}
+						Décenale
+					{% elseif prospect.activites == 5 %}
+						Dommage
+					{% elseif prospect.activites == 6 %}
+						Marchandise
+					{% elseif prospect.activites == 7 %}
+						Négociant
+					{% elseif prospect.activites == 8 %}
+						Professionnel Auto
+					{% elseif prospect.activites == 9 %}
+						Auto-ecole
+					{% elseif prospect.activites == 10 %}
+						Garage-auto
+					{% endif %}
+				</td>
+				<td>
+					{% if prospect.typeProspect == 1 %}
+						<span class="status-badge status-rendez-vous">Particulier</span>
+					{% endif %}
+					{% if prospect.typeProspect == 2 %}
+						<span class="status-badge status-tarification">Professionnel</span>
+					{% endif %}
+				</td>
+				<td>{{ prospect.creatAt ? prospect.creatAt|date('Y-m-d H:i') : '' }}</td>
 
-								Pas encore relancer
-							{% elseif  prospect.relance == 1 %}
-								Rendez-vous
-							{% elseif prospect.relance == 2 %}
-								Injoignable
-							{% elseif prospect.relance == 3 %}
-								Attente DOC
-							{% elseif prospect.relance == 4 %}
-								Tarification
-							{% elseif prospect.relance == 5 %}
-								Prise de Décision
-							{% elseif prospect.relance == 6 %}
-								Faux Fiche
-							{% elseif prospect.relance == 7 %}
-								Doublon
-							{% elseif prospect.relance == 8 %}
-								Passage Concurrent
-							{% elseif prospect.relance == 9 %}
-								Passage Client
-							{% elseif prospect.relance == 10 %}
-								Déjà Souscrit
-							{% elseif prospect.relance == 11 %}
-								Toujour Injoignable
-							{% elseif prospect.relance == 13 %}
-								Test
-							{% endif %}
-						</a>
-					</td>
+				<td>{{ prospect.nom }}</td>
+				<td>{{ prospect.prenom }}</td>
+				<td>{{ prospect.raisonSociale }}</td>
 
-					{% if app.request.get('_route') == 'relancejour_index' and prospect.relanceAt < now  %}
-						<td class="date-passee">{{ prospect.relanceAt ? prospect.relanceAt|date('Y-m-d H:i') : '' }}</td>
+				{% if prospect.gsm is not empty  %}
+					<td>{{ prospect.gsm }}</td>
+				{% else %}
+					{# verifie si phone Doublon #}
+					{% if app.request.get('_route') == 'app_prospect_index' and prospect.phone is not empty and duplicates.phones[prospect.phone] %}
+						<td style="color:red">{{ prospect.phone }}</td>
 					{% else %}
-						<td>{{ prospect.relanceAt ? prospect.relanceAt|date('Y-m-d H:i') : '' }}</td>
+						<td>{{ prospect.phone }}</td>
+						{# {% set phones = phones|merge([prospect.phone]) %} #}
 					{% endif %}
-					<td class="btn-toolbar">
-						<a href="{{ path('app_prospect_show', {'id': prospect.id}) }}" class="btn btn-info btn-xs">
-							<i class="fa fa-eye"></i>
+				{% endif %}
+				<td>
+					{% if app.request.get('_route') == 'app_prospect_index' and is_granted('ROLE_ADMIN') %}
+						<a href="mailto:{{ prospect.email }}">{{ prospect.email }}</a>
+						{% if duplicates.emails[prospect.email] %}
+							<span style="color:red">Doublon</span>
+						{% endif %}
+					{% else %}
+						<a href="mailto:{{ prospect.email }}">{{ prospect.email }}</a>
+					{% endif %}
+				</td>
+				<td>
+					<a>
+						{% if prospect.relance is null %}
+
+							<span class="status-badge">Pas encore relancé</span>
+						{% elseif  prospect.relance == 1 %}
+							<span class="status-badge status-rendez-vous">Rendez-vous</span>
+						{% elseif prospect.relance == 2 %}
+							<span class="status-badge status-injoignable">Injoignable</span>
+						{% elseif prospect.relance == 3 %}
+							<span class="status-badge status-attente">Attente DOC</span>
+						{% elseif prospect.relance == 4 %}
+							<span class="status-badge status-tarification">Tarification</span>
+						{% elseif prospect.relance == 5 %}
+							Prise de Décision
+						{% elseif prospect.relance == 6 %}
+							Faux Fiche
+						{% elseif prospect.relance == 7 %}
+							Doublon
+						{% elseif prospect.relance == 8 %}
+							Passage Concurrent
+						{% elseif prospect.relance == 9 %}
+							Passage Client
+						{% elseif prospect.relance == 10 %}
+							Déjà Souscrit
+						{% elseif prospect.relance == 11 %}
+							Toujour Injoignable
+						{% elseif prospect.relance == 13 %}
+							Test
+						{% endif %}
+					</a>
+				</td>
+
+				{% if app.request.get('_route') == 'relancejour_index' and prospect.relanceAt < now  %}
+					<td class="date-passee">{{ prospect.relanceAt ? prospect.relanceAt|date('Y-m-d H:i') : '' }}</td>
+				{% else %}
+					<td>{{ prospect.relanceAt ? prospect.relanceAt|date('Y-m-d H:i') : '' }}</td>
+				{% endif %}
+				<td class="btn-toolbar">
+					<a href="{{ path('app_prospect_show', {'id': prospect.id}) }}" class="btn btn-info btn-xs">
+						<i class="fa fa-eye"></i>
+					</a>
+
+					{% if is_granted('ROLE_RELANCER') %}
+						{{ render(controller('App\\Controller\\ProspectController::relance',{'id':prospect.id}))}}
+					{% endif %}
+					{% if is_granted('ROLE_AFFECT') %}
+
+						{{ render(controller('App\\Controller\\ProspectController::affect',{'id':prospect.id}))}}
+					{% endif %}
+
+					{% if is_granted('ROLE_ADMIN') == true %}
+						<a href="{{ path('app_prospect_edit', {'id': prospect.id}) }}" class="btn btn-primary btn-xs">
+							<i class="fa fa-pencil"></i>
 						</a>
 
-						{% if is_granted('ROLE_RELANCER') %}
-							{{ render(controller('App\\Controller\\ProspectController::relance',{'id':prospect.id}))}}
-						{% endif %}
-						{% if is_granted('ROLE_AFFECT') %}
-
-							{{ render(controller('App\\Controller\\ProspectController::affect',{'id':prospect.id}))}}
-						{% endif %}
-
-						{% if is_granted('ROLE_ADMIN') == true %}
-							<a href="{{ path('app_prospect_edit', {'id': prospect.id}) }}" class="btn btn-primary btn-xs">
-								<i class="fa fa-pencil"></i>
-							</a>
-
-							{% set form_title = '<i class="fa fa-trash"></i>' %}
-							{{ include('prospect/_delete_form.html.twig', {
+						{% set form_title = '<i class="fa fa-trash"></i>' %}
+						{{ include('prospect/_delete_form.html.twig', {
                                                     'form_title': form_title
                                                                            }) }}
-						{% endif %}
-						<button type="button" class="btn btn-info btn-sm" id="showCallsButton" data-toggle="modal" data-target="#callsModal" data-id="{{ prospect.id }}">
-							<h3>
-								<img src=" {{ asset('images/chat-en-direct.png') }} " class="img-circle" width="20" alt="">
-							</h3>
-						</button>
-						<!-- Modale -->
+					{% endif %}
 
-
-					</td>
-				</tr>
-			</td>
-		</tbody>
-	</tr>
-	{# modal #}
-	<div class="modal fade" id="callsModal" tabindex="-1" role="dialog" aria-labelledby="callsModalLabel" aria-hidden="true">
-		<div class="modal-dialog modal-lg" role="document">
-			<div class="modal-content">
-				<div class="modal-header">
-					<h3 class="modal-title text-center" id="callsModalLabel">Historique des appels</h3>
-					<button type="button" class="close" data-dismiss="modal" aria-label="Close">
-						<span aria-hidden="true">&times;</span>
+					<button type="button" class="btn btn-info btn-sm" id="showCallsButton" data-toggle="modal" data-target="#callsModal" data-id="{{ prospect.id }}">
+						<h3>
+							<img src=" {{ asset('images/chat-en-direct.png') }} " class="img-circle" width="20" alt="">
+						</h3>
 					</button>
-				</div>
-				<div class="modal-body">
-					<div id="callsContent">
-						Chargement...
-					</div>
+
+					<!-- Modale -->
+
+
+				</td>
+			</tr>
+		</td>
+	</tbody>
+</tr>
+{# modal #}
+<div class="modal fade" id="callsModal" tabindex="-1" role="dialog" aria-labelledby="callsModalLabel" aria-hidden="true">
+	<div class="modal-dialog modal-lg" role="document">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h3 class="modal-title text-center" id="callsModalLabel">Historique des appels</h3>
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+					<span aria-hidden="true">&times;</span>
+				</button>
+			</div>
+			<div class="modal-body">
+				<div id="callsContent">
+					Chargement...
 				</div>
 			</div>
 		</div>
 	</div>
-	{# end modal #}
-{% else %}
-	<tr>
-		<td colspan="23">no records found</td>
-	</tr>
-
-{% endfor %}</tbody></tbody><tfoot class="text-right"><tr>
-<td colspan="9">
-	{{ knp_pagination_render(prospects, 'pagination.html.twig') }}
-</td></tr></tfoot></table></div></div></div>{% endblock %}{% block javascripts %}{{ parent() }}{{ encore_entry_script_tags('appaffct') }}<script src='/js/calls.js'></script>{% endblock %}
+</div>
+{# end modal #}{% else %}
+<tr>
+	<td colspan="23">no records found</td>
+</tr>{% endfor %}</tbody></tbody><tfoot class="text-right"><tr><td colspan="9">
+{{ knp_pagination_render(prospects, 'pagination.html.twig') }}</td></tr></tfoot></table></div></div></div>{% endblock %}{% block javascripts %}{{ parent() }}{{ encore_entry_script_tags('appaffct') }}<script src='/js/calls.js'></script>{% endblock %}

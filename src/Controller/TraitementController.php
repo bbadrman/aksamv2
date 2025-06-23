@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Form\SearchProspectType;
+use App\Repository\AppelRepository;
 use App\Repository\ProspectRepository;
 use App\Search\SearchProspect;
 use App\Service\StatsService;
@@ -24,6 +25,7 @@ final class TraitementController extends AbstractController
         private RequestStack $requestStack,
         private ProspectRepository $prospectRepository,
         private Security $security,
+        private AppelRepository $AppelRepository
     ) {}
 
 
@@ -31,7 +33,7 @@ final class TraitementController extends AbstractController
     public function index(StatsService $statsService): Response
     {
         $stats = $statsService->getStats();
-        return $this->render('traitement/table.html.twig', [
+        return $this->render('traitement/table2.html.twig', [
             'stats'    => $stats
         ]);
     }
@@ -188,14 +190,16 @@ final class TraitementController extends AbstractController
             return $this->render('prospect/index.html.twig', [
                 'prospects' => $prospect,
                 'search_form' => $form->createView(),
-                'totalResults' => $totalResults
+                'totalResults' => $totalResults,
+                'appels' => $this->AppelRepository->findAll(),
             ]);
         }
 
         return $this->render('prospect/search.html.twig', [
             'prospects' => $prospect,
             'search_form' => $form->createView(),
-            'totalResults' => $totalResults
+            'totalResults' => $totalResults,
+
         ]);
     }
     /**

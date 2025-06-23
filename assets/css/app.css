@@ -26,10 +26,12 @@ body {
     color: #0e0d0d;
     background: #eaeaea;
     font-family: 'Ruda', sans-serif;
-    padding: 0px !important;
-    margin: 0px !important;
+    /* padding: 0px !important;
+    margin: 0px !important; */
     font-weight: 800px;
     font-size: 15px;
+
+
 }
 
 /*  loader */
@@ -323,7 +325,7 @@ ul.top-menu>li>.logout {
 /*sidebar navigation*/
 
 #sidebar {
-    width: 210px;
+    width: 280px;
     height: 100%;
     position: fixed;
     background-color: #002E5B;
@@ -332,7 +334,7 @@ ul.top-menu>li>.logout {
 }
 
 #sidebar h5 {
-    color: #f2f2f2;
+    color: #1607e8;
     font-weight: 700;
 }
 
@@ -383,6 +385,8 @@ ul.sidebar-menu li ul.sub {
 
 ul.sidebar-menu {
     margin-top: 75px;
+    font-size: 1.5rem !important;
+    font-weight: 900 !important;
 }
 
 #sidebar>ul>li>ul.sub {
@@ -395,7 +399,7 @@ ul.sidebar-menu {
 }
 
 ul.sidebar-menu li ul.sub li {
-    background: #aabce9;
+    background: #00466b;
     margin-bottom: 0;
     margin-left: 0;
     margin-right: 0;
@@ -416,16 +420,16 @@ ul.sidebar-menu li ul.sub li a {
     -o-transition: all 0.3s ease;
     -ms-transition: all 0.3s ease;
     transition: all 0.3s ease;
-    color: #0852e6;
+    color: #00466b;
 }
 
 ul.sidebar-menu li ul.sub li a:hover {
-    color: white;
+    color: rgb(1, 1, 1);
     background: transparent;
 }
 
 ul.sidebar-menu li ul.sub li.active a {
-    color: #4ECDC4;
+    color: #00466b;
     -webkit-transition: all 0.3s ease;
     -moz-transition: all 0.3s ease;
     -o-transition: all 0.3s ease;
@@ -447,10 +451,11 @@ ul.sidebar-menu li.sub-menu {
 
 ul.sidebar-menu li a span {
     display: inline-block;
+    color: #00466b !important;
 }
 
 ul.sidebar-menu li a {
-    color: #ffffff;
+    color: #00466b !important;
     text-decoration: none;
     display: block;
     padding: 15px 0 15px 10px;
@@ -467,7 +472,7 @@ ul.sidebar-menu li a.active,
 ul.sidebar-menu li a:hover,
 ul.sidebar-menu li a:focus {
     background: #4ECDC4;
-    color: #fff;
+    color: #00466b;
     display: block;
 
     -webkit-transition: all 0.3s ease;
@@ -479,17 +484,18 @@ ul.sidebar-menu li a:focus {
 
 
 ul.sidebar-menu li a i {
-    font-size: 15px;
+    font-size: 25px !important;
     padding-right: 6px;
+    color: #00466b !important;
 }
 
 ul.sidebar-menu li a:hover i,
 ul.sidebar-menu li a:focus i {
-    color: #fff;
+    color: #00466b;
 }
 
 ul.sidebar-menu li a.active i {
-    color: #fff;
+    color: #00466b;
 }
 
 
@@ -745,13 +751,13 @@ ul.top-menu>li>a:focus {
 
 .dropdown-menu.extended.logout>li:last-child>a,
 .dropdown-menu.extended.logout>li:last-child>a:hover {
-    color: #fff;
+    color: #000000;
     border-bottom: none !important;
     text-transform: uppercase;
 }
 
 .dropdown-menu.extended.logout>li:last-child>a:hover>i {
-    color: #fff;
+    color: #020202;
 }
 
 .dropdown-menu.extended.logout>li>a {
@@ -4355,10 +4361,14 @@ ul.chat-available-user li a:hover {
 } */
 
 .table thead th {
-    background-color: #002E5B;
-    color: white;
+    background-color: #A9D0DE;
+    color: black;
     padding: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px !important;
 }
+
+
 
 #contrat-table thead th {
     background-color: #dee2e6;
@@ -4440,4 +4450,974 @@ table.display th {
 
 .d-none {
     display: none;
+}
+
+/* ===================================================================
+   AKSAM V2 - STYLES UNIFIÉS 
+   Header/Sidebar + Traitement + Dashboard
+   ================================================================= */
+
+/* ===== VARIABLES CSS GLOBALES ===== */
+:root {
+    /* Layout */
+    --sidebar-width: 280px;
+    --header-height: 70px;
+    --transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+
+    /* Couleurs principales */
+    --primary-gradient: linear-gradient(135deg, #a9cbd7 0%, #9dd0e3 100%);
+    --secondary-gradient: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+    --success-gradient: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%);
+    --warning-gradient: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+    --danger-gradient: linear-gradient(135deg, #fa709a 0%, #fee140 100%);
+    --info-gradient: linear-gradient(135deg, #a8edea 0%, #fed6e3 100%);
+    --purple-gradient: linear-gradient(135deg, #d299c2 0%, #fef9d7 100%);
+    --orange-gradient: linear-gradient(135deg, #ffecd2 0%, #fcb69f 100%);
+    --blue-gradient: linear-gradient(135deg, #89f7fe 0%, #66a6ff 100%);
+    --green-gradient: linear-gradient(135deg, #a8edea 0%, #fed6e3 100%);
+
+    /* Ombres et effets */
+    --card-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+    --card-hover-shadow: 0 12px 40px rgba(0, 0, 0, 0.15);
+    --border-radius: 20px;
+    --border-radius-small: 12px;
+}
+
+/* ===================================================================
+   SECTION 1: CORRECTION D'ALIGNEMENT (PRIORITÉ MAXIMALE)
+   ================================================================= */
+
+/* ===== CORRECTION DU BODY - PRIORITÉ ABSOLUE ===== */
+body {
+    margin: 0 !important;
+    padding-top: var(--header-height) !important;
+    padding-left: var(--sidebar-width) !important;
+    padding-right: 0 !important;
+    padding-bottom: 0 !important;
+    transition: var(--transition) !important;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif !important;
+    background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%) !important;
+    min-height: 100vh !important;
+}
+
+/* Responsive pour mobile */
+@media (max-width: 768px) {
+    body {
+        padding-left: 0 !important;
+    }
+}
+
+/* ===== CORRECTION DES CONTENEURS PRINCIPAUX ===== */
+#container {
+    width: 100% !important;
+    height: 100% !important;
+    margin: 0 !important;
+    padding: 0 !important;
+}
+
+#main-content {
+    margin-left: 0 !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    min-height: calc(100vh - var(--header-height)) !important;
+    width: 100% !important;
+}
+
+.wrapper {
+    margin-top: 0 !important;
+    padding: 2rem !important;
+    width: 100% !important;
+    background: transparent !important;
+}
+
+/* ===== HEADER MODERNE - PRIORITÉ MAXIMALE ===== */
+.header,
+header.header {
+    position: fixed !important;
+    top: 0 !important;
+    left: 0 !important;
+    right: 0 !important;
+    height: var(--header-height) !important;
+    background: var(--primary-gradient) !important;
+    z-index: 1000 !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    min-height: auto !important;
+    display: flex !important;
+    align-items: center !important;
+    backdrop-filter: blur(10px) !important;
+    box-shadow: var(--card-shadow) !important;
+}
+
+/* Logo section dans l'header */
+.logo-section {
+    position: fixed !important;
+    left: 0 !important;
+    top: 0 !important;
+    width: var(--sidebar-width) !important;
+    height: var(--header-height) !important;
+    background: var(--primary-gradient) !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    z-index: 1001 !important;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1) !important;
+}
+
+/* Contenu du header */
+.header-content {
+    margin-left: var(--sidebar-width) !important;
+    width: calc(100% - var(--sidebar-width)) !important;
+    height: 100% !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: space-between !important;
+    padding: 0 2rem !important;
+}
+
+/* ===== SIDEBAR MODERNE - PRIORITÉ MAXIMALE ===== */
+#sidebar {
+    position: fixed !important;
+    left: 0 !important;
+    top: var(--header-height) !important;
+    width: var(--sidebar-width) !important;
+    height: calc(100vh - var(--header-height)) !important;
+    background: var(--primary-gradient) !important;
+    z-index: 999 !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    overflow-y: auto !important;
+    border-right: 1px solid rgba(255, 255, 255, 0.1) !important;
+    box-shadow: var(--card-shadow) !important;
+}
+
+/* ===== FOOTER ===== */
+footer {
+    margin-left: var(--sidebar-width) !important;
+    transition: var(--transition) !important;
+    width: calc(100% - var(--sidebar-width)) !important;
+}
+
+@media (max-width: 768px) {
+    footer {
+        margin-left: 0 !important;
+        width: 100% !important;
+    }
+}
+
+/* ===== STYLES POUR COLLAPSED SIDEBAR ===== */
+body.sidebar-collapsed {
+    padding-left: 60px !important;
+}
+
+body.sidebar-collapsed #sidebar {
+    width: 60px !important;
+}
+
+body.sidebar-collapsed .logo-section {
+    width: 60px !important;
+}
+
+body.sidebar-collapsed .header-content {
+    margin-left: 60px !important;
+    width: calc(100% - 60px) !important;
+}
+
+body.sidebar-collapsed footer {
+    margin-left: 60px !important;
+    width: calc(100% - 60px) !important;
+}
+
+/* ===================================================================
+   SECTION 2: STYLES DU HEADER
+   ================================================================= */
+
+.logo {
+    color: white !important;
+    font-size: 1.8rem !important;
+    font-weight: 700 !important;
+    text-decoration: none !important;
+    transition: var(--transition) !important;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3) !important;
+}
+
+.logo:hover {
+    color: #f39c12 !important;
+    text-decoration: none !important;
+    transform: scale(1.05) !important;
+}
+
+.sidebar-collapsed .logo .logo-text {
+    display: none !important;
+}
+
+.sidebar-collapsed .logo .logo-icon {
+    display: block !important;
+}
+
+/* Notifications dans le header */
+.notification-item {
+    display: flex !important;
+    align-items: center !important;
+    background: rgba(255, 255, 255, 0.1) !important;
+    padding: 0.5rem 1rem !important;
+    border-radius: 25px !important;
+    color: black !important;
+    text-decoration: none !important;
+    transition: var(--transition) !important;
+    backdrop-filter: blur(5px) !important;
+    border: 1px solid rgba(255, 255, 255, 0.1) !important;
+    margin: 0.2rem !important;
+    font-size: 1.5rem !important;
+    font-weight: 900 !important;
+}
+
+.notification-item:hover {
+    background: rgba(255, 255, 255, 0.2) !important;
+    transform: translateY(-2px) !important;
+    color: black !important;
+    text-decoration: none !important;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2) !important;
+}
+
+.notification-icon {
+    margin-right: 0.5rem !important;
+    font-size: 1.2rem !important;
+}
+
+.notification-badge {
+    background: #e74c3c !important;
+    color: white !important;
+    padding: 0.2rem 0.6rem !important;
+    border-radius: 15px !important;
+    font-size: 0.8rem !important;
+    font-weight: 600 !important;
+    margin-left: 0.5rem !important;
+    animation: pulse 2s infinite !important;
+}
+
+.notification-badge.bg-warning {
+    background: #06f534 !important;
+    font-size: 1.2rem !important;
+}
+
+.notification-badge.bg-success {
+    background: #27ae60 !important;
+}
+
+.notification-badge.bg-info {
+    background: #3498db !important;
+}
+
+.notification-badge.bg-primary {
+    background: #9b59b6 !important;
+}
+
+.logout {
+    background: rgba(231, 76, 60, 0.1) !important;
+    border: 2px solid rgba(231, 76, 60, 0.3) !important;
+    color: black !important;
+    padding: 0.6rem 1.9rem !important;
+    border-radius: 25px !important;
+    text-decoration: none !important;
+    transition: var(--transition) !important;
+    font-weight: 500 !important;
+}
+
+.logout:hover {
+    background: #e74c3c !important;
+    border-color: #e74c3c !important;
+    color: black !important;
+    text-decoration: none !important;
+    transform: translateY(-2px) !important;
+    box-shadow: 0 4px 15px rgba(231, 76, 60, 0.3) !important;
+}
+
+/* ===================================================================
+   SECTION 3: STYLES DE LA SIDEBAR
+   ================================================================= */
+
+/* Menu principal */
+ul.sidebar-menu {
+    margin-top: 1rem !important;
+    padding: 0 !important;
+    list-style: none !important;
+}
+
+ul.sidebar-menu li {
+    margin: 0 0.5rem !important;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05) !important;
+}
+
+ul.sidebar-menu li a {
+    color: rgba(255, 255, 255, 0.8) !important;
+    padding: 1rem 1.5rem !important;
+    display: flex !important;
+    align-items: center !important;
+    text-decoration: none !important;
+    transition: var(--transition) !important;
+    border-radius: 8px !important;
+    margin: 0.2rem 0 !important;
+}
+
+ul.sidebar-menu li a:hover,
+ul.sidebar-menu li a:focus,
+ul.sidebar-menu li a.active {
+    background: rgba(255, 255, 255, 0.1) !important;
+    color: white !important;
+    text-decoration: none !important;
+    transform: translateX(5px) !important;
+}
+
+ul.sidebar-menu li a i {
+    margin-right: 1rem !important;
+    width: 20px !important;
+    text-align: center !important;
+    font-size: 1rem !important;
+}
+
+/* Profil utilisateur */
+.user-profile {
+    padding: 0.1rem !important;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1) !important;
+    background: rgba(255, 255, 255, 0.05) !important;
+}
+
+.centered {
+    text-align: center !important;
+    padding: 0.1rem !important;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1) !important;
+}
+
+.centered img {
+    width: 200px !important;
+    height: 70px !important;
+    /* border-radius: 50% !important;
+    border: 3px solid rgba(255, 255, 255, 0.2) !important; */
+    /* margin-bottom: 0.5rem !important;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2) !important; */
+    transition: var(--transition) !important;
+}
+
+.centered img:hover {
+    border-color: #f39c12 !important;
+    transform: scale(1.05) !important;
+}
+
+.centered h5 {
+    color: white !important;
+    margin: 0.3rem 0 !important;
+    font-size: 0.9rem !important;
+}
+
+.centered p {
+    color: rgba(255, 255, 255, 0.7) !important;
+    margin: 0 !important;
+    font-size: 0.8rem !important;
+}
+
+/* Badges des équipes */
+.team-badge {
+    background: rgba(6, 148, 243, 0.2) !important;
+    color: black !important;
+    padding: 0.2rem 0.5rem !important;
+    border-radius: 10px !important;
+    font-size: 1.7rem !important;
+    border: 1px solid rgba(164, 101, 33, 0.3) !important;
+    margin: 0.2rem !important;
+    display: inline-block !important;
+}
+
+.team-badgetable {
+    background: var(--secondary-gradient) !important;
+    color: white !important;
+    padding: 0.3rem 0.8rem !important;
+    border-radius: 15px !important;
+    font-size: 0.75rem !important;
+    font-weight: 600 !important;
+    display: inline-block !important;
+    text-transform: uppercase !important;
+}
+
+/* Flèches pour les sous-menus */
+.sub-menu-arrow {
+    margin-left: auto !important;
+    transition: transform 0.3s ease !important;
+    font-size: 0.8rem !important;
+}
+
+.sub-menu.open .sub-menu-arrow {
+    transform: rotate(90deg) !important;
+}
+
+/* Sous-menus */
+.sub {
+    max-height: 0 !important;
+    overflow: hidden !important;
+    transition: max-height 0.3s ease !important;
+    background: rgba(255, 255, 255, 0.05) !important;
+    border-radius: 0 0 8px 8px !important;
+}
+
+.sub-menu.open .sub {
+    max-height: 500px !important;
+}
+
+.sub li a {
+    padding-left: 3rem !important;
+    font-size: 0.9rem !important;
+    color: rgba(255, 255, 255, 0.7) !important;
+    border-left: 3px solid transparent !important;
+    transition: var(--transition) !important;
+}
+
+.sub li a:hover {
+    color: white !important;
+    background: rgba(255, 255, 255, 0.1) !important;
+    border-left-color: #f39c12 !important;
+    padding-left: 3.5rem !important;
+}
+
+/* ===================================================================
+   SECTION 4: STYLES DU DASHBOARD DE TRAITEMENT
+   ================================================================= */
+
+/* Hero section */
+.hero-section {
+    background: var(--primary-gradient) !important;
+    color: white !important;
+    padding: 3rem 0 !important;
+    margin-bottom: 3rem !important;
+    border-radius: 0 0 50px 50px !important;
+    box-shadow: var(--card-shadow) !important;
+    position: relative !important;
+    overflow: hidden !important;
+}
+
+.hero-section::before {
+    content: '' !important;
+    position: absolute !important;
+    top: 0 !important;
+    left: 0 !important;
+    right: 0 !important;
+    bottom: 0 !important;
+    background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><pattern id="grain" width="60" height="60" patternUnits="userSpaceOnUse"><circle cx="50" cy="50" r="1" fill="rgba(255,255,255,0.1)"/></pattern></defs><rect width="60" height="60" fill="url(%23grain)"/></svg>') !important;
+    opacity: 0.1 !important;
+}
+
+.hero-content {
+    position: relative !important;
+    z-index: 1 !important;
+    color: #00578D !important;
+
+}
+
+.hero-title {
+    font-size: 3.5rem !important;
+    font-weight: 700 !important;
+
+    margin-bottom: 1rem !important;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3) !important;
+}
+
+.hero-subtitle {
+    font-size: 1.2rem !important;
+    opacity: 0.9 !important;
+    margin-bottom: 0 !important;
+}
+
+/* Grid du dashboard */
+.dashboard-grid {
+    display: grid !important;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)) !important;
+    gap: 2rem !important;
+    padding: 0 1rem !important;
+}
+
+/* Cartes du dashboard */
+.dashboard-card {
+    background: white !important;
+    border-radius: var(--border-radius) !important;
+    box-shadow: var(--card-shadow) !important;
+    overflow: hidden !important;
+    transition: var(--transition) !important;
+    position: relative !important;
+    text-decoration: none !important;
+    color: inherit !important;
+}
+
+.dashboard-card:hover {
+    transform: translateY(-10px) scale(1.02) !important;
+    box-shadow: var(--card-hover-shadow) !important;
+    text-decoration: none !important;
+    color: inherit !important;
+}
+
+.card-header {
+    padding: 1.5rem !important;
+    color: black !important;
+    position: relative !important;
+    overflow: hidden !important;
+}
+
+.card-header::before {
+    content: '' !important;
+    position: absolute !important;
+    top: 0 !important;
+    left: 0 !important;
+    right: 0 !important;
+    bottom: 0 !important;
+    background: rgba(255, 255, 255, 0.1) !important;
+    transform: skewY(-2deg) !important;
+    transform-origin: top left !important;
+}
+
+.card-header h3 {
+    font-size: 1.1rem !important;
+    font-weight: 600 !important;
+    margin: 0 !important;
+    position: relative !important;
+    z-index: 1 !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: space-between !important;
+}
+
+.card-body {
+    padding: 2rem !important;
+    text-align: center !important;
+    background: white !important;
+}
+
+.card-icon {
+    font-size: 3.5rem !important;
+    margin-bottom: 1rem !important;
+    opacity: 0.8 !important;
+    transition: var(--transition) !important;
+}
+
+.dashboard-card:hover .card-icon {
+    transform: scale(1.1) rotateY(10deg) !important;
+    opacity: 1 !important;
+}
+
+.card-number {
+    font-size: 2.5rem !important;
+    font-weight: 700 !important;
+    margin: 0 !important;
+    background: var(--primary-gradient) !important;
+    -webkit-background-clip: text !important;
+    -webkit-text-fill-color: transparent !important;
+    background-clip: text !important;
+}
+
+.tooltip-icon {
+    cursor: help !important;
+    opacity: 0.7 !important;
+    transition: var(--transition) !important;
+}
+
+.tooltip-icon:hover {
+    opacity: 1 !important;
+    transform: scale(1.1) !important;
+}
+
+/* Couleurs spécifiques pour chaque type de carte */
+.card-affectations .card-header {
+    background: var(--danger-gradient) !important;
+}
+
+.card-nouveaux .card-header {
+    background: var(--success-gradient) !important;
+}
+
+.card-non-traites .card-header {
+    background: var(--warning-gradient) !important;
+}
+
+.card-recherche .card-header {
+    background: var(--info-gradient) !important;
+}
+
+.card-relances-jour .card-header {
+    background: var(--primary-gradient) !important;
+}
+
+.card-relances-avenir .card-header {
+    background: var(--purple-gradient) !important;
+}
+
+.card-relances-non-traitees .card-header {
+    background: var(--orange-gradient) !important;
+}
+
+.card-ajouter .card-header {
+    background: var(--blue-gradient) !important;
+}
+
+.card-injoignables .card-header {
+    background: var(--danger-gradient) !important;
+}
+
+.card-transactions .card-header {
+    background: var(--green-gradient) !important;
+}
+
+.card-precontrat .card-header {
+    background: var(--primary-gradient) !important;
+}
+
+.card-preclient .card-header {
+    background: var(--success-gradient) !important;
+}
+
+.card-sav .card-header {
+    background: var(--warning-gradient) !important;
+}
+
+/* Couleurs des icônes */
+.card-affectations .card-icon {
+    color: #fa709a !important;
+}
+
+.card-nouveaux .card-icon {
+    color: #4facfe !important;
+}
+
+.card-non-traites .card-icon {
+    color: #43e97b !important;
+}
+
+.card-recherche .card-icon {
+    color: #a8edea !important;
+}
+
+.card-relances-jour .card-icon {
+    color: #667eea !important;
+}
+
+.card-relances-avenir .card-icon {
+    color: #d299c2 !important;
+}
+
+.card-relances-non-traitees .card-icon {
+    color: #ffecd2 !important;
+}
+
+.card-ajouter .card-icon {
+    color: #89f7fe !important;
+}
+
+.card-injoignables .card-icon {
+    color: #fa709a !important;
+}
+
+.card-transactions .card-icon {
+    color: #a8edea !important;
+}
+
+.card-precontrat .card-icon {
+    color: #667eea !important;
+}
+
+.card-preclient .card-icon {
+    color: #4facfe !important;
+}
+
+.card-sav .card-icon {
+    color: #43e97b !important;
+}
+
+/* Vue d'ensemble */
+.stats-overview {
+    background: white !important;
+    border-radius: var(--border-radius) !important;
+    box-shadow: var(--card-shadow) !important;
+    padding: 2rem !important;
+    margin-bottom: 3rem !important;
+    text-align: center !important;
+}
+
+.overview-title {
+    font-size: 1.5rem !important;
+    font-weight: 600 !important;
+    margin-bottom: 1rem !important;
+    color: #333 !important;
+}
+
+.overview-text {
+    color: #666 !important;
+    font-size: 1.1rem !important;
+}
+
+/* ===================================================================
+   SECTION 5: ANIMATIONS ET EFFETS
+   ================================================================= */
+
+.pulse-animation {
+    animation: pulse 2s infinite !important;
+}
+
+@keyframes pulse {
+    0% {
+        transform: scale(1);
+    }
+
+    50% {
+        transform: scale(1.1);
+    }
+
+    100% {
+        transform: scale(1);
+    }
+}
+
+.floating-decoration {
+    position: absolute !important;
+    width: 20px !important;
+    height: 20px !important;
+    background: rgba(255, 255, 255, 0.1) !important;
+    border-radius: 50% !important;
+    animation: float 6s ease-in-out infinite !important;
+}
+
+.floating-decoration:nth-child(1) {
+    top: 20% !important;
+    left: 20% !important;
+    animation-delay: 0s !important;
+}
+
+.floating-decoration:nth-child(2) {
+    top: 60% !important;
+    right: 30% !important;
+    animation-delay: 2s !important;
+}
+
+.floating-decoration:nth-child(3) {
+    bottom: 30% !important;
+    left: 70% !important;
+    animation-delay: 4s !important;
+}
+
+@keyframes float {
+
+    0%,
+    100% {
+        transform: translateY(0px);
+    }
+
+    50% {
+        transform: translateY(-20px);
+    }
+}
+
+/* ===================================================================
+   SECTION 6: RESPONSIVE DESIGN
+   ================================================================= */
+
+@media (max-width: 768px) {
+
+    /* Header et sidebar mobile */
+    #sidebar {
+        transform: translateX(-100%) !important;
+        width: var(--sidebar-width) !important;
+        z-index: 1050 !important;
+    }
+
+    body.sidebar-open #sidebar {
+        transform: translateX(0) !important;
+    }
+
+    .header-content {
+        margin-left: 60px !important;
+        width: calc(100% - 60px) !important;
+    }
+
+    .logo-section {
+        width: 60px !important;
+    }
+
+    .notify-row {
+        display: none !important;
+    }
+
+    .sidebar-text {
+        display: none !important;
+    }
+
+    /* Overlay pour fermer sidebar mobile */
+    body.sidebar-open::before {
+        content: '' !important;
+        position: fixed !important;
+        top: 0 !important;
+        left: 0 !important;
+        right: 0 !important;
+        bottom: 0 !important;
+        background: rgba(0, 0, 0, 0.5) !important;
+        z-index: 1049 !important;
+    }
+
+    /* Dashboard responsive */
+    .hero-title {
+        font-size: 2.5rem !important;
+    }
+
+    .dashboard-grid {
+        grid-template-columns: 1fr !important;
+        gap: 1.5rem !important;
+    }
+
+    .card-header h3 {
+        font-size: 1rem !important;
+    }
+
+    .card-icon {
+        font-size: 3rem !important;
+    }
+
+    .card-number {
+        font-size: 2rem !important;
+    }
+}
+
+/* ===================================================================
+   SECTION 7: UTILITAIRES ET CORRECTIONS
+   ================================================================= */
+
+/* Bouton toggle */
+.sidebar-toggle-box {
+    padding: 0 !important;
+    margin: 0 !important;
+    display: flex !important;
+    align-items: center !important;
+}
+
+.sidebar-toggle-box .fa-bars {
+    color: white !important;
+    font-size: 1.2rem !important;
+    cursor: pointer !important;
+    padding: 0.5rem !important;
+    border-radius: 4px !important;
+    transition: var(--transition) !important;
+}
+
+.sidebar-toggle-box .fa-bars:hover {
+    background: rgba(255, 255, 255, 0.1) !important;
+}
+
+/* Corrections pour le contenu */
+.site-min-height {
+    min-height: calc(100vh - var(--header-height)) !important;
+}
+
+/* Scrollbar personnalisé */
+#sidebar::-webkit-scrollbar {
+    width: 5px !important;
+}
+
+#sidebar::-webkit-scrollbar-track {
+    background: rgba(255, 255, 255, 0.1) !important;
+}
+
+#sidebar::-webkit-scrollbar-thumb {
+    background: rgba(255, 255, 255, 0.3) !important;
+    border-radius: 5px !important;
+}
+
+#sidebar::-webkit-scrollbar-thumb:hover {
+    background: rgba(255, 255, 255, 0.5) !important;
+}
+
+/* Corrections spécifiques pour les conflits */
+.nav-collapse.collapse {
+    display: block !important;
+}
+
+/* Box sizing global */
+body * {
+    box-sizing: border-box !important;
+}
+
+/* ===================================================================
+   SECTION 8: SURCHARGES POUR APP.CSS
+   ================================================================= */
+
+/* Annuler les styles problématiques de app.css */
+ul.sidebar-menu li ul.sub {
+    background: rgba(255, 255, 255, 0.05) !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    border-radius: 0 0 8px 8px !important;
+}
+
+ul.sidebar-menu li ul.sub li {
+    margin: 0 !important;
+    background: transparent !important;
+}
+
+ul.sidebar-menu li ul.sub li a {
+    padding-left: 1rem !important;
+    font-size: 0.8rem !important;
+    color: #00466b !important;
+}
+
+ul.sidebar-menu li ul.sub li a:hover {
+    color: white !important;
+    background: rgba(255, 255, 255, 0.1) !important;
+}
+
+/* ===================================================================
+   FIN DU FICHIER CSS UNIFIÉ
+   ================================================================= */
+
+
+/* ===== BADGES ET STATUTS ===== */
+.status-badge {
+    display: inline-block !important;
+    padding: 0.4rem 0.8rem !important;
+    border-radius: 20px !important;
+    font-size: 0.75rem !important;
+    font-weight: 600 !important;
+    text-transform: uppercase !important;
+    letter-spacing: 0.5px !important;
+}
+
+.status-rendez-vous {
+    background: var(--success-gradient) !important;
+    color: white !important;
+}
+
+.status-injoignable {
+    background: var(--danger-gradient) !important;
+    color: white !important;
+}
+
+.status-attente {
+    background: var(--warning-gradient) !important;
+    color: white !important;
+}
+
+.status-tarification {
+    background: var(--info-gradient) !important;
+    color: #333 !important;
+}
+
+/* ===== BOUTONS D'ACTION ===== */
+.btn-toolbar {
+    display: flex !important;
+    gap: 0.5rem !important;
+    align-items: center !important;
+    justify-content: center !important;
+    flex-wrap: wrap !important;
+}
+
+.btn-xs {
+    padding: 0.4rem 0.8rem !important;
+    font-size: 0.75rem !important;
+    border-radius: 8px !important;
+    transition: var(--transition) !important;
+    border: none !important;
+    font-weight: 500 !important;
+    min-width: 35px !important;
+    text-align: center !important;
 }
