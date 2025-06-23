@@ -1,5 +1,3 @@
-
-
 document.addEventListener('DOMContentLoaded', function () { // TOGGLE BLOCKS
     const toggles = [
         {
@@ -87,11 +85,13 @@ document.addEventListener('DOMContentLoaded', function () { // TOGGLE BLOCKS
     const productField = document.getElementById("{{ form.product.vars.id }}");
     const suspensinField = document.getElementById("{{ form.suspensionPermis.vars.id }}");
     const annulationPermisField = document.getElementById("{{ form.annulationPermis.vars.id }}");
+    const faciliteField = document.getElementById("{{ form.facilite.vars.id }}");
 
     const subcategoryContainer = document.getElementById("subcategory-container");
     const subcategoryActivites = document.getElementById("subcategory-activite");
     const subcategorytypeConducteur = document.getElementById("subcategory-typeConducteur");
     const subcategoryimatriclt = document.getElementById("subcategory-imatriclt");
+    const subcategoryForceJuridique = document.getElementById("subcategory-forceJuridique");
 
     const subcategoryconducteur = document.getElementById("subcategory-conducteur");
     const subcategorytypePermis = document.getElementById("subcategory-typePermis");
@@ -100,11 +100,13 @@ document.addEventListener('DOMContentLoaded', function () { // TOGGLE BLOCKS
     const subcategorymotifSuspension = document.getElementById("subcategory-motifSuspension");
     const subcategorydateAnnulation = document.getElementById("subcategory-dateAnnulation");
     const subcategorymotifAnnulation = document.getElementById("subcategory-motifAnnulation");
+    const subcategoryNmbrReglement = document.getElementById("subcategory-NmbrReglement");
 
     function handleTypeContratChange() {
         const isParticulier = typeContratField.value === 'Particulier';
         subcategoryContainer.style.display = isParticulier ? "none" : "block";
         subcategoryActivites.style.display = isParticulier ? "none" : "block";
+        subcategoryForceJuridique.style.display = isParticulier ? "none" : "block";
     }
 
     function handleTypeConducteurChange() {
@@ -115,7 +117,7 @@ document.addEventListener('DOMContentLoaded', function () { // TOGGLE BLOCKS
     }
 
     function handleProductChange() {
-        const hideFields = ['22', '24', '27'].includes(productField.value);
+        const hideFields = ['2', '11', '20'].includes(productField.value);
         [
             subcategoryconducteur,
             subcategorytypePermis,
@@ -138,6 +140,16 @@ document.addEventListener('DOMContentLoaded', function () { // TOGGLE BLOCKS
         subcategorydateAnnulation.style.display = isOui ? "block" : "none";
         subcategorymotifAnnulation.style.display = isOui ? "block" : "none";
     }
+
+    faciliteField.addEventListener("change", function () { // Adaptez la valeur selon vos options : '1', 'oui', 'true', etc.
+        const isOui = this.value === '1';
+        subcategoryNmbrReglement.style.display = isOui ? "block" : "none";
+    });
+
+    // État initial
+    const isOui = faciliteField.value === '1';
+    subcategoryNmbrReglement.style.display = isOui ? "block" : "none";
+
 
     if (typeContratField)
         typeContratField.addEventListener("change", handleTypeContratChange);
@@ -228,4 +240,35 @@ document.addEventListener('DOMContentLoaded', function () { // Pour chaque bloc 
         select.addEventListener('change', updateFields);
         updateFields(); // Initialiser au chargement
     });
+});
+
+
+// Force suppression du loader sur cette page
+document.addEventListener('DOMContentLoaded', function () {
+    console.log('🔧 Page new.html.twig - suppression loader');
+
+    // Multiple tentatives
+    function killLoader() {
+        const loader = document.getElementById('loader');
+        if (loader) {
+            loader.remove();
+            console.log('💀 Loader tué sur page show');
+        }
+
+        // CSS killer spécifique
+        const style = document.createElement('style');
+        style.textContent = '#loader { display: none !important; }';
+        document.head.appendChild(style);
+    }
+
+    // Exécution immédiate et répétée
+    killLoader();
+    setTimeout(killLoader, 100);
+    setTimeout(killLoader, 500);
+    setTimeout(killLoader, 1000);
+
+    // Force via fonction globale si disponible
+    if (window.FORCE_DESTROY_LOADER) {
+        setTimeout(window.FORCE_DESTROY_LOADER, 200);
+    }
 });

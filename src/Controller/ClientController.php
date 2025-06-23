@@ -331,7 +331,7 @@ final class ClientController extends AbstractController
             return $this->redirectToRoute('client_index', [], Response::HTTP_SEE_OTHER);
         }
 
-        return $this->renderForm('client/editvalid.html.twig', [
+        return $this->render('client/editvalid.html.twig', [
             'client' => $client,
             'form' => $form,
         ]);

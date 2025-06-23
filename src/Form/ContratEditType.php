@@ -455,6 +455,27 @@ class ContratEditType extends AbstractType
                     'multiple' => false,
 
                 ])
+                ->add('forceJuridique', Type\ChoiceType::class, [
+                    'label' => 'formes juridiques',
+                    'required' => false,
+                    'placeholder' => '--Merci de selectie-- ',
+                    'choices' => [
+                        'SARL' =>  '1',
+                        'EI' => '2',
+                        'EURL' => '3',
+                        'SA' => '4',
+                        'SAS' => '5',
+                        'SASU' => '6',
+                        'SNC' => '7',
+                        'SCOP' => '8',
+                        'Association' => '9',
+
+                    ],
+                    'expanded' => false,
+                    'multiple' => false,
+
+                ])
+
                 ->add('annulationPermis', Type\ChoiceType::class, [
                     'label' => 'Annulation permis',
                     'placeholder' => "--Merci de Selectie--",
@@ -1013,6 +1034,27 @@ class ContratEditType extends AbstractType
                         'alcoolemie' =>  'alcoolemie',
                         'stupéfiant' =>  'stupéfiant',
                         'perte point' =>  'perte point',
+                    ],
+                    'expanded' => false,
+                    'multiple' => false,
+
+                ])
+                ->add('forceJuridique', Type\ChoiceType::class, [
+                    'label' => 'formes juridiques',
+                    'required' => false,
+                    'disabled' => true,
+                    'placeholder' => '--Merci de selectie-- ',
+                    'choices' => [
+                        'SARL' =>  '1',
+                        'EI' => '2',
+                        'EURL' => '3',
+                        'SA' => '4',
+                        'SAS' => '5',
+                        'SASU' => '6',
+                        'SNC' => '7',
+                        'SCOP' => '8',
+                        'Association' => '9',
+
                     ],
                     'expanded' => false,
                     'multiple' => false,

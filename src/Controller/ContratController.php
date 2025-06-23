@@ -252,6 +252,49 @@ final class ContratController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
 
+
+
+            foreach ($contrat->getAntcdAssure() as $antcdAssure) {
+                $entityManager->persist($antcdAssure);
+            }
+
+
+            // foreach ($contrat->getRegelement() as $regelement) {
+            //     $entityManager->persist($regelement);
+            // }
+
+            if ($contrat->getPayments()) {
+                $entityManager->persist($contrat->getPayments());
+            }
+
+            if ($contrat->getDocument()) {
+                $entityManager->persist($contrat->getDocument());
+            }
+
+
+
+            $entityManager->flush();
+            $this->addFlash('info', 'la Contrat a été modifié avec succès!');
+
+            return $this->redirectToRoute('app_contrat_valid_index', [], Response::HTTP_SEE_OTHER);
+        }
+
+        return $this->render('contrat/edit.html.twig', [
+            'contrat' => $contrat,
+            'form' => $form,
+        ]);
+    }
+    #[Route('/{id}/editvalide', name: 'app_contrat_editvalide', methods: ['GET', 'POST'])]
+    public function editvalide(Request $request, Contrat $contrat, EntityManagerInterface $entityManager): Response
+    {
+
+
+
+        $form = $this->createForm(ContratEditType::class, $contrat);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+
             $contrat->setModif(1);
 
             foreach ($contrat->getAntcdAssure() as $antcdAssure) {
@@ -284,7 +327,6 @@ final class ContratController extends AbstractController
             'form' => $form,
         ]);
     }
-
     // modale pour change l'etat du contrat
     #[Route('/{id}/etat', name: 'app_contrat_etat', methods: ['GET', 'POST'])]
     public function etat(Request $request, Contrat $contrat, EntityManagerInterface $entityManager): Response

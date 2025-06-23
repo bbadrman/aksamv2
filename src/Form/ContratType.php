@@ -462,7 +462,7 @@ class ContratType extends AbstractType
             ])
             ->add('forceJuridique', Type\ChoiceType::class, [
                 'label' => 'formes juridiques',
-                'required' => true,
+                'required' => false,
                 'placeholder' => '--Merci de selectie-- ',
                 'choices' => [
                     'SARL' =>  '1',
