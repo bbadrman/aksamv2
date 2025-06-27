@@ -1,39 +1,80 @@
-<!-- Modal pour affictation team or cmrcl -->
-
+<!-- Boutons déclencheurs modernisés -->
 {% if prospect.comrcl and prospect.team is not empty %}
-	{# clore du butto affichie pour chef si comrcl et team is null #}
-	<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#affectModal{{ prospect.id }}">
-		<i class="fa fa-reply-all" aria-hidden="true"></i>
+	<button type="button" class="btn btn-affectation-modern btn-reassign" data-toggle="modal" data-target="#affectModal{{ prospect.id }}">
+		<i class="fas fa-reply-all" aria-hidden="true"></i>
+		<span class="btn-text"></span>
 	</button>
-{% elseif prospect.comrcl is  empty and prospect.team is not empty  %}
-	<button type="button" class="btn btn-success" data-toggle="modal" data-target="#affectModal{{ prospect.id }}">
-
-		<i class="fa fa-paper-plane" aria-hidden="true"></i>
+{% elseif prospect.comrcl is empty and prospect.team is not empty %}
+	<button type="button" class="btn btn-affectation-modern btn-assign-commercial" data-toggle="modal" data-target="#affectModal{{ prospect.id }}">
+		<i class="fas fa-paper-plane" aria-hidden="true"></i>
+		<span class="btn-text"></span>
 	</button>
 {% else %}
-	<button type="button" class="btn btn-danger" data-toggle="modal" data-target="#affectModal{{ prospect.id }}">
-		<i class="fa fa-paper-plane" aria-hidden="true"></i>
+	<button type="button" class="btn btn-affectation-modern btn-assign-initial" data-toggle="modal" data-target="#affectModal{{ prospect.id }}">
+		<i class="fas fa-paper-plane" aria-hidden="true"></i>
+		<span class="btn-text"></span>
 	</button>
-{% endif %}
-<div class="modal fade" id="affectModal{{ prospect.id }}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+{% endif %}<!-- Modal avec la classe modal-affectation --><div class="modal fade modal-affectation" id="affectModal{{ prospect.id }}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
 	<div class="modal-dialog" role="document">
-		<div class="modal-content">
+		<div
+			class="modal-content">
+			<!-- Header modernisé -->
 			<div class="modal-header">
-				<h5 class="modal-title" id="exampleModalLabel">Prospect du Mr:
-					{{ prospect.nom }}</h5>
-				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
-					<span aria-hidden="true">&times;</span>
+				<button type="button" class="btn-close" data-dismiss="modal" aria-label="Close">
+					<i class="fas fa-times"></i>
+				</button>
+				<div class="modal-header-content">
+					<div class="modal-icon">
+						<i class="fas fa-user-tie"></i>
+					</div>
+					<div>
+						<h5 class="modal-title">Affectation Prospect</h5>
+						<p class="modal-subtitle">{{ prospect.nom }}</p>
+					</div>
+				</div>
+			</div>
+
+			<!-- Body avec structure moderne -->
+			<div class="modal-body">
+				<h3 class="section-title">
+					<i class="fas fa-users"></i>
+					Gestion des Affectations
+				</h3>
+
+				{% set url = path('app_affect_edit', {'id': prospect.id}) %}
+				{{ form_start(form, {'action':url}) }}
+
+				<div class="form-section">
+					<h3>
+						<i class="fas fa-users"></i>
+						Équipe</h3>
+					<div class="form-group">
+						{{ form_row(form.team, {'attr': {'class': 'form-control prospect_team'}}) }}
+					</div>
+				</div>
+
+				<div class="form-section commercial-section">
+					<h3>
+						<i class="fas fa-user-tie"></i>
+						Commercial</h3>
+					<div class="form-group">
+						{{ form_row(form.comrcl, {'attr': {'class': 'form-control prospect_comrcl'}}) }}
+					</div>
+				</div>
+			</div>
+
+			<!-- Footer modernisé -->
+			<div class="modal-footer">
+				<button type="button" class="btn btn-secondary-modern" data-dismiss="modal">
+					<i class="fas fa-times"></i>
+					Annuler
+				</button>
+				<button class="btn btn-primary-modern">
+					<i class="fas fa-save"></i>
+					{{ button_label|default('Enregistrer') }}
 				</button>
 			</div>
-			{% set url = path('app_affect_edit', {'id': prospect.id}) %}
-			{{ form_start(form, {'action':url}) }}
 
-			{{ form_row(form.team, {'attr': {'class': 'prospect_team'}}) }}
-			{{ form_row(form.comrcl, {'attr': {'class': 'prospect_comrcl'}}) }}
-			<div class="modal-footer">
-				<button type="button" class="btn btn-secondary" data-dismiss="modal">Annuler</button>
-				<button class="btn btn-primary">{{ button_label|default('Save') }}</button>
-			</div>
 			{{ form_end(form) }}
 		</div>
 	</div>

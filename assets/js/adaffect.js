@@ -1,5 +1,6 @@
 
 //Select Dynamique with API  
+
 $(document).ready(function () {
 	$('.modal').on('shown.bs.modal', function () {
 		const modal = $(this);

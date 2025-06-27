@@ -1,53 +1,131 @@
-<!-- Modal pour relancer une prospect -->
-<button type="button" class="btn btn-success" data-toggle="modal" data-target="#exampleModal{{ prospect.id }}">
-
-	<i class="fa-regular fa-calendar-check"></i>
-</button>
-<div class="modal fade" id="exampleModal{{ prospect.id }}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+<!-- Bouton moderne pour ouvrir le modal -->
+<button type="button" class="btn-relance-modern" data-toggle="modal" data-target="#relanceModal{{ prospect.id }}">
+	<i class="fas fa-calendar-check"></i>
+</button><!-- Modal moderne pour relancer un prospect --><div class="modal fade modal-relance" id="relanceModal{{ prospect.id }}" tabindex="-1" role="dialog" aria-labelledby="relanceModalLabel{{ prospect.id }}" aria-hidden="true">
 	<div class="modal-dialog" role="document">
-		<div class="modal-content">
+		<div
+			class="modal-content">
+			<!-- Header moderne -->
 			<div class="modal-header">
-				<h5 class="modal-title" id="exampleModalLabel">Prospect du Mr:
-					{{ prospect.nom }}</h5>
-				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
-					<span aria-hidden="true">&times;</span>
+				<div class="modal-header-content">
+					<div class="modal-icon">
+						<i class="fas fa-user-clock"></i>
+					</div>
+					<div>
+						<h5 class="modal-title" id="relanceModalLabel{{ prospect.id }}">
+							Relance Prospect
+						</h5>
+						<p class="modal-subtitle">
+							Mr.
+							{{ prospect.nom }}
+							{{ prospect.prenom }}
+						</p>
+					</div>
+				</div>
+				<button type="button" class="btn-close" data-dismiss="modal" aria-label="Close">
+					<i class="fas fa-times"></i>
 				</button>
 			</div>
-			<h2 class="text-center">Relancer</h2>
-			{% set url = path('app_relance_edit', {'id': prospect.id}) %}
-			{{ form_start(form, {'action':url}) }}
 
-			{{ form_row(form.relance, {'attr': {'class': 'relance_prospect_relance' }}) }}
-			<div class="subMotivRelc-container" style="display: none">
-				{{ form_row(form.relanceAt, {'attr': {'class': 'relanceAt'  }}) }}
-			</div>
-			<div class="MotivRelcoment-container" style="display: none">
-				{{ form_row(form.comment, {'attr': {'class': 'comment'}}) }}
-			</div>
+			<!-- Corps du modal -->
+			<div class="modal-body">
+				<h2 class="section-title">
+					<i class="fas fa-phone-alt"></i>
+					Planifier une Relance
+				</h2>
 
-
-			<div class="modal-footer">
-				<button type="button" class="btn btn-secondary" data-dismiss="modal">Annuler</button>
-				<button class="btn btn-primary">{{ button_label|default('Save') }}</button>
-
-			</div>
-			{{form_end(form)}}
-
-
-			<div class="subMotivContrat-container" style="display: none">
-				<h1 class="text-center">Client</h1>
-				<h2>Ajouter client</h2>
 				{% set url = path('app_relance_edit', {'id': prospect.id}) %}
-				{{ form_start(clientForm, {'action':url}) }}
-				{{ form_row(clientForm) }}
+				{{ form_start(form, {'action': url}) }}
 
-				<button type="submit" id="client-submit" class="btn btn-primary">Ajouter Client</button>
-				{{ form_end(clientForm) }}
+				<!-- Section principale de relance -->
+				<div class="form-section">
+					<h3>
+						<i class="fas fa-list-ul"></i>
+						Type de relance
+					</h3>
+					<div class="form-group">
+						{{ form_row(form.relance, {
+                            'attr': {
+                                'class': 'form-control relance_prospect_relance'
+                            }
+                        }) }}
+					</div>
+				</div>
 
+				<!-- Section date de relance (conditionnelle) -->
+				<div class="form-section subMotivRelc-container" style="display: none;">
+					<h3>
+						<i class="fas fa-calendar-alt"></i>
+						Date de relance
+					</h3>
+					<div class="form-group">
+						{{ form_row(form.relanceAt, {
+                            'attr': {
+                                'class': 'form-control relanceAt'
+                            }
+                        }) }}
+					</div>
+				</div>
+
+				<!-- Section commentaire (conditionnelle) -->
+				<div class="form-section MotivRelcoment-container" style="display: none;">
+					<h3>
+						<i class="fas fa-comment-dots"></i>
+						Commentaire
+					</h3>
+					<div class="form-group">
+						{{ form_row(form.comment, {
+                            'attr': {
+                                'class': 'form-control comment',
+                                'placeholder': 'Ajoutez vos observations, remarques ou instructions...',
+                                'rows': 4
+                            }
+                        }) }}
+					</div>
+				</div>
+
+				<!-- Footer avec boutons (conditionnel) -->
+				<div class="modal-footer SubmitRelance-container" style="display: none;">
+					<button type="button" class="btn-modern btn-secondary-modern" data-dismiss="modal">
+						<i class="fas fa-times"></i>
+						Annuler
+					</button>
+					<button type="submit" class="btn-modern btn-primary-modern">
+						<i class="fas fa-save"></i>
+						{{ button_label|default('Enregistrer') }}
+					</button>
+				</div>
+
+				{{ form_end(form) }}
+
+				<!-- Section client (conditionnelle) -->
+				<div class="form-section client-section subMotivContrat-container" style="display: none;">
+					<h2 class="section-title">
+						<i class="fas fa-user-plus"></i>
+						Conversion en Client
+					</h2>
+
+					<div class="section-subtitle">
+						<i class="fas fa-handshake"></i>
+						Ajouter comme nouveau client
+					</div>
+
+					{% set clientUrl = path('app_relance_edit', {'id': prospect.id}) %}
+					{{ form_start(clientForm, {'action': clientUrl}) }}
+
+					<div class="form-group">
+						{{ form_row(clientForm) }}
+					</div>
+
+					<button type="submit" class="btn-modern btn-client-modern">
+						<i class="fas fa-user-check"></i>
+						Convertir en Client
+					</button>
+
+					{{ form_end(clientForm) }}
+				</div>
 			</div>
 		</div>
-
-
 	</div>
-
 </div>
+<!-- Votre JavaScript existant (à garder tel quel) -->

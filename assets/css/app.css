@@ -28,7 +28,7 @@ body {
     font-family: 'Ruda', sans-serif;
     /* padding: 0px !important;
     margin: 0px !important; */
-    font-weight: 800px;
+    font-weight: 800;
     font-size: 15px;
 
 
@@ -4195,7 +4195,7 @@ ul.chat-available-user li a:hover {
     background-color: #5cb85c !important;
     -webkit-border-top-left-radius: 5px;
     -webkit-border-top-right-radius: 5px;
-    -moz-border-radius-topleft: 5px;
+    border-top-left-radius: 5px;
     -moz-border-radius-topright: 5px;
     border-top-left-radius: 5px;
     border-top-right-radius: 5px;
@@ -4208,7 +4208,7 @@ ul.chat-available-user li a:hover {
     background-color: #f0ad4e !important;
     -webkit-border-top-left-radius: 5px;
     -webkit-border-top-right-radius: 5px;
-    -moz-border-radius-topleft: 5px;
+    border-top-left-radius: 5px;
     -moz-border-radius-topright: 5px;
     border-top-left-radius: 5px;
     border-top-right-radius: 5px;
@@ -4221,7 +4221,7 @@ ul.chat-available-user li a:hover {
     background-color: #d9534f !important;
     -webkit-border-top-left-radius: 5px;
     -webkit-border-top-right-radius: 5px;
-    -moz-border-radius-topleft: 5px;
+    border-top-left-radius: 5px;
     -moz-border-radius-topright: 5px;
     border-top-left-radius: 5px;
     border-top-right-radius: 5px;
@@ -4234,7 +4234,7 @@ ul.chat-available-user li a:hover {
     background-color: #5bc0de !important;
     -webkit-border-top-left-radius: 5px;
     -webkit-border-top-right-radius: 5px;
-    -moz-border-radius-topleft: 5px;
+    border-top-left-radius: 5px;
     -moz-border-radius-topright: 5px;
     border-top-left-radius: 5px;
     border-top-right-radius: 5px;
@@ -4247,7 +4247,7 @@ ul.chat-available-user li a:hover {
     background-color: #428bca !important;
     -webkit-border-top-left-radius: 5px;
     -webkit-border-top-right-radius: 5px;
-    -moz-border-radius-topleft: 5px;
+    border-top-left-radius: 5px;
     -moz-border-radius-topright: 5px;
     border-top-left-radius: 5px;
     border-top-right-radius: 5px;
@@ -4538,7 +4538,8 @@ header.header {
     left: 0 !important;
     right: 0 !important;
     height: var(--header-height) !important;
-    background: var(--primary-gradient) !important;
+    background: var(--blue-gradient) !important;
+    /* Changé de primary-gradient à blue-gradient */
     z-index: 1000 !important;
     margin: 0 !important;
     padding: 0 !important;
@@ -4551,17 +4552,55 @@ header.header {
 
 /* Logo section dans l'header */
 .logo-section {
+    background: linear-gradient(135deg, #89f7fe 0%, #66a6ff 100%) !important;
+    background-color: #89f7fe !important;
+    background-image: linear-gradient(135deg, #89f7fe 0%, #66a6ff 100%) !important;
     position: fixed !important;
     left: 0 !important;
     top: 0 !important;
     width: var(--sidebar-width) !important;
     height: var(--header-height) !important;
-    background: var(--primary-gradient) !important;
+    /* Changé de primary-gradient à blue-gradient */
     display: flex !important;
     align-items: center !important;
     justify-content: center !important;
     z-index: 1001 !important;
     border-bottom: 1px solid rgba(255, 255, 255, 0.1) !important;
+}
+
+/* Changement de la sidebar */
+/* FORCE ABSOLUE pour la sidebar */
+#sidebar,
+.sidebar,
+div#sidebar,
+nav#sidebar,
+aside#sidebar {
+    background: linear-gradient(135deg, #89f7fe 0%, #66a6ff 100%) !important;
+    background-color: #89f7fe !important;
+    background-image: linear-gradient(135deg, #89f7fe 0%, #66a6ff 100%) !important;
+    position: fixed !important;
+    left: 0 !important;
+    top: var(--header-height) !important;
+    width: var(--sidebar-width) !important;
+    height: calc(100vh - var(--header-height)) !important;
+    background: var(--blue-gradient) !important;
+    /* Changé de primary-gradient à blue-gradient */
+    z-index: 999 !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    overflow-y: auto !important;
+    border-right: 1px solid rgba(255, 255, 255, 0.1) !important;
+}
+
+/* FORCE ABSOLUE pour le header */
+.header,
+header.header,
+.black-bg,
+header,
+nav.header {
+    background: linear-gradient(135deg, #89f7fe 0%, #66a6ff 100%) !important;
+    background-color: #89f7fe !important;
+    background-image: linear-gradient(135deg, #89f7fe 0%, #66a6ff 100%) !important;
 }
 
 /* Contenu du header */
@@ -4884,7 +4923,8 @@ ul.sidebar-menu li a i {
 
 /* Hero section */
 .hero-section {
-    background: var(--primary-gradient) !important;
+    background: linear-gradient(135deg, #89f7fe 0%, #66a6ff 100%) !important;
+    background-color: #89f7fe !important;
     color: white !important;
     padding: 3rem 0 !important;
     margin-bottom: 3rem !important;
@@ -4892,6 +4932,7 @@ ul.sidebar-menu li a i {
     box-shadow: var(--card-shadow) !important;
     position: relative !important;
     overflow: hidden !important;
+    background-image: linear-gradient(135deg, #89f7fe 0%, #66a6ff 100%) !important;
 }
 
 .hero-section::before {
@@ -5353,6 +5394,8 @@ ul.sidebar-menu li ul.sub {
 ul.sidebar-menu li ul.sub li {
     margin: 0 !important;
     background: transparent !important;
+    background: rgba(255, 255, 255, 0.1) !important;
+    background-color: rgba(255, 255, 255, 0.1) !important;
 }
 
 ul.sidebar-menu li ul.sub li a {
@@ -5420,4 +5463,536 @@ ul.sidebar-menu li ul.sub li a:hover {
     font-weight: 500 !important;
     min-width: 35px !important;
     text-align: center !important;
+}
+
+/* restyle table  */
+
+/* Tables avec thead arrondi - Solution universelle */
+.table-striped.table-advance.table-hover,
+.content-panel table {
+    border-collapse: separate !important;
+    border-spacing: 0 !important;
+    border-radius: 15px !important;
+    overflow: hidden !important;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1) !important;
+    background: white !important;
+}
+
+/* Style du thead arrondi */
+.table-striped.table-advance.table-hover thead th,
+.content-panel table thead th {
+    background: linear-gradient(135deg, #A9D0DE 0%, #9dd0e3 100%) !important;
+    color: black !important;
+    padding: 15px 10px !important;
+    font-weight: 600 !important;
+    border: none !important;
+    text-transform: uppercase !important;
+    letter-spacing: 0.5px !important;
+}
+
+/* Coins arrondis pour le premier et dernier th */
+.table-striped.table-advance.table-hover thead th:first-child,
+.content-panel table thead th:first-child {
+    border-top-left-radius: 15px !important;
+}
+
+.table-striped.table-advance.table-hover thead th:last-child,
+.content-panel table thead th:last-child {
+    border-top-right-radius: 15px !important;
+}
+
+/* Style des search form */
+.search-form form {
+    background: linear-gradient(135deg, #f8f9ff 0%, #f0f2ff 100%) !important;
+    border-radius: 20px !important;
+    padding: 2rem !important;
+    border: 1px solid rgba(169, 208, 222, 0.3) !important;
+    box-shadow: inset 0 2px 10px rgba(0, 0, 0, 0.05) !important;
+    position: relative !important;
+    overflow: hidden !important;
+}
+
+.search-form form::before {
+    content: '' !important;
+    position: absolute !important;
+    top: 0 !important;
+    left: 0 !important;
+    right: 0 !important;
+    height: 4px !important;
+    background: var(--primary-gradient) !important;
+    z-index: 1 !important;
+}
+
+/* ===== GRILLE RESPONSIVE POUR LES CHAMPS ===== */
+.search-form .row {
+    display: flex !important;
+    flex-wrap: wrap !important;
+    gap: 1rem !important;
+    margin: 0 0 1.5rem !important;
+    align-items: end !important;
+}
+
+.search-form .row:last-child {
+    margin-bottom: 0 !important;
+}
+
+/* Colonnes flexibles */
+.search-form [class*="col-"] {
+    padding: 0 !important;
+    flex: 1 !important;
+    min-width: 120px !important;
+    position: relative !important;
+}
+
+.search-form .col-md-2 {
+    flex: 2 !important;
+    min-width: 200px !important;
+}
+
+/* ===== GROUPES DE CHAMPS MODERNES ===== */
+.search-form .form-group {
+    margin-bottom: 0 !important;
+    position: relative !important;
+    background: #cdf5eb !important;
+    border-radius: 12px !important;
+    border: 2px solid rgba(169, 208, 222, 0.2) !important;
+    transition: var(--transition) !important;
+    overflow: hidden !important;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05) !important;
+}
+
+.search-form .form-group:hover {
+    border-color: rgba(169, 208, 222, 0.4) !important;
+    box-shadow: 0 4px 15px rgba(169, 208, 222, 0.2) !important;
+    transform: translateY(-2px) !important;
+}
+
+.search-form .form-group:focus-within {
+    border-color: #A9D0DE !important;
+    box-shadow: 0 0 0 3px rgba(169, 208, 222, 0.2) !important;
+    transform: translateY(-2px) !important;
+}
+
+/* ===== LABELS MODERNES ===== */
+.search-form label {
+    position: absolute !important;
+    top: -1px !important;
+    left: 22px !important;
+    background: white !important;
+    color: #00578D !important;
+    font-size: 0.95rem !important;
+    font-weight: 900 !important;
+    text-transform: uppercase !important;
+    letter-spacing: 1.5px !important;
+    padding: 0 1.5rem !important;
+    z-index: 2 !important;
+    border-radius: 6px !important;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1) !important;
+    transition: var(--transition) !important;
+}
+
+.search-form .form-group:hover label,
+.search-form .form-group:focus-within label {
+    color: #003f63 !important;
+    background: var(--primary-gradient) !important;
+    color: white !important;
+    transform: scale(1.05) !important;
+}
+
+/* ===== CHAMPS DE SAISIE MODERNES ===== */
+.search-form .form-control,
+.search-form select,
+.search-form input {
+    border: none !important;
+    border-radius: 0 !important;
+    padding: 1.5rem 1.9rem !important;
+    font-size: 1.2rem !important;
+    background: transparent !important;
+    transition: var(--transition) !important;
+    width: 100% !important;
+    outline: none !important;
+    color: #333 !important;
+    font-weight: 500 !important;
+}
+
+.search-form .form-control:focus,
+
+.search-form select:focus,
+.search-form input:focus {
+    background: rgba(169, 208, 222, 0.05) !important;
+    color: #00578D !important;
+    outline: 2px solid #A9D0DE;
+    outline-offset: 2px;
+
+}
+
+.search-form .form-control::placeholder,
+.search-form input::placeholder {
+    color: rgba(0, 87, 141, 0.5) !important;
+    font-style: italic !important;
+    font-weight: 400 !important;
+}
+
+.search-form .form-group.has-value::after {
+    content: '✓';
+    position: absolute;
+    top: 8px;
+    right: 8px;
+    color: #27ae60;
+    font-weight: bold;
+}
+
+/* ===== CHAMPS SELECT MODERNES ===== */
+.search-form select {
+    cursor: pointer !important;
+    background-image: url("data:image/svg+xml;charset=UTF-8, %3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%2300578D' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6, 9 12, 15 18, 9'%3e%3c/polyline%3e%3c/svg%3e") !important;
+    background-repeat: no-repeat !important;
+    background-position: right 1rem center !important;
+    background-size: 1rem !important;
+    appearance: none !important;
+    -webkit-appearance: none !important;
+    -moz-appearance: none !important;
+}
+
+.search-form select:focus {
+    background-image: url("data:image/svg+xml;charset=UTF-8, %3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23003f63' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6, 9 12, 15 18, 9'%3e%3c/polyline%3e%3c/svg%3e") !important;
+}
+
+/* ===== SECTION DES BOUTONS D'ACTION ===== */
+.search-form .text-center {
+    display: flex !important;
+    justify-content: center !important;
+    align-items: center !important;
+    gap: 1rem !important;
+    padding: 1.5rem 0 0.5rem !important;
+    border-top: 1px solid rgba(169, 208, 222, 0.2) !important;
+    margin-top: 1.5rem !important;
+}
+
+.search-form .text-center h1 {
+    margin: 0 !important;
+    display: flex !important;
+    gap: 1rem !important;
+    align-items: center !important;
+}
+
+/* ===== BOUTONS MODERNES ===== */
+.search-form .btn {
+    border: none !important;
+    border-radius: 50% !important;
+    width: 60px !important;
+    height: 60px !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    font-size: 1.2rem !important;
+    transition: var(--transition) !important;
+    position: relative !important;
+    overflow: hidden !important;
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15) !important;
+    cursor: pointer !important;
+}
+
+.search-form .btn::before {
+    content: '' !important;
+    position: absolute !important;
+    top: 0 !important;
+    left: -100% !important;
+    width: 100% !important;
+    height: 100% !important;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.4), transparent) !important;
+    transition: left 0.5s !important;
+}
+
+.search-form .btn:hover::before {
+    left: 100% !important;
+}
+
+.search-form .btn:hover {
+    transform: translateY(-4px) scale(1.1) !important;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.25) !important;
+}
+
+.search-form .btn:active {
+    transform: translateY(-2px) scale(1.05) !important;
+}
+
+/* Bouton de recherche (principal) */
+.search-form .btn-primary,
+.search-form .btn.search-btn {
+    background: var(--primary-gradient) !important;
+    color: white !important;
+    position: relative !important;
+}
+
+.search-form .btn-primary:hover {
+    box-shadow: 0 10px 30px rgba(169, 208, 222, 0.4) !important;
+}
+
+/* Bouton retour */
+.search-form .btn-info {
+    background: var(--info-gradient) !important;
+    color: #333 !important;
+}
+
+.search-form .btn-info:hover {
+    box-shadow: 0 10px 30px rgba(168, 237, 234, 0.4) !important;
+}
+
+/* Bouton reset */
+.search-form .btn[type="reset"],
+.search-form #reset-button {
+    background: var(--warning-gradient) !important;
+    color: white !important;
+}
+
+.search-form .btn[type="reset"]:hover,
+.search-form #reset-button:hover {
+    box-shadow: 0 10px 30px rgba(240, 147, 251, 0.4) !important;
+}
+
+/* ===== ICÔNES DANS LES BOUTONS ===== */
+.search-form .btn i {
+    font-size: 1.3rem !important;
+    transition: var(--transition) !important;
+}
+
+.search-form .btn:hover i {
+    transform: scale(1.2) !important;
+}
+
+/* Rotation pour le bouton refresh */
+.search-form #reset-button:hover i {
+    transform: rotate(360deg) scale(1.2) !important;
+    transition: transform 0.6s ease !important;
+}
+
+/* ===== TOOLTIPS POUR LES BOUTONS ===== */
+.search-form .btn[title] {
+    position: relative !important;
+}
+
+.search-form .btn[title]:hover::after {
+    content: attr(title) !important;
+    position: absolute !important;
+    bottom: -40px !important;
+    left: 50% !important;
+    transform: translateX(-50%) !important;
+    background: rgba(0, 0, 0, 0.8) !important;
+    color: white !important;
+    padding: 0.5rem 1rem !important;
+    border-radius: 6px !important;
+    font-size: 0.8rem !important;
+    white-space: nowrap !important;
+    z-index: 1000 !important;
+    animation: tooltipFadeIn 0.3s ease !important;
+}
+
+@keyframes tooltipFadeIn {
+    from {
+        opacity: 0;
+        transform: translateX(-50%) translateY(5px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateX(-50%) translateY(0);
+    }
+}
+
+/* ===== RESPONSIVE DESIGN ===== */
+@media(max-width: 1200px) {
+    .search-form [class*="col-"] {
+        min-width: 100px !important;
+    }
+
+    .search-form .col-md-2 {
+        min-width: 160px !important;
+    }
+}
+
+@media(max-width: 992px) {
+    .search-form .row {
+        flex-direction: column !important;
+        gap: 1rem !important;
+    }
+
+    .search-form [class*="col-"] {
+        flex: none !important;
+        width: 100% !important;
+        min-width: auto !important;
+    }
+
+    .search-form .text-center {
+        flex-direction: row !important;
+        justify-content: center !important;
+    }
+}
+
+@media(max-width: 768px) {
+    .search-form form {
+        padding: 1.5rem !important;
+    }
+
+    .search-form .text-center {
+        flex-direction: column !important;
+        gap: 1rem !important;
+    }
+
+    .search-form .text-center h1 {
+        flex-direction: row !important;
+        justify-content: center !important;
+        gap: 1rem !important;
+    }
+
+    .search-form .btn {
+        width: 50px !important;
+        height: 50px !important;
+        font-size: 1rem !important;
+    }
+}
+
+@media(max-width: 576px) {
+    .search-form .row {
+        gap: 0.8rem !important;
+    }
+
+    .search-form .form-control,
+    .search-form select,
+    .search-form input {
+        padding: 0.8rem 1rem !important;
+        font-size: 0.85rem !important;
+    }
+
+    .search-form label {
+        font-size: 0.7rem !important;
+    }
+}
+
+/* ===== ANIMATIONS D'ENTRÉE ===== */
+.search-form .form-group {
+    animation: slideInUp 0.4s ease-out !important;
+}
+
+.search-form .form-group:nth-child(1) {
+    animation-delay: 0.1s !important;
+}
+
+.search-form .form-group:nth-child(2) {
+    animation-delay: 0.2s !important;
+}
+
+.search-form .form-group:nth-child(3) {
+    animation-delay: 0.3s !important;
+}
+
+.search-form .form-group:nth-child(4) {
+    animation-delay: 0.4s !important;
+}
+
+.search-form .form-group:nth-child(5) {
+    animation-delay: 0.5s !important;
+}
+
+.search-form .text-center {
+    animation: slideInUp 0.5s ease-out 0.6s both !important;
+}
+
+/* ===== CHAMPS CACHÉS ===== */
+.search-form [style*="display:none"],
+.search-form [style*="display: none"] {
+    display: none !important;
+}
+
+/* ===== ÉTATS DE FOCUS AVANCÉS ===== */
+.search-form .form-group:focus-within {
+    position: relative !important;
+    z-index: 10 !important;
+}
+
+.search-form .form-group:focus-within::after {
+    content: '' !important;
+    position: absolute !important;
+    top: -2px !important;
+    left: -2px !important;
+    right: -2px !important;
+    bottom: -2px !important;
+    background: var(--primary-gradient) !important;
+    border-radius: 14px !important;
+    z-index: -1 !important;
+    animation: focusGlow 2s infinite !important;
+}
+
+@keyframes focusGlow {
+
+    0,
+    100% {
+        opacity: 0.3;
+    }
+
+    50% {
+        opacity: 0.6;
+    }
+}
+
+/* ===== LOADING STATES POUR LES BOUTONS ===== */
+.search-form .btn.loading {
+    pointer-events: none !important;
+    color: transparent !important;
+}
+
+.search-form .btn.loading::after {
+    content: '' !important;
+    position: absolute !important;
+    top: 50% !important;
+    left: 50% !important;
+    width: 20px !important;
+    height: 20px !important;
+    margin: -10px 0 0 -10px !important;
+    border: 2px solid rgba(255, 255, 255, 0.3) !important;
+    border-top-color: white !important;
+    border-radius: 50% !important;
+    animation: spin 1s linear infinite !important;
+}
+
+@keyframes spin {
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+/* ===== INDICATEURS VISUELS POUR LES CHAMPS REQUIS ===== */
+.search-form .form-group.required label::after {
+    content: ' *' !important;
+    color: #e74c3c !important;
+    font-weight: bold !important;
+}
+
+/* ===== EFFETS POUR LES CHAMPS ACTIFS ===== */
+.search-form .form-control:not(:placeholder-shown)+label,
+.search-form select:valid+label,
+.search-form input:not(:placeholder-shown)+label {
+    background: var(--success-gradient) !important;
+    color: white !important;
+    transform: scale(0.9) !important;
+}
+
+/* ===== CORRECTIONS SPÉCIFIQUES POUR SYMFONY FORMS ===== */
+.search-form .form-row {
+    display: contents !important;
+}
+
+.search-form .form-group>div {
+    position: relative !important;
+}
+
+.search-form .form-error-icon {
+    display: none !important;
+}
+
+.search-form .form-help {
+    font-size: 0.75rem !important;
+    color: rgba(0, 87, 141, 0.7) !important;
+    margin-top: 0.5rem !important;
+    padding: 0 1rem !important;
 }

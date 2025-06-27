@@ -4,80 +4,119 @@
 {% endblock %}
 
 {% block body %}
-	{% for label,  messages in app.flashes  %}
-		<div class="container">
-			<div class="alert alert-{{ label }}">
+	<div
+		class="header-new">
+		<!-- Messages flash -->
+		{% for label, messages in app.flashes %}
+			<div class="flash-messages">
 				{% for message in messages %}
-					{{ message | raw }}
+					<div class="alert alert-{{ label }}">
+						<i class="fas fa-{% if label == 'success' %}check-circle{% elseif label == 'danger' %}exclamation-triangle{% elseif label == 'info' %}info-circle{% else %}bell{% endif %}"></i>
+						{{ message | raw }}
+					</div>
 				{% endfor %}
+			</div>
+		{% endfor %}
 
+		<!-- Header moderne -->
+		<div class="modern-header">
+			<div class="header-content">
+				<h1 class="header-title">
+					<i class="fas fa-user-plus"></i>
+					Ajouter un Prospect
+				</h1>
+				<p class="header-subtitle">Créez un nouveau prospect avec des informations détaillées</p>
 			</div>
 		</div>
-	{% endfor %}
 
-	<section class="content-header ">
-		<h1>
-			Prospects
-			<small>Ajouter</small>
-		</h1>
-		<ol class="breadcrumb">
-			<li>
-				<a href="{{ path('app_home') }}">
-					<i class="fa fa-dashboard"></i>
-					Tableau de bord</a>
-			</li>
-			<li>
-				<a href="{{ path('app_prospect_index') }}">
-					<i class="fa fa-users"></i>
-					Tous les Prospects</a>
-			</li>
-			<li class="active">Ajouter un Prospect</li>
-		</ol>
-	</section>
-	<!-- FORM -->
-	{% block form %}
-		<div class="row mt ">
-			<div class="col-lg-12">
-				{{ include('prospect/_form.html.twig') }}
-			</div>
+		<!-- Breadcrumb moderne -->
+		<nav class="modern-breadcrumb">
+			<a href="{{ path('app_home') }}" class="breadcrumb-item">
+				<i class="fas fa-home"></i>
+				Tableau de bord
+			</a>
+			<span class="breadcrumb-separator">•</span>
+			<a href="{{ path('app_prospect_index') }}" class="breadcrumb-item">
+				<i class="fas fa-users"></i>
+				Tous les Prospects
+			</a>
+			<span class="breadcrumb-separator">•</span>
+			<span class="breadcrumb-item" style="color: #667eea;">
+				<i class="fas fa-plus"></i>
+				Ajouter un Prospect
+			</span>
+		</nav>
 
-		</div>
+		<!-- Formulaire réutilisable -->
+		{{ include('prospect/_form.html.twig', {
+        'form_title': 'Nouveau Prospect',
+        'form_subtitle': 'Veuillez remplir tous les champs requis',
+        'form_icon': 'user-plus',
+        'button_label': 'Enregistrer',
+        'show_delete_button': false
+    }) }}
+
 	{% endblock %}
 
-	<!-- END FORM -->
-{% endblock %}
-
-{% block javascripts %}
-	{{ parent() }}
-	<script type="text/javascript">
-
-		document.addEventListener("DOMContentLoaded", function () {
+	{% block javascripts %}
+		{{ parent() }}
+		<script type="text/javascript">
+			document.addEventListener("DOMContentLoaded", function () { // Gestion des champs conditionnels pour typeProspect
 var typeProspectField = document.getElementById("{{ form.typeProspect.vars.id }}");
 var subcategoryContainer = document.getElementById("subcategory-container");
 var subcategoryActivites = document.getElementById("subcategory-activite");
 
+if (typeProspectField && subcategoryContainer && subcategoryActivites) {
 typeProspectField.addEventListener("change", function () {
 if (typeProspectField.value === '2') {
 subcategoryContainer.style.display = "block";
 subcategoryActivites.style.display = "block";
+subcategoryContainer.classList.add('show');
+subcategoryActivites.classList.add('show');
 } else {
 subcategoryContainer.style.display = "none";
 subcategoryActivites.style.display = "none";
+subcategoryContainer.classList.remove('show');
+subcategoryActivites.classList.remove('show');
 }
 });
-});
-// setlc resilt
-document.addEventListener("DOMContentLoaded", function () {
+}
+
+// Gestion des champs conditionnels pour lastAssure
 var typeResilField = document.getElementById("{{ form.lastAssure.vars.id }}");
 var subcategoryMotif = document.getElementById("subcategory-motif");
 
+if (typeResilField && subcategoryMotif) {
 typeResilField.addEventListener("change", function () {
 if (typeResilField.value === 'Oui') {
 subcategoryMotif.style.display = "block";
+subcategoryMotif.classList.add('show');
 } else {
 subcategoryMotif.style.display = "none";
+subcategoryMotif.classList.remove('show');
 }
 });
+}
+
+// Animation de chargement des sections
+const sections = document.querySelectorAll('.form-section');
+sections.forEach((section, index) => {
+section.style.animationDelay = `${
+index * 0.1
+}s`;
 });
-	</script>
-{% endblock %}
+
+// Auto-hide des messages flash après 5 secondes
+const flashMessages = document.querySelectorAll('.flash-messages .alert');
+flashMessages.forEach(alert => {
+setTimeout(() => {
+alert.style.opacity = '0';
+alert.style.transform = 'translateY(-20px)';
+setTimeout(() => {
+alert.remove();
+}, 300);
+}, 5000);
+});
+});
+		</script>
+	{% endblock %}

@@ -1,12 +1,178 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Edit Prospect
+{% block title %}Modifier Prospect
 {% endblock %}
+
 
 {% block body %}
-	<h1>Edit Prospect</h1>
+	<!-- Header moderne -->
+	<div
+		class="header-edit">
+		<!-- Messages flash -->
+		{% for label, messages in app.flashes %}
+			<div class="flash-messages">
+				{% for message in messages %}
+					<div class="alert alert-{{ label }}">
+						<i class="fas fa-{% if label == 'success' %}check-circle{% elseif label == 'danger' %}exclamation-triangle{% elseif label == 'info' %}info-circle{% else %}bell{% endif %}"></i>
+						{{ message | raw }}
+					</div>
+				{% endfor %}
+			</div>
+		{% endfor %}
 
-	{{ include('prospect/_form.html.twig', {'button_label': 'Modifier'}) }}
+		<!-- Header moderne -->
+		<div class="modern-header">
+			<div class="header-content">
+				<h1 class="header-title">
+					<i class="fas fa-user-edit"></i>
+					Modifier un Prospect
+					<span class="prospect-status">
+						<i class="fas fa-edit"></i>
+						Édition
+					</span>
+				</h1>
+				<p class="header-subtitle">Modifiez les informations du prospect</p>
+			</div>
+		</div>
 
-	{# {{ include('prospect/_delete_form.html.twig') }} #}
-{% endblock %}
+		<!-- Breadcrumb moderne -->
+		<nav class="modern-breadcrumb">
+			<a href="{{ path('app_home') }}" class="breadcrumb-item">
+				<i class="fas fa-home"></i>
+				Tableau de bord
+			</a>
+			<span class="breadcrumb-separator">•</span>
+			<a href="{{ path('app_prospect_index') }}" class="breadcrumb-item">
+				<i class="fas fa-users"></i>
+				Tous les Prospects
+			</a>
+			<span class="breadcrumb-separator">•</span>
+			<span class="breadcrumb-item" style="color: #f093fb;">
+				<i class="fas fa-edit"></i>
+				Modifier le Prospect
+			</span>
+		</nav>
+
+		<!-- Informations du prospect -->
+		{% if form.vars.value %}
+			<div class="prospect-info-edit">
+				<div class="prospect-avatar">
+					{{ form.vars.value.nom|first|upper }}{{ form.vars.value.prenom|first|upper }}
+				</div>
+				<div class="prospect-details">
+					<h5>{{ form.vars.value.nom|default('N/A') }}
+						{{ form.vars.value.prenom|default('N/A') }}</h5>
+					<p>
+						<i class="fas fa-envelope"></i>
+						{{ form.vars.value.email|default('Non renseigné') }}
+						{% if form.vars.value.phone %}
+							|
+							<i class="fas fa-phone"></i>
+							{{ form.vars.value.phone }}
+						{% endif %}
+					</p>
+				</div>
+			</div>
+		{% endif %}
+
+		<!-- Formulaire réutilisable -->
+		{{ include('prospect/_form.html.twig', {
+        'form_title': 'Modifier le Prospect',
+        'form_subtitle': 'Modifiez les informations nécessaires',
+        'form_icon': 'user-edit',
+        'button_label': 'Modifier',
+        'show_delete_button': true
+    }) }}
+
+	{% endblock %}
+
+	{% block javascripts %}
+		{{ parent() }}
+		<script>
+			document.addEventListener('DOMContentLoaded', function () { // Auto-hide des messages flash après 5 secondes
+const flashMessages = document.querySelectorAll('.flash-messages .alert');
+flashMessages.forEach(alert => {
+setTimeout(() => {
+alert.style.opacity = '0';
+alert.style.transform = 'translateY(-20px)';
+setTimeout(() => {
+alert.remove();
+}, 300);
+}, 5000);
+});
+
+// Mise en évidence des champs modifiés
+const formFields = document.querySelectorAll('input, select, textarea');
+formFields.forEach(field => {
+const originalValue = field.value;
+field.addEventListener('input', function () {
+if (this.value !== originalValue) {
+this.style.borderColor = '#f093fb';
+this.style.boxShadow = '0 0 0 3px rgba(240, 147, 251, 0.1)';
+} else {
+this.style.borderColor = '#e1e5e9';
+this.style.boxShadow = '0 2px 4px rgba(0, 0, 0, 0.05)';
+}
+});
+});
+});
+
+document.addEventListener("DOMContentLoaded", function () { // Gestion des champs conditionnels pour typeProspect
+var typeProspectField = document.getElementById("{{ form.typeProspect.vars.id }}");
+var subcategoryContainer = document.getElementById("subcategory-container");
+var subcategoryActivites = document.getElementById("subcategory-activite");
+
+if (typeProspectField && subcategoryContainer && subcategoryActivites) {
+typeProspectField.addEventListener("change", function () {
+if (typeProspectField.value === '2') {
+subcategoryContainer.style.display = "block";
+subcategoryActivites.style.display = "block";
+subcategoryContainer.classList.add('show');
+subcategoryActivites.classList.add('show');
+} else {
+subcategoryContainer.style.display = "none";
+subcategoryActivites.style.display = "none";
+subcategoryContainer.classList.remove('show');
+subcategoryActivites.classList.remove('show');
+}
+});
+}
+
+// Gestion des champs conditionnels pour lastAssure
+var typeResilField = document.getElementById("{{ form.lastAssure.vars.id }}");
+var subcategoryMotif = document.getElementById("subcategory-motif");
+
+if (typeResilField && subcategoryMotif) {
+typeResilField.addEventListener("change", function () {
+if (typeResilField.value === 'Oui') {
+subcategoryMotif.style.display = "block";
+subcategoryMotif.classList.add('show');
+} else {
+subcategoryMotif.style.display = "none";
+subcategoryMotif.classList.remove('show');
+}
+});
+}
+
+// Animation de chargement des sections
+const sections = document.querySelectorAll('.form-section');
+sections.forEach((section, index) => {
+section.style.animationDelay = `${
+index * 0.1
+}s`;
+});
+
+// Auto-hide des messages flash après 5 secondes
+const flashMessages = document.querySelectorAll('.flash-messages .alert');
+flashMessages.forEach(alert => {
+setTimeout(() => {
+alert.style.opacity = '0';
+alert.style.transform = 'translateY(-20px)';
+setTimeout(() => {
+alert.remove();
+}, 300);
+}, 5000);
+});
+});
+		</script>
+	{% endblock %}

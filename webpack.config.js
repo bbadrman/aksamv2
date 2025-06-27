@@ -24,6 +24,8 @@ Encore
     .addEntry('appaffct', './assets/js/adaffect.js')
     .addEntry('formcontrat', './assets/js/formContrat.js')
     .addStyleEntry('css/app', './assets/css/app.css')
+    .addStyleEntry('css/prospect-modern', './assets/css/prospect-modern.css')
+    .addStyleEntry('css/modalmoderne', './assets/css/modalmoderne.css')
 
     // When enabled, Webpack "splits" your files into smaller pieces for greater optimization.
     .splitEntryChunks()

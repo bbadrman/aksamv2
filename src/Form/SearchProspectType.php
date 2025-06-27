@@ -110,6 +110,7 @@ class SearchProspectType extends AbstractType
 
             ->add('d',  Type\DateType::class, [
                 'widget' => 'single_text',
+                'label' => "du :",
                 'required' => true,
                 'constraints' => [
                     new NotBlank([
@@ -124,6 +125,7 @@ class SearchProspectType extends AbstractType
 
             ->add('dd', Type\DateType::class, [
                 'widget' => 'single_text',
+                'label' => "au :",
                 'required' => true,
                 'constraints' => [
                     new NotBlank([
@@ -146,7 +148,7 @@ class SearchProspectType extends AbstractType
             ->add('s', Type\TextType::class, [
                 'label' => "r-sociale :",
                 'attr' => [
-                    'placeholder' => "Recherche par r-sociale."
+                    'placeholder' => "R-sociale."
                 ],
                 'required' => false
             ])
@@ -189,7 +191,7 @@ class SearchProspectType extends AbstractType
             ->add('relance', Type\ChoiceType::class, [
                 'label' => 'Motif Relance ',
                 'required' => false,
-                'placeholder' => '       ',
+                'placeholder' => '--Selectie-- ',
                 'choices' => [
                     'Prise de Contact' => [
                         'Rendez-vous' => '1',

@@ -5,52 +5,61 @@
 
 {% block body %}
 
-	{% for label,  messages in app.flashes  %}
-		<div class="container">
-			<div class="alert alert-{{ label }}">
-				{% for message in messages %}
-					{{ message | raw }}
-				{% endfor %}
-			</div>
+	{# Messages Flash avec wrapper moderne #}
+	{% if app.flashes|length > 0 %}
+		<div class="flash-messages">
+			{% for label, messages in app.flashes %}
+				<div class="container">
+					<div class="alert alert-{{ label }}">
+						{% for message in messages %}
+							{{ message | raw }}
+						{% endfor %}
+					</div>
+				</div>
+			{% endfor %}
 		</div>
-	{% endfor %}
-	<section class="content-header">
-		{% if app.request.get('_route') == 'newprospect_index' %}
-			<h2>Rechercher dans les nouveaux prospects</h2>
+	{% endif %}
 
-		{% elseif app.request.get('_route') == 'prospect_search' %}
-			<h2>Rechercher dans tous les Prospects</h2>
+	{# Header Section Moderne #}
+	<section
+		class="content-header">
+		{# Titre dynamique avec icône #}
+		<h2>
+			{% if app.request.get('_route') == 'newprospect_index' %}
+				Rechercher dans les nouveaux prospects
+			{% elseif app.request.get('_route') == 'prospect_search' %}
+				Rechercher dans tous les Prospects
+			{% elseif app.request.get('_route') == 'relancejour_index' %}
+				Rechercher dans les Relances du Jour
+			{% elseif app.request.get('_route') == 'avenir_index' %}
+				Rechercher dans les Relances à venir
+			{% elseif app.request.get('_route') == 'relancenotraite_index' %}
+				Rechercher dans les Relances Non Traitées
+			{% elseif app.request.get('_route') == 'app_unjoinable' %}
+				Rechercher dans les injoignables
+			{% elseif app.request.get('_route') == 'notrait_index' %}
+				Rechercher dans les Prospects Non Traités
+			{% endif %}
+		</h2>
 
-		{% elseif app.request.get('_route') == 'relancejour_index' %}
-			<h2>Rechercher dans les Relances du Jour</h2>
-
-		{% elseif app.request.get('_route') == 'avenir_index' %}
-			<h2>Rechercher dans les Relances à venir</h2>
-
-		{% elseif app.request.get('_route') == 'relancenotraite_index' %}
-			<h2>Rechercher dans les Relances Non Traitées</h2>
-
-		{% elseif app.request.get('_route') == 'app_unjoinable' %}
-			<h2>Rechercher dans les injoignables</h2>
-
-		{% elseif app.request.get('_route') == 'notrait_index' %}
-			<h2>Rechercher dans les Prospects Non Traités</h2>
-
-		{% endif %}
+		{# Breadcrumb modernisé #}
 		<ol class="breadcrumb">
 			<li>
 				<a href="#">
 					<i class="fa fa-dashboard"></i>
-					Tableau de bord</a>
+					Tableau de bord
+				</a>
 			</li>
 			<li class="active">
 				<a href="{{ path('app_traitement') }}">
 					<i class="fa fa-users"></i>
-					Tous les Prospects</a>
+					Tous les Prospects
+				</a>
 			</li>
-			<!-- NOTIFICATION DROPDOWN -->
-			<li id="header_notification_bar" class="dropdown">
-				<a data-toggle="dropdown" class="dropdown-toggle" href="#">
+
+			{# Notification moderne avec badge #}
+			<li class="dropdown" id="header_notification_bar">
+				<a data-toggle="dropdown" class="dropdown-toggle" href="#" title="Résultats de recherche">
 					<i class="fa fa-shopping-cart"></i>
 					<span class="badge bg-warning">
 						{% if totalResults is defined %}
@@ -59,13 +68,48 @@
 							{{ prospects|length }}
 						{% endif %}
 					</span>
-				</span>
+				</a>
 			</li>
-		</li>
-	</a>
+		</ol>
 
-</li>
-<!-- END NOTIFICATION DROPDOWN --></ol><br>{# {% if is_granted('ROLE_ADMIN') or is_granted('ROLE_TEAM')  == true %}
-			<a href="{{ path('app_prospect_new') }}" class="btn btn-primary">Ajouter Prospect</a>
-	          	{% endif %} #}</section><div class="col-xs-10" style="float: right !important;"><div class="row" style="margin-right: 10px;">
-{{ include('prospect/_search_form.html.twig')  }}</div></div>{% endblock %}
+		{# Bouton d'ajout (si autorisé) - Optionnel #}
+		{# {% if is_granted('ROLE_ADMIN') or is_granted('ROLE_TEAM') %}
+																																											            <div class="header-actions">
+																																											                <a href="{{ path('app_prospect_new') }}" class="btn btn-success">
+																																											                    <i class="fa fa-plus"></i>
+																																											                    Ajouter Prospect
+																																											                </a>
+																																											            </div>
+																																											        {% endif %} #}
+	</section>
+
+	{# Section de recherche moderne #}
+	<div class="search-section">
+		<div class="container-fluid">
+			<div class="row">
+				<div class="col-xs-12">
+					{{ include('prospect/_search_form.html.twig') }}
+				</div>
+			</div>
+		</div>
+	</div>
+
+	{# Section pour afficher les résultats (si nécessaire) #}
+	{# {% if prospects is defined and prospects|length > 0 %}
+																					        <div class="results-section">
+																					            <div class="container-fluid">
+																					                <div class="row">
+																					                    <div class="col-xs-12">
+																					                        <div class="results-header">
+																					                            <h3>
+																					                                <i class="fa fa-list"></i>
+																					                                Résultats de recherche ({{ prospects|length }})
+																					                            </h3>
+																					                        </div>
+																					                        <!-- Ici vous pouvez inclure la table des résultats -->
+																					                    </div>
+																					                </div>
+																					            </div>
+																					        </div>
+																					    {% endif %} #}
+{% endblock %}

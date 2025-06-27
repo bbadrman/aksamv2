@@ -9,7 +9,9 @@ use App\Entity\RelanceHistory;
 use App\Form\ProspectType;
 use App\Form\AffectProspectType;
 use App\Form\ClientRelanceType;
+use App\Form\GsmType;
 use App\Form\RelanceProspectType;
+use App\Form\ScdEmailType;
 use App\Repository\HistoryRepository;
 use App\Repository\ProspectRepository;
 use App\Repository\RelanceHistoryRepository;
@@ -119,17 +121,55 @@ final class ProspectController extends AbstractController
 
 
     #[Route('/{id}', name: 'app_prospect_show', methods: ['GET'])]
-    public function show(Prospect $prospect, HistoryRepository $historyRepository, RelanceHistoryRepository $relanceHistory): Response
+    public function show(Request $request, Prospect $prospect, HistoryRepository $historyRepository, RelanceHistoryRepository $relanceHistory): Response
     {
+        $emailForm = $this->createForm(ScdEmailType::class, $prospect, [
+            'action' => $this->generateUrl('app_prospect_update_email', ['id' => $prospect->getId()])
+        ]);
+
+        $gsmForm = $this->createForm(GsmType::class, $prospect, [
+            'action' => $this->generateUrl('app_prospect_update_gsm', ['id' => $prospect->getId()])
+        ]);
+
         $teamHistory = $historyRepository->findBy(['prospect' => $prospect]);
         $relanceHistory = $relanceHistory->findBy(['prospect' => $prospect]);
         return $this->render('prospect/show.html.twig', [
             'prospect' => $prospect,
             'teamHistory' => $teamHistory,
             'relanceHistory' => $relanceHistory,
+            'gsmForm' => $gsmForm->createView(),
+            'emailForm' => $emailForm->createView(),
         ]);
     }
+    #[Route('/{id}/update-email', name: 'app_prospect_update_email', methods: ['POST'])]
+    public function updateEmail(Request $request, Prospect $prospect): Response
+    {
+        $emailForm = $this->createForm(ScdEmailType::class, $prospect);
+        $emailForm->handleRequest($request);
 
+        if ($emailForm->isSubmitted() && $emailForm->isValid()) {
+            $this->entityManager->persist($prospect);
+            $this->entityManager->flush();
+            $this->addFlash('info', 'Email mis à jour avec succès');
+        }
+
+        return $this->redirectToRoute('app_prospect_show', ['id' => $prospect->getId()]);
+    }
+
+    #[Route('/{id}/update-gsm', name: 'app_prospect_update_gsm', methods: ['POST'])]
+    public function updateGsm(Request $request, Prospect $prospect): Response
+    {
+        $gsmForm = $this->createForm(GsmType::class, $prospect);
+        $gsmForm->handleRequest($request);
+
+        if ($gsmForm->isSubmitted() && $gsmForm->isValid()) {
+            $this->entityManager->persist($prospect);
+            $this->entityManager->flush();
+            $this->addFlash('info', 'Téléphone mis à jour avec succès');
+        }
+
+        return $this->redirectToRoute('app_prospect_show', ['id' => $prospect->getId()]);
+    }
     #[Route('/{id}/edit', name: 'app_prospect_edit', methods: ['GET', 'POST'])]
     public function edit(Request $request, Prospect $prospect, EntityManagerInterface $entityManager): Response
     {

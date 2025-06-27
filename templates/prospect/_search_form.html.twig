@@ -1,130 +1,203 @@
-{{ form_start(search_form) }}
+{# Formulaire de recherche moderne avec classes CSS optimisées #}
+<div class="search-form">
+	{{ form_start(search_form, {'attr': {'class': 'modern-search-form', 'novalidate': 'novalidate'}}) }}
 
-<div class="row align-items-center">
+	{# Première rangée - Champs de date et recherche principale #}
+	<div class="row align-items-center">
+		{% if app.request.get('_route') != 'app_prospect_index' and app.request.get('_route') != 'newprospectchef_index' %}
+			<div class="col-md-1">
+				<div class="form-group">
+					{{ form_label(search_form.d, 'Du') }}
+					{{ form_widget(search_form.d, {'attr': {'class': 'form-control', 'placeholder': 'Date début'}}) }}
+				</div>
+			</div>
 
+			<div class="col-md-1">
+				<div class="form-group">
+					{{ form_label(search_form.dd, 'Au') }}
+					{{ form_widget(search_form.dd, {'attr': {'class': 'form-control', 'placeholder': 'Date fin'}}) }}
+				</div>
+			</div>
 
-	{% if app.request.get('_route') != 'app_prospect_index' and app.request.get('_route') != 'newprospectchef_index' %}
-		<div class="col-md-1" style="padding-right: 2px;padding-left: 8px;">
+			<div class="col-md-1">
+				<div class="form-group">
+					{{ form_label(search_form.q, 'Nom') }}
+					{{ form_widget(search_form.q, {'attr': {'class': 'form-control'}}) }}
+				</div>
+			</div>
 
-			{{ form_row(search_form.d) }}
-		</div>
-		<div class="col-md-1" style="padding: 1px;padding-left: 8px; ">
-			{{ form_row(search_form.dd) }}
-		</div>
+			<div class="col-md-1">
+				<div class="form-group">
+					{{ form_label(search_form.m, 'Prénom') }}
+					{{ form_widget(search_form.m, {'attr': {'class': 'form-control'}}) }}
+				</div>
+			</div>
 
-		<div class="col-md-1" style="padding-right: 2px;padding-left: 2px;">
+			<div class="col-md-1">
+				<div class="form-group">
+					{{ form_label(search_form.s, 'R-Sociale') }}
+					{{ form_widget(search_form.s, {'attr': {'class': 'form-control'}}) }}
+				</div>
+			</div>
 
-			{{ form_row(search_form.q) }}
-		</div>
-		<div class="col-md-1" style="padding-right: 2px;padding-left: 2px;">
+			<div class="col-md-1">
+				<div class="form-group">
+					{{ form_label(search_form.g, 'E-mail') }}
+					{{ form_widget(search_form.g, {'attr': {'class': 'form-control', 'placeholder': 'E-mail'}}) }}
+				</div>
+			</div>
 
-			{{ form_row(search_form.m) }}
-		</div>
-		<div class="col-md-1" style="padding-right: 2px;padding-left: 2px;">
+			<div class="col-md-1">
+				<div class="form-group">
+					{{ form_label(search_form.l, 'Téléphone') }}
+					{{ form_widget(search_form.l, {'attr': {'class': 'form-control', 'placeholder': 'Numéro'}}) }}
+				</div>
+			</div>
 
-			{{ form_row(search_form.s) }}
-		</div>
-
-		<div class="col-md-1" style="padding-right: 2px;padding-left: 2px;">
-
-			{{ form_row(search_form.g) }}
-		</div>
-		<div class="col-md-1" style="padding-right: 2px;padding-left: 2px;">
-
-			{{ form_row(search_form.l) }}
-		</div>
-		<div class="col-md-2 text-center" style="padding-right: 3px;padding-left: 3px;">
-			<h1>
-				<button class="btn btn-primary btn search-btn" type="submit" target="_blank" title="Rechercher ">
-					<i class="fa fa-search" aria-hidden="true"></i>
-				</button>
-				<button class="btn btn-info" value="back" onclick="history.go(-1)" target="_blank" title="Retour ">
-					<i class="fa fa-undo" aria-hidden="true"></i>
-				</button>
-
-				<button class="btn btn-primary" type="reset" id="reset-button" target="_blank" title="Vider champs ">
-					<i class="fa fa-refresh" aria-hidden="true"></i>
-				</button>
-			</h1>
-		</div>
-	{% else %}
-		{{ form_widget(search_form.q, { 'attr': { 'style': 'display:none' } }) }}
-		{{ form_widget(search_form.m, { 'attr': { 'style': 'display:none' } }) }}
-		{{ form_widget(search_form.g, { 'attr': { 'style': 'display:none' } }) }}
-
-		{{ form_widget(search_form.l, { 'attr': { 'style': 'display:none' } }) }}
-		{{ form_widget(search_form.s, { 'attr': { 'style': 'display:none' } }) }}
-		{{ form_widget(search_form.source, { 'attr': { 'style': 'display:none' } }) }}
-		{{ form_widget(search_form.team, { 'attr': { 'style': 'display:none' } }) }}
-		{{ form_widget(search_form.r, { 'attr': { 'style': 'display:none' } }) }}
-		{{ form_widget(search_form.d, { 'attr': { 'style': 'display:none' } }) }}
-		{{ form_widget(search_form.dd, { 'attr': { 'style': 'display:none' } }) }}
-	{% endif %}
-
-
-</div>
-
-<div class="row align-items-center">
-
-
-	{% if app.request.get('_route') == 'prospect_search' or app.request.get('_route') == 'avenir_index' or app.request.get('_route') == 'relancenotraite_index'%}
-		<div class="col-md-1 " style="padding-right: 2px;padding-left: 2px;">
-			{{ form_row(search_form.c) }}
-		</div>
-		<div class="col-md-1 " style="padding-right: 1px;padding-left: 2px;">
-			{{ form_row(search_form.dr) }}
-		</div>
-		<div class="col-md-1  " style="padding-right: 1px;padding-left: 2px;">
-			{{ form_row(search_form.ddr) }}
-		</div>
-		<div class="col-md-1  " style="padding-right: 1px;padding-left: 2px;">
-			{{ form_row(search_form.relance) }}
-		</div>
-
-		{% if is_granted('ROLE_ADMIN')  == true %}
-			<div class="col-md-1 " style="padding-right: 1px;padding-left: 2px;">
-				{{ form_row(search_form.u) }}
+			<div class="col-md-2 text-center">
+				<div class="button-group">
+					<button class="btn btn-primary search-btn" type="submit" title="Rechercher">
+						<i class="fa fa-search" aria-hidden="true"></i>
+					</button>
+					<button class="btn btn-info" type="button" onclick="history.go(-1)" title="Retour">
+						<i class="fa fa-undo" aria-hidden="true"></i>
+					</button>
+					<button class="btn btn-warning" type="reset" id="reset-button" title="Vider les champs">
+						<i class="fa fa-refresh" aria-hidden="true"></i>
+					</button>
+				</div>
 			</div>
 		{% else %}
+			{# Champs cachés pour les autres routes #}
+			{{ form_widget(search_form.q, { 'attr': { 'style': 'display:none' } }) }}
+			{{ form_widget(search_form.m, { 'attr': { 'style': 'display:none' } }) }}
+			{{ form_widget(search_form.g, { 'attr': { 'style': 'display:none' } }) }}
+			{{ form_widget(search_form.l, { 'attr': { 'style': 'display:none' } }) }}
+			{{ form_widget(search_form.s, { 'attr': { 'style': 'display:none' } }) }}
+			{{ form_widget(search_form.source, { 'attr': { 'style': 'display:none' } }) }}
+			{{ form_widget(search_form.team, { 'attr': { 'style': 'display:none' } }) }}
+			{{ form_widget(search_form.r, { 'attr': { 'style': 'display:none' } }) }}
+			{{ form_widget(search_form.d, { 'attr': { 'style': 'display:none' } }) }}
+			{{ form_widget(search_form.dd, { 'attr': { 'style': 'display:none' } }) }}
+		{% endif %}
+	</div>
+
+	{# Deuxième rangée - Champs spécifiques selon la route #}
+	<div class="row align-items-center">
+		{% if app.request.get('_route') == 'prospect_search' or app.request.get('_route') == 'avenir_index' or app.request.get('_route') == 'relancenotraite_index' %}
+			<div class="col-md-1">
+				<div class="form-group">
+					{{ form_label(search_form.c, 'Ville') }}
+					{{ form_widget(search_form.c, {'attr': {'class': 'form-control'}}) }}
+				</div>
+			</div>
+
+			<div class="col-md-1">
+				<div class="form-group">
+					{{ form_label(search_form.dr, 'Relance Du') }}
+					{{ form_widget(search_form.dr, {'attr': {'class': 'form-control', 'placeholder': 'Date début relance'}}) }}
+				</div>
+			</div>
+
+			<div class="col-md-1">
+				<div class="form-group">
+					{{ form_label(search_form.ddr, 'Relance Au') }}
+					{{ form_widget(search_form.ddr, {'attr': {'class': 'form-control', 'placeholder': 'Date fin relance'}}) }}
+				</div>
+			</div>
+
+			<div class="col-md-1">
+				<div class="form-group">
+					{{ form_label(search_form.relance, 'Type Relance') }}
+					{{ form_widget(search_form.relance, {'attr': {'class': 'form-control'}}) }}
+				</div>
+			</div>
+
+			{% if is_granted('ROLE_ADMIN') == true %}
+				<div class="col-md-1">
+					<div class="form-group">
+						{{ form_label(search_form.u, 'Sites') }}
+						{{ form_widget(search_form.u, {'attr': {'class': 'form-control'}}) }}
+					</div>
+				</div>
+			{% else %}
+				{{ form_widget(search_form.u, { 'attr': { 'style': 'display:none' } }) }}
+			{% endif %}
+		{% else %}
+			{# Champs cachés pour les autres routes #}
+			{{ form_widget(search_form.c, { 'attr': { 'style': 'display:none' } }) }}
+			{{ form_widget(search_form.dr, { 'attr': { 'style': 'display:none' } }) }}
+			{{ form_widget(search_form.ddr, { 'attr': { 'style': 'display:none' } }) }}
+			{{ form_widget(search_form.relance, { 'attr': { 'style': 'display:none' } }) }}
 			{{ form_widget(search_form.u, { 'attr': { 'style': 'display:none' } }) }}
 		{% endif %}
 
-	{% else %}
+		{# Champs administrateur/chef #}
+		{% if app.request.get('_route') != 'app_prospect_index' and app.request.get('_route') != 'newprospectchef_index' %}
+			{% if is_granted('ROLE_ADMIN') or is_granted('ROLE_CHEF') == true %}
+				<div class="col-md-1">
+					<div class="form-group">
+						{{ form_label(search_form.r, 'Commercial') }}
+						{{ form_widget(search_form.r, {'attr': {'class': 'form-control'}}) }}
+					</div>
+				</div>
 
-		{{ form_widget(search_form.c, { 'attr': { 'style': 'display:none' } }) }}
-		{{ form_widget(search_form.dr, { 'attr': { 'style': 'display:none' } }) }}
-		{{ form_widget(search_form.ddr, { 'attr': { 'style': 'display:none' } }) }}
-		{{ form_widget(search_form.relance, { 'attr': { 'style': 'display:none' } }) }}
-		{{ form_widget(search_form.u, { 'attr': { 'style': 'display:none' } }) }}
+				<div class="col-md-1">
+					<div class="form-group">
+						{{ form_label(search_form.team, 'Équipe') }}
+						{{ form_widget(search_form.team, {'attr': {'class': 'form-control'}}) }}
+					</div>
+				</div>
 
-
-	{% endif %}
-
-
-	{% if app.request.get('_route') != 'app_prospect_index' and app.request.get('_route') != 'newprospectchef_index' %}
-
-		{% if is_granted('ROLE_ADMIN') or  is_granted('ROLE_CHEF') == true %}
-
-			<div class="col-md-1 " style="padding-right: 2px;padding-left: 2px;">
-				{{ form_row(search_form.r) }}
-			</div>
-			<div class="col-md-1 " style="padding-right: 2px;padding-left: 2px;">
-				{{ form_row(search_form.team) }}
-			</div>
-			<div class="col-md-1  " style="padding-right: 2px;padding-left: 2px;">
-				{{ form_row(search_form.source) }}
-			</div>
-		{% else %}
-
-			{{form_row(search_form.r, {'label': false, 'attr' : { 'style':'display:none'} }) }}
-			{{ form_row(search_form.team, {'label': false, 'attr': { 'style': 'display: none' } }) }}
-			{{ form_row(search_form.source, {'label': false, 'attr': { 'style': 'display: none' } }) }}
+				<div class="col-md-1">
+					<div class="form-group">
+						{{ form_label(search_form.source, 'Source') }}
+						{{ form_widget(search_form.source, {'attr': {'class': 'form-control'}}) }}
+					</div>
+				</div>
+			{% else %}
+				{{ form_widget(search_form.r, {'label': false, 'attr': {'style': 'display:none'}}) }}
+				{{ form_widget(search_form.team, {'label': false, 'attr': {'style': 'display:none'}}) }}
+				{{ form_widget(search_form.source, {'label': false, 'attr': {'style': 'display:none'}}) }}
+			{% endif %}
 		{% endif %}
-	{% endif %}
+	</div>
+
+	{{ form_end(search_form) }}
 </div>
 
-{{ form_end(search_form) }}<script>
-	document.getElementById("reset-button").addEventListener("click", function () { // Réinitialisez les paramètres de l'URL à vide
-window.location.href = window.location.pathname;
-});
-</script>
+{# JavaScript amélioré #}
+
+
+{# Styles CSS supplémentaires pour les interactions #}
+<style>
+	.search-form .button-group {
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		gap: 1rem;
+		padding: 1rem 0;
+	}
+
+	.search-form .form-group.focused {
+		transform: translateY(-3px);
+		box-shadow: 0 8px 25px rgba(169, 208, 222, 0.3) !important;
+	}
+
+	.search-form .form-group.has-value label {
+		background: var(--success-gradient) !important;
+		color: white !important;
+	}
+
+	@media(max-width: 768px) {
+		.search-form .button-group {
+			flex-direction: row;
+			gap: 0.8rem;
+		}
+
+		.search-form .btn {
+			width: 45px !important;
+			height: 45px !important;
+		}
+	}
+</style>

@@ -1,112 +1,234 @@
-<div class="card p-4">
+{# prospect/_form.html.twig - Formulaire moderne réutilisable (Version CSS externe) #}
 
-	<h4 class="mb ">
-		<i class="fa fa-plus-square"></i>
+<!-- Formulaire moderne -->
+	<div class="modern-form-card"> <div class="card-header-modern">
+		<div class="card-header-content">
+			<i class="fas fa-{{ form_icon|default('user-plus') }} card-header-icon"></i>
+			<div class="card-header-text">
+				<h4>{{ form_title|default('Informations du Prospect') }}</h4>
+				<p>{{ form_subtitle|default('Veuillez remplir tous les champs requis') }}</p>
+			</div>
+		</div>
+	</div>
 
-		{{ form_title|default('  Ajouter une prospect') }}
-	</h4>
-	<div class="col-sm-2 col-sm-2 control-label"></div>
-	<div class="col-sm-8">
+	<div
+		class="card-body-modern">
+		<!-- Messages d'erreur -->
 		{% if not form.vars.valid %}
-			<ul class="alert-danger">
-				{% for child in form.children %}
-					{% if child.vars.errors is defined %}
-						{% for error in child.vars.errors %}
-							<li>{{ error.message }}</li>
+			<div class="error-messages">
+				<i class="fas fa-exclamation-triangle"></i>
+				<div>
+					<strong>Erreurs détectées :</strong>
+					<ul>
+						{% for child in form.children %}
+							{% if child.vars.errors is defined %}
+								{% for error in child.vars.errors %}
+									<li>{{ error.message }}</li>
+								{% endfor %}
+							{% endif %}
 						{% endfor %}
-					{% endif %}
-				{% endfor %}
-			</ul>
+					</ul>
+				</div>
+			</div>
 		{% endif %}
-	</div>
 
-	{{ form_start(form) }}
+		{{ form_start(form) }}
 
-	<!-- Ligne 1 -->
-	<div class="form-group row">
-		<div class="col-sm-2">
-			{{ form_row(form.nom, {'attr': {'class': 'form-control'}}) }}
-		</div>
-		<div class="col-sm-2">
-			{{ form_row(form.prenom, {'attr': {'class': 'form-control'}}) }}
-		</div>
-		<div class="col-sm-2">
-			{{ form_row(form.phone, {'attr': {'class': 'form-control'}}) }}
-		</div>
-		<div class="col-sm-2">
-			{{ form_row(form.gsm, {'attr': {'class': 'form-control'}}) }}
-		</div>
-		<div class="col-sm-4">
-			{{ form_row(form.email, {'attr': {'class': 'form-control'}}) }}
-		</div>
+		<!-- Section Informations personnelles -->
+		<div class="form-section">
+			<h3 class="form-section-title">
+				<i class="fas fa-user"></i>
+				Informations personnelles
+			</h3>
 
-	</div>
+			<div class="form-group row">
+				<div class="col-sm-2">
+					{{ form_row(form.nom, {'attr': {'class': 'form-control'}}) }}
+				</div>
+				<div class="col-sm-2">
+					{{ form_row(form.prenom, {'attr': {'class': 'form-control'}}) }}
+				</div>
+				<div class="col-sm-2">
+					{{ form_row(form.phone, {'attr': {'class': 'form-control'}}) }}
+				</div>
+				<div class="col-sm-2">
+					{{ form_row(form.gsm, {'attr': {'class': 'form-control'}}) }}
+				</div>
+				<div class="col-sm-4">
+					{{ form_row(form.email, {'attr': {'class': 'form-control'}}) }}
+				</div>
+			</div>
 
-	<!-- Ligne 2 -->
-	<div class="form-group row">
-
-		<div class="col-sm-2">
-			{{ form_row(form.brithAt, {'attr': {'class': 'form-control'}}) }}
-		</div>
-		<div class="col-sm-2">
-			{{ form_row(form.gender, {'attr': {'class': 'form-control'}}) }}
-		</div>
-		<div class="col-sm-2">
-			{{ form_row(form.codePost, {'attr': {'class': 'form-control'}}) }}
-		</div>
-		<div class="col-sm-1">
-			{{ form_row(form.city, {'attr': {'class': 'form-control'}}) }}
-		</div>
-		<div class="col-sm-5">
-			{{ form_row(form.adress, {'attr': {'class': 'form-control'}}) }}
-		</div>
-	</div>
-
-	<!-- Autres champs -->
-	<div class="form-group row">
-		<div class="col-sm-3">
-			{{ form_row(form.product, {'attr': {'class': 'form-control', 'id': 'product'}}) }}
-		</div>
-		<div class="col-sm-3">
-			{{ form_row(form.typeProspect, {'attr': {'class': 'form-control', 'id': 'typeProspect'}}) }}
-		</div>
-		<div class="col-sm-3" id="subcategory-activite" style="display: none">
-			{{ form_row(form.activites, {'attr': {'class': 'form-control', 'id': 'activites'}}) }}
-		</div>
-		<div class="col-sm-3" id="subcategory-container" style="display: none">
-			{{ form_row(form.raisonSociale, {'attr': {'class': 'form-control', 'id': 'raisonSociale'}}) }}
+			<div class="form-group row">
+				<div class="col-sm-2">
+					{{ form_row(form.brithAt, {'attr': {'class': 'form-control'}}) }}
+				</div>
+				<div class="col-sm-2">
+					{{ form_row(form.gender, {'attr': {'class': 'form-control'}}) }}
+				</div>
+			</div>
 		</div>
 
-		<div class="col-sm-3">
-			{{ form_row(form.motifSaise, {'attr': {'class': 'form-control', 'id': 'motifSaise'}}) }}
-		</div>
-		<div class="col-sm-3">
-			{{ form_row(form.assurer, {'attr': {'class': 'form-control', 'id': 'assurer'}}) }}
-		</div>
-		<div class="col-sm-3">
-			{{ form_row(form.lastAssure, {'attr': {'class': 'form-control', 'id': 'lastAssure'}}) }}
-		</div>
-		<div class="col-sm-3" id="subcategory-motif" style="display: none">
-			{{ form_row(form.motifResil, {'attr': {'class': 'form-control', 'id': 'motifResil'}}) }}
-		</div>
-		<div class="col-sm-3">
-			{{ form_row(form.team, {'attr': {'class': 'form-control', 'id': 'team'}}) }}
-		</div>
-		<div class="col-sm-3">
-			{{ form_row(form.comrcl, {'attr': {'class': 'form-control', 'id': 'comrcl'}}) }}
+		<!-- Section Adresse -->
+		<div class="form-section">
+			<h3 class="form-section-title">
+				<i class="fas fa-map-marker-alt"></i>
+				Adresse
+			</h3>
+
+			<div class="form-group row">
+				<div class="col-sm-2">
+					{{ form_row(form.codePost, {'attr': {'class': 'form-control'}}) }}
+				</div>
+				<div class="col-sm-1">
+					{{ form_row(form.city, {'attr': {'class': 'form-control'}}) }}
+				</div>
+				<div class="col-sm-5">
+					{{ form_row(form.adress, {'attr': {'class': 'form-control'}}) }}
+				</div>
+			</div>
 		</div>
 
-	</div>
+		<!-- Section Informations commerciales -->
+		<div class="form-section">
+			<h3 class="form-section-title">
+				<i class="fas fa-briefcase"></i>
+				Informations commerciales
+			</h3>
 
+			<div class="form-group row">
+				<div class="col-sm-3">
+					{{ form_row(form.product, {'attr': {'class': 'form-control', 'id': 'product'}}) }}
+				</div>
+				<div class="col-sm-3">
+					{{ form_row(form.typeProspect, {'attr': {'class': 'form-control', 'id': 'typeProspect'}}) }}
+				</div>
+				<div class="col-sm-3" id="subcategory-activite" style="display: none">
+					{{ form_row(form.activites, {'attr': {'class': 'form-control', 'id': 'activites'}}) }}
+				</div>
+				<div class="col-sm-3" id="subcategory-container" style="display: none">
+					{{ form_row(form.raisonSociale, {'attr': {'class': 'form-control', 'id': 'raisonSociale'}}) }}
+				</div>
+			</div>
 
-	<!-- Boutons de soumission -->
-	<div class="form-group col-sm-12 text-center">
-		<button class="btn btn-primary">{{ button_label|default('Enregistrer') }}</button>
-		<a href="{{ path('app_prospect_index') }}">
-			<button type="button" class="btn btn-info">Retour
+			<div class="form-group row">
+				<div class="col-sm-3">
+					{{ form_row(form.motifSaise, {'attr': {'class': 'form-control', 'id': 'motifSaise'}}) }}
+				</div>
+				<div class="col-sm-3">
+					{{ form_row(form.assurer, {'attr': {'class': 'form-control', 'id': 'assurer'}}) }}
+				</div>
+				<div class="col-sm-3">
+					{{ form_row(form.lastAssure, {'attr': {'class': 'form-control', 'id': 'lastAssure'}}) }}
+				</div>
+				<div class="col-sm-3" id="subcategory-motif" style="display: none">
+					{{ form_row(form.motifResil, {'attr': {'class': 'form-control', 'id': 'motifResil'}}) }}
+				</div>
+			</div>
+
+			<div class="form-group row">
+				<div class="col-sm-3">
+					{{ form_row(form.team, {'attr': {'class': 'form-control', 'id': 'team'}}) }}
+				</div>
+				<div class="col-sm-3">
+					{{ form_row(form.comrcl, {'attr': {'class': 'form-control', 'id': 'comrcl'}}) }}
+				</div>
+			</div>
+		</div>
+
+		<!-- Boutons d'action -->
+		<div class="button-group">
+			<button type="submit" class="btn btn-primary btn-modern">
+				<i class="fas fa-save"></i>
+				{{ button_label|default('Enregistrer') }}
 			</button>
-		</a>
-	</div>
+			<a href="{{ path('app_prospect_index') }}" class="btn btn-info btn-modern">
+				<i class="fas fa-arrow-left"></i>
+				Retour
+			</a>
 
-	{{ form_end(form) }}
+			{% if show_delete_button|default(false) %}
+				<button type="button" class="btn btn-danger btn-modern" onclick="confirmDelete()">
+					<i class="fas fa-trash"></i>
+					Supprimer
+				</button>
+			{% endif %}
+		</div>
+
+		{{ form_end(form) }}
+	</div>
 </div>
+
+<script>
+	document.addEventListener("DOMContentLoaded", function () { // Gestion des champs conditionnels pour typeProspect
+var typeProspectField = document.getElementById("typeProspect");
+var subcategoryContainer = document.getElementById("subcategory-container");
+var subcategoryActivites = document.getElementById("subcategory-activite");
+
+if (typeProspectField && subcategoryContainer && subcategoryActivites) { // Vérifier l'état initial
+checkTypeProspectState();
+
+typeProspectField.addEventListener("change", checkTypeProspectState);
+
+function checkTypeProspectState() {
+if (typeProspectField.value === '2') {
+subcategoryContainer.style.display = "block";
+subcategoryActivites.style.display = "block";
+subcategoryContainer.classList.add('show');
+subcategoryActivites.classList.add('show');
+} else {
+subcategoryContainer.style.display = "none";
+subcategoryActivites.style.display = "none";
+subcategoryContainer.classList.remove('show');
+subcategoryActivites.classList.remove('show');
+}
+}
+}
+
+// Gestion des champs conditionnels pour lastAssure
+var typeResilField = document.getElementById("lastAssure");
+var subcategoryMotif = document.getElementById("subcategory-motif");
+
+if (typeResilField && subcategoryMotif) { // Vérifier l'état initial
+checkLastAssureState();
+
+typeResilField.addEventListener("change", checkLastAssureState);
+
+function checkLastAssureState() {
+if (typeResilField.value === 'Oui') {
+subcategoryMotif.style.display = "block";
+subcategoryMotif.classList.add('show');
+} else {
+subcategoryMotif.style.display = "none";
+subcategoryMotif.classList.remove('show');
+}
+}
+}
+
+// Animation de chargement des sections
+const sections = document.querySelectorAll('.form-section');
+sections.forEach((section, index) => {
+section.style.animationDelay = `${
+index * 0.1
+}s`;
+});
+});
+
+// Fonction de confirmation de suppression
+function confirmDelete() {
+if (confirm('Êtes-vous sûr de vouloir supprimer ce prospect ? Cette action est irréversible.')) { // Créer et soumettre le formulaire de suppression
+const form = document.createElement('form');
+form.method = 'POST';
+form.action = '{{ path("app_prospect_delete", {"id": form.vars.value.id|default(0)}) }}';
+
+const tokenField = document.createElement('input');
+tokenField.type = 'hidden';
+tokenField.name = '_token';
+tokenField.value = '{{ csrf_token("delete" ~ form.vars.value.id|default(0)) }}';
+
+form.appendChild(tokenField);
+document.body.appendChild(form);
+form.submit();
+}
+}
+</script>
