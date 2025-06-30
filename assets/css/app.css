@@ -4361,7 +4361,8 @@ ul.chat-available-user li a:hover {
 } */
 
 .table thead th {
-    background-color: #A9D0DE;
+    /* background-color: #A9D0DE; */
+    background: linear-gradient(90deg, var(--secondary-color), #5de290);
     color: black;
     padding: 10px;
     text-transform: uppercase;
@@ -5481,7 +5482,7 @@ ul.sidebar-menu li ul.sub li a:hover {
 /* Style du thead arrondi */
 .table-striped.table-advance.table-hover thead th,
 .content-panel table thead th {
-    background: linear-gradient(135deg, #A9D0DE 0%, #9dd0e3 100%) !important;
+    background: linear-gradient(135deg, #57E3FF 0%, #55ECFF 0%) !important;
     color: black !important;
     padding: 15px 10px !important;
     font-weight: 600 !important;

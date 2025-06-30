@@ -4,7 +4,7 @@
 		<meta charset="UTF-8">
 		<meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
 		<meta name="description" content="Aksam Assurance, Gestion, Assurance ...">
-		<meta name="author" content="Badr BECHTIOUTI">
+		<meta name="author" content="Badr BECHTIOUI">
 		<title>Aksam - Assurance V2</title>
 
 		<!-- Bootstrap CSS -->
@@ -13,108 +13,161 @@
 		<!-- Font Awesome -->
 		<link
 		rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css">
-		<!-- Custom Styles -->
-		<style>
-			body {
-				background: linear-gradient(135deg, #1e90ff, #87cefa);
-				height: 100vh;
-				display: flex;
-				justify-content: center;
-				align-items: center;
-				font-family: Arial, sans-serif;
-			}
-			.login-box {
-				background: #fff;
-				padding: 2rem;
-				border-radius: 10px;
-				box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
-				width: 100%;
-				max-width: 400px;
-			}
-			.login-box h4,
-			.login-box h3 {
-				text-align: center;
-				color: #333;
-			}
-			.form-control {
-				border-radius: 30px;
-				padding: 10px 20px;
-			}
-			.btn-primary {
-				width: 100%;
-				border-radius: 30px;
-				padding: 10px;
-			}
-			.form-footer {
-				margin-top: 20px;
-				text-align: center;
-			}
-			.form-footer a {
-				color: #1e90ff;
-			}
-			.form-footer a:hover {
-				text-decoration: underline;
-			}
-		</style>
+		<!-- Google Fonts -->
+		<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+		<link rel="icon" type="image/x-icon" href="{{ asset('images/newLogo.jpg') }}">
+		<link rel="stylesheet" href="{{ asset('../css/login.css') }}">
+
 	</head>
 	<body>
-		<div class="login-box">
-			<form method="post">
-				<div class="text-center mb-4">
-					<h4>Connectez-vous</h4>
-					<h3>à votre compte</h3>
+		<!-- Floating particles -->
+		<div class="particle"></div>
+		<div class="particle"></div>
+		<div class="particle"></div>
+		<div class="particle"></div>
+		<div class="particle"></div>
+		<div class="particle"></div>
+		<div class="particle"></div>
+		<div class="particle"></div>
+		<div class="particle"></div>
+		<div class="particle"></div>
+		<div class="particle"></div>
+		<div class="particle"></div>
+
+		<div
+			class="main-container">
+			<!-- Section logo à gauche -->
+			<div
+				class="logo-section">
+				<!-- Votre logo -->
+				<div>
+					<img src="{{ asset('images/logo.png') }}" alt="Aksam Assurance Logo" style="max-width: 450px; width: 200%;">
 				</div>
 
-				{% if error %}
-					<div class="alert alert-danger text-center">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
-				{% endif %}
+				{# <div class="logo-text">AKSAM</div>
+								<div class="logo-subtitle">Assurances & Services</div> #}
+			</div>
 
-				{% if app.user %}
-					<div class="alert alert-info text-center">
-						Vous êtes connecté en tant que
-						{{ app.user.userIdentifier }},
-						<a href="{{ path('app_logout') }}">Se déconnecter</a>
+			<!-- Section formulaire à droite -->
+			<div class="login-section">
+				<form method="post" id="loginForm">
+					<div class="logo-container">
+						<div class="logo">AKSAM ASSURANCE</div>
+						<div class="subtitle">Votre partenaire de confiance</div>
+						<div class="welcome-text">Bienvenue</div>
+						<p class="text-muted mb-0">Connectez-vous à votre espace personnel</p>
 					</div>
-				{% endif %}
 
-				<div class="mb-3">
-					<label for="inputUsername" class="form-label">Nom d'utilisateur</label>
-					<div class="input-group">
-						<span class="input-group-text">
-							<i class="fa fa-user"></i>
-						</span>
-						<input type="text" value="{{ last_username }}" name="username" id="inputUsername" class="form-control" autocomplete="username" required autofocus>
+					{% if error %}
+						<div class="alert alert-danger text-center">
+							<i class="fas fa-exclamation-triangle me-2"></i>
+							{{ error.messageKey|trans(error.messageData, 'security') }}
+						</div>
+					{% endif %}
+
+					{% if app.user %}
+						<div class="alert alert-info text-center">
+							<i class="fas fa-info-circle me-2"></i>
+							Vous êtes connecté en tant que
+							{{ app.user.userIdentifier }},
+							<a href="{{ path('app_logout') }}" class="text-white text-decoration-underline">Se déconnecter</a>
+						</div>
+					{% endif %}
+
+					<div class="form-group">
+						<label for="inputUsername" class="form-label">
+							<i class="fas fa-user me-2"></i>Nom d'utilisateur
+						</label>
+						<div class="input-group">
+							<span class="input-group-text">
+								<i class="fa fa-user"></i>
+							</span>
+							<input type="text" value="{{ last_username }}" name="username" id="inputUsername" class="form-control" autocomplete="username" placeholder="Entrez votre nom d'utilisateur" required autofocus>
+						</div>
 					</div>
-				</div>
 
-				<div class="mb-3">
-					<label for="inputPassword" class="form-label">Mot de passe</label>
-					<div class="input-group">
-						<span class="input-group-text">
-							<i class="fa fa-lock"></i>
-						</span>
-						<input type="password" name="password" id="inputPassword" class="form-control" autocomplete="current-password" required>
+					<div class="form-group">
+						<label for="inputPassword" class="form-label">
+							<i class="fas fa-lock me-2"></i>Mot de passe
+						</label>
+						<div class="input-group">
+							<span class="input-group-text">
+								<i class="fa fa-lock"></i>
+							</span>
+							<input type="password" name="password" id="inputPassword" class="form-control" autocomplete="current-password" placeholder="Entrez votre mot de passe" required>
+						</div>
+						<input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
 					</div>
-					<input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
-				</div>
 
-				<div class="d-grid">
-					<button type="submit" class="btn btn-primary">Connexion
-						<i class="fas fa-arrow-right"></i>
-					</button>
-				</div>
-
-				{% if is_granted('ROLE_ADMIN') %}
-					<div class="form-footer">
-						<p>Pas encore de compte ?
-							<a href="{{ path('register') }}">S'inscrire</a>
-						</p>
+					<div class="form-group">
+						<button type="submit" class="btn btn-login">
+							<span class="btn-text">
+								<i class="fas fa-sign-in-alt me-2"></i>
+								Se connecter
+							</span>
+						</button>
 					</div>
-				{% endif %}
-			</form>
+
+					{% if is_granted('ROLE_ADMIN') %}
+						<div class="form-footer">
+							<p>Pas encore de compte ?
+								<a href="{{ path('app_register') }}">Créer un compte</a>
+							</p>
+						</div>
+					{% endif %}
+				</form>
+			</div>
 		</div>
 
 		<!-- Bootstrap JS -->
 		<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js"></script>
+
+		<script>
+			// Add loading state to button on form submit
+document.getElementById('loginForm').addEventListener('submit', function () {
+const button = document.querySelector('.btn-login');
+const buttonText = button.querySelector('.btn-text');
+
+button.classList.add('loading');
+buttonText.style.opacity = '0';
+
+// Reset after 3 seconds if still on page (for demo purposes)
+setTimeout(() => {
+button.classList.remove('loading');
+buttonText.style.opacity = '1';
+}, 3000);
+});
+
+// Add focus animations to inputs
+document.querySelectorAll('.form-control').forEach(input => {
+input.addEventListener('focus', function () {
+this.parentElement.style.transform = 'translateY(-2px)';
+});
+
+input.addEventListener('blur', function () {
+this.parentElement.style.transform = 'translateY(0)';
+});
+});
+
+// Smooth scroll reveal animation
+const observerOptions = {
+threshold: 0.1,
+rootMargin: '0px 0px -50px 0px'
+};
+
+const observer = new IntersectionObserver((entries) => {
+entries.forEach(entry => {
+if (entry.isIntersecting) {
+entry.target.style.animationPlayState = 'running';
+}
+});
+}, observerOptions);
+
+// Observe animated elements
+document.querySelectorAll('[style*="animation"]').forEach(el => {
+el.style.animationPlayState = 'paused';
+observer.observe(el);
+});
+		</script>
 	</body>
 </html>
