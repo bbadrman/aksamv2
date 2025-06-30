@@ -47,14 +47,15 @@ class SearchClientType extends AbstractType
         $builder
             ->add('f', Type\TextType::class, [
                 'label' => 'Nom',
-                'required' => false,
+                'required' => true,
+
                 'attr' => [
                     'placeholder' => 'Merci de saisir le nom du client'
                 ]
             ])
             ->add('l', Type\TextType::class, [
                 'label' => 'Prénom',
-                'required' => false,
+                'required' => true,
                 'attr' => [
                     'placeholder' => 'Merci de saisir le prénom du client'
                 ]
