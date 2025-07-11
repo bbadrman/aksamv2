@@ -31,11 +31,11 @@ class ClientRepository extends ServiceEntityRepository
     public function findClientAll(SearchClient $search): PaginationInterface
     {
         $query = $this->createQueryBuilder('c')
-            ->addSelect('c, h, b ')
+            ->addSelect('c, h, b')
             ->where('c.status = 1 ')
             ->leftJoin('c.team', 'b')
             ->leftJoin('c.cmrcl', 'h')
-            // ->leftJoin('c.contrats', 'r')
+            ->leftJoin('c.contrats', 'r')
             // ->andWhere('r.status = 1')
             ->orderBy('c.id', 'DESC');
 

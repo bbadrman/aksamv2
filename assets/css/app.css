@@ -110,7 +110,7 @@ a:focus {
 }
 
 ::-moz-selection {
-    background: #4ECDC4;
+    background: var(--primary-color);
     color: #fff;
 }
 
@@ -121,7 +121,7 @@ a:focus {
 
 /* Bootstrap Modifications */
 .modal-header {
-    background: #4ECDC4;
+    background: var(--primary-color);
 }
 
 .modal-title {
@@ -150,7 +150,7 @@ a:focus {
 /*Theme Backgrounds*/
 
 .bg-theme {
-    background-color: #4ECDC4;
+    background-color: var(--primary-color);
 }
 
 .bg-theme02 {
@@ -169,7 +169,7 @@ a:focus {
 
 .btn-theme {
     color: #fff;
-    background-color: #4ECDC4;
+    background-color: var(--primary-color);
     border-color: #48bcb4;
 }
 
@@ -302,11 +302,11 @@ div.search div.form-group select {
 /*Exclusive Theme Colors Configuration*/
 
 .label-theme {
-    background-color: #4ECDC4;
+    background-color: var(--primary-color);
 }
 
 .bg-theme {
-    background-color: #4ECDC4;
+    background-color: var(--primary-color);
 }
 
 ul.top-menu>li>.logout {
@@ -317,7 +317,7 @@ ul.top-menu>li>.logout {
     border: 1px solid #64c3c2 !important;
     padding: 5px 15px;
     margin-right: 15px;
-    background: #4ECDC4;
+    background: var(--primary-color);
     margin-top: 15px;
 }
 
@@ -471,7 +471,7 @@ ul.sidebar-menu li a {
 ul.sidebar-menu li a.active,
 ul.sidebar-menu li a:hover,
 ul.sidebar-menu li a:focus {
-    background: #4ECDC4;
+    background: var(--primary-color);
     color: #00466b;
     display: block;
 
@@ -560,7 +560,7 @@ a.logo:focus {
 }
 
 a.logo span {
-    color: #4ECDC4;
+    color: var(--primary-color);
 }
 
 
@@ -645,7 +645,7 @@ ul.top-menu>li>a:focus {
 }
 
 .dropdown-menu.extended li p.green {
-    background-color: #4ECDC4;
+    background-color: var(--primary-color);
     color: #fff;
 }
 
@@ -854,9 +854,9 @@ ul.top-menu>li>a:focus {
 }
 
 .notify-arrow-green {
-    border-color: transparent transparent #4ECDC4;
-    border-bottom-color: #4ECDC4 !important;
-    border-top-color: #4ECDC4 !important;
+    border-color: transparent transparent var(--primary-color);
+    border-bottom-color: var(--primary-color) !important;
+    border-top-color: var(--primary-color) !important;
 }
 
 
@@ -940,7 +940,7 @@ ul.top-menu>li>a:focus {
 }
 
 .ds a {
-    color: #4ECDC4;
+    color: var(--primary-color);
 }
 
 /* MAIN CHART CONFIGURATION */
@@ -989,8 +989,8 @@ ul.top-menu>li>a:focus {
 .custom-bar-chart .bar .value {
     position: absolute;
     bottom: 0;
-    background: #4ECDC4;
-    color: #4ECDC4;
+    background: var(--primary-color);
+    color: var(--primary-color);
     width: 100%;
     -webkit-border-radius: 5px 5px 0 0;
     -moz-border-radius: 5px 5px 0 0;
@@ -1129,6 +1129,11 @@ PANELS CONFIGURATIONS
 
 /*Green Panel*/
 .green-panel {
+    background: var(--gradient-card) !important;
+    border: 1px solid var(--border-color) !important;
+    box-shadow: var(--shadow-sm) !important;
+    border-radius: 12px !important;
+
     text-align: center;
     background: #BDD1EE;
     border-radius: 15px;
@@ -1143,7 +1148,8 @@ PANELS CONFIGURATIONS
 }
 
 .green-panel .green-header {
-
+    background: var(--primary-color) !important;
+    border-radius: 12px 12px 0 0 !important;
     padding: 2px;
     margin-bottom: 15px;
     border-top-right-radius: 15px;
@@ -1712,7 +1718,7 @@ PANELS CONFIGURATIONS
 }
 
 .profile-01 {
-    background: #4ECDC4;
+    background: var(--primary-color);
     height: 50px;
 }
 
@@ -1791,7 +1797,7 @@ PANELS CONFIGURATIONS
 
 .panel.terques-chart .chart-tittle .value a:hover,
 .panel.terques-chart .chart-tittle .value a.active {
-    color: #4ECDC4;
+    color: var(--primary-color);
     font-size: 12px;
 }
 
@@ -1872,7 +1878,7 @@ PANELS CONFIGURATIONS
     display: block;
     position: relative;
     overflow: hidden;
-    background-color: #4ECDC4;
+    background-color: var(--primary-color);
     -webkit-transition: background-color 0.4s;
     -moz-transition: background-color 0.4s;
     -o-transition: background-color 0.4s;
@@ -1893,7 +1899,7 @@ PANELS CONFIGURATIONS
 }
 
 .project:hover .photo-wrapper {
-    background-color: #4ECDC4;
+    background-color: var(--primary-color);
     /* background-image: url(../assets/images/zoom.png); */
     background-repeat: no-repeat;
     background-position: center;
@@ -2187,7 +2193,7 @@ ul li {
 .dataTables_paginate.paging_bootstrap.pagination li:hover a,
 .dataTables_paginate.paging_bootstrap.pagination li.active a {
     color: #fff;
-    background: #4ECDC4;
+    background: var(--primary-color);
     border-radius: 3px;
     -webkit-border-radius: 3px;
 }
@@ -2653,7 +2659,7 @@ ul.my-friends li .friends-pic {
     height: 3px;
     margin: 10px auto;
     width: 80px;
-    background-color: #4ECDC4;
+    background-color: var(--primary-color);
 }
 
 .icn-main-container {
@@ -2671,7 +2677,7 @@ ul.my-friends li .friends-pic {
     font-size: 2.4em;
     line-height: 100px;
     color: #fff;
-    background-color: #4ECDC4;
+    background-color: var(--primary-color);
     -webkit-transition: all 0.6s ease-in-out;
     transition: all 0.6s ease-in-out;
 }
@@ -2761,7 +2767,7 @@ ul.my-friends li .friends-pic {
 
 .dm-icon:active,
 .dm-icon:hover {
-    background: #4ECDC4
+    background: var(--primary-color)
 }
 
 
@@ -2792,7 +2798,7 @@ ul.my-friends li .friends-pic {
 .mail-nav>li>a:hover,
 .mail-nav>li>a:focus {
     background: #fafafa;
-    color: #4ECDC4;
+    color: var(--primary-color);
     border-right: 3px solid #1fb5ad;
 }
 
@@ -2800,8 +2806,8 @@ ul.my-friends li .friends-pic {
 .mail-nav>li.active>a:hover,
 .mail-nav>li.active>a:focus {
     background: #fafafa;
-    color: #4ECDC4;
-    border-right: 3px solid #4ECDC4;
+    color: var(--primary-color);
+    border-right: 3px solid var(--primary-color);
 }
 
 .mail-nav>li+li {
@@ -2863,7 +2869,7 @@ a.mail-dropdown {
 }
 
 .btn-compose {
-    background: #4ECDC4;
+    background: var(--primary-color);
     padding: 12px 0;
     text-align: center;
     width: 100%;
@@ -3253,11 +3259,11 @@ ul.inbox-pagination li {
 
 .view-mail a,
 .attachment-mail a:hover {
-    color: #4ECDC4;
+    color: var(--primary-color);
 }
 
 .attachment-mail a {
-    color: #4ECDC4;
+    color: var(--primary-color);
 }
 
 .attachment-mail ul li {
@@ -3335,7 +3341,7 @@ ul.inbox-pagination li {
 }
 
 .chat-room-head {
-    background: #4ECDC4;
+    background: var(--primary-color);
     color: #FFFFFF;
     min-height: 70px;
     padding: 15px;
@@ -3493,7 +3499,7 @@ ul.chat-user li a:hover {
 }
 
 .room-box h5 a {
-    color: #4ECDC4;
+    color: var(--primary-color);
 }
 
 .chat-tools {
@@ -3541,7 +3547,7 @@ ul.chat-available-user li a {
 }
 
 ul.chat-available-user li a:hover {
-    color: #4ECDC4;
+    color: var(--primary-color);
 }
 
 
@@ -3927,7 +3933,7 @@ ul.chat-available-user li a:hover {
 
 /*footer*/
 .site-footer {
-    background: #4ECDC4;
+    background: var(--primary-color);
     color: #fff;
     padding: 15px 0;
     position: fixed;
@@ -3988,7 +3994,7 @@ ul.chat-available-user li a:hover {
 }
 
 .contact-form .form-send button {
-    background: #4ECDC4;
+    background: var(--primary-color);
     border: 0;
     padding: 10px 30px;
     color: #fff;
@@ -4576,7 +4582,8 @@ header.header {
 div#sidebar,
 nav#sidebar,
 aside#sidebar {
-    background: linear-gradient(135deg, #89f7fe 0%, #66a6ff 100%) !important;
+    background: linear-gradient(180deg, var(--surface-color) 0%, var(--background-color) 100%) !important;
+    border-right: 1px solid var(--border-color) !important;
     background-color: #89f7fe !important;
     background-image: linear-gradient(135deg, #89f7fe 0%, #66a6ff 100%) !important;
     position: fixed !important;
@@ -5504,11 +5511,13 @@ ul.sidebar-menu li ul.sub li a:hover {
 
 /* Style des search form */
 .search-form form {
-    background: linear-gradient(135deg, #f8f9ff 0%, #f0f2ff 100%) !important;
-    border-radius: 20px !important;
+
+    background: var(--gradient-surface) !important;
+    border: 1px solid var(--border-color) !important;
+    border-radius: 16px !important;
+    box-shadow: var(--shadow-md) !important;
+
     padding: 2rem !important;
-    border: 1px solid rgba(169, 208, 222, 0.3) !important;
-    box-shadow: inset 0 2px 10px rgba(0, 0, 0, 0.05) !important;
     position: relative !important;
     overflow: hidden !important;
 }
