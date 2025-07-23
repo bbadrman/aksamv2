@@ -25,11 +25,11 @@
 			{% if is_granted('ROLE_ADMIN') or is_granted('ROLE_AFFECTALL') or is_granted('ROLE_CHEF') %}
 				<a href="{{ path('app_prospect_index') }}" class="notification-item">
 					<i class="fa-solid fa-share-from-square notification-icon"></i>
-					<span class="sidebar-text">AFFECTATIONS</span>
+					<span class="sidebar-text" id="notif-container">AFFECTATIONS</span>
 					{% if is_granted('ROLE_ADMIN') or is_granted('ROLE_AFFECTALL') %}
-						<span class="notification-badge bg-warning">{{ "%02d"|format(stats.prospectspasaffect ?? 0) }}</span>
+						<span class="notification-badge bg-warning" id="notif">{{ "%02d"|format(stats.prospectspasaffect ?? 0) }}</span>
 					{% elseif is_granted('ROLE_CHEF') %}
-						<span class="notification-badge bg-warning">{{ "%02d"|format(stats.prospectsChefNvAll ?? 0) }}</span>
+						<span class="notification-badge bg-warning" id="notif">{{ "%02d"|format(stats.prospectsChefNvAll ?? 0) }}</span>
 					{% endif %}
 				</a>
 			{% endif %}
@@ -37,8 +37,8 @@
 			{% if is_granted('ROLE_COMRC') or is_granted('ROLE_CHEF') %}
 				<a href="{{ path('newprospectchef_index') }}" class="notification-item">
 					<i class="fa fa-undo notification-icon"></i>
-					<span class="sidebar-text">NOUVEAUX</span>
-					<span class="notification-badge bg-success">{{ stats.prospectsCmrclNv ?? 0 }}</span>
+					<span class="sidebar-text" id="notif-container">NOUVEAUX</span>
+					<span class="notification-badge bg-success" id="notif">{{ stats.prospectsCmrclNv ?? 0 }}</span>
 				</a>
 			{% endif %}
 

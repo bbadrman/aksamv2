@@ -40,7 +40,7 @@
 			<!-- AFFECTATIONS -->
 			{% if is_granted('ROLE_ADMIN') or is_granted('ROLE_AFFECTALL') or is_granted('ROLE_CHEF') %}
 				<a href="{{ path('app_prospect_index') }}" class="dashboard-card card-affectations">
-					<div class="card-header">
+					<div class="card-header" id="notif-container">
 						<h3>
 							AFFECTATIONS
 							<i class="fas fa-question-circle tooltip-icon" title="Ce tableau contient les prospects pour les affectations"></i>
@@ -51,9 +51,9 @@
 							<i class="fas fa-share-from-square"></i>
 						</div>
 						{% if is_granted('ROLE_ADMIN') or is_granted('ROLE_AFFECTALL') %}
-							<h2 class="card-number">{{ "%02d"|format(stats.prospectspasaffect) }}</h2>
+							<h2 class="card-number" id="notif">{{ "%02d"|format(stats.prospectspasaffect) }}</h2>
 						{% elseif is_granted('ROLE_CHEF') %}
-							<h2 class="card-number">{{ "%02d"|format(stats.prospectsChefNvAll) }}</h2>
+							<h2 class="card-number" id="notif">{{ "%02d"|format(stats.prospectsChefNvAll) }}</h2>
 						{% endif %}
 					</div>
 				</a>
@@ -62,7 +62,7 @@
 			<!-- NOUVEAUX -->
 			{% if is_granted('ROLE_COMRC') or is_granted('ROLE_CHEF') %}
 				<a href="{{ path('newprospectchef_index') }}" class="dashboard-card card-nouveaux">
-					<div class="card-header">
+					<div class="card-header" id="notif-container">
 						<h3>
 							NOUVEAUX
 							<i class="fas fa-question-circle tooltip-icon" title="Ce tableau contient les prospects affectés à moi"></i>
@@ -72,7 +72,7 @@
 						<div class="card-icon pulse-animation">
 							<i class="fas fa-undo"></i>
 						</div>
-						<h2 class="card-number">{{ "%02d"|format(stats.prospectsCmrclNv) }}</h2>
+						<h2 class="card-number" id="notif">{{ "%02d"|format(stats.prospectsCmrclNv) }}</h2>
 					</div>
 				</a>
 			{% endif %}
