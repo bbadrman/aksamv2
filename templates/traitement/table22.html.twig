@@ -1,0 +1,325 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}
+	Traitement des Prospects!
+
+{% endblock %}
+
+{% block body %}
+
+
+	<div class="jumbotron mt-2">
+		<h1 class="display-3 text-center">
+			<i class="fa-solid fa-diamond "></i>
+			PROSPECTS
+			<i class="fa fa-diamond "></i>
+		</h1>
+		<hr class="my-4">
+
+		<div
+			class="row">
+			<!-- AFFECTATIONS  -->
+			{% if is_granted('ROLE_ADMIN') or is_granted('ROLE_AFFECTALL') or is_granted('ROLE_CHEF')   %}
+				<div class="col-md-3 col-sm-3 mb ">
+					<div class="green-panel pn" id="notif-container">
+						<div class="green-header">
+
+							<h2>AFFECTATIONS  &emsp;
+
+								<i class="fa-regular fa-circle-question" title="Ce tableau contient les prospects pour les affectations"></i>
+							</h2>
+
+						</div>
+						<a href="{{path('app_prospect_index')}}">
+							<i class="fa-solid fa-share-from-square fa-4x" aria-hidden=" true"></i>
+							{% if is_granted('ROLE_ADMIN') or is_granted('ROLE_AFFECTALL')   %}
+								<h1 id="notif">{{ " %02d"|format(stats.prospectspasaffect ) }}</h1>
+							{% elseif is_granted('ROLE_CHEF')   %}
+								<h1 id="notif">{{ " %02d"|format(stats.prospectsChefNvAll ) }}</h1>
+
+							{% endif %}
+						</a>
+					</div>
+				</div>
+			{% endif %}
+			<!-- END AFFECTATIONS -->
+
+			<!-- PANIE NOUVEAUX -->
+			{% if  is_granted('ROLE_COMRC') or is_granted('ROLE_CHEF')    %}
+
+				<div class="col-md-3 col-sm-3 mb">
+					<div class="green-panel pn">
+						<div class="green-header">
+							<h2>NOUVEAUX  &emsp;
+								<i class="fa-regular fa-circle-question" aria-hidden="true" title="Ce tableau contient les prospects affectés a moi."></i>
+
+							</h2>
+						</div>
+
+						<a href="{{path('newprospectchef_index')}}">
+							<i class="fa fa-undo fa-4x" aria-hidden="true"></i>
+
+							<h1 id="notif">{{ " %02d"|format(stats.prospectsCmrclNv ) }}</h1>
+						</a>
+					</div>
+				</div>
+
+			{% endif %}
+			<!--END PANIE -->
+
+			<!-- PROS NON TRAITES -->
+			{% if is_granted('ROLE_PROSPECTS_NON_TRAITES') == true   %}
+				<div class="col-md-3 col-sm-3 mb">
+					<div class="green-panel pn">
+						<div class="green-header">
+							<h2>PROSPECTS NON TRAITÉS  &emsp;
+								<i class="fa-regular fa-circle-question" aria-hidden="true" title="Ce tableau contient les prospects pour lesquelles ne font aucune action de relance."></i>
+							</h2>
+						</div>
+						<a href="{{path('notrait_index')}}">
+							<i class="fa-solid fa-calendar-times fa-4x"></i>
+
+							{% if is_granted('ROLE_ADMIN') or is_granted('ROLE_AFFECTALL') == true   %}
+								<h1>{{ " %02d"|format(stats.prospectsNoTraite ) }}</h1>
+							{% elseif is_granted('ROLE_CHEF') == true %}
+								<h1>{{ " %02d"|format(stats.prospectsNoTrChef ) }}</h1>
+							{% elseif is_granted('ROLE_USER') == true %}
+								<h1>{{ " %02d"|format(stats.prospectsNoTrCmrcl ) }}</h1>
+							{% endif %}
+						</a>
+					</div>
+				</div>
+			{% endif %}
+			<!--END PROS NON TRAITES -->
+
+			<!-- RECHERCHE -->
+			{% if is_granted('ROLE_CHERCHER_PROSPECT') == true   %}
+				<div class="col-md-3 col-sm-3 mb">
+					<div class="green-panel pn">
+						<div class="green-header">
+							<h2>RECHERCHE  &emsp;
+								<i class="fa-regular fa-circle-question" aria-hidden="true" title="Tous les prospects enregistrés."></i>
+							</h2>
+						</div>
+						<a href="{{path('prospect_search')}}">
+							<i class="fa fa-search fa-4x"></i>
+
+							{# <h1>{{ " %02d"|format(stats.prospects ) }}</h1> #}
+						</a>
+					</div>
+				</div>
+			{% endif %}
+			<!-- END RECHERCHE -->
+
+			<!-- RELANCES DU JOUR -->
+			{% if is_granted('ROLE_RELANCES_DU_JOUR')  == true   %}
+				<div class="col-md-3 col-sm-3 mb">
+					<div class="green-panel pn">
+						<div class="green-header">
+							<h2>RELANCES DU JOUR &emsp;
+								<i class="fa-regular fa-circle-question" aria-hidden="true" title="Les prospects programmés pour aujourd'hui."></i>
+							</h2>
+						</div>
+						<a href="{{path('relancejour_index')}}">
+							<i class="fa-solid fa-calendar-day fa-4x"></i>
+
+							{% if is_granted('ROLE_ADMIN') or is_granted('ROLE_AFFECTALL')  == true   %}
+								<h1>{{ " %02d"|format(stats.prospectsDay ) }}</h1>
+							{% elseif is_granted('ROLE_CHEF') == true %}
+								<h1>{{ " %02d"|format(stats.prospectsDayChef ) }}</h1>
+							{% elseif is_granted('ROLE_USER') == true %}
+								<h1>{{ " %02d"|format(stats.prospectsDayCmrcl ) }}</h1>
+							{% endif %}
+						</a>
+					</div>
+				</div>
+			{% endif %}
+			<!-- END RELANCES DU JOUR -->
+
+
+			<!-- RELANCES A VENIR -->
+			{% if is_granted('ROLE_RELANCES_AVENIR')  == true     %}
+				<div class="col-md-3 col-sm-3 mb">
+					<div class="green-panel pn">
+						<div class="green-header">
+							<h2 alt="info">RELANCES A VENIR &emsp;
+								<i class="fa-regular fa-circle-question" aria-hidden="true" title="Les prospects qui sont programmés pour les jours à venir."></i>
+							</h2>
+						</div>
+
+						<a href="{{path('avenir_index')}}">
+
+							<i class="fa fa-calendar fa-5x" aria-hidden="true"></i>
+							{% if is_granted('ROLE_ADMIN') or is_granted('ROLE_AFFECTALL') == true   %}
+								<h1>{{ " %02d"|format(stats.prospectsAvenir ) }}</h1>
+							{% elseif is_granted('ROLE_CHEF') == true %}
+								<h1>{{ " %02d"|format(stats.prosAvenirChef ) }}</h1>
+							{% elseif is_granted('ROLE_USER') == true %}
+								<h1>{{ " %02d"|format(stats.prosAvenirCmrcl ) }}</h1>
+							{% endif %}
+						</a>
+
+					</div>
+				</div>
+			{% endif %}
+			<!--END  RELANCES A VENIR -->
+
+
+			<!-- RELANCES NON TRAITÉES -->
+			{% if is_granted('ROLE_RELANCES_NON_TRAITEES')  == true   %}
+				<div
+					class="col-md-3 col-sm-3 mb">
+					<!-- REVENUE PANEL -->
+					<div class="green-panel pn">
+						<div class="green-header">
+							<h2>RELANCES NON TRAITÉES   &emsp;
+								<i class="fa fa-question-circle-o" style="color: blue;" aria-hidden="true" title="Les prospects qui ont été contactés pour un rendez-vous et qui ne prennent aucune action."></i>
+							</h2>
+						</div>
+						<a href="{{path('relancenotraite_index')}}">
+							<i class="fa fa-calendar fa-5x" aria-hidden="true"></i>
+							{% if is_granted('ROLE_ADMIN') or is_granted('ROLE_AFFECTALL')   == true   %}
+								<h1>{{ " %02d"|format(stats.relanceNoTraite ) }}</h1>
+							{% elseif is_granted('ROLE_CHEF') == true %}
+								<h1>{{ " %02d"|format(stats.relancesNoTrChef ) }}</h1>
+							{% elseif is_granted('ROLE_USER') == true %}
+								<h1>{{ " %02d"|format(stats.relancesNoTrCmrcl ) }}</h1>
+							{% endif %}
+						</a>
+					</div>
+				</div>
+			{% endif %}
+			<!-- END RELANCES NON TRAITÉES -->
+
+			<!-- AJOUTER PROSPECT -->
+			{% if   is_granted('ROLE_AJOUTER_PROSPECT') == true   %}
+				<div class="col-md-3 col-sm-3 mb">
+					<div class="green-panel pn">
+						<div class="green-header">
+							<h2>AJOUTER PROSPECT</h2>
+						</div>
+						<a href="{{path('app_prospect_new')}}">
+							<i class="fa-regular fa-calendar-xmark fa-4x"></i>
+						</a>
+					</div>
+				</div>
+			{% endif %}
+			<!--END  AJOUTER PROSPECT -->
+
+
+			<!-- INJOIGNABLES -->
+			{% if is_granted('ROLE_INJOIGNABLES')  == true   %}
+				<div class="col-md-3 col-sm-3 mb">
+					<div class="green-panel pn">
+						<div class="green-header">
+							<h2>TOUJOUR INJOIGNABLES</h2>
+						</div>
+
+						<a href="{{path('app_unjoinable')}}">
+
+							<i class="fa-solid fa-phone-slash fa-4x"></i>
+							{% if is_granted('ROLE_ADMIN')  == true   %}
+								<h1>{{ " %02d"|format(stats.unjoiniable ) }}</h1>
+							{% elseif is_granted('ROLE_CHEF') == true %}
+								<h1>{{ " %02d"|format(stats.unjoiniableChef ) }}</h1>
+							{% elseif is_granted('ROLE_USER') == true %}
+								<h1>{{ " %02d"|format(stats.unjoiniableCmrl ) }}</h1>
+							{% endif %}
+						</a>
+					</div>
+
+				</div>
+			{% endif %}
+			<!--END INJOIGNABLES -->
+
+			<!-- PAYMENTS -->
+			{% if is_granted('ROLE_PAYMENTS')  == true   %}
+				<div class="col-md-3 col-sm-3 mb">
+					<div class="green-panel pn">
+						<div class="green-header">
+							<h2>TRANSACTIONS</h2>
+						</div>
+						<a href="{{path('app_transaction_index')}}">
+							<i class="fa fa-credit-card-alt fa-4x " aria-hidden="true"></i>
+							<h1></h1>
+
+						</a>
+					</div>
+				</div>
+			{% endif %}
+			<!--END PAYMENTS -->
+
+			<!--PRE- PRE-CONTRAT -->
+			{% if is_granted('ROLE_PRECONTRAT')  == true   %}
+				<div class="col-md-3 col-sm-3 mb">
+					<div class="green-panel pn">
+						<div class="green-header">
+							<h2>PRE-CONTRAT</h2>
+						</div>
+						<a href="{{path('app_contrat_valid_index')}}">
+							<i class="fa fa-check-square fa-4x" aria-hidden="true"></i>
+
+							{% if is_granted('ROLE_ADMIN') or is_granted('ROLE_CHEF') or is_granted('ROLE_VALID')  == true   %}
+								<h1>{{ " %02d"|format(stats.preContratAdmin ) }}</h1>
+
+							{% elseif is_granted('ROLE_USER') == true %}
+								<h1>{{ " %02d"|format(stats.preContratComrcl ) }}</h1>
+							{% endif %}
+
+						</a>
+					</div>
+				</div>
+			{% endif %}
+			<!--END CONTRAT -->
+
+			<!-- PRE-CONTRAT -->
+			{% if is_granted('ROLE_PRECLIENT')  == true   %}
+				<div class="col-md-3 col-sm-3 mb">
+					<div class="green-panel pn">
+						<div class="green-header">
+							<h2>PRE-CLIENT</h2>
+						</div>
+
+
+						<a href="{{path('client_valide_index')}}">
+							<i class="fa fa-check-square fa-4x" aria-hidden="true"></i>
+
+							{% if is_granted('ROLE_ADMIN')  == true   %}
+								<h1>{{ " %02d"|format(stats.preclientAdmin ) }}</h1>
+							{% elseif is_granted('ROLE_VALID') == true %}
+								<h1>{{ " %02d"|format(stats.preclientValide ) }}</h1>
+							{% elseif is_granted('ROLE_CHEF') == true %}
+								<h1>{{ " %02d"|format(stats.preclientChef ) }}</h1>
+							{% elseif is_granted('ROLE_USER') == true %}
+								<h1>{{ " %02d"|format(stats.preclientComrcl ) }}</h1>
+							{% endif %}
+
+						</a>
+					</div>
+				</div>
+			{% endif %}
+			<!--END CONTRAT -->
+
+			<!-- SAV -->
+			{% if is_granted('ROLE_SAV')  == true   %}
+				<div class="col-md-3 col-sm-3 mb">
+					<div class="green-panel pn">
+						<div class="green-header">
+							<h2>SAV</h2>
+						</div>
+
+						<a href="{{path('app_sav_index')}}">
+
+							<i class="fa fa-spinner fa-4x" aria-hidden="true"></i>
+
+
+						</a>
+					</div>
+				</div>
+			{% endif %}
+			<!--END SAV -->
+
+		</div>
+
+	</div>
+</div>{% endblock %}

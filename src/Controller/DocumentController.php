@@ -45,13 +45,13 @@ final class DocumentController extends AbstractController
         $document = [];
         if ($form->isSubmitted() && $form->isValid() && !$form->isEmpty()) {
 
-            if (in_array('ROLE_DEV',  $roles, true) || in_array('ROLE_ADMIN',  $roles, true)) {
+            if ($this->isGranted('ROLE_ADMIN')) {
                 // admi peut chercher toutes les prospects
                 $prospect = $this->documentRepository->findSearch($data);
-            } else if (in_array('ROLE_CHEF',  $roles, true)) {
+            } else if ($this->isGranted('ROLE_CHEF')) {
                 // chef peut chercher toutes les prospects atacher a leur equipe
                 $prospect = $this->documentRepository->findAllChefSearch($data, $user);
-            } elseif (in_array('ROLE_USER',  $roles, true)) {
+            } elseif ($this->isGranted('ROLE_USER')) {
                 // cmrcl peut chercher seulement les prospects atacher a lui
                 $prospect = $this->documentRepository->findByUserAffecterCmrcl($data, $user);
             }

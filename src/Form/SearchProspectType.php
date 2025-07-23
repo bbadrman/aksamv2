@@ -12,6 +12,7 @@ use Symfony\Component\Security\Core\Security;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\Extension\Core\Type as Type;
+use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 use Symfony\Component\Validator\Constraints\GreaterThanOrEqual;
 use Symfony\Component\Validator\Constraints\LessThanOrEqual;
 use Symfony\Component\Validator\Constraints\NotBlank;
@@ -19,7 +20,12 @@ use Symfony\Component\Validator\Constraints\NotBlank;
 class SearchProspectType extends AbstractType
 {
 
-    public function __construct(private EntityManagerInterface $entityManager, private  UserRepository $userRepository, private Security $security) {}
+    public function __construct(
+        private EntityManagerInterface $entityManager,
+        private  UserRepository $userRepository,
+        private Security $security,
+        private AuthorizationCheckerInterface $authorizationChecker,
+    ) {}
     /**  
      * @return void
      */
@@ -39,7 +45,7 @@ class SearchProspectType extends AbstractType
         if ($user  instanceof User) {
             $teams = $user->getTeams(); // Assurez-vous que cette méthode existe et retourne l'équipe de l'utilisateur
 
-            if (in_array('ROLE_DEV', $user->getRoles(), true) || in_array('ROLE_ADMIN', $user->getRoles(), true)) {
+            if ($this->authorizationChecker->isGranted('ROLE_ADMIN')) {
                 $comrclsForTeam = $this->userRepository->findAll();
             } else if (in_array('ROLE_CHEF', $user->getRoles(), true) && $team) {
                 $comrclsForTeam = $team === null ? [] :  $this->userRepository->findComrclByteamOrderedByAscName($user);
@@ -111,31 +117,15 @@ class SearchProspectType extends AbstractType
             ->add('d',  Type\DateType::class, [
                 'widget' => 'single_text',
                 'label' => "du :",
-                'required' => true,
-                'constraints' => [
-                    new NotBlank([
-                        'message' => 'Veuillez sélectionner une date de début'
-                    ]),
-                    new LessThanOrEqual([
-                        'propertyPath' => 'parent.all[dd].data',
-                        'message' => 'La date de début doit être antérieure ou égale à la date de fin'
-                    ])
-                ]
+                'required' => false,
+
             ])
 
             ->add('dd', Type\DateType::class, [
                 'widget' => 'single_text',
                 'label' => "au :",
-                'required' => true,
-                'constraints' => [
-                    new NotBlank([
-                        'message' => 'Veuillez sélectionner une date de fin'
-                    ]),
-                    new GreaterThanOrEqual([
-                        'propertyPath' => 'parent.all[d].data',
-                        'message' => 'La date de fin doit être postérieure ou égale à la date de début'
-                    ])
-                ]
+                'required' => false,
+
             ])
 
 

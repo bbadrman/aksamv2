@@ -109,13 +109,13 @@
 									{% endif %}
 
 									{# 
-																		<td>
-																			{% set formes = {
-																											                                    1: 'SARL', 2: 'EI', 3: 'EURL', 4: 'SA', 5: 'SAS',
-																											                                    6: 'SASU', 7: 'SNC', 8: 'SCOP', 9: 'Association'
-																											                                } %}
-																			{{ formes[client.forceJuridique] ?? '' }}
-																		</td> #}
+																																				<td>
+																																					{% set formes = {
+																																													                                    1: 'SARL', 2: 'EI', 3: 'EURL', 4: 'SA', 5: 'SAS',
+																																													                                    6: 'SASU', 7: 'SNC', 8: 'SCOP', 9: 'Association'
+																																													                                } %}
+																																					{{ formes[client.forceJuridique] ?? '' }}
+																																				</td> #}
 									<td style="text-align:center;">
 										{{ client.contrats|filter(contrat => contrat.status == 1)|length }}
 									</td>
@@ -145,12 +145,12 @@
 											{% endif %}
 										{% endif %}
 									{% endif %}
-									{% if payments_count > 0 %}
-										<a href="{{ path('client_payments', {'id': client.id}) }}" class="btn btn-info btn-xs mr-1" title="Voir les {{ payments_count }} paiement(s)">
-											<i class="fa fa-credit-card"></i>
-											({{ payments_count }})
-										</a>
-									{% endif %}
+
+									<a href="{{ path('client_payments', {'id': client.id}) }}" class="btn btn-info btn-xs mr-1" title="Voir les {{ payments_count }} paiement(s)">
+										<i class="fa fa-credit-card"></i>
+										({{ payments_count }})
+									</a>
+
 
 									{% if is_granted('ROLE_ADMIN') %}
 										<a href="{{ path('client_valide_edit', {'id': client.id}) }}" class="btn btn-primary btn-xs">

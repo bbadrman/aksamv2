@@ -9,7 +9,7 @@
 	{{ include('client/_form.html.twig', {'button_label': 'Enregistrer'}) }}
 
 
-	{% if is_granted('ROLE_ADMIN') %}
+	{% if is_granted('ROLE_DEV') %}
 		{{ include('client/_delete_form.html.twig') }}
 	{% endif %}
 {% endblock %}

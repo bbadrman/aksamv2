@@ -1,6 +1,6 @@
 {# Formulaire de recherche moderne avec classes CSS optimisées #}
 <div class="search-form">
-	{{ form_start(search_form, {'attr': {'class': 'modern-search-form', 'novalidate': 'novalidate'}}) }}
+	{{ form_start(search_form, {'attr': {'class': 'modern-search-form' }}) }}
 
 	{# Première rangée - Champs de date et recherche principale #}
 	<div class="row align-items-center">
@@ -9,6 +9,7 @@
 				<div class="form-group">
 					{{ form_label(search_form.d, 'Du') }}
 					{{ form_widget(search_form.d, {'attr': {'class': 'form-control', 'placeholder': 'Date début'}}) }}
+
 				</div>
 			</div>
 
@@ -16,6 +17,7 @@
 				<div class="form-group">
 					{{ form_label(search_form.dd, 'Au') }}
 					{{ form_widget(search_form.dd, {'attr': {'class': 'form-control', 'placeholder': 'Date fin'}}) }}
+
 				</div>
 			</div>
 
@@ -54,7 +56,7 @@
 				</div>
 			</div>
 
-			<div class="col-md-2 text-center">
+			<div class="col-md-1 text-center">
 				<div class="button-group">
 					<button class="btn btn-primary search-btn" type="submit" title="Rechercher">
 						<i class="fa fa-search" aria-hidden="true"></i>
@@ -201,3 +203,8 @@
 		}
 	}
 </style>
+<script>
+	document.getElementById("reset-button").addEventListener("click", function () { // Réinitialisez les paramètres de l'URL à vide
+window.location.href = window.location.pathname;
+});
+</script>

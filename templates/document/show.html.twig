@@ -1,34 +1,36 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Document{% endblock %}
+{% block title %}Document
+{% endblock %}
 
 {% block body %}
-    <h1>Document</h1>
+	<h1>Document</h1>
 
-    <table class="table">
-        <tbody>
-            <tr>
-                <th>Id</th>
-                <td>{{ document.id }}</td>
-            </tr>
-            <tr>
-                <th>BulletinAdhesion</th>
-                <td>{{ document.bulletinAdhesion ? 'Yes' : 'No' }}</td>
-            </tr>
-            <tr>
-                <th>MondatSepa</th>
-                <td>{{ document.mondatSepa }}</td>
-            </tr>
-            <tr>
-                <th>ConditionGeneral</th>
-                <td>{{ document.conditionGeneral }}</td>
-            </tr>
-        </tbody>
-    </table>
+	<table class="table">
+		<tbody>
+			<tr>
+				<th>Id</th>
+				<td>{{ document.id }}</td>
+			</tr>
+			<tr>
+				<th>BulletinAdhesion</th>
+				<td>{{ document.bulletinAdhesion ? 'Yes' : 'No' }}</td>
+			</tr>
+			<tr>
+				<th>MondatSepa</th>
+				<td>{{ document.mondatSepa }}</td>
+			</tr>
+			<tr>
+				<th>ConditionGeneral</th>
+				<td>{{ document.conditionGeneral }}</td>
+			</tr>
+		</tbody>
+	</table>
 
-    <a href="{{ path('app_document_index') }}">back to list</a>
+	<a href="{{ path('app_document_index') }}">back to list</a>
+	{% if is_granted('ROLE_DEV') %}
+		<a href="{{ path('app_document_edit', {'id': document.id}) }}">edit</a>
 
-    <a href="{{ path('app_document_edit', {'id': document.id}) }}">edit</a>
-
-    {{ include('document/_delete_form.html.twig') }}
+		{{ include('document/_delete_form.html.twig') }}
+	{% endif %}
 {% endblock %}

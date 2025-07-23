@@ -119,10 +119,11 @@ class ProspectRepository extends ServiceEntityRepository
             ->addSelect('t, f')
             ->leftJoin('p.team', 't')
             ->leftJoin('p.comrcl', 'f')
-            ->andwhere('p.team IN (:teams) ')
+
+            ->where('p.team IN (:teams)')
             ->setParameter('teams', $team)
 
-            ->andWhere('p.comrcl IS  NULL')
+            ->andWhere('p.comrcl IS NULL')
             ->andWhere('p.relance IS NULL')
 
 
@@ -415,7 +416,8 @@ class ProspectRepository extends ServiceEntityRepository
             ->leftJoin('p.comrcl', 'f')
             ->leftJoin('p.team', 't')
             ->andWhere('p.AffectAt <= :yesterday')
-            ->setParameter('yesterday', $yesterday);
+            ->setParameter('yesterday', $yesterday)
+            ->orderBy('p.id', 'DESC');
 
         $query = $this->applySearchFilters($query, $search);
 
@@ -937,7 +939,8 @@ class ProspectRepository extends ServiceEntityRepository
         $query = $this->createQueryBuilder('p')
             ->select('COUNT(DISTINCT p.id)')
             ->andWhere("p.comrcl is NULL")
-            ->andWhere("p.team is NULL");
+            ->andWhere("p.team is NULL")
+            ->andWhere('p.relance IS NULL');
 
         return (int) $query->getQuery()->getSingleScalarResult();
     }
@@ -952,10 +955,10 @@ class ProspectRepository extends ServiceEntityRepository
             ->select('COUNT(DISTINCT p.id)')
             ->leftJoin('p.team', 't')
             ->leftJoin('p.comrcl', 'f')
-            ->Where('p.team IS NULL')
             ->orwhere('p.team IN (:teams) ')
             ->setParameter('teams', $team)
-            ->andWhere('p.comrcl IS NULL');
+            ->andWhere('p.comrcl IS NULL')
+            ->andWhere('p.relance IS NULL');
         //->andWhere('p.comrcl IS NULL OR p.comrcl = :user') // Filtrer les prospects no affectés et affect au chef aussi
         //->setParameter('user', $user);
 
@@ -968,18 +971,16 @@ class ProspectRepository extends ServiceEntityRepository
         if ($team->isEmpty()) {
             return 0;
         }
-        $query = $this->createQueryBuilder('p')
+        return (int) $this->createQueryBuilder('p')
             ->select('COUNT(DISTINCT p.id)')
             ->leftJoin('p.team', 't')
             ->leftJoin('p.comrcl', 'f')
-            ->where('p.team IN (:teams) ')
+            ->where('p.team IN (:teams)')
             ->setParameter('teams', $team)
             ->andWhere('p.comrcl IS NULL')
-            ->andWhere('p.team IS NOT NULL');
-        //->andWhere('p.comrcl IS NULL OR p.comrcl = :user') // Filtrer les prospects no affectés et affect au chef aussi
-        //->setParameter('user', $user);
-
-        return (int) $query->getQuery()->getSingleScalarResult();
+            ->andWhere('p.relance IS NULL')
+            ->getQuery()
+            ->getSingleScalarResult();
     }
 
     //return with int pour comercl
@@ -993,16 +994,10 @@ class ProspectRepository extends ServiceEntityRepository
             ->where('p.comrcl = :val')
             ->setParameter('val', $id)
 
+            ->andWhere('p.relance IS NULL')
 
-            ->leftJoin('p.histories', 'h')
-            ->andWhere('h.actionDate >= :endOfYesterday')
-            ->setParameter('endOfYesterday', $yesterday)
-
-            ->andWhere('p.id NOT IN ( 
-             SELECT pr.id FROM App\Entity\Prospect pr
-             JOIN pr.relanceds rel
-             WHERE rel.relacedAt > :endOfYesterday
-         )')->setParameter('endOfYesterday', $yesterday);
+            ->andWhere('p.AffectAt >= :endOfYesterday')
+            ->setParameter('endOfYesterday', $yesterday);
 
 
 

@@ -1,0 +1,606 @@
+/* ===================================================================
+   FORMULAIRE MODERNE - STYLES COMPLETS
+   ================================================================= */
+
+/* Variables CSS pour le formulaire */
+:root {
+    --primary-gradient: linear-gradient(135deg, #a9cbd7 0%, #9dd0e3 100%);
+    --secondary-gradient: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+    --success-gradient: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%);
+    --warning-gradient: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+    --danger-gradient: linear-gradient(135deg, #fa709a 0%, #fee140 100%);
+    --info-gradient: linear-gradient(135deg, #a8edea 0%, #fed6e3 100%);
+    --blue-gradient: linear-gradient(135deg, #89f7fe 0%, #66a6ff 100%);
+    --card-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+    --card-hover-shadow: 0 12px 40px rgba(0, 0, 0, 0.15);
+    --border-radius: 20px;
+    --transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+}
+
+/* Container principal du formulaire */
+.modern-form-container {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 0 1rem;
+}
+
+/* Header du formulaire */
+.form-header {
+    background: var(--blue-gradient);
+    color: white;
+    padding: 2rem;
+    border-radius: var(--border-radius) var(--border-radius) 0 0;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+    box-shadow: var(--card-shadow);
+}
+
+.form-header::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><circle cx="50" cy="50" r="1" fill="rgba(255,255,255,0.1)"/></svg>');
+    opacity: 0.3;
+}
+
+.form-header h1 {
+    font-size: 2.5rem;
+    font-weight: 700;
+    margin: 0;
+    position: relative;
+    z-index: 1;
+}
+
+.form-header .subtitle {
+    font-size: 1.1rem;
+    opacity: 0.9;
+    margin-top: 0.5rem;
+    position: relative;
+    z-index: 1;
+}
+
+/* Conteneur du formulaire */
+.form-container {
+    background: white;
+    border-radius: 0 0 var(--border-radius) var(--border-radius);
+    box-shadow: var(--card-shadow);
+    padding: 2rem;
+}
+
+/* Sections du formulaire */
+.form-section {
+    margin-bottom: 3rem;
+    border-radius: var(--border-radius);
+    overflow: hidden;
+    box-shadow: var(--card-shadow);
+    transition: var(--transition);
+}
+
+.form-section:hover {
+    box-shadow: var(--card-hover-shadow);
+    transform: translateY(-2px);
+}
+
+.section-header {
+    padding: 1.5rem 2rem;
+    cursor: pointer;
+    position: relative;
+    font-weight: 600;
+    font-size: 1.2rem;
+    color: white;
+    border: none;
+    width: 100%;
+    text-align: left;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    transition: var(--transition);
+}
+
+.section-header i {
+    font-size: 1.5rem;
+    margin-right: 1rem;
+}
+
+.section-header .toggle-icon {
+    transition: transform 0.3s ease;
+}
+
+.section-header[aria-expanded="true"] .toggle-icon {
+    transform: rotate(180deg);
+}
+
+/* Couleurs des sections */
+.section-souscripteur .section-header {
+    background: var(--primary-gradient);
+}
+
+.section-risque .section-header {
+    background: var(--secondary-gradient);
+}
+
+.section-antecedents .section-header {
+    background: var(--success-gradient);
+}
+
+.section-proposition .section-header {
+    background: var(--warning-gradient);
+}
+
+.section-paiements .section-header {
+    background: var(--info-gradient);
+}
+
+.section-documents .section-header {
+    background: var(--danger-gradient);
+}
+
+/* Contenu des sections */
+.section-content {
+    padding: 2rem;
+    background: white;
+}
+
+/* Groupes de champs */
+.form-group {
+    margin-bottom: 1.5rem;
+    position: relative;
+}
+
+.form-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+}
+
+.form-col {
+    flex: 1;
+    min-width: 200px;
+    position: relative;
+}
+
+.form-col.col-2 {
+    flex: 0 0 calc(16.666% - 1rem);
+}
+
+.form-col.col-3 {
+    flex: 0 0 calc(25% - 1rem);
+}
+
+.form-col.col-4 {
+    flex: 0 0 calc(33.333% - 1rem);
+}
+
+.form-col.col-6 {
+    flex: 0 0 calc(50% - 1rem);
+}
+
+/* Champs de saisie modernes */
+.modern-input-group {
+    position: relative;
+    background: #f8f9fa;
+    border: 2px solid #e9ecef;
+    border-radius: 12px;
+    overflow: hidden;
+    transition: var(--transition);
+}
+
+.modern-input-group:hover {
+    border-color: #a9cbd7;
+    box-shadow: 0 4px 15px rgba(169, 203, 215, 0.2);
+}
+
+.modern-input-group.focused {
+    border-color: #a9cbd7;
+    box-shadow: 0 0 0 3px rgba(169, 203, 215, 0.2);
+}
+
+.modern-input-group label {
+    position: absolute;
+    top: -1px;
+    left: 15px;
+    background: white;
+    color: #6c757d;
+    font-size: 0.85rem;
+    font-weight: 600;
+    padding: 0 0.5rem;
+    z-index: 2;
+    transition: var(--transition);
+}
+
+.modern-input-group.focused label {
+    color: #a9cbd7;
+}
+
+.modern-input-group input,
+.modern-input-group select,
+.modern-input-group textarea {
+    width: 100%;
+    padding: 1rem 1.5rem;
+    border: none;
+    background: transparent;
+    font-size: 1rem;
+    color: #495057;
+    outline: none;
+    transition: var(--transition);
+}
+
+.modern-input-group input:focus,
+.modern-input-group select:focus,
+.modern-input-group textarea:focus {
+    background: rgba(169, 203, 215, 0.05);
+}
+
+/* Boutons d'action */
+.form-actions {
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+    padding: 2rem;
+    background: #f8f9fa;
+    border-radius: var(--border-radius);
+    margin-top: 2rem;
+}
+
+.btn-modern {
+    padding: 1rem 2rem;
+    border: none;
+    border-radius: 50px;
+    font-weight: 600;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: var(--transition);
+    position: relative;
+    overflow: hidden;
+    min-width: 150px;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+}
+
+.btn-modern::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.4), transparent);
+    transition: left 0.5s;
+}
+
+.btn-modern:hover::before {
+    left: 100%;
+}
+
+.btn-modern:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+    text-decoration: none;
+}
+
+.btn-primary {
+    background: var(--primary-gradient);
+    color: white;
+}
+
+.btn-warning {
+    background: var(--warning-gradient);
+    color: white;
+}
+
+.btn-info {
+    background: var(--info-gradient);
+    color: #333;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .form-row {
+        flex-direction: column;
+    }
+
+    .form-col {
+        min-width: 100%;
+    }
+
+    .form-actions {
+        flex-direction: column;
+    }
+
+    .btn-modern {
+        min-width: 100%;
+    }
+
+    .form-header h1 {
+        font-size: 2rem;
+    }
+}
+
+/* Animations */
+@keyframes slideIn {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.form-section {
+    animation: slideIn 0.5s ease-out;
+}
+
+.form-section:nth-child(1) {
+    animation-delay: 0.1s;
+}
+
+.form-section:nth-child(2) {
+    animation-delay: 0.2s;
+}
+
+.form-section:nth-child(3) {
+    animation-delay: 0.3s;
+}
+
+.form-section:nth-child(4) {
+    animation-delay: 0.4s;
+}
+
+.form-section:nth-child(5) {
+    animation-delay: 0.5s;
+}
+
+.form-section:nth-child(6) {
+    animation-delay: 0.6s;
+}
+
+/* Antécédents d'assurance - Style tableau */
+.antecedents-table {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: var(--card-shadow);
+    margin-top: 1rem;
+}
+
+.antecedents-table th {
+    background: var(--success-gradient);
+    color: white;
+    padding: 1rem 0.5rem;
+    text-align: center;
+    font-weight: 600;
+    font-size: 0.9rem;
+}
+
+.antecedents-table td {
+    padding: 0.5rem;
+    border-bottom: 1px solid #e9ecef;
+    text-align: center;
+}
+
+.antecedents-table tr:last-child td {
+    border-bottom: none;
+}
+
+.antecedents-table .modern-input-group {
+    margin: 0;
+}
+
+.antecedents-table .modern-input-group label {
+    display: none;
+}
+
+.antecedents-table .modern-input-group input,
+.antecedents-table .modern-input-group select {
+    padding: 0.5rem;
+    font-size: 0.9rem;
+}
+
+/* Erreurs */
+.error-message {
+    background: #f8d7da;
+    color: #721c24;
+    border: 1px solid #f5c6cb;
+    border-radius: 8px;
+    padding: 1rem;
+    margin-bottom: 1rem;
+}
+
+.error-message ul {
+    margin: 0;
+    padding-left: 1.5rem;
+}
+
+.error-message h5 {
+    margin: 0 0 0.5rem 0;
+    font-size: 1.1rem;
+}
+
+/* Badges pour les sections */
+.section-badge {
+    background: rgba(255, 255, 255, 0.2);
+    color: white;
+    padding: 0.25rem 0.75rem;
+    border-radius: 20px;
+    font-size: 0.8rem;
+    font-weight: 600;
+}
+
+/* Alertes */
+.alert {
+    padding: 1rem;
+    margin-bottom: 1rem;
+    border-radius: 8px;
+    border: 1px solid transparent;
+}
+
+.alert-info {
+    background-color: #d1ecf1;
+    border-color: #bee5eb;
+    color: #0c5460;
+}
+
+.alert i {
+    margin-right: 0.5rem;
+}
+
+/* Utilitaires */
+.d-none {
+    display: none !important;
+}
+
+.d-inline-block {
+    display: inline-block !important;
+}
+
+/* Corrections spécifiques pour Symfony forms */
+.modern-form-container form>div {
+    margin-bottom: 0;
+}
+
+.modern-form-container .form-group {
+    margin-bottom: 1.5rem;
+}
+
+/* Amélioration des selects */
+.modern-input-group select {
+    cursor: pointer;
+    background-image: url("data:image/svg+xml;charset=UTF-8, %3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23495057' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6, 9 12, 15 18, 9'%3e%3c/polyline%3e%3c/svg%3e");
+    background-repeat: no-repeat;
+    background-position: right 1rem center;
+    background-size: 1rem;
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    padding-right: 3rem;
+}
+
+.modern-input-group select:focus {
+    background-image: url("data:image/svg+xml;charset=UTF-8, %3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23a9cbd7' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6, 9 12, 15 18, 9'%3e%3c/polyline%3e%3c/svg%3e");
+}
+
+/* Checkbox et radio buttons */
+.modern-input-group input[type="checkbox"],
+.modern-input-group input[type="radio"] {
+    width: auto;
+    margin-right: 0.5rem;
+    transform: scale(1.2);
+}
+
+/* Textarea */
+.modern-input-group textarea {
+    resize: vertical;
+    min-height: 100px;
+}
+
+/* Focus states améliorés */
+.modern-input-group:focus-within {
+    border-color: #a9cbd7;
+    box-shadow: 0 0 0 3px rgba(169, 203, 215, 0.2);
+}
+
+/* Transitions fluides pour les sections collapsibles */
+.collapse {
+    transition: height 0.35s ease;
+}
+
+.collapsing {
+    height: 0;
+    overflow: hidden;
+    transition: height 0.35s ease;
+}
+
+/* Améliorations pour les petits écrans */
+@media (max-width: 576px) {
+    .modern-form-container {
+        padding: 0 0.5rem;
+    }
+
+    .form-container {
+        padding: 1rem;
+    }
+
+    .section-content {
+        padding: 1rem;
+    }
+
+    .form-header {
+        padding: 1.5rem;
+    }
+
+    .form-header h1 {
+        font-size: 1.8rem;
+    }
+
+    .section-header {
+        padding: 1rem;
+        font-size: 1.1rem;
+    }
+
+    .antecedents-table th,
+    .antecedents-table td {
+        padding: 0.3rem;
+        font-size: 0.8rem;
+    }
+}
+
+/* Améliorations pour l'accessibilité */
+.modern-input-group:focus-within label {
+    color: #a9cbd7;
+}
+
+button:focus,
+.btn-modern:focus {
+    outline: 2px solid #a9cbd7;
+    outline-offset: 2px;
+}
+
+/* Indicateurs de champs requis */
+.required label::after {
+    content: ' *';
+    color: #dc3545;
+    font-weight: bold;
+}
+
+/* États de validation */
+.is-invalid .modern-input-group {
+    border-color: #dc3545;
+}
+
+.is-valid .modern-input-group {
+    border-color: #28a745;
+}
+
+/* Optimisations pour l'impression */
+@media print {
+
+    .form-header,
+    .form-actions {
+        display: none;
+    }
+
+    .form-section {
+        break-inside: avoid;
+        box-shadow: none;
+        border: 1px solid #000;
+        margin-bottom: 1rem;
+    }
+
+    .section-header {
+        background: #000 !important;
+        color: white !important;
+    }
+}

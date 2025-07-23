@@ -9,6 +9,7 @@
 	{{ include('document/_form.html.twig', {'button_label': 'Update'}) }}
 
 	<a href="{{ path('client_index') }}">back to client</a>
-
-	{{ include('document/_delete_form.html.twig') }}
+	{% if is_granted('ROLE_DEV') %}
+		{{ include('document/_delete_form.html.twig') }}
+	{% endif %}
 {% endblock %}
