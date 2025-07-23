@@ -32,6 +32,8 @@
 				</div>
 			</div>
 		{% endblock %}
-		{{ include('product/_delete_form.html.twig') }}
+		{% if is_granted('ROLE_DEV') %}
+			{{ include('product/_delete_form.html.twig') }}
+		{% endif %}
 	</div>
 {% endblock %}

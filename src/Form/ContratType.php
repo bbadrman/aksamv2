@@ -604,12 +604,14 @@ class ContratType extends AbstractType
             ])
             ->add('compagnie', EntityType::class, [
                 'class' => Compartenaire::class,
+                'placeholder' => '--Sélectionnez une Compagnie--',
                 'choice_label' => 'nom',
                 'multiple' => false,
                 'required' => false,
             ])
             ->add('partenaire', EntityType::class, [
                 'class' => Compartenaire::class,
+                'placeholder' => '--Sélectionnez un Partenaire--',
                 'choice_label' => 'nom',
                 'multiple' => false,
                 'required' => false,

@@ -11,12 +11,19 @@ use Symfony\Component\Security\Core\Security;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\Extension\Core\Type as Type;
+use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 
 class SearchClientType extends AbstractType
 {
 
 
-    public function __construct(private EntityManagerInterface $entityManager, private UserRepository $userRepository, private Security $security) {}
+    public function __construct(
+        private EntityManagerInterface $entityManager,
+        private UserRepository $userRepository,
+        private Security $security,
+        private AuthorizationCheckerInterface $authorizationChecker,
+    ) {}
+
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $teamRepository = $this->entityManager->getRepository(Team::class);
@@ -30,7 +37,7 @@ class SearchClientType extends AbstractType
         if (!$user) {
             throw new \LogicException('L\'utilisateur n\'est pas connecté.');
         }
-        if (in_array('ROLE_DEV', $user->getRoles(), true) || in_array('ROLE_ADMIN', $user->getRoles(), true)) {
+        if ($this->authorizationChecker->isGranted('ROLE_ADMIN')) {
             $comrclsForTeam = $this->userRepository->findAll();
         } else if (in_array('ROLE_CHEF', $user->getRoles(), true)) {
             $comrclsForTeam = $this->userRepository->findComrclByteamOrderedByAscName($user);
@@ -47,7 +54,7 @@ class SearchClientType extends AbstractType
         $builder
             ->add('f', Type\TextType::class, [
                 'label' => 'Nom',
-                'required' => true,
+                'required' => false,
 
                 'attr' => [
                     'placeholder' => 'Merci de saisir le nom du client'
@@ -55,7 +62,7 @@ class SearchClientType extends AbstractType
             ])
             ->add('l', Type\TextType::class, [
                 'label' => 'Prénom',
-                'required' => true,
+                'required' => false,
                 'attr' => [
                     'placeholder' => 'Merci de saisir le prénom du client'
                 ]

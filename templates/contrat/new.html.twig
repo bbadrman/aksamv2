@@ -1,62 +1,85 @@
+{# contrat/new.html.twig #}
 {% extends 'base.html.twig' %}
 
 {% block title %}Ajouter Contrat
 {% endblock %}
 
 {% block body %}
-	{% for label,  messages in app.flashes  %}
-		<div class="container">
-			<div class="alert alert-{{ label }}">
+	<div
+		class="header-new">
+		<!-- Messages flash -->
+		{% for label, messages in app.flashes %}
+			<div class="flash-messages">
 				{% for message in messages %}
-					{{ message | raw }}
+					<div class="alert alert-{{ label }}">
+						<i class="fas fa-{% if label == 'success' %}check-circle{% elseif label == 'danger' %}exclamation-triangle{% elseif label == 'info' %}info-circle{% else %}bell{% endif %}"></i>
+						{{ message | raw }}
+					</div>
 				{% endfor %}
+			</div>
+		{% endfor %}
 
+		<!-- Header moderne -->
+		<div class="modern-header">
+			<div class="header-content">
+				<h1 class="header-title">
+					<i class="fas fa-file-contract"></i>
+					Ajouter un Contrat
+				</h1>
+				<p class="header-subtitle">Créez un nouveau contrat avec des informations détaillées</p>
 			</div>
 		</div>
-	{% endfor %}
 
-	<section class="content-header ">
-		<h1>
-			Contrats
-			<small>Ajouter</small>
-		</h1>
-		<ol class="breadcrumb">
-			<li>
-				<a href="{{ path('app_home') }}">
-					<i class="fa fa-dashboard"></i>
-					Tableau de bord</a>
-			</li>
-			<li>
-				<a href="{{ path('app_prospect_index') }}">
-					<i class="fa fa-users"></i>
-					Tous les Contrats</a>
-			</li>
-			<li class="active">Ajouter un Contrat</li>
-		</ol>
-	</section>
+		<!-- Breadcrumb moderne -->
+		<nav class="modern-breadcrumb">
+			<a href="{{ path('app_home') }}" class="breadcrumb-item">
+				<i class="fas fa-home"></i>
+				Tableau de bord
+			</a>
+			<span class="breadcrumb-separator">•</span>
+			<a href="{{ path('app_prospect_index') }}" class="breadcrumb-item">
+				<i class="fas fa-file-contract"></i>
+				Tous les Contrats
+			</a>
+			<span class="breadcrumb-separator">•</span>
+			<span class="breadcrumb-item" style="color: #667eea;">
+				<i class="fas fa-plus"></i>
+				Ajouter un Contrat
+			</span>
+		</nav>
 
-	<!-- FORM -->
-	{% block form %}
-		<div class="row mt ">
-			<div class="col-lg-12">
-				{{ include('contrat/_form.html.twig') }}
-			</div>
+		<!-- Formulaire réutilisable -->
+		{{ include('contrat/_form.html.twig', {
+			'form_title': 'Nouveau Contrat',
+			'form_subtitle': 'Veuillez remplir tous les champs requis',
+			'form_icon': 'file-contract',
+			'button_label': 'Enregistrer',
+			'show_delete_button': false
+		}) }}
 
-		</div>
-	{% endblock %}
-
-	<!-- END FORM -->
+	</div>
 {% endblock %}
+
 {% block javascripts %}
+	{{ parent() }}
 	<script type="text/javascript">
 		document.addEventListener('DOMContentLoaded', function () { // TOGGLE BLOCKS
 const toggles = [
 {
 btnId: 'toggle-souscripteur',
 fieldId: 'souscripteur-fields'
-}, {
+},
+{
 btnId: 'toggle-risque',
 fieldId: 'risque-fields'
+},
+{
+btnId: 'toggle-antecid',
+fieldId: 'antecid-fields'
+},
+{
+btnId: 'toggle-proposition',
+fieldId: 'proposition-fields'
 }, {
 btnId: 'toggle-payment',
 fieldId: 'payment-fields'
@@ -73,8 +96,7 @@ if (btn && field) {
 btn.style.cursor = 'pointer';
 btn.addEventListener('click', () => {
 const isHidden = field.style.display === 'none';
-field.style.display = isHidden ? 'flex' : 'none';
-field.style.flexWrap = 'wrap';
+field.style.display = isHidden ? 'block' : 'none';
 });
 }
 });
@@ -138,8 +160,8 @@ const suspensinField = document.getElementById("{{ form.suspensionPermis.vars.id
 const annulationPermisField = document.getElementById("{{ form.annulationPermis.vars.id }}");
 const faciliteField = document.getElementById("{{ form.facilite.vars.id }}");
 
-const subcategoryContainer = document.getElementById("subcategory-container");
-const subcategoryActivites = document.getElementById("subcategory-activite");
+const subcategoryContainer = document.getElementById("subcategory-raisonSociale");
+const subcategoryActivites = document.getElementById("subcategory-activites");
 const subcategorytypeConducteur = document.getElementById("subcategory-typeConducteur");
 const subcategoryimatriclt = document.getElementById("subcategory-imatriclt");
 const subcategoryForceJuridique = document.getElementById("subcategory-forceJuridique");
@@ -192,7 +214,7 @@ subcategorydateAnnulation.style.display = isOui ? "block" : "none";
 subcategorymotifAnnulation.style.display = isOui ? "block" : "none";
 }
 
-faciliteField.addEventListener("change", function () { // Adaptez la valeur selon vos options : '1', 'oui', 'true', etc.
+faciliteField.addEventListener("change", function () {
 const isOui = this.value === '1';
 subcategoryNmbrReglement.style.display = isOui ? "block" : "none";
 });
@@ -200,7 +222,6 @@ subcategoryNmbrReglement.style.display = isOui ? "block" : "none";
 // État initial
 const isOui = faciliteField.value === '1';
 subcategoryNmbrReglement.style.display = isOui ? "block" : "none";
-
 
 if (typeContratField) 
 typeContratField.addEventListener("change", handleTypeContratChange);
@@ -233,9 +254,8 @@ handleTypeConducteurChange();
 handleProductChange();
 handleSuspentionChange();
 handleAnulationpermiChange();
-});
+
 // GESTION DU TYPE DE PAIEMENT
-document.addEventListener('DOMContentLoaded', function () { // Pour chaque bloc de paiement
 document.querySelectorAll('[data-type-field]').forEach(typeFieldContainer => {
 const select = typeFieldContainer.querySelector('select');
 if (! select) 
@@ -244,16 +264,12 @@ return;
 
 
 const parent = typeFieldContainer.closest('.form-group.row');
-
-// Champs associés à ce bloc
 const fraisField = parent.querySelector('[data-show-when-type="frais"]');
 const cotisationField = parent.querySelector('[data-show-when-type="cotisation"]');
 const contrePartieField = parent.querySelector('[data-show-when-type="contrePartie"]');
 
 function updateFields() {
 const selected = select.value;
-
-// Masquer tous les champs
 [fraisField, cotisationField, contrePartieField].forEach(field => {
 if (field) 
 field.classList.add('d-none');
@@ -262,7 +278,6 @@ field.classList.add('d-none');
 
 });
 
-// Afficher le champ sélectionné
 switch (selected) {
 case 'frais':
 if (fraisField) 
@@ -289,16 +304,30 @@ break;
 }
 
 select.addEventListener('change', updateFields);
-updateFields(); // Initialiser au chargement
-});
+updateFields();
 });
 
+// Animation de chargement des sections
+const sections = document.querySelectorAll('.form-section');
+sections.forEach((section, index) => {
+section.style.animationDelay = `${
+index * 0.1
+}s`;
+});
+
+// Auto-hide des messages flash après 5 secondes
+const flashMessages = document.querySelectorAll('.flash-messages .alert');
+flashMessages.forEach(alert => {
+setTimeout(() => {
+alert.style.opacity = '0';
+alert.style.transform = 'translateY(-20px)';
+setTimeout(() => {
+alert.remove();
+}, 300);
+}, 5000);
+});
 
 // Force suppression du loader sur cette page
-document.addEventListener('DOMContentLoaded', function () {
-console.log('🔧 Page new.html.twig - suppression loader');
-
-// Multiple tentatives
 function killLoader() {
 const loader = document.getElementById('loader');
 if (loader) {
@@ -306,19 +335,16 @@ loader.remove();
 console.log('💀 Loader tué sur page show');
 }
 
-// CSS killer spécifique
 const style = document.createElement('style');
 style.textContent = '#loader { display: none !important; }';
 document.head.appendChild(style);
 }
 
-// Exécution immédiate et répétée
 killLoader();
 setTimeout(killLoader, 100);
 setTimeout(killLoader, 500);
 setTimeout(killLoader, 1000);
 
-// Force via fonction globale si disponible
 if (window.FORCE_DESTROY_LOADER) {
 setTimeout(window.FORCE_DESTROY_LOADER, 200);
 }

@@ -22,7 +22,7 @@ Encore
      */
     .addEntry('app', './assets/js/ad.js')
     .addEntry('appaffct', './assets/js/adaffect.js')
-    .addEntry('formcontrat', './assets/js/formContrat.js')
+    // .addEntry('formcontrat', './assets/js/formContrat.js')
     .addStyleEntry('css/app', './assets/css/app.css')
     .addStyleEntry('css/prospect-modern', './assets/css/prospect-modern.css')
     .addStyleEntry('css/modalmoderne', './assets/css/modalmoderne.css')

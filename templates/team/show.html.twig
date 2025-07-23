@@ -1,30 +1,32 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Team{% endblock %}
+{% block title %}Team
+{% endblock %}
 
 {% block body %}
-    <h1>Team</h1>
+	<h1>Team</h1>
 
-    <table class="table">
-        <tbody>
-            <tr>
-                <th>Id</th>
-                <td>{{ team.id }}</td>
-            </tr>
-            <tr>
-                <th>Name</th>
-                <td>{{ team.name }}</td>
-            </tr>
-            <tr>
-                <th>Description</th>
-                <td>{{ team.description }}</td>
-            </tr>
-        </tbody>
-    </table>
+	<table class="table">
+		<tbody>
+			<tr>
+				<th>Id</th>
+				<td>{{ team.id }}</td>
+			</tr>
+			<tr>
+				<th>Name</th>
+				<td>{{ team.name }}</td>
+			</tr>
+			<tr>
+				<th>Description</th>
+				<td>{{ team.description }}</td>
+			</tr>
+		</tbody>
+	</table>
 
-    <a href="{{ path('app_team_index') }}">back to list</a>
+	<a href="{{ path('app_team_index') }}">back to list</a>
+	{% if is_granted('ROLE_DEV') %}
+		<a href="{{ path('app_team_edit', {'id': team.id}) }}">edit</a>
 
-    <a href="{{ path('app_team_edit', {'id': team.id}) }}">edit</a>
-
-    {{ include('team/_delete_form.html.twig') }}
+		{{ include('team/_delete_form.html.twig') }}
+	{% endif %}
 {% endblock %}

@@ -45,10 +45,10 @@ class HomeController extends AbstractController
     {
         // Chemin relatif à partir du répertoire `public`
         $user = $this->security->getUser();
-        if (in_array('ROLE_ADMIN', $user->getRoles(), true)) {
+        if ($this->isGranted('ROLE_ADMIN')) {
 
             $filePath = $this->getParameter('kernel.project_dir') . '/public/documents/ModOP.pdf';
-        } else if (in_array('ROLE_CHEF', $user->getRoles(), true)) {
+        } else if ($this->isGranted('ROLE_CHEF')) {
             $filePath = $this->getParameter('kernel.project_dir') . '/public/documents/ModOPcommercial.pdf';
         } else if (in_array('ROLE_COMMERC', $user->getRoles(), true)) {
             $filePath = $this->getParameter('kernel.project_dir') . '/public/documents/ModOPcommercial.pdf';

@@ -50,6 +50,7 @@ stop-all:
 stup:
 	@make stop-all
 	@make up
+# //klup tous les ports
 klup:
 	@make kill-all
 	@make up

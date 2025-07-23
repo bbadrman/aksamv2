@@ -6,12 +6,12 @@
 
 {% block body %}
 	<!-- Header moderne -->
-	<div
-		class="header-edit">
+	<div class="header-new">
+		{# <div
+				class="header-edit"> #}
 		<!-- Messages flash -->
-		{% for label, messages in app.flashes %}
-			<div class="flash-messages">
-				{% for message in messages %}
+			{% for label, messages in app.flashes %}
+				<div class="flash-messages"> {% for message in messages %}
 					<div class="alert alert-{{ label }}">
 						<i class="fas fa-{% if label == 'success' %}check-circle{% elseif label == 'danger' %}exclamation-triangle{% elseif label == 'info' %}info-circle{% else %}bell{% endif %}"></i>
 						{{ message | raw }}
@@ -47,7 +47,7 @@
 				Tous les Prospects
 			</a>
 			<span class="breadcrumb-separator">•</span>
-			<span class="breadcrumb-item" style="color: #f093fb;">
+			<span class="breadcrumb-item" style="color:#7B79D2;">
 				<i class="fas fa-edit"></i>
 				Modifier le Prospect
 			</span>

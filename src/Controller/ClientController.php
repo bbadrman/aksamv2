@@ -132,10 +132,10 @@ final class ClientController extends AbstractController
 
 
         $user = $security->getUser();
-        if (in_array('ROLE_DEV', $user->getRoles(), true) || in_array('ROLE_ADMIN', $user->getRoles(), true) || in_array('ROLE_VALID', $user->getRoles(), true)) {
+        if ($this->isGranted('ROLE_ADMIN') || $this->isGranted('ROLE_VALID')) {
             // admit peut voire toutes les nouveaux client
             $client =  $this->clientRepository->findClientAdmin($data, null);
-        } elseif (in_array('ROLE_CHEF', $user->getRoles(), true)) {
+        } elseif ($this->isGranted('ROLE_CHEF')) {
             // chef peut voire toutes les nouveaux client atacher a leur equipe
             $client =  $this->clientRepository->findClientChef($data,  $user, null);
         } else {

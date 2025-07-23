@@ -15,7 +15,6 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\HttpFoundation\RequestStack;
 
-
 #[IsGranted('IS_AUTHENTICATED')]
 #[Route('/traitement')]
 final class TraitementController extends AbstractController
@@ -25,7 +24,7 @@ final class TraitementController extends AbstractController
         private RequestStack $requestStack,
         private ProspectRepository $prospectRepository,
         private Security $security,
-        private AppelRepository $AppelRepository
+        private AppelRepository $AppelRepository,
     ) {}
 
 
@@ -33,7 +32,7 @@ final class TraitementController extends AbstractController
     public function index(StatsService $statsService): Response
     {
         $stats = $statsService->getStats();
-        return $this->render('traitement/table2.html.twig', [
+        return $this->render('traitement/table.html.twig', [
             'stats'    => $stats
         ]);
     }
@@ -54,13 +53,14 @@ final class TraitementController extends AbstractController
             'phones' => [],
         ];
 
-        if (in_array('ROLE_ADMIN', $roles, true) or in_array('ROLE_AFFECTALL', $roles, true)) {
+        if ($this->isGranted('ROLE_ADMIN') or $this->isGranted('ROLE_AFFECTALL')) {
             $prospects = $this->prospectRepository->findByAdminNewProsp($data);  // team null  
-        } elseif (in_array('ROLE_CHEF', $roles, true)) {
+        } elseif ($this->isGranted('ROLE_CHEF')) {
             $prospects = $this->prospectRepository->findByChefNewProsp($data, $user);
         } else {
             $prospects = $this->prospectRepository->findByCmrclNewProsp($data, $user);
         }
+
         foreach ($prospects as $prospect) {
             $email = $prospect->getEmail();
             $phone = $prospect->getPhone(); // Assurez-vous que la méthode `getPhone()` existe.
@@ -135,10 +135,10 @@ final class TraitementController extends AbstractController
         $prospect = [];
 
 
-        if (in_array('ROLE_DEV', $roles, true) || in_array('ROLE_ADMIN', $roles, true)) {
+        if ($this->isGranted('ROLE_ADMIN') || $this->isGranted('ROLE_AFFECTALL')) {
             // admi peut voire toutes les no traite
             $prospect =  $this->prospectRepository->findProspectNonTraiter($data, null);
-        } else if (in_array('ROLE_CHEF', $roles, true)) {
+        } else if ($this->isGranted('ROLE_CHEF')) {
             // chef peut voire toutes les no traite atacher a leur equipe
             $prospect =  $this->prospectRepository->findProspectNonTraiterChef($data, $user, null);
         } else {
@@ -173,13 +173,13 @@ final class TraitementController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid() && !$form->isEmpty()) {
 
-            if (in_array('ROLE_DEV', $roles, true) || in_array('ROLE_ADMIN', $roles, true)) {
+            if ($this->isGranted('ROLE_ADMIN')) {
                 // Admin peut chercher tous les prospects
                 $prospect = $this->prospectRepository->findSearch($data, $user);
-            } else if (in_array('ROLE_CHEF', $roles, true)) {
+            } else if ($this->isGranted('ROLE_CHEF')) {
                 // Chef peut chercher tous les prospects attachés à leur équipe
                 $prospect = $this->prospectRepository->findAllChefSearch($data, $user);
-            } elseif (in_array('ROLE_USER', $roles, true)) {
+            } elseif ($this->isGranted('ROLE_USER')) {
                 // Commercial peut chercher seulement les prospects attachés à lui
                 $prospect = $this->prospectRepository->findByUserAffecterCmrcl($data, $user);
             }
@@ -222,10 +222,10 @@ final class TraitementController extends AbstractController
         $prospect = [];
 
 
-        if (in_array('ROLE_DEV',  $roles, true) || in_array('ROLE_ADMIN',  $roles, true)) {
+        if ($this->isGranted('ROLE_ADMIN') || $this->isGranted('ROLE_AFFECTALL')) {
             // admi peut voire toutes les relance du jour
             $prospect =  $this->prospectRepository->findRelancedJour($data, null);
-        } else if (in_array('ROLE_CHEF',  $roles, true)) {
+        } else if ($this->isGranted('ROLE_CHEF')) {
             // chef peut voire toutes les relance du jour atacher a leur equipe
             $prospect =  $this->prospectRepository->findRelancedJourChef($data, $user, null);
         } else {
@@ -264,10 +264,10 @@ final class TraitementController extends AbstractController
         if ($form->isSubmitted() && $form->isValid() && !$form->isEmpty()) {
 
             $user = $security->getUser();
-            if (in_array('ROLE_DEV', $roles, true) || in_array('ROLE_ADMIN', $roles, true)) {
+            if ($this->isGranted('ROLE_ADMIN')) {
 
                 $prospect =  $this->prospectRepository->findAvenir($data, null);
-            } else if (in_array('ROLE_CHEF', $roles, true)) {
+            } else if ($this->isGranted('ROLE_CHEF')) {
 
                 $prospect =  $this->prospectRepository->findAvenirChef($data, $user, null);
             } else {
@@ -308,12 +308,12 @@ final class TraitementController extends AbstractController
         $prospect = [];
 
         if ($form->isSubmitted() && $form->isValid() && !$form->isEmpty()) {
-            if (in_array('ROLE_DEV', $roles, true) || in_array('ROLE_ADMIN', $roles, true)) {
+            if ($this->isGranted('ROLE_ADMIN')) {
 
                 $prospect =  $this->prospectRepository->findRelancesNonTraitees($data, null);
 
                 // dd(count($prospect));
-            } else if (in_array('ROLE_CHEF', $roles, true)) {
+            } else if ($this->isGranted('ROLE_CHEF')) {
 
                 $prospect =   $this->prospectRepository->RelancesNonTraiteesChef($data, $user, null);
             } else {
@@ -355,10 +355,10 @@ final class TraitementController extends AbstractController
         $prospect = [];
 
 
-        if (in_array('ROLE_DEV', $roles, true) || in_array('ROLE_ADMIN', $roles, true)) {
+        if ($this->isGranted('ROLE_ADMIN')) {
 
             $prospect =  $this->prospectRepository->findUnjoing($data, null);
-        } else if (in_array('ROLE_CHEF', $roles, true)) {
+        } else if ($this->isGranted('ROLE_CHEF')) {
 
             $prospect =  $this->prospectRepository->findUnjoingChef($data,  $user, null);
         } else {

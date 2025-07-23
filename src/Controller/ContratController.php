@@ -25,6 +25,7 @@ use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 
 #[IsGranted('IS_AUTHENTICATED_FULLY')]
 #[Route('/contrat')]
@@ -37,6 +38,7 @@ final class ContratController extends AbstractController
         private Security $security,
         private ClientRepository $clientRepository,
         private ContratRepository $contratRepository,
+        private AuthorizationCheckerInterface $authorizationChecker,
     ) {}
 
     #[Route(name: 'app_contrat_index', methods: ['GET'])]
@@ -61,15 +63,12 @@ final class ContratController extends AbstractController
 
         $user = $this->security->getUser();
         $logger->info('User roles: ' . json_encode($user->getRoles()));
-        if (in_array('ROLE_DEV', $user->getRoles(), true)  || in_array('ROLE_ADMIN', $user->getRoles(), true)  || in_array('ROLE_VALID', $user->getRoles(), true)) {
+        if ($this->isGranted('ROLE_ADMIN')  || $this->isGranted('ROLE_VALID')) {
             // admi peut voire toutes les nouveaux client
             $contrats =  $contratRepository->findByContartValid($data,  null);
-        } elseif (in_array('ROLE_CHEF', $user->getRoles(), true)) {
+        } elseif ($this->isGranted('ROLE_CHEF')) {
             // Rôle spécifique pour ROLE_VALIDE
             $contrats = $contratRepository->findByContartValid($data,  $user, null);
-        } elseif (in_array('ROLE_TEAM', $user->getRoles(), true)) {
-            // chef peut voire toutes les nouveaux client atacher a leur equipe
-            $contrats =  $contratRepository->findByContartValid($data, $user,  null);
         } else {
             // cmrcl peut voire seulement les nouveaux client atacher a lui
             $contrats =  $contratRepository->findByContartValidComrcl($data, $user, null);

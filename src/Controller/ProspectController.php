@@ -100,11 +100,11 @@ final class ProspectController extends AbstractController
         $prospect = [];
         $user = $security->getUser();
         $roles = $user->getRoles();
-        if (in_array('ROLE_SUPER_ADMIN', $roles, true) || in_array('ROLE_ADMIN', $user->getRoles(), true) || in_array('ROLE_AFFECT', $user->getRoles(), true)) {
+        if ($this->isGranted('ROLE_ADMIN') || $this->isGranted('ROLE_AFFECTALL')) {
             $prospect =  $prospectRepository->findAllNewProspectsApi(null);
-        } elseif (in_array('ROLE_CHEF', $roles, true)) {
+        } elseif ($this->isGranted('ROLE_CHEFALL')) {
             $prospect =  $prospectRepository->findAllNewProspectsChefAllApi($user, null);
-        } elseif (in_array('ROLE_TEAM', $roles, true)) {
+        } elseif (in_array('ROLE_CHEF', $roles, true)) {
             // chef peut voire toutes les nouveaux prospects atacher a leur equipe
             $prospect =  $prospectRepository->findAllNewProspectsChefApi($user, null);
         } else {
