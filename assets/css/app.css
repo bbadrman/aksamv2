@@ -4760,6 +4760,9 @@ body.sidebar-collapsed footer {
     background: #9b59b6 !important;
 }
 
+/* Animation notification */
+
+
 .logout {
     background: rgba(231, 76, 60, 0.1) !important;
     border: 2px solid rgba(231, 76, 60, 0.3) !important;
