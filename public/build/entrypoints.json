@@ -1,0 +1,43 @@
+{
+  "entrypoints": {
+    "app": {
+      "js": [
+        "/build/runtime.7337ff42.js",
+        "/build/770.4b55c1bc.js",
+        "/build/412.4a40adf9.js",
+        "/build/app.a3b3b2e6.js"
+      ]
+    },
+    "appaffct": {
+      "js": [
+        "/build/runtime.7337ff42.js",
+        "/build/770.4b55c1bc.js",
+        "/build/appaffct.422d4654.js"
+      ]
+    },
+    "css/app": {
+      "js": [
+        "/build/runtime.7337ff42.js"
+      ],
+      "css": [
+        "/build/css/app.e8b1c3b1.css"
+      ]
+    },
+    "css/prospect-modern": {
+      "js": [
+        "/build/runtime.7337ff42.js"
+      ],
+      "css": [
+        "/build/css/prospect-modern.3623a8b4.css"
+      ]
+    },
+    "css/modalmoderne": {
+      "js": [
+        "/build/runtime.7337ff42.js"
+      ],
+      "css": [
+        "/build/css/modalmoderne.0d64062c.css"
+      ]
+    }
+  }
+}
