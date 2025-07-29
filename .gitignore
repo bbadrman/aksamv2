@@ -25,7 +25,8 @@
 
 # Ignore .env files as they are personal
 /.env.test
-
+/Dockerfile
+/docker-compose.yml
 ###> symfony/phpunit-bridge ###
 .phpunit.result.cache
 /phpunit.xml
