@@ -43,3 +43,5 @@ node_modules
 .composer/
 .history/*
 /public/documents/regles_soucriptionTPM.pdf
+*.pdf
+/public/documents/
