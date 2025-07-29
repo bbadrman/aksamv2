@@ -71,7 +71,7 @@ class UserType extends AbstractType
                     'CHEF EQUIPE' => 'chef',
                     'MANAGER' =>  'manager',
                     'SUPORT' => 'suport',
-                    'DIVELOPPER' => 'divlopper',
+                    'DEVELOPPEUR' => 'DEVELOPPEUR',
                     'TECH' => 'tech',
                     'AUTRE' => 'autre',
                 ],
