@@ -68,7 +68,9 @@ class UserType extends AbstractType
                 'choices' => [
                     'Directeur' =>  'directeur',
                     'COMERCIAL' =>  'comercial',
+                    'ASSISTANT' => 'assistant',
                     'CHEF EQUIPE' => 'chef',
+                    'TECHNICIEN' => 'technicien',
                     'MANAGER' =>  'manager',
                     'SUPORT' => 'suport',
                     'DEVELOPPEUR' => 'développeur',
