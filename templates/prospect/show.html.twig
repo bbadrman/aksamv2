@@ -5,7 +5,7 @@
 	{{ prospect.prenom }}
 	- Aksam
 {% endblock %}
-
+ 
 {% block body %}
 	<div
 		class="header-show">
@@ -215,17 +215,108 @@
 					</table>
 				</div>
 			</div>
-
+ 
 			<!-- Carte Relances -->
 			<div class="info-card card-relances">
+ 
 				<div class="info-card-header">
 					<h4>
 						<i class="fas fa-phone-alt"></i>
-						Relances
+						Planifier une Relance
 					</h4>
 				</div>
-				<div class="info-card-body">
-					<table class="table-modern">
+
+				 
+				{{ form_start(form, {'method': 'POST'}) }}
+
+				<!-- Section principale de relance -->
+				<div class="form-section">
+					<h3>
+						<i class="fas fa-list-ul"></i>
+						Type de relance
+					</h3>
+					<div class="form-group">
+						{{ form_row(form.relance, {
+                            'attr': {
+                                'class': 'form-control relance_prospect_relance'
+                            }
+                        }) }}
+					</div>
+				</div>
+
+				<!-- Section date de relance (conditionnelle) -->
+				<div class="form-section subMotivRelc-container" style="display: none;">
+					<h3>
+						<i class="fas fa-calendar-alt"></i>
+						Date de relance
+					</h3>
+					<div class="form-group">
+						{{ form_row(form.relanceAt, {
+                            'attr': {
+                                'class': 'form-control relanceAt'
+                            }
+                        }) }}
+					</div>
+				</div>
+
+				<!-- Section commentaire (conditionnelle) -->
+				<div class="form-section MotivRelcoment-container" style="display: none;">
+					<h3>
+						<i class="fas fa-comment-dots"></i>
+						Commentaire
+					</h3>
+					<div class="form-group">
+						{{ form_row(form.comment, {
+                            'attr': {
+                                'class': 'form-control comment',
+                                'placeholder': 'Ajoutez vos observations, remarques ou instructions...',
+                                'rows': 4
+                            }
+                        }) }}
+					</div>
+				</div>
+
+				<!-- Footer avec boutons (conditionnel) -->
+				<div class="modal-footer SubmitRelance-container" style="display: none; display: flex; justify-content: flex-end; gap: 10px;">
+					<button type="button" class="btn-modern btn-secondary-modern" data-dismiss="modal">
+						<i class="fas fa-times"></i>
+						Annuler
+					</button>
+					<button type="submit" class="btn-modern btn-primary-modern">
+						<i class="fas fa-save"></i>
+						{{ button_label|default('Enregistrer') }}
+					</button>
+				</div>
+
+				{{ form_end(form) }}
+
+				<!-- Section client (conditionnelle) -->
+				<div class="form-section client-section subMotivContrat-container" style="display: none;">
+					<h2 class="section-title">
+						<i class="fas fa-user-plus"></i>
+						Conversion en Client
+					</h2>
+
+					<div class="section-subtitle">
+						<i class="fas fa-handshake"></i>
+						Ajouter comme nouveau client
+					</div>
+
+					{% set clientUrl = path('app_relance_edit', {'id': prospect.id}) %}
+					{{ form_start(clientForm, {'action': clientUrl}) }}
+
+					<div class="form-group">
+						{{ form_row(clientForm) }}
+					</div>
+
+					<button type="submit" class="btn-modern btn-client-modern">
+						<i class="fas fa-user-check"></i>
+						Convertir en Client
+					</button>
+
+					{{ form_end(clientForm) }}
+				</div>
+		 		<table class="table-modern">
 						<thead>
 							<tr>
 								<th>Statut</th>
@@ -283,10 +374,10 @@
 								</tr>
 							{% endfor %}
 						</tbody>
-					</table>
-				</div>
+				</table>
 			</div>
-
+			 
+  
 			<!-- Carte Historique -->
 			<div class="info-card card-historique">
 				<div class="info-card-header">
@@ -340,7 +431,7 @@
 				<i class="fas fa-arrow-left"></i>
 				Retour à la liste
 			</a>
-			{% if is_granted('ROLE_TRAITEMENT') %}
+			{% if is_granted('ROLE_DEV') %}
 				<a href="{{ path('app_prospect_edit', {'id': prospect.id}) }}" class="btn-modern btn-edit">
 					<i class="fas fa-edit"></i>
 					Modifier
@@ -494,6 +585,102 @@ card.style.animationDelay = `${
 index * 0.1
 }s`;
 });
+ 
+});
+
+// Script pour la gestion du select de relances
+document.addEventListener('DOMContentLoaded', function () {
+    const relanceSelect = document.querySelector('.relance_prospect_relance');
+    const subMotivRelcContainer = document.querySelector('.subMotivRelc-container');
+    const motivRelcomentContainer = document.querySelector('.MotivRelcoment-container');
+    const submitRelanceContainer = document.querySelector('.SubmitRelance-container');
+    const subMotivContratContainer = document.querySelector('.subMotivContrat-container');
+    const relanceForm = document.querySelector('form[name="relance_prospect"]');
+
+    // Fonction pour réinitialiser le formulaire à l'état initial
+    function resetFormToInitialState() {
+        // Cacher tous les conteneurs
+        if (subMotivRelcContainer) subMotivRelcContainer.style.display = 'none';
+        if (motivRelcomentContainer) motivRelcomentContainer.style.display = 'none';
+        if (submitRelanceContainer) submitRelanceContainer.style.display = 'none';
+        if (subMotivContratContainer) subMotivContratContainer.style.display = 'none';
+        
+        // Réinitialiser le select à la valeur par défaut
+        if (relanceSelect) {
+            relanceSelect.selectedIndex = 0; // ou relanceSelect.value = '';
+        }
+        
+        // Vider les champs de saisie
+        const commentField = document.querySelector('.comment');
+        const dateField = document.querySelector('.relanceAt');
+        
+        if (commentField) commentField.value = '';
+        if (dateField) dateField.value = '';
+    }
+
+    // Fonction pour gérer les changements du select
+    function handleRelanceChange() {
+        const value = relanceSelect.value;
+        
+        // Reset - cacher tous les conteneurs par défaut
+        if (subMotivRelcContainer) subMotivRelcContainer.style.display = 'none';
+        if (motivRelcomentContainer) motivRelcomentContainer.style.display = 'none';
+        if (submitRelanceContainer) submitRelanceContainer.style.display = 'none';
+        if (subMotivContratContainer) subMotivContratContainer.style.display = 'none';
+
+        // Logique selon la valeur sélectionnée
+        if (value === '1' || value === '2' || value === '3' || value === '4' || value === '5') {
+            // Rendez-vous, Injoignable, Attente DOC, Tarification, Prise de Décision
+            if (subMotivRelcContainer) subMotivRelcContainer.style.display = 'block';
+            if (motivRelcomentContainer) motivRelcomentContainer.style.display = 'block';
+            if (submitRelanceContainer) submitRelanceContainer.style.display = 'flex';
+        } 
+        else if (value === '6' || value === '7' || value === '8' || value === '10' || value === '11' || value === '12' || value === '13') {
+            // Faux Fiche, Doublon, Passage Concurrent, Déjà Souscrit, Toujours Injoignable, etc.
+            if (motivRelcomentContainer) motivRelcomentContainer.style.display = 'block';
+            if (submitRelanceContainer) submitRelanceContainer.style.display = 'flex';
+        } 
+        else if (value === '9') {
+            // Passage Client - affiche la section conversion
+            if (subMotivContratContainer) subMotivContratContainer.style.display = 'block';
+        }
+        else if (value && value !== '') {
+            // Autres valeurs - affiche au minimum les boutons
+            if (submitRelanceContainer) submitRelanceContainer.style.display = 'flex';
+        }
+    }
+
+    // Événement sur le changement du select
+    if (relanceSelect) {
+        relanceSelect.addEventListener('change', handleRelanceChange);
+    }
+
+    // Détecter si la page a été rechargée après une soumission réussie
+    // en vérifiant la présence d'un message flash de succès
+    const successFlash = document.querySelector('.alert-success, .alert-info');
+    if (successFlash) {
+        // Si un message de succès est présent, réinitialiser le formulaire
+        setTimeout(function() {
+            resetFormToInitialState();
+        }, 100); // Petit délai pour s'assurer que le DOM est prêt
+    }
+
+    // Alternative : Écouter la soumission du formulaire
+    if (relanceForm) {
+        relanceForm.addEventListener('submit', function(e) {
+            // Marquer que le formulaire a été soumis
+            sessionStorage.setItem('formSubmitted', 'true');
+        });
+    }
+
+    // Vérifier au chargement de la page si le formulaire a été soumis
+    if (sessionStorage.getItem('formSubmitted') === 'true') {
+        sessionStorage.removeItem('formSubmitted');
+        resetFormToInitialState();
+    }
+
+    // Initialiser l'état au chargement - s'assurer que seul le select est visible
+    resetFormToInitialState();
 });
 	</script>
 {% endblock %}

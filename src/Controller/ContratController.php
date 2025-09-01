@@ -283,6 +283,7 @@ final class ContratController extends AbstractController
             'form' => $form,
         ]);
     }
+
     #[Route('/{id}/editvalide', name: 'app_contrat_editvalide', methods: ['GET', 'POST'])]
     public function editvalide(Request $request, Contrat $contrat, EntityManagerInterface $entityManager): Response
     {
@@ -326,6 +327,7 @@ final class ContratController extends AbstractController
             'form' => $form,
         ]);
     }
+    
     // modale pour change l'etat du contrat
     #[Route('/{id}/etat', name: 'app_contrat_etat', methods: ['GET', 'POST'])]
     public function etat(Request $request, Contrat $contrat, EntityManagerInterface $entityManager): Response

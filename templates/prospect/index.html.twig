@@ -317,30 +317,36 @@
 								{% endif %}
 							</td>
 							<td>
-								{% if prospect.activites is null %}
-									Pas encore rempli
-								{% elseif  prospect.activites == 1 %}
-									TPM
-								{% elseif prospect.activites == 2 %}
-									VTC
-								{% elseif prospect.activites == 3 %}
-									Sociéte
-								{% elseif prospect.activites == 4 %}
-									Décenale
-								{% elseif prospect.activites == 5 %}
-									Dommage
-								{% elseif prospect.activites == 6 %}
-									Marchandise
-								{% elseif prospect.activites == 7 %}
-									Négociant
-								{% elseif prospect.activites == 8 %}
-									Professionnel Auto
-								{% elseif prospect.activites == 9 %}
-									Auto-ecole
-								{% elseif prospect.activites == 10 %}
-									Garage-auto
-								{% endif %}
-							</td>
+									{% if prospect.activites is null %}
+										Pas encore rempli
+									{% elseif  prospect.activites == 1 %}
+										TPM
+									{% elseif prospect.activites == 2 %}
+										VTC
+									{% elseif prospect.activites == 3 %}
+										Sociéte
+									{% elseif prospect.activites == 4 %}
+										Décenale
+									{% elseif prospect.activites == 5 %}
+										Dommage
+									{% elseif prospect.activites == 6 %}
+										Marchandise
+									{% elseif prospect.activites == 7 %}
+										Négociant
+									{% elseif prospect.activites == 8 %}
+										Professionnel Auto
+									{% elseif prospect.activites == 9 %}
+										Auto-école
+									{% elseif prospect.activites == 10 %}
+										Garage-auto
+									{% elseif prospect.activites == 11 %}
+										Location-vehicule
+									{% elseif prospect.activites == 12 %}
+										retraite
+									{% elseif prospect.activites == 13 %}
+										Taxi
+									{% endif %}
+								</td>
 							<td>
 								{% if prospect.typeProspect == 1 %}
 									<span class="status-badge status-rendez-vous">Particulier</span>

@@ -217,7 +217,12 @@ class ProspectType extends AbstractType
                         'Marchandise' =>  6,
                         'Négociant' =>  7,
                         'Prof auto' =>  8,
-                        'Garage' => 9
+                        'Ecole' => 9,
+                        'Garage' => 10,
+                        'Location-vehicule' => 11,
+                        'retraite' => 12,
+                        'Taxi' => 13,
+
                     ],
                     'expanded' => false,
                     'multiple' => false,
@@ -226,7 +231,7 @@ class ProspectType extends AbstractType
                     // ]
                 ]
             )
-
+   
 
             ->add('product')
             ->add('team')

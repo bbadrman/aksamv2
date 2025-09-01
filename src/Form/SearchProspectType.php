@@ -227,6 +227,8 @@ class SearchProspectType extends AbstractType
                     'auto-ecole' => '15',
                     'negociants-auto' => '16',
                     'garage-auto' => '17',
+                    'loueur-voiture' => '18',
+                    'retraite' => '19',
 
                 ],
 

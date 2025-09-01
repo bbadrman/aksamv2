@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\Product;
 use App\Form\ProductType;
 use App\Repository\ProductRepository;
+use App\Repository\UserRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -91,12 +92,19 @@ final class ProductController extends AbstractController
     }
 
     #[Route('/{id}/edit', name: 'app_product_edit', methods: ['GET', 'POST'])]
-    public function edit(Request $request, Product $product, EntityManagerInterface $entityManager): Response
+    public function edit(Request $request, Product $product, EntityManagerInterface $entityManager, UserRepository $userRepository): Response
     {
         $form = $this->createForm(ProductType::class, $product);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+
+             foreach ($product->getUsers() as $user) {
+                $user->addProduct($product);
+            }
+
+            // $productRepository->add($product, true);
+            $this->addFlash('info', 'Votre Produit a été modifié avec succès!');
             $entityManager->flush();
 
             return $this->redirectToRoute('app_product_index', [], Response::HTTP_SEE_OTHER);

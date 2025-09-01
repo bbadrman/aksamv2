@@ -65,15 +65,17 @@ class ClientType extends AbstractType
             ->add('status', Type\ChoiceType::class, [
                 'label' => 'status',
                 'required' => true,
+                 'attr' => ['class' => 'status-choice'], // classe sur le conteneur
                 'choices' => [
                     'Valider' => 1,
                     'Rejeter' => 2,
-                    'Annulé' => 3
-
+                    'Annulé' => 3 
                 ],
 
                 'expanded' => true,
                 'multiple' => false
+ 
+
             ])
             ->add('comment', Type\TextareaType::class, [
                 'attr' => ['class' => 'tinymce'],

@@ -1,0 +1,115 @@
+INSERT INTO db.user_permission (user_id,permission_id) VALUES
+	 (1,1),
+	 (2,41),
+	 (17,3),
+	 (17,4),
+	 (17,15),
+	 (17,19),
+	 (17,20),
+	 (17,21),
+	 (17,22),
+	 (17,23);
+INSERT INTO db.user_permission (user_id,permission_id) VALUES
+	 (17,24),
+	 (17,25),
+	 (17,26),
+	 (17,27),
+	 (17,28),
+	 (17,29),
+	 (17,30),
+	 (17,31),
+	 (17,32),
+	 (17,34);
+INSERT INTO db.user_permission (user_id,permission_id) VALUES
+	 (17,40),
+	 (19,2),
+	 (19,3),
+	 (19,4),
+	 (19,15),
+	 (19,18),
+	 (19,19),
+	 (19,20),
+	 (19,21),
+	 (19,22);
+INSERT INTO db.user_permission (user_id,permission_id) VALUES
+	 (19,23),
+	 (19,24),
+	 (19,25),
+	 (19,26),
+	 (19,27),
+	 (19,28),
+	 (19,29),
+	 (19,30),
+	 (19,31),
+	 (19,32);
+INSERT INTO db.user_permission (user_id,permission_id) VALUES
+	 (19,33),
+	 (19,34),
+	 (19,35),
+	 (19,36),
+	 (19,37),
+	 (19,38),
+	 (19,39),
+	 (19,40),
+	 (20,3),
+	 (20,4);
+INSERT INTO db.user_permission (user_id,permission_id) VALUES
+	 (20,15),
+	 (20,19),
+	 (20,20),
+	 (20,21),
+	 (20,22),
+	 (20,23),
+	 (20,24),
+	 (20,25),
+	 (20,26),
+	 (20,27);
+INSERT INTO db.user_permission (user_id,permission_id) VALUES
+	 (20,28),
+	 (20,29),
+	 (20,31),
+	 (20,32),
+	 (20,34),
+	 (20,40),
+	 (21,3),
+	 (21,4),
+	 (21,15),
+	 (21,19);
+INSERT INTO db.user_permission (user_id,permission_id) VALUES
+	 (21,20),
+	 (21,21),
+	 (21,22),
+	 (21,23),
+	 (21,24),
+	 (21,25),
+	 (21,26),
+	 (21,27),
+	 (21,28),
+	 (21,29);
+INSERT INTO db.user_permission (user_id,permission_id) VALUES
+	 (21,30),
+	 (21,31),
+	 (21,32),
+	 (21,34),
+	 (21,38),
+	 (21,40),
+	 (31,3),
+	 (31,4),
+	 (31,15),
+	 (31,19);
+INSERT INTO db.user_permission (user_id,permission_id) VALUES
+	 (31,21),
+	 (31,22),
+	 (31,23),
+	 (31,24),
+	 (31,25),
+	 (31,26),
+	 (31,27),
+	 (31,28),
+	 (31,30),
+	 (31,31);
+INSERT INTO db.user_permission (user_id,permission_id) VALUES
+	 (31,32),
+	 (31,34),
+	 (31,40),
+	 (53,1);

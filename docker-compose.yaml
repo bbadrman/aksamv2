@@ -1,4 +1,4 @@
-version: '3'
+ 
 services:
   web:
     build: ./
@@ -21,7 +21,7 @@ services:
   db:
     image: mysql
     ports:
-      - "3321:3306"
+      - "3331:3306"
     restart: always
     environment:
       MYSQL_ROOT_PASSWORD: root
@@ -36,7 +36,7 @@ services:
   phpmyadmin:
     image: phpmyadmin/phpmyadmin
     ports:
-      - '8281:80'
+      - '8289:80'
     restart: always
     environment:
       PMA_HOST: db

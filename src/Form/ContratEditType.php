@@ -511,22 +511,22 @@ class ContratEditType extends AbstractType
                     'multiple' => false,
 
                 ])
-                ->add('crmActuel',  Type\MoneyType::class, [
-                    'attr' => ['class' => 'tinymce'],
+                ->add('crmActuel',  Type\TextType::class, [
+                   
                     'label' => "CRM actuel",
                     'required' => false,
                     'attr' => [
-                        'placeholder' => 'Tapez en EURO',
-                        'divisor' => 100,
+                        'placeholder' => 'Tapez CRM actuel',
+                         
 
                     ],
                 ])
-                ->add('crmRetenu', Type\MoneyType::class, [
+                ->add('crmRetenu', Type\TextType::class, [
                     'label' => 'CRM Retenu',
                     'required' => false,
                     'attr' => [
-                        'placeholder' => 'Tapez en EURO',
-                        'divisor' => 100,
+                        'placeholder' => 'Tapez CRM retenu',
+                        
 
                     ],
 
@@ -1095,8 +1095,8 @@ class ContratEditType extends AbstractType
                     'multiple' => false,
 
                 ])
-                ->add('crmActuel',  Type\MoneyType::class, [
-                    'attr' => ['class' => 'tinymce'],
+                ->add('crmActuel',  Type\TextType::class, [
+                     
                     'label' => "CRM actuel",
                     'disabled' => true,
                     'required' => false,
@@ -1106,7 +1106,7 @@ class ContratEditType extends AbstractType
 
                     ],
                 ])
-                ->add('crmRetenu', Type\MoneyType::class, [
+                ->add('crmRetenu', Type\TextType::class, [
                     'label' => 'CRM Retenu',
                     'disabled' => true,
                     'required' => false,

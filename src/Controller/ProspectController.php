@@ -120,7 +120,7 @@ final class ProspectController extends AbstractController
     }
 
 
-    #[Route('/{id}', name: 'app_prospect_show', methods: ['GET'])]
+    #[Route('/{id}', name: 'app_prospect_show', methods: ['GET', 'POST'])]
     public function show(Request $request, Prospect $prospect, HistoryRepository $historyRepository, RelanceHistoryRepository $relanceHistory): Response
     {
         $emailForm = $this->createForm(ScdEmailType::class, $prospect, [
@@ -133,14 +133,115 @@ final class ProspectController extends AbstractController
 
         $teamHistory = $historyRepository->findBy(['prospect' => $prospect]);
         $relanceHistory = $relanceHistory->findBy(['prospect' => $prospect]);
+
+        // traiter les relances:
+
+         $form = $this->createForm(RelanceProspectType::class, $prospect);
+
+
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+
+            // pour persister la date now en relance 6,7,8,10,11,12,13
+            if ($prospect->getRelance() == '6' || $prospect->getRelance() == '7' || $prospect->getRelance() == '8' || $prospect->getRelance() == '10' || $prospect->getRelance() == '11' || $prospect->getRelance() == '12' || $prospect->getRelance() == '13') {
+                $prospect->setRelanceAt(new \DateTimeImmutable());
+            }
+           
+             $this->entityManager->persist($prospect);
+
+            // Créer l'historique
+            $history = new RelanceHistory();
+            $history->setProspect($prospect);
+            $history->setMotifRelance($prospect->getRelance());
+            $history->setRelancedAt($prospect->getRelanceAt());
+            $history->setComment($prospect->getComment());
+            $this->entityManager->persist($history);
+
+            $this->entityManager->flush();
+
+            $this->addFlash('info', 'Votre Prospect a été traité avec succès!');
+             //pour vider la form et rest au meme page 
+           return $this->redirect($request->getRequestUri());
+            
+        }
+
+        //ajouter client apartir de crée client
+        $clientEntity = new Client();
+        $clientEntity->setNom($prospect->getNom());
+        $clientEntity->setPrenom($prospect->getPrenom());
+        $clientEntity->setPhone($prospect->getPhone());
+        $clientEntity->setEmail($prospect->getEmail());
+        $clientEntity->setRaisonSociale($prospect->getRaisonSociale());
+        $clientEntity->setTeam($prospect->getTeam());
+        $clientEntity->setCmrcl($prospect->getComrcl());
+        $clientEntity->setCreatAt(new \DateTime());
+        // Associer le prospect au client
+        $clientEntity->setProspect($prospect);
+
+
+        // Handle the Client form submission
+        $clientForm = $this->createForm(ClientRelanceType::class, $clientEntity);
+        $clientForm->handleRequest($request);
+
+        // Traitement du formulaire de client
+        if ($clientForm->isSubmitted()) {
+            if ($clientForm->isValid()) {
+                // Vérifier si le client existe déjà dans la base de données
+                $existingClient = $this->entityManager->getRepository(Client::class)->findOneBy([
+                    'nom' => $prospect->getNom(),
+                    'prenom' => $prospect->getPrenom(),
+                    'phone' => $prospect->getPhone(),
+                    'email' => $prospect->getEmail(),
+
+                ]);
+
+                if ($existingClient) {
+                    $this->addFlash('info', 'Un client avec les mêmes informations existe déjà.');
+                   return $this->redirect($request->headers->get('referer'));
+                }
+                // Récupérer les valeurs du formulaire
+                $commentValue = $clientForm->get('comment')->getData();
+                $relanceAtValue = new \DateTimeImmutable();
+
+                // Mettre à jour le prospect
+                $prospect->setRelance('9');
+                $prospect->setComment($commentValue);
+                $prospect->setRelanceAt($relanceAtValue);
+
+                // Créer un historique de relance
+                $history = new RelanceHistory();
+                $history->setProspect($prospect);
+                $history->setMotifRelance('9');
+                $history->setRelancedAt($relanceAtValue);
+                $history->setComment($commentValue);
+
+                // Persister les entités
+                $this->entityManager->persist($prospect);
+            $this->entityManager->persist($history);
+            $this->entityManager->persist($clientEntity);
+            $this->entityManager->flush();
+
+                // Rediriger avec un message de succès
+                $this->addFlash('success', 'Client ajouté avec succès!');
+                return $this->redirect($request->headers->get('referer'));
+            }
+        }
+        if ($request->isMethod('POST') && $form->isSubmitted() && $form->isValid()) {
+        $form = $this->createForm(RelanceProspectType::class, new Prospect());
+    }
         return $this->render('prospect/show.html.twig', [
             'prospect' => $prospect,
             'teamHistory' => $teamHistory,
             'relanceHistory' => $relanceHistory,
             'gsmForm' => $gsmForm->createView(),
             'emailForm' => $emailForm->createView(),
+            'form' => $form->createView(),
+            'clientForm' => $clientForm->createView(),
         ]);
     }
+
+
     #[Route('/{id}/update-email', name: 'app_prospect_update_email', methods: ['POST'])]
     public function updateEmail(Request $request, Prospect $prospect): Response
     {
@@ -242,7 +343,7 @@ final class ProspectController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
 
             // pour persister la date now en relance 6,7,8,10,11,12,13
-            if ($prospect->getRelance() == '6 ' || $prospect->getRelance() == '7' || $prospect->getRelance() == '8' || $prospect->getRelance() == '10' || $prospect->getRelance() == '11' || $prospect->getRelance() == '12' || $prospect->getRelance() == '13') {
+            if ($prospect->getRelance() == '6' || $prospect->getRelance() == '7' || $prospect->getRelance() == '8' || $prospect->getRelance() == '10' || $prospect->getRelance() == '11' || $prospect->getRelance() == '12' || $prospect->getRelance() == '13') {
                 $prospect->setRelanceAt(new \DateTimeImmutable());
             }
 

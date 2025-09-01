@@ -481,6 +481,18 @@
     box-shadow: 0 8px 20px rgba(240, 147, 251, 0.6);
 }
 
+.btn-client-modern {
+    background: var(--secondary-gradient);
+    color: white;
+    box-shadow: 0 5px 15px rgba(240, 147, 251, 0.4);
+    width: 100%;
+    margin-top: 1rem;
+}
+
+.btn-client-modern:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(240, 147, 251, 0.6);
+}
 /* ===== ANIMATIONS PROGRESSIVES ===== */
 .modal-relance .form-section:nth-child(2) {
     animation-delay: 0.1s;

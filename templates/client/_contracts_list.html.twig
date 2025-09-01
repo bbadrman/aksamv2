@@ -48,7 +48,7 @@
 						<a href="{{ path('contrat_sav_new', {'id': contrat.id}) }}" class="btn btn-sm btn-outline-primary" title="Ajouter SAV">
 							+ SAV
 						</a>
-						{% if contrat.document  %}
+						{% if is_granted('ROLE_DOCUMENT_EDIT') and contrat.document %}
 							<a href="{{ path('app_document_edit', {'id': contrat.document.id}) }}" class="btn btn-info btn-sm">
 								<i class="fa-solid fa-copy"></i>
 							</a>

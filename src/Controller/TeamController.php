@@ -39,6 +39,9 @@ final class TeamController extends AbstractController
             foreach ($team->getUniteTravails() as $unite) {
                 $unite->addTeam($team);
             }
+            foreach ($team->getUsers() as $user) {
+                $user->addTeam($team);
+            }
 
             $entityManager->persist($team);
             $entityManager->flush();
@@ -132,9 +135,14 @@ final class TeamController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            // foreach ($team->getUniteTravails() as $unite) {
-            //     $unite->addTeam($team);
-            // }
+            foreach ($team->getUniteTravails() as $unite) {
+                $unite->addTeam($team);
+            }
+
+            foreach ($team->getUsers() as $user) {
+                $user->addTeam($team);
+                $user->removeTeam($team);
+            }
             $entityManager->flush();
 
             return $this->redirectToRoute('app_team_index', [], Response::HTTP_SEE_OTHER);

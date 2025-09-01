@@ -517,22 +517,23 @@ class ContratType extends AbstractType
                 'multiple' => false,
 
             ])
-            ->add('crmActuel',  Type\MoneyType::class, [
-                'attr' => ['class' => 'tinymce'],
+            ->add('crmActuel',  Type\TextType::class, [
+               
                 'label' => "CRM actuel",
                 'required' => false,
                 'attr' => [
-                    'placeholder' => 'Tapez en EURO',
-                    'divisor' => 100,
+                    'placeholder' => 'Tapez CRM actuel',
+                     
 
                 ],
             ])
-            ->add('crmRetenu', Type\MoneyType::class, [
+            ->add('crmRetenu', Type\TextType::class, [
+                 
                 'label' => 'CRM Retenu',
                 'required' => false,
                 'attr' => [
-                    'placeholder' => 'Tapez en EURO',
-                    'divisor' => 100,
+                    'placeholder' => 'Tapez CRM retenu',
+ 
 
                 ],
 
@@ -607,14 +608,14 @@ class ContratType extends AbstractType
                 'placeholder' => '--Sélectionnez une Compagnie--',
                 'choice_label' => 'nom',
                 'multiple' => false,
-                'required' => false,
+                'required' => true,
             ])
             ->add('partenaire', EntityType::class, [
                 'class' => Compartenaire::class,
                 'placeholder' => '--Sélectionnez un Partenaire--',
                 'choice_label' => 'nom',
                 'multiple' => false,
-                'required' => false,
+                'required' => true,
             ])
 
             ->add('document', DocumentType::class, [
