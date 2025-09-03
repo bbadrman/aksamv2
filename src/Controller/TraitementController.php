@@ -6,7 +6,7 @@ use App\Form\SearchProspectType;
 use App\Repository\AppelRepository;
 use App\Repository\ProspectRepository;
 use App\Search\SearchProspect;
-use App\Service\StatsService;
+use App\Service\StatsService; 
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
@@ -14,6 +14,8 @@ use Symfony\Component\Security\Http\Attribute\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\HttpFoundation\RequestStack;
+use Symfony\Contracts\Cache\ItemInterface;
+use Symfony\Contracts\Cache\CacheInterface;
 
 #[IsGranted('IS_AUTHENTICATED')]
 #[Route('/traitement')]
@@ -25,6 +27,7 @@ final class TraitementController extends AbstractController
         private ProspectRepository $prospectRepository,
         private Security $security,
         private AppelRepository $AppelRepository,
+        private CacheInterface $cache,
     ) {}
 
 
@@ -37,52 +40,73 @@ final class TraitementController extends AbstractController
         ]);
     }
 
-    #[Route('/newprospect', name: 'app_prospect_index', methods: ['GET', 'POST'])]
-    public function newprospect(Request $request): Response
-    {
-        $data = new SearchProspect();
-        $data->page = $request->query->get('page', 1);
-        $form = $this->createForm(SearchProspectType::class, $data);
-        $form->handleRequest($this->requestStack->getCurrentRequest());
+ 
 
-        $user = $this->security->getUser();
-        $roles = $user->getRoles();
-        $prospects = [];
-        $duplicates = [
-            'emails' => [],
-            'phones' => [],
-        ];
+#[Route('/newprospect', name: 'app_prospect_index', methods: ['GET', 'POST'])]
+public function newprospect(Request $request, CacheInterface $cache): Response
+{
+    $data = new SearchProspect();
+    $data->page = $request->query->get('page', 1);
 
-        if ($this->isGranted('ROLE_ADMIN') or $this->isGranted('ROLE_AFFECTALL')) {
-            $prospects = $this->prospectRepository->findByAdminNewProsp($data);  // team null  
+    $form = $this->createForm(SearchProspectType::class, $data);
+    $form->handleRequest($this->requestStack->getCurrentRequest());
+
+    $user = $this->security->getUser();
+    if (!$user) {
+        throw $this->createAccessDeniedException('Utilisateur non connecté');
+    }
+
+    // 🔑 clé de cache unique par user, rôle et critères
+    $cacheKey = sprintf(
+        'newprospect_%s_%s',
+        $user->getUserIdentifier(),   // ou getId() si dispo
+        md5(serialize($data))
+    );
+
+    // Récupération depuis le cache ou calcul si manquant
+    [$prospects, $duplicates] = $cache->get($cacheKey, function (ItemInterface $item) use ($data, $user) {
+        $item->expiresAfter(300); // 5 min (modifiable)
+
+        // --- Récupération prospects selon rôle
+        if ($this->isGranted('ROLE_ADMIN') || $this->isGranted('ROLE_AFFECTALL')) {
+            $prospects = $this->prospectRepository->findByAdminNewProsp($data);
         } elseif ($this->isGranted('ROLE_CHEF')) {
             $prospects = $this->prospectRepository->findByChefNewProsp($data, $user);
         } else {
             $prospects = $this->prospectRepository->findByCmrclNewProsp($data, $user);
         }
 
+        // --- Vérification des doublons
+        $duplicates = [
+            'emails' => [],
+            'phones' => [],
+        ];
+
         foreach ($prospects as $prospect) {
             $email = $prospect->getEmail();
-            $phone = $prospect->getPhone(); // Assurez-vous que la méthode `getPhone()` existe.
+            $phone = $prospect->getPhone();
 
-            // Vérifier les doublons par email
-            $existingEmailProspect = $this->prospectRepository->findOneBy(['email' => $email]);
-            $isEmailDuplicate = $existingEmailProspect !== null && $existingEmailProspect->getId() !== $prospect->getId();
-            $duplicates['emails'][$email] = $isEmailDuplicate;
+            if ($email) {
+                $existingEmailProspect = $this->prospectRepository->findOneBy(['email' => $email]);
+                $duplicates['emails'][$email] = $existingEmailProspect !== null && $existingEmailProspect->getId() !== $prospect->getId();
+            }
 
-            // Vérifier les doublons par téléphone
-            if ($phone) { // Vérifier que le numéro de téléphone existe
+            if ($phone) {
                 $existingPhoneProspect = $this->prospectRepository->findOneBy(['phone' => $phone]);
-                $isPhoneDuplicate = $existingPhoneProspect !== null && $existingPhoneProspect->getId() !== $prospect->getId();
-                $duplicates['phones'][$phone] = $isPhoneDuplicate;
+                $duplicates['phones'][$phone] = $existingPhoneProspect !== null && $existingPhoneProspect->getId() !== $prospect->getId();
             }
         }
-        return $this->render('prospect/index.html.twig', [
-            'duplicates' => $duplicates,
-            'prospects' => $prospects,
-            'search_form' => $form->createView()
-        ]);
-    }
+
+        return [$prospects, $duplicates];
+    });
+
+    return $this->render('prospect/index.html.twig', [
+        'duplicates' => $duplicates,
+        'prospects' => $prospects,
+        'search_form' => $form->createView()
+    ]);
+}
+
 
     // afficher les nouveaux prospects 
     #[Route('/newprospectchef', name: 'newprospectchef_index', methods: ['GET', 'POST'])]
@@ -114,6 +138,8 @@ final class TraitementController extends AbstractController
             'search_form' => $form->createView()
         ]);
     }
+
+    
     /**
      * afficher les prospect no traiter   
      */
@@ -158,50 +184,58 @@ final class TraitementController extends AbstractController
 
 
     #[Route('/search', name: 'prospect_search', methods: ['GET'])]
-    public function search(Request $request): Response
-    {
-        $data = new SearchProspect();
-        $data->page = $request->get('page', 1);
+public function search(Request $request, CacheInterface $cache): Response
+{
+    $data = new SearchProspect();
+    $data->page = $request->get('page', 1);
 
-        $form = $this->createForm(SearchProspectType::class, $data);
-        $form->handleRequest($request);
+    $form = $this->createForm(SearchProspectType::class, $data);
+    $form->handleRequest($request);
 
-        $user = $this->security->getUser();
-        $roles = $user->getRoles();
-        $prospect = [];
-        $totalResults = 0;
+    $user = $this->security->getUser();
+    $prospect = [];
+    $totalResults = 0;
 
-        if ($form->isSubmitted() && $form->isValid() && !$form->isEmpty()) {
+    if ($form->isSubmitted() && $form->isValid() && !$form->isEmpty()) {
+        // 🔑 Construire une clé de cache unique selon les critères
+        $cacheKey = sprintf(
+            'prospect_search_%s_%s_%s',
+            $user->getUserIdentifier(),
+            implode('_', $user->getRoles()),
+            md5(serialize($data)) // sérialisation des critères
+        );
+
+        $prospect = $cache->get($cacheKey, function (ItemInterface $item) use ($data, $user) {
+            $item->expiresAfter(300); // cache 5 minutes (modifiable)
 
             if ($this->isGranted('ROLE_ADMIN')) {
-                // Admin peut chercher tous les prospects
-                $prospect = $this->prospectRepository->findSearch($data, $user);
-            } else if ($this->isGranted('ROLE_CHEF')) {
-                // Chef peut chercher tous les prospects attachés à leur équipe
-                $prospect = $this->prospectRepository->findAllChefSearch($data, $user);
-            } elseif ($this->isGranted('ROLE_USER')) {
-                // Commercial peut chercher seulement les prospects attachés à lui
-                $prospect = $this->prospectRepository->findByUserAffecterCmrcl($data, $user);
+                return $this->prospectRepository->findSearch($data, $user);
+            } elseif ($this->isGranted('ROLE_CHEF')) {
+                return $this->prospectRepository->findAllChefSearch($data, $user);
+            } else {
+                return $this->prospectRepository->findByUserAffecterCmrcl($data, $user);
             }
+        });
 
-            // Calculer le total à partir de l'objet pagination
-            $totalResults = $prospect->getTotalItemCount();
+        $totalResults = $prospect->getTotalItemCount();
 
-            return $this->render('prospect/index.html.twig', [
-                'prospects' => $prospect,
-                'search_form' => $form->createView(),
-                'totalResults' => $totalResults,
-                'appels' => $this->AppelRepository->findAll(),
-            ]);
-        }
-
-        return $this->render('prospect/search.html.twig', [
+        return $this->render('prospect/index.html.twig', [
             'prospects' => $prospect,
             'search_form' => $form->createView(),
             'totalResults' => $totalResults,
-
+            'appels' => $this->AppelRepository->findAll(),
         ]);
     }
+
+
+
+    return $this->render('prospect/search.html.twig', [
+        'prospects' => $prospect,
+        'search_form' => $form->createView(),
+        'totalResults' => $totalResults,
+    ]);
+}
+
     /**
      * afficher les relance du jour 
      */

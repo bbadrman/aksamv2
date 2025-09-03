@@ -22,6 +22,9 @@ use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Contracts\Cache\CacheInterface;
+use Symfony\Contracts\Cache\ItemInterface;
+
 
 #[IsGranted('IS_AUTHENTICATED')]
 #[Route('/client')]
@@ -35,24 +38,33 @@ final class ClientController extends AbstractController
     ) {}
 
 
-    #[Route(name: 'client_index', methods: ['GET'])]
-    public function index(Request $request, EntityManagerInterface $entityManager, PagerPaginatorInterface $paginator): Response
-    {
-        // Create search form
-        $data = new SearchClient();
-        $data->page = $request->query->get('page', 1);
-        $form = $this->createForm(SearchClientType::class, $data);
-        $form->handleRequest($this->requestStack->getCurrentRequest());
-        $client = [];
+  
+#[Route(name: 'client_index', methods: ['GET'])]
+public function index(Request $request, CacheInterface $cache): Response
+{
+    $data = new SearchClient();
+    $data->page = $request->query->get('page', 1);
 
+    $form = $this->createForm(SearchClientType::class, $data);
+    $form->handleRequest($this->requestStack->getCurrentRequest());
 
-        // Apply search criteria if form is submitted
-        if ($form->isSubmitted() && $form->isValid() && !$form->isEmpty()) {
-            $client =  $this->clientRepository->findClientAll($data,  null);
+    $clients = [];
+    $clientsWithPayments = [];
 
-            // Calculer le nombre de paiements pour chaque client
+    if ($form->isSubmitted() && $form->isValid() && !$form->isEmpty()) {
+        // 🔑 clé de cache unique par critères de recherche
+        $cacheKey = sprintf(
+            'client_index_%s',
+            md5(serialize($data))
+        );
+
+        [$clients, $clientsWithPayments] = $cache->get($cacheKey, function (ItemInterface $item) use ($data) {
+            $item->expiresAfter(300); // cache 5 min (modifiable)
+
+            $clients = $this->clientRepository->findClientAll($data, null);
+
             $clientsWithPayments = [];
-            foreach ($client as $c) {
+            foreach ($clients as $c) {
                 $paymentsCount = 0;
                 foreach ($c->getContrats() as $contrat) {
                     if ($contrat->getPayments()) {
@@ -65,27 +77,33 @@ final class ClientController extends AbstractController
                 ];
             }
 
-            return $this->render('client/index.html.twig', [
-                'clients' => $client,
-                'clients_with_payments' => $clientsWithPayments,
-                'search_form' => $form->createView()
-            ]);
-        }
+            return [$clients, $clientsWithPayments];
+        });
 
-        return $this->render('client/search.html.twig', [
-            'clients' => $client,
-
+        return $this->render('client/index.html.twig', [
+            'clients' => $clients,
+            'clients_with_payments' => $clientsWithPayments,
             'search_form' => $form->createView()
         ]);
     }
 
+    return $this->render('client/search.html.twig', [
+        'clients' => $clients,
+        'search_form' => $form->createView()
+    ]);
+}
 
 
-    #[Route('/client/{id}/contracts', name: 'app_client_contracts', methods: ['GET'])]
-    public function getClientContracts(Client $client): Response
-    {
-        // Only fetch active contracts
-        $contracts = $this->entityManager->createQueryBuilder()
+  #[Route('/client/{id}/contracts', name: 'app_client_contracts', methods: ['GET'])]
+public function getClientContracts(Client $client, CacheInterface $cache): Response
+{
+    // 🔑 clé unique par client
+    $cacheKey = sprintf('client_contracts_%d', $client->getId());
+
+    $contracts = $cache->get($cacheKey, function (ItemInterface $item) use ($client) {
+        $item->expiresAfter(300); // 5 minutes
+
+        return $this->entityManager->createQueryBuilder()
             ->select('c')
             ->from('App\Entity\Contrat', 'c')
             ->where('c.client = :client')
@@ -93,12 +111,13 @@ final class ClientController extends AbstractController
             ->setParameter('client', $client)
             ->getQuery()
             ->getResult();
+    });
 
-        return $this->render('client/_contracts_list.html.twig', [
-            'contracts' => $contracts,
-            'client' => $client
-        ]);
-    }
+    return $this->render('client/_contracts_list.html.twig', [
+        'contracts' => $contracts,
+        'client' => $client
+    ]);
+}
 
     // Nouvelle route pour récupérer les SAV d'un contrat
     #[Route('/contract/{id}/savs', name: 'app_contract_savs', methods: ['GET'])]

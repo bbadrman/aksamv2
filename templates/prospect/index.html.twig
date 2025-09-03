@@ -156,16 +156,23 @@
 							Email</th>
 						<th>
 							<i class="fa fa-refresh"></i>
-							Status Relance</th>
+							Status </th>
 						<th>
 							<i class="fa fa-clock-o"></i>
-							Date Relance</th>
+							{% if app.request.get('_route') == 'app_unjoinable' %}
+								Date Injoignable
+							{% else %}
+								Date Relance
+							{% endif %}
+						 </th>
 						<th>
 							<i class="fa fa-cogs"></i>
 							Actions</th>
 					</tr>
 				</thead>
 				<tbody>
+				{% set phones = [] %}
+						{% set emails = [] %}
 					{% for prospect in prospects %}
 						<tr>
 							{% if is_granted('ROLE_ADMIN')   or is_granted('ROLE_AFFECTALL') %}
@@ -372,6 +379,7 @@
 									{# {% set phones = phones|merge([prospect.phone]) %} #}
 								{% endif %}
 							{% endif %}
+
 							<td>
 								{% if app.request.get('_route') == 'app_prospect_index' and is_granted('ROLE_ADMIN') %}
 									<a href="mailto:{{ prospect.email }}">{{ prospect.email }}</a>
@@ -382,6 +390,7 @@
 									<a href="mailto:{{ prospect.email }}">{{ prospect.email }}</a>
 								{% endif %}
 							</td>
+
 							<td>
 								<a>
 									{% if prospect.relance is null %}
@@ -420,6 +429,8 @@
 							{% else %}
 								<td>{{ prospect.relanceAt ? prospect.relanceAt|date('Y-m-d H:i') : '' }}</td>
 							{% endif %}
+
+							
 							<td class="btn-toolbar">
 								<a href="{{ path('app_prospect_show', {'id': prospect.id}) }}" class="btn btn-info btn-xs">
 									<i class="fa fa-eye"></i>
