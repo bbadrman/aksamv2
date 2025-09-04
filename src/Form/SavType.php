@@ -7,7 +7,7 @@ use App\Entity\User;
 use Doctrine\ORM\QueryBuilder;
 use App\Repository\UserRepository;
 use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Security\Core\Security;
+use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\OptionsResolver\OptionsResolver;
