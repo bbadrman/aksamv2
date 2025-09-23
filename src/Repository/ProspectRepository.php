@@ -43,7 +43,7 @@ class ProspectRepository extends ServiceEntityRepository
             ->leftJoin('p.comrcl', 'f')
 
             ->andwhere('p.comrcl IS NULL')
-            ->andWhere('p.team IS NULL')
+            ->andWhere('p.team IS  NULL')
             ->andWhere('p.relance IS NULL')
 
             // ->leftJoin('p.relanceds', 'r')

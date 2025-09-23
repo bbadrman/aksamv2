@@ -6,7 +6,7 @@ use App\Form\SearchProspectType;
 use App\Repository\AppelRepository;
 use App\Repository\ProspectRepository;
 use App\Search\SearchProspect;
-use App\Service\StatsService; 
+use App\Service\StatsService;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
@@ -40,35 +40,36 @@ final class TraitementController extends AbstractController
         ]);
     }
 
- 
 
-#[Route('/newprospect', name: 'app_prospect_index', methods: ['GET', 'POST'])]
-public function newprospect(Request $request, CacheInterface $cache): Response
-{
-    $data = new SearchProspect();
-    $data->page = $request->query->get('page', 1);
 
-    $form = $this->createForm(SearchProspectType::class, $data);
-    $form->handleRequest($this->requestStack->getCurrentRequest());
+    #[Route('/newprospect', name: 'app_prospect_index', methods: ['GET', 'POST'])]
+    public function newprospect(Request $request): Response
+    {
+        $data = new SearchProspect();
+        $data->page = $request->query->get('page', 1);
 
-    $user = $this->security->getUser();
-    if (!$user) {
-        throw $this->createAccessDeniedException('Utilisateur non connecté');
-    }
+        $form = $this->createForm(SearchProspectType::class, $data);
+        $form->handleRequest($this->requestStack->getCurrentRequest());
 
-    // 🔑 clé de cache unique par user, rôle et critères
-    $cacheKey = sprintf(
-        'newprospect_%s_%s',
-        $user->getUserIdentifier(),   // ou getId() si dispo
-        md5(serialize($data))
-    );
+        $user = $this->security->getUser();
+        if (!$user) {
+            throw $this->createAccessDeniedException('Utilisateur non connecté');
+        }
 
-    // Récupération depuis le cache ou calcul si manquant
-    [$prospects, $duplicates] = $cache->get($cacheKey, function (ItemInterface $item) use ($data, $user) {
-        $item->expiresAfter(300); // 5 min (modifiable)
+        // 🔑 clé de cache unique par user, rôle et critères
+        // $cacheKey = sprintf(
+        //     'newprospect_%s_%s_%s',
+        //     $user->getUserIdentifier(),
+        //     md5(serialize($user->getRoles())),  // ← AJOUT DES RÔLES
+        //     md5(serialize($data))
+        // );
+
+        // Récupération depuis le cache ou calcul si manquant
+        // [$prospects, $duplicates] = $cache->get($cacheKey, function (ItemInterface $item) use ($data, $user) {
+        //     $item->expiresAfter(300); // 5 min
 
         // --- Récupération prospects selon rôle
-        if ($this->isGranted('ROLE_ADMIN') || $this->isGranted('ROLE_AFFECTALL')) {
+        if ($this->isGranted('ROLE_ADMIN') || $this->isGranted('ROLE_AFFECT')) {
             $prospects = $this->prospectRepository->findByAdminNewProsp($data);
         } elseif ($this->isGranted('ROLE_CHEF')) {
             $prospects = $this->prospectRepository->findByChefNewProsp($data, $user);
@@ -97,15 +98,14 @@ public function newprospect(Request $request, CacheInterface $cache): Response
             }
         }
 
-        return [$prospects, $duplicates];
-    });
 
-    return $this->render('prospect/index.html.twig', [
-        'duplicates' => $duplicates,
-        'prospects' => $prospects,
-        'search_form' => $form->createView()
-    ]);
-}
+
+        return $this->render('prospect/index.html.twig', [
+            'duplicates' => $duplicates,
+            'prospects' => $prospects,
+            'search_form' => $form->createView()
+        ]);
+    }
 
 
     // afficher les nouveaux prospects 
@@ -139,7 +139,7 @@ public function newprospect(Request $request, CacheInterface $cache): Response
         ]);
     }
 
-    
+
     /**
      * afficher les prospect no traiter   
      */
@@ -184,57 +184,57 @@ public function newprospect(Request $request, CacheInterface $cache): Response
 
 
     #[Route('/search', name: 'prospect_search', methods: ['GET'])]
-public function search(Request $request, CacheInterface $cache): Response
-{
-    $data = new SearchProspect();
-    $data->page = $request->get('page', 1);
+    public function search(Request $request, CacheInterface $cache): Response
+    {
+        $data = new SearchProspect();
+        $data->page = $request->get('page', 1);
 
-    $form = $this->createForm(SearchProspectType::class, $data);
-    $form->handleRequest($request);
+        $form = $this->createForm(SearchProspectType::class, $data);
+        $form->handleRequest($request);
 
-    $user = $this->security->getUser();
-    $prospect = [];
-    $totalResults = 0;
+        $user = $this->security->getUser();
+        $prospect = [];
+        $totalResults = 0;
 
-    if ($form->isSubmitted() && $form->isValid() && !$form->isEmpty()) {
-        // 🔑 Construire une clé de cache unique selon les critères
-        $cacheKey = sprintf(
-            'prospect_search_%s_%s_%s',
-            $user->getUserIdentifier(),
-            implode('_', $user->getRoles()),
-            md5(serialize($data)) // sérialisation des critères
-        );
+        if ($form->isSubmitted() && $form->isValid() && !$form->isEmpty()) {
+            // 🔑 Construire une clé de cache unique selon les critères
+            $cacheKey = sprintf(
+                'prospect_search_%s_%s_%s',
+                $user->getUserIdentifier(),
+                implode('_', $user->getRoles()),
+                md5(serialize($data)) // sérialisation des critères
+            );
 
-        $prospect = $cache->get($cacheKey, function (ItemInterface $item) use ($data, $user) {
-            $item->expiresAfter(300); // cache 5 minutes (modifiable)
+            $prospect = $cache->get($cacheKey, function (ItemInterface $item) use ($data, $user) {
+                $item->expiresAfter(300); // cache 5 minutes (modifiable)
 
-            if ($this->isGranted('ROLE_ADMIN')) {
-                return $this->prospectRepository->findSearch($data, $user);
-            } elseif ($this->isGranted('ROLE_CHEF')) {
-                return $this->prospectRepository->findAllChefSearch($data, $user);
-            } else {
-                return $this->prospectRepository->findByUserAffecterCmrcl($data, $user);
-            }
-        });
+                if ($this->isGranted('ROLE_ADMIN')) {
+                    return $this->prospectRepository->findSearch($data, $user);
+                } elseif ($this->isGranted('ROLE_CHEF')) {
+                    return $this->prospectRepository->findAllChefSearch($data, $user);
+                } else {
+                    return $this->prospectRepository->findByUserAffecterCmrcl($data, $user);
+                }
+            });
 
-        $totalResults = $prospect->getTotalItemCount();
+            $totalResults = $prospect->getTotalItemCount();
 
-        return $this->render('prospect/index.html.twig', [
+            return $this->render('prospect/index.html.twig', [
+                'prospects' => $prospect,
+                'search_form' => $form->createView(),
+                'totalResults' => $totalResults,
+                'appels' => $this->AppelRepository->findAll(),
+            ]);
+        }
+
+
+
+        return $this->render('prospect/search.html.twig', [
             'prospects' => $prospect,
             'search_form' => $form->createView(),
             'totalResults' => $totalResults,
-            'appels' => $this->AppelRepository->findAll(),
         ]);
     }
-
-
-
-    return $this->render('prospect/search.html.twig', [
-        'prospects' => $prospect,
-        'search_form' => $form->createView(),
-        'totalResults' => $totalResults,
-    ]);
-}
 
     /**
      * afficher les relance du jour 

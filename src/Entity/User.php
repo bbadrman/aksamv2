@@ -32,10 +32,10 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         minMessage: "Le nom d'utilisateur doit contenir au moins quatre caractères",
         maxMessage: "Le nom d'utilisateur doit contenir au maximum quinze caractères"
     )]
-    #[Assert\Regex(
-        pattern: "/^[a-z0-9_-]{3,15}$/",
-        message: "Votre prénom ne doit pas contenir d'espaces, de virgules, de points-virgules ou de deux-points"
-    )]
+    // #[Assert\Regex(
+    //     pattern: "/^[a-z0-9_-]{3,15}$/",
+    //     message: "Votre prénom ne doit pas contenir d'espaces, de virgules, de points-virgules ou de deux-points"
+    // )]
     #[ORM\Column(length: 180)]
     private ?string $username = null;
 
