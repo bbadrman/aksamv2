@@ -38,9 +38,7 @@ class Contrat
     private ?string $activite = null;
 
     #[ORM\Column(length: 255, nullable: true)]
-    private ?string $imatriclt = null;
-
-
+    private ?string $imatriclt = null; 
 
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $formule = null;
@@ -61,9 +59,7 @@ class Contrat
     private ?string $conducteur = null;
 
     #[ORM\Column(type: Types::DATETIME_MUTABLE, nullable: true)]
-    private ?\DateTimeInterface $datePermis = null;
-
-
+    private ?\DateTimeInterface $datePermis = null; 
 
     #[ORM\Column(type: Types::SMALLINT, nullable: true)]
     private ?int $status = null;

@@ -59,17 +59,7 @@ class ProspectType extends AbstractType
                     'placeholder' => "Merci de saisir l'adresse email"
                 ]
             ])
-            ->add('gender', Type\ChoiceType::class, [
-                'label' => 'Genre',
-                'required' => false,
-                'placeholder' => '--Merci de Choisir le genre--',
-                'choices' => [
-                    'Male' => 1,
-                    'Female' => 2
-                ],
-                'expanded' => false,
-                'multiple' => false
-            ])
+             
             ->add('city', Type\TextType::class, [
                 'label' => 'Ville ',
                 'required' => false,
@@ -122,21 +112,7 @@ class ProspectType extends AbstractType
                     'placeholder' => 'Merci de saisir le Code Postal',
                 ]
             ])
-            ->add('gsm', Type\TelType::class, [
-                'label' => 'Téléphone 2',
-                'required' => false,
-                'constraints' => new Length([
-                    'min' => 10,
-                    'minMessage' => '  
-                    le numéro de téléphone doit composer des 10 chiffres y a compris le 0 ',
-                    'max' => 10,
-                    'maxMessage' => '  
-                    le numéro de téléphone doit composer des 10 chiffres y a compris le 0 '
-                ]),
-                'attr' => [
-                    'placeholder' => 'Merci de saisir si la deuxieme numéro de téléphone'
-                ]
-            ])
+             
             ->add('assurer', Type\ChoiceType::class, [
                 'label' => 'Assuré actuellement',
                 'required' => false,

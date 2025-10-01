@@ -104,7 +104,7 @@ class AppelRepository extends ServiceEntityRepository
     }
 
     // Méthode pour rechercher les appels d'un prospect par ses numéros phone et gsm
-    public function findByProspectNumbers(?string $phone, ?string $gsm)
+    public function findByProspectNumbers(?string $phone)
     {
         $qb = $this->createQueryBuilder('a');
 
@@ -116,12 +116,7 @@ class AppelRepository extends ServiceEntityRepository
             // Ajouter les variations du numéro phone
             $phoneNumbers = array_merge($phoneNumbers, $this->getPhoneVariations($phone));
         }
-
-        if ($gsm) {
-            $phoneNumbers[] = $gsm;
-            // Ajouter les variations du numéro gsm
-            $phoneNumbers = array_merge($phoneNumbers, $this->getPhoneVariations($gsm));
-        }
+ 
 
         // Enlever les doublons
         $phoneNumbers = array_unique($phoneNumbers);

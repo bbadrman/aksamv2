@@ -834,13 +834,7 @@ class ProspectRepository extends ServiceEntityRepository
                 ->andWhere('t.name LIKE :team')
                 ->setParameter('team', "%{$search->team}%");
         }
-
-        if (!empty($search->l)) {
-            $query = $query
-                ->andWhere('p.phone LIKE :l')
-                ->orWhere('p.gsm LIKE :l')
-                ->setParameter('l', "%{$search->l}%");
-        }
+ 
 
         if (!empty($search->c)) {
             $query = $query

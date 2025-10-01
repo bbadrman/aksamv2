@@ -11,10 +11,7 @@ class SearchUser
      */
     public $q = '';
 
-    /**
-     * @var int
-     */
-    public $gender;
+    
     /**
      * @var int
      */

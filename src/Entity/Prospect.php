@@ -34,10 +34,7 @@ class Prospect
     private ?string $phone = null;
 
     #[ORM\Column(length: 255, nullable: true)]
-    private ?string $email = null;
-
-    #[ORM\Column(length: 255, nullable: true)]
-    private ?string $gender = null;
+    private ?string $email = null; 
 
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $city = null;
@@ -59,9 +56,7 @@ class Prospect
 
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $codePost = null;
-
-    #[ORM\Column(length: 255, nullable: true)]
-    private ?string $gsm = null;
+ 
 
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $assurer = null;
@@ -77,9 +72,7 @@ class Prospect
 
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $url = null;
-
-    #[ORM\Column(length: 255, nullable: true)]
-    private ?string $secdEmail = null;
+ 
 
     #[ORM\Column(type: Types::DATETIME_MUTABLE, nullable: true)]
     private ?\DateTimeInterface $creatAt = null;
@@ -128,6 +121,12 @@ class Prospect
 
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $comment = null;
+
+    #[ORM\Column(type: Types::DECIMAL, precision: 10, scale: 2, nullable: true)]
+    private ?string $revenu = null;
+
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $regimSocial = null;
 
     public function __construct()
     {
@@ -205,18 +204,7 @@ class Prospect
 
         return $this;
     }
-
-    public function getGender(): ?string
-    {
-        return $this->gender;
-    }
-
-    public function setGender(?string $gender): static
-    {
-        $this->gender = $gender;
-
-        return $this;
-    }
+ 
 
     public function getCity(): ?string
     {
@@ -301,19 +289,7 @@ class Prospect
 
         return $this;
     }
-
-    public function getGsm(): ?string
-    {
-        return $this->gsm;
-    }
-
-    public function setGsm(?string $gsm): static
-    {
-        $this->gsm = $gsm;
-
-        return $this;
-    }
-
+ 
     public function getAssurer(): ?string
     {
         return $this->assurer;
@@ -373,18 +349,7 @@ class Prospect
 
         return $this;
     }
-
-    public function getSecdEmail(): ?string
-    {
-        return $this->secdEmail;
-    }
-
-    public function setSecdEmail(?string $secdEmail): static
-    {
-        $this->secdEmail = $secdEmail;
-
-        return $this;
-    }
+ 
 
 
 
@@ -576,6 +541,30 @@ class Prospect
     public function setComment(?string $comment): static
     {
         $this->comment = $comment;
+
+        return $this;
+    }
+
+    public function getRevenu(): ?string
+    {
+        return $this->revenu;
+    }
+
+    public function setRevenu(?string $revenu): static
+    {
+        $this->revenu = $revenu;
+
+        return $this;
+    }
+
+    public function getRegimSocial(): ?string
+    {
+        return $this->regimSocial;
+    }
+
+    public function setRegimSocial(?string $regimSocial): static
+    {
+        $this->regimSocial = $regimSocial;
 
         return $this;
     }

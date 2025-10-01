@@ -107,7 +107,7 @@ class RingoverController extends AbstractController
             $this->logger->info('Chargement des appels pour le prospect', [
                 'prospect_id' => $prospect->getId(),
                 'prospect_phone' => $prospect->getPhone(),
-                'prospect_gsm' => $prospect->getGsm(),
+                 
             ]);
 
             // Essayer de récupérer les données depuis le cache ou l'API
@@ -126,16 +126,14 @@ class RingoverController extends AbstractController
             }
 
             // Récupérer les numéros du prospect
-            $prospectPhone = $prospect->getPhone();
-            $prospectGsm = $prospect->getGsm();
+            $prospectPhone = $prospect->getPhone(); 
 
             // Chercher les appels pour ce prospect en utilisant ses deux numéros
-            $appels = $appelRepository->findByProspectNumbers($prospectPhone, $prospectGsm);
+            $appels = $appelRepository->findByProspectNumbers($prospectPhone );
 
             $this->logger->info('Résultats de recherche d\'appels pour le prospect', [
                 'prospect_id' => $prospect->getId(),
-                'prospect_phone' => $prospectPhone,
-                'prospect_gsm' => $prospectGsm,
+                'prospect_phone' => $prospectPhone, 
                 'appels_found' => count($appels),
             ]);
 
@@ -143,8 +141,7 @@ class RingoverController extends AbstractController
                 'prospect' => $prospect,
                 'appels' => $appels,
                 'debug_info' => [
-                    'prospect_phone' => $prospectPhone,
-                    'prospect_gsm' => $prospectGsm,
+                    'prospect_phone' => $prospectPhone, 
                     'appels_found' => count($appels),
                 ]
             ]);

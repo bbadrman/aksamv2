@@ -9,9 +9,9 @@ use App\Entity\RelanceHistory;
 use App\Form\ProspectType;
 use App\Form\AffectProspectType;
 use App\Form\ClientRelanceType;
-use App\Form\GsmType;
-use App\Form\RelanceProspectType;
-use App\Form\ScdEmailType;
+use App\Form\EditeEmailType;
+use App\Form\EditeGsmType; 
+use App\Form\RelanceProspectType; 
 use App\Repository\HistoryRepository;
 use App\Repository\ProspectRepository;
 use App\Repository\RelanceHistoryRepository;
@@ -31,7 +31,7 @@ use Symfony\Component\Serializer\SerializerInterface;
 final class ProspectController extends AbstractController
 {
     public function __construct(private EntityManagerInterface $entityManager, private ProspectRepository $prospectRepository) {}
-    #[Route(name: 'app_prospect_index', methods: ['GET', 'POST'])]
+    #[Route(name: 'app_index', methods: ['GET', 'POST'])]
     public function index(Request $request): Response
     {
         $prospects = $this->prospectRepository->findAll();
@@ -123,13 +123,19 @@ final class ProspectController extends AbstractController
     #[Route('/{id}', name: 'app_prospect_show', methods: ['GET', 'POST'])]
     public function show(Request $request, Prospect $prospect, HistoryRepository $historyRepository, RelanceHistoryRepository $relanceHistory): Response
     {
-        $emailForm = $this->createForm(ScdEmailType::class, $prospect, [
-            'action' => $this->generateUrl('app_prospect_update_email', ['id' => $prospect->getId()])
+        $editeEmail = $this->createForm(EditeEmailType::class, $prospect, [
+            'action' => $this->generateUrl('app_prospect_edite_email', ['id' => $prospect->getId()])
+        ]);
+         
+ 
+
+         $editePhone = $this->createForm(EditeGsmType::class, $prospect, [
+            'action' => $this->generateUrl('app_prospect_edite_gsm', ['id' => $prospect->getId()])
         ]);
 
-        $gsmForm = $this->createForm(GsmType::class, $prospect, [
-            'action' => $this->generateUrl('app_prospect_update_gsm', ['id' => $prospect->getId()])
-        ]);
+         
+
+        
 
         $teamHistory = $historyRepository->findBy(['prospect' => $prospect]);
         $relanceHistory = $relanceHistory->findBy(['prospect' => $prospect]);
@@ -233,19 +239,19 @@ final class ProspectController extends AbstractController
         return $this->render('prospect/show.html.twig', [
             'prospect' => $prospect,
             'teamHistory' => $teamHistory,
-            'relanceHistory' => $relanceHistory,
-            'gsmForm' => $gsmForm->createView(),
-            'emailForm' => $emailForm->createView(),
+            'relanceHistory' => $relanceHistory, 
+            'editePhone' => $editePhone->createView(), 
+            'editeEmail' => $editeEmail->createView(), 
             'form' => $form->createView(),
             'clientForm' => $clientForm->createView(),
         ]);
     }
 
 
-    #[Route('/{id}/update-email', name: 'app_prospect_update_email', methods: ['POST'])]
-    public function updateEmail(Request $request, Prospect $prospect): Response
+    #[Route('/{id}/edite-email', name: 'app_prospect_edite_email', methods: ['POST'])]
+    public function editeEmail(Request $request, Prospect $prospect): Response
     {
-        $emailForm = $this->createForm(ScdEmailType::class, $prospect);
+        $emailForm = $this->createForm(EditeEmailType::class, $prospect);
         $emailForm->handleRequest($request);
 
         if ($emailForm->isSubmitted() && $emailForm->isValid()) {
@@ -256,11 +262,12 @@ final class ProspectController extends AbstractController
 
         return $this->redirectToRoute('app_prospect_show', ['id' => $prospect->getId()]);
     }
+ 
 
-    #[Route('/{id}/update-gsm', name: 'app_prospect_update_gsm', methods: ['POST'])]
-    public function updateGsm(Request $request, Prospect $prospect): Response
+     #[Route('/{id}/edite-gsm', name: 'app_prospect_edite_gsm', methods: ['POST'])]
+    public function editeGsm(Request $request, Prospect $prospect): Response
     {
-        $gsmForm = $this->createForm(GsmType::class, $prospect);
+        $gsmForm = $this->createForm(EditeGsmType::class, $prospect);
         $gsmForm->handleRequest($request);
 
         if ($gsmForm->isSubmitted() && $gsmForm->isValid()) {
@@ -271,6 +278,9 @@ final class ProspectController extends AbstractController
 
         return $this->redirectToRoute('app_prospect_show', ['id' => $prospect->getId()]);
     }
+ 
+
+
     #[Route('/{id}/edit', name: 'app_prospect_edit', methods: ['GET', 'POST'])]
     public function edit(Request $request, Prospect $prospect, EntityManagerInterface $entityManager): Response
     {

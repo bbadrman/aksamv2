@@ -31,7 +31,7 @@
 				<tbody>
 
 					{% for apl in appel %}
-						{% if apl.toNumber == prospect.phone or apl.toNumber == prospect.gsm %}
+						{% if apl.toNumber == prospect.phone or apl.toNumber   %}
 							<tr>
 								<td style="color:red">{{ apl.contactName }}</td>
 								<td>{{ apl.fromNumber|replace({'33': '0'}) }}</td>

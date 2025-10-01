@@ -118,15 +118,15 @@
 								<td>{{ prospect.phone|default('Non renseigné') }}</td>
 							</tr>
 							<tr>
-								<th>Téléphone 2</th>
+								<th></th>
 								<td>
 									<div class="inline-form">
-										{{ form_start(gsmForm) }}
-										{{ form_widget(gsmForm.gsm) }}
+										{{ form_start(editePhone) }}
+										{{ form_widget(editePhone.phone) }}
 										<button type="submit">
 											<i class="fas fa-save"></i>
 										</button>
-										{{ form_end(gsmForm) }}
+										{{ form_end(editePhone) }}
 									</div>
 								</td>
 							</tr>
@@ -135,6 +135,19 @@
 								<td>{{ prospect.email|default('Non renseigné') }}</td>
 							</tr>
 							<tr>
+								<th> </th>
+								<td>
+									<div class="inline-form">
+										{{ form_start(editeEmail) }}
+										{{ form_widget(editeEmail.email) }}
+										<button type="submit">
+											<i class="fas fa-save"></i>
+										</button>
+										{{ form_end(editeEmail) }}
+									</div>
+								</td>
+							</tr>
+							{# <tr>
 								<th>Email 2</th>
 								<td>
 									<div class="inline-form">
@@ -146,11 +159,8 @@
 										{{ form_end(emailForm) }}
 									</div>
 								</td>
-							</tr>
-							<tr>
-								<th>Genre</th>
-								<td>{{ prospect.gender|default('Non renseigné') }}</td>
-							</tr>
+							</tr> #}
+							 
 							<tr>
 								<th>Ville</th>
 								<td>{{ prospect.city|default('Non renseigné') }}</td>
@@ -199,10 +209,10 @@
 								<th>URL</th>
 								<td>{{ prospect.url|default('Non renseigné') }}</td>
 							</tr>
-							<tr>
+							{# <tr>
 								<th>Second Email</th>
 								<td>{{ prospect.secdEmail|default('Non renseigné') }}</td>
-							</tr>
+							</tr> #}
 							<tr>
 								<th>Créé le</th>
 								<td>{{ prospect.creatAt ? prospect.creatAt|date('d/m/Y H:i') : 'Non renseigné' }}</td>
