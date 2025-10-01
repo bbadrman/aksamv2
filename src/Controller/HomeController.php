@@ -73,7 +73,7 @@ class HomeController extends AbstractController
     {
 
 
-        $filePath = $this->getParameter('kernel.project_dir') . '/public/documents/regles_soucriptionTPM.pdf';
+        $filePath = $this->getParameter('kernel.project_dir') . '/public/documents/reglessoucriptiontpm.pdf';
         chmod($filePath, 0444); // Lecture seule, pas d'écriture
         if (!file_exists($filePath)) {
             throw $this->createNotFoundException('The file does not exist');
@@ -90,7 +90,7 @@ class HomeController extends AbstractController
     public function readbebliotiqueGarage(): Response
     {
 
-        $filePath = $this->getParameter('kernel.project_dir') . '/public/images/screngarage.png';
+        $filePath = $this->getParameter('kernel.project_dir') . '/public/images/reglessoucriptiontpm.pdf';
         chmod($filePath, 0444); // Lecture seule, pas d'écriture
         if (!file_exists($filePath)) {
             throw $this->createNotFoundException('The file does not exist');
