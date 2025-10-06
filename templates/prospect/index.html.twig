@@ -156,7 +156,8 @@
 							Email</th>
 						<th>
 							<i class="fa fa-refresh"></i>
-							Status </th>
+							Status
+						</th>
 						<th>
 							<i class="fa fa-clock-o"></i>
 							{% if app.request.get('_route') == 'app_unjoinable' %}
@@ -164,15 +165,15 @@
 							{% else %}
 								Date Relance
 							{% endif %}
-						 </th>
+						</th>
 						<th>
 							<i class="fa fa-cogs"></i>
 							Actions</th>
 					</tr>
 				</thead>
 				<tbody>
-				{% set phones = [] %}
-						{% set emails = [] %}
+					{% set phones = [] %}
+					{% set emails = [] %}
 					{% for prospect in prospects %}
 						<tr>
 							{% if is_granted('ROLE_ADMIN')   or is_granted('ROLE_AFFECTALL') %}
@@ -213,7 +214,16 @@
 										{% elseif prospect.url == 16 %}
 											<a href="https://assurance-professionnels-auto.fr/negociants-auto" target="_blank" title="https://assurance-professionnels-auto.fr/negociants-auto">negociants-auto</a>
 										{% elseif prospect.url == 17 %}
-											<a href="https://assurance-professionnels-auto.fr/negociants-auto" target="_blank" title="https://assurance-professionnels-auto.fr/garage-automobile">garage-auto</a>
+											<a href="https://assurance-professionnels-auto.fr/garage-automobile" target="_blank" title="https://assurance-professionnels-auto.fr/garage-automobile">garage-auto</a>
+										{% elseif prospect.url == 18 %}
+											<a href="https://assurance-professionnels-auto.fr/loueur-voiture" target="_blank" title="https://assurance-professionnels-auto.fr/loueur-voiture">location-vehicule</a>
+										{% elseif prospect.url == 19 %}
+											<a href="https://peri-simulation.fr/" target="_blank" title="https://peri-simulation.fr/">retraite</a>
+										{% elseif prospect.url == 20 %}
+											<a href="https://assurance-maintien-salaire.fr/" target="_blank" title="https://assurance-maintien-salaire.fr/">salaire</a>
+										{% elseif prospect.url == 21 %}
+											<a href="https://tarif-mutuelle-senior.fr/" target="_blank" title="https://tarif-mutuelle-senior.fr/">mutuelle</a>
+
 										{% endif %}
 									{% endif %}
 									{% if prospect.source == 2 %}
@@ -320,46 +330,52 @@
 									{% elseif prospect.url == 17 %}
 										RCPRO-GA
 									{% elseif prospect.url == 18 %}
+										RCPRO-LV
+									{% elseif prospect.url == 19 %}
 										RETRAITE
-										{% elseif prospect.url == 19 %}
+									{% elseif prospect.url == 20 %}
+										SALAIRE
+									{% elseif prospect.url == 21 %}
 										MUTUELLE
 									{% endif %}
 
 								{% endif %}
 							</td>
 							<td>
-									{% if prospect.activites is null %}
-										Pas encore rempli
-									{% elseif  prospect.activites == 1 %}
-										TPM
-									{% elseif prospect.activites == 2 %}
-										VTC
-									{% elseif prospect.activites == 3 %}
-										Sociéte
-									{% elseif prospect.activites == 4 %}
-										Décenale
-									{% elseif prospect.activites == 5 %}
-										Dommage
-									{% elseif prospect.activites == 6 %}
-										Marchandise
-									{% elseif prospect.activites == 7 %}
-										Négociant
-									{% elseif prospect.activites == 8 %}
-										Professionnel Auto
-									{% elseif prospect.activites == 9 %}
-										Auto-école
-									{% elseif prospect.activites == 10 %}
-										Garage-auto
-									{% elseif prospect.activites == 11 %}
-										Location-vehicule
-									{% elseif prospect.activites == 12 %}
-										retraite
-									{% elseif prospect.activites == 13 %}
-										Taxi
-										{% elseif prospect.activites == 14 %}
-										Santé
-									{% endif %}
-								</td>
+								{% if prospect.activites is null %}
+									Pas encore rempli
+								{% elseif  prospect.activites == 1 %}
+									TPM
+								{% elseif prospect.activites == 2 %}
+									VTC
+								{% elseif prospect.activites == 3 %}
+									Sociéte
+								{% elseif prospect.activites == 4 %}
+									Décenale
+								{% elseif prospect.activites == 5 %}
+									Dommage
+								{% elseif prospect.activites == 6 %}
+									Marchandise
+								{% elseif prospect.activites == 7 %}
+									Négociant
+								{% elseif prospect.activites == 8 %}
+									Professionnel Auto
+								{% elseif prospect.activites == 9 %}
+									Auto-école
+								{% elseif prospect.activites == 10 %}
+									Garage-auto
+								{% elseif prospect.activites == 11 %}
+									Location-vehicule
+								{% elseif prospect.activites == 12 %}
+									retraite
+								{% elseif prospect.activites == 13 %}
+									Taxi
+								{% elseif prospect.activites == 14 %}
+									Santé
+								{% elseif prospect.activites == 15 %}
+									Salaire
+								{% endif %}
+							</td>
 							<td>
 								{% if prospect.typeProspect == 1 %}
 									<span class="status-badge status-rendez-vous">Particulier</span>
@@ -374,9 +390,9 @@
 							<td>{{ prospect.prenom }}</td>
 							<td>{{ prospect.raisonSociale }}</td>
 
-							 
+
 							<td>{{ prospect.phone }}</td>
-							 
+
 
 							<td>
 								{% if app.request.get('_route') == 'app_prospect_index' and is_granted('ROLE_ADMIN') %}
@@ -428,7 +444,7 @@
 								<td>{{ prospect.relanceAt ? prospect.relanceAt|date('Y-m-d H:i') : '' }}</td>
 							{% endif %}
 
-							
+
 							<td class="btn-toolbar">
 								<a href="{{ path('app_prospect_show', {'id': prospect.id}) }}" class="btn btn-info btn-xs">
 									<i class="fa fa-eye"></i>
@@ -446,7 +462,7 @@
 									<a href="{{ path('app_prospect_edit', {'id': prospect.id}) }}" class="btn btn-primary btn-xs">
 										<i class="fa fa-pencil"></i>
 									</a>
-
+                                    
 									{% set form_title = '<i class="fa fa-trash"></i>' %}
 									{{ include('prospect/_delete_form.html.twig', {
                                                                 'form_title': form_title

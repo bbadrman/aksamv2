@@ -2,8 +2,9 @@
 
 {% block title %}Transactions
 {% endblock %}
-
+ 
 {% block body %}
+
 	<div class="container">
 		{% for label,  messages in app.flashes  %}
 			<div class="container">
@@ -19,7 +20,10 @@
 				{{ message }}
 			</div>
 		{% endfor %}
+
+		
 		<section class="content-header">
+	
 			<h1>
 				Transactions
 			</h1>
@@ -46,7 +50,7 @@
 				</a>
 			{% endif %}
 		</section>
-		<br><br>
+		 
 		<div class="row mt">
 			<div class="col-xs-12 mx-auto d-flex justify-content-center">
 				<div class="row" style="margin-right: 12px;  ">

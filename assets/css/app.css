@@ -4101,21 +4101,25 @@ ul.chat-available-user li a:hover {
 .content-header {
     position: relative;
     padding: 15px 15px 0 15px;
+    margin-bottom: 20px; /* Ajouter de l'espace en bas */
 }
 
-/* .content-header:hover > h1 {
-    margin: 0;
+/* Ajouter les styles pour le h1 */
+.content-header > h1 {
+    margin: 0 0 10px 0;
     font-size: 24px;
-    color: #0852e6;
-} */
-.content-header>h1>small {
+    color: #333; /* ou la couleur de votre thème */
+    font-weight: 400;
+}
+
+.content-header > h1 > small {
     font-size: 15px;
     display: inline-block;
     padding-left: 4px;
     font-weight: 300;
 }
 
-.content-header>.breadcrumb {
+.content-header > .breadcrumb {
     float: right;
     background: transparent;
     margin-top: 0;
@@ -4128,22 +4132,28 @@ ul.chat-available-user li a:hover {
     border-radius: 2px;
 }
 
-.content-header>.breadcrumb>li>a {
+.content-header > .breadcrumb > li > a {
     color: #444;
     text-decoration: none;
     display: inline-block;
 }
 
-.content-header>.breadcrumb>li>a>.fa,
-.content-header>.breadcrumb>li>a>.glyphicon,
-.content-header>.breadcrumb>li>a>.ion {
+.content-header > .breadcrumb > li > a > .fa,
+.content-header > .breadcrumb > li > a > .glyphicon,
+.content-header > .breadcrumb > li > a > .ion {
     margin-right: 5px;
 }
 
-.content-header>.breadcrumb>li+li:before {
+.content-header > .breadcrumb > li + li:before {
     content: '>\00a0';
 }
 
+/* Ajouter un clearfix pour gérer le float du breadcrumb */
+.content-header::after {
+    content: "";
+    display: table;
+    clear: both;
+}
 @media (max-width: 991px) {
     .content-header>.breadcrumb {
         position: relative;
@@ -6011,4 +6021,44 @@ ul.sidebar-menu li ul.sub li a:hover {
     color: rgba(0, 87, 141, 0.7) !important;
     margin-top: 0.5rem !important;
     padding: 0 1rem !important;
+}
+
+/* CORRECTION ABSOLUE pour content-header */
+.container > .content-header,
+div.container > div.content-header {
+    display: block !important;
+    position: relative !important;
+    padding: 20px !important;
+    margin: -15px -15px 20px -15px !important;
+    background: white !important;
+    border-radius: 0 0 8px 8px !important;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1) !important;
+    min-height: 80px !important;
+    z-index: 10 !important;
+}
+
+.content-header h1 {
+    display: block !important;
+    margin: 0 0 15px 0 !important;
+    font-size: 28px !important;
+    color: #2c3e50 !important;
+    font-weight: 600 !important;
+}
+
+.content-header .breadcrumb {
+    display: inline-flex !important;
+    float: right !important;
+    background: #ecf0f1 !important;
+    padding: 8px 15px !important;
+    border-radius: 4px !important;
+    margin: 0 !important;
+    position: absolute !important;
+    top: 20px !important;
+    right: 20px !important;
+}
+
+.content-header .btn {
+    display: inline-block !important;
+    margin: 10px 10px 0 0 !important;
+    clear: left !important;
 }

@@ -439,12 +439,13 @@ final class ProspectController extends AbstractController
     }
 
 
-    #[Route('/{id}', name: 'app_prospect_delete', methods: ['POST'])]
+    #[Route('/{id}/delete', name: 'app_prospect_delete', methods: ['POST'])]
     public function delete(Request $request, Prospect $prospect, EntityManagerInterface $entityManager): Response
     {
         if ($this->isCsrfTokenValid('delete' . $prospect->getId(), $request->getPayload()->getString('_token'))) {
             $entityManager->remove($prospect);
             $entityManager->flush();
+            return $this->redirect($request->headers->get('referer'));
         }
 
         return $this->redirectToRoute('app_prospect_index', [], Response::HTTP_SEE_OTHER);
