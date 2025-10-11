@@ -135,22 +135,22 @@
 						<th rowspan="2">Contrats</th>
 						<th rowspan="2">Cotisation</th>
 
-						<th colspan="3">Source</th>
-						<th colspan="2">Type Prospect</th>
+						 <th data-col="source" colspan="3">Source</th>
+                         <th data-col="type-prospect" colspan="2">Type Prospect</th>
 
 						<th data-col="extra" colspan="6">Motive de saisir</th>
-						<th data-col="activites" colspan="8">Activites</th>
+						<th data-col="activites" colspan="13">Activites</th>
 					</tr>
 					<tr style="text-align: center;">
 
-						<th>
+						 <th data-col="source">
 							<button id="toggleColumns">Saisir</button>
 						</th>
-						<th>Site Pub</th>
-						<th>Revedeur</th>
+						<th data-col="source">Site Pub</th>
+                        <th data-col="source">Revendeur</th>
 
-						<th>Particulier</th>
-						<th>
+						<th data-col="type-prospect">Particulier</th>
+                        <th data-col="type-prospect">
 							<button id="toggleColumnsActivite">Professionel</button>
 						</th>
 
@@ -171,291 +171,435 @@
 						<th data-col="activites">Marchandise</th>
 						<th data-col="activites">Négociant</th>
 						<th data-col="activites">Prof Auto</th>
+						<th data-col="activites">Ecole</th>
+						<th data-col="activites">Garage</th>
+						<th data-col="activites">Location</th>
+						<th data-col="activites">retraite</th>
+						<th data-col="activites">Taxi</th>
 
+  
 					</tr>
 				</thead>
 				<tbody>
 					{# total #}
 					<tr>
 						<td>
-							<button class="btn btn" style="background-color:#B0E0E6;">Total
+							<button class="btn btn"  >Total
 							</button>
 						</td>
-
+                        {# Prospects #} 
 						<td>
-							<span class="btn btn" style="background-color:	#00BFFF;">
+							<span class="btn btn" >
 								{{ " %02d"|format(prospects|filter(p => p.team is not null  )|length )}}</span>
 						</td>
-
+	
 						<td>
-							<span class="btn btn" style="background-color:	rgb(122, 213, 255);">{{ " %02d"|format( contrats|filter(p => p.status == 1   )|length ) }}
+							<span class="btn btn"  >{{ " %02d"|format( contrats|filter(p => p.status == 1   )|length ) }}
 							</span>
 						</td>
+						{# Cotisation #}
 						<td>
-							<span class="btn btn-primary">
+							<span class="btn btn ">
 								{{ contrats|filter(c => c.status == 1)|reduce((carry, c) => carry + (c.cotisation ?? 0), 0)|number_format(2, ',', ' ') }}
 								€
 							</span>
 						</td>
 
-						<td>
-							<span class="btn btn" style="background-color:	#FFA07A;">{{ " %02d"|format( prospects|filter(p => p.source == 1 and p.team is not null  )|length ) }}
+						{# Source #}
+						{# Saisir #}
+						<td data-col="source">
+							<span class="btn btn"  >{{ " %02d"|format( prospects|filter(p => p.source == 1 and p.team is not null  )|length ) }}
 							</span>
 						</td>
-						<td>
-							<span class="btn btn" style="background-color:	#FFA07A;">{{ " %02d"|format( prospects|filter(p => p.source is null and p.team is not null )|length ) }}</span>
+						{# Site Pub #}
+ 
+						<td data-col="source">
+							<span class="btn btn" >{{ " %02d"|format( prospects|filter(p => p.source is null and p.team is not null )|length ) }}</span>
 						</td>
-						<td>
-							<span class="btn btn" style="background-color:	#FFA07A;">{{ " %02d"|format( prospects|filter(p => p.source == 2 and p.team is not null )|length ) }}</span>
+						{# Revendeur #}
+						<td data-col="source">
+							<span class="btn btn"  >{{ " %02d"|format( prospects|filter(p => p.source == 2 and p.team is not null )|length ) }}</span>
 						</td>
-						<td>
-							<span class="btn btn" style="background-color:	#98FB98;">{{ " %02d"|format(prospects|filter(p => p.typeProspect == 1 and p.team is not null )|length ) }}</span>
+						{# Type Prospect #}
+						{# Particulier #}
+						<td data-col="type-prospect">
+							<span class="btn btn"  >{{ " %02d"|format(prospects|filter(p => p.typeProspect == 1 and p.team is not null )|length ) }}</span>
 						</td>
-						<td>
-							<span class="btn btn" style="background-color:	#98FB98;">{{ " %02d"|format( prospects|filter(p => p.typeProspect == 2 and p.team is not null )|length ) }}</span>
+						{# Professionel #}
+						<td data-col="type-prospect">
+							<span class="btn btn"  >{{ " %02d"|format( prospects|filter(p => p.typeProspect == 2 and p.team is not null )|length ) }}</span>
 						</td>
+						{# Motive de saisir #}
+						{# Parrainage #}
 						<td data-col="extra">
-							<span class="btn btn" style="background-color:#cde4e2;">{{ " %02d"|format( prospects|filter(p => p.motifSaise == 1 and p.team is not null )|length ) }}
+							<span class="btn btn"  >{{ " %02d"|format( prospects|filter(p => p.motifSaise == 1 and p.team is not null )|length ) }}
 							</span>
 						</td>
+						{# Appel #}
 						<td data-col="extra">
-							<span class="btn btn" style="background-color:#cde4e2;">{{ " %02d"|format( prospects|filter(p => p.motifSaise == 2 and p.team is not null )|length ) }}</span>
+							<span class="btn btn"  >{{ " %02d"|format( prospects|filter(p => p.motifSaise == 2 and p.team is not null )|length ) }}</span>
 						</td>
+						{# Avenant #}
 						<td data-col="extra">
-							<span class="btn btn" style="background-color:#cde4e2;">{{ " %02d"|format( prospects|filter(p => p.motifSaise == 3 and p.team is not null )|length ) }}</span>
+							<span class="btn btn"  >{{ " %02d"|format( prospects|filter(p => p.motifSaise == 3 and p.team is not null )|length ) }}</span>
 						</td>
+						{# Ancienne #}
 						<td data-col="extra">
-							<span class="btn btn" style="background-color:#cde4e2;">{{ " %02d"|format( prospects|filter(p => p.motifSaise == 4 and p.team is not null )|length ) }}</span>
+							<span class="btn btn"  >{{ " %02d"|format( prospects|filter(p => p.motifSaise == 4 and p.team is not null )|length ) }}</span>
 						</td>
+						{# Propre site #}
 						<td data-col="extra">
-							<span class="btn btn" style="background-color:#cde4e2;">{{ " %02d"|format( prospects|filter(p => p.motifSaise == 5 and p.team is not null )|length ) }}</span>
+							<span class="btn btn"  >{{ " %02d"|format( prospects|filter(p => p.motifSaise == 5 and p.team is not null )|length ) }}</span>
 						</td>
+						{# Revendeur #}
 						<td data-col="extra">
-							<span class="btn btn" style="background-color:#cde4e2;">{{ " %02d"|format( prospects|filter(p => p.motifSaise == 6 and p.team is not null )|length ) }}</span>
+							<span class="btn btn"  >{{ " %02d"|format( prospects|filter(p => p.motifSaise == 6 and p.team is not null )|length ) }}</span>
 						</td>
+						{# Activites #}
+						{# TPM #}
 						<td data-col="activites">
-							<span class='btn btn-warning'>{{ " %02d"|format( prospects|filter(p => p.activites == 1 and p.team is not null )|length ) }}
+							<span class='btn btn'>{{ " %02d"|format( prospects|filter(p => p.activites == 1 and p.team is not null )|length ) }}
 							</span>
 						</td>
+						{# VTC #}
 						<td data-col="activites">
-							<span class='btn btn-warning'>{{ " %02d"|format( prospects|filter(p => p.activites == 2 and p.team is not null )|length ) }}</span>
+							<span class='btn btn'>{{ " %02d"|format( prospects|filter(p => p.activites == 2 and p.team is not null )|length ) }}</span>
 						</td>
+						{# Sociéte #}
 						<td data-col="activites">
-							<span class='btn btn-warning'>{{ " %02d"|format( prospects|filter(p => p.activites == 3 and p.team is not null )|length ) }}</span>
+							<span class='btn btn'>{{ " %02d"|format( prospects|filter(p => p.activites == 3 and p.team is not null )|length ) }}</span>
 						</td>
+							{# Décenale #}
 						<td data-col="activites">
-							<span class='btn btn-warning'>{{ " %02d"|format( prospects|filter(p => p.activites == 4 and p.team is not null )|length ) }}</span>
+							<span class='btn btn'>{{ " %02d"|format( prospects|filter(p => p.activites == 4 and p.team is not null )|length ) }}</span>
 						</td>
+						{# Dommage #}
 						<td data-col="activites">
-							<span class='btn btn-warning'>{{ " %02d"|format( prospects|filter(p => p.activites == 5 and p.team is not null )|length ) }}</span>
+							<span class='btn btn'>{{ " %02d"|format( prospects|filter(p => p.activites == 5 and p.team is not null )|length ) }}</span>
 						</td>
+						{# Marchandise #}
 						<td data-col="activites">
-							<span class='btn btn-warning'>{{ " %02d"|format( prospects|filter(p => p.activites == 6  and p.team is not null )|length ) }}</span>
+							<span class='btn btn'>{{ " %02d"|format( prospects|filter(p => p.activites == 6  and p.team is not null )|length ) }}</span>
 						</td>
+						{# Négociant #}
 						<td data-col="activites">
-							<span class='btn btn-warning'>{{ " %02d"|format( prospects|filter(p => p.activites == 7 and p.team is not null )|length ) }}</span>
+							<span class='btn btn'>{{ " %02d"|format( prospects|filter(p => p.activites == 7 and p.team is not null )|length ) }}</span>
 						</td>
+						{# Prof Auto #}
 						<td data-col="activites">
-							<span class='btn btn-warning'>{{ " %02d"|format( prospects|filter(p => p.activites == 8 and p.team is not null )|length ) }}</span>
+							<span class='btn btn'>{{ " %02d"|format( prospects|filter(p => p.activites == 8 and p.team is not null )|length ) }}</span>
 						</td>
-
+						{# Ecole #}
+						<td data-col="activites">
+							<span class='btn btn'>{{ " %02d"|format( prospects|filter(p => p.activites == 9 and p.team is not null )|length ) }}</span>
+						</td>
+						{# Garage #}
+						<td data-col="activites">
+							<span class='btn btn'>{{ " %02d"|format( prospects|filter(p => p.activites == 10 and p.team is not null )|length ) }}</span>
+						</td>
+						{# Location #}
+						<td data-col="activites">
+							<span class='btn btn'>{{ " %02d"|format( prospects|filter(p => p.activites == 11 and p.team is not null )|length ) }}</span>
+						</td>
+						{# Retraite #}
+						<td data-col="activites">
+							<span class='btn btn'>{{ " %02d"|format( prospects|filter(p => p.activites == 12 and p.team is not null )|length ) }}</span>
+						</td>
+						{# Taxi #}
+						<td data-col="activites">
+							<span class='btn btn'>{{ " %02d"|format( prospects|filter(p => p.activites == 13 and p.team is not null )|length ) }}</span>
+						</td> 
 					</tr>
+					{# fin total #}
+					
 					{# les equipes #}
 					{% for team in teams %}
 						<tr class="expandable-row">
+                
 							<td>
-								<button class="btn btn" style="background-color:#B0E0E6;">{{ team.name }}
+								<button class="btn btn"  >{{ team.name }}
 								</button>
 							</td>
-
+                        {# les equipes    #}
+			         	{# Prospects    #}
 							<td>
-								<span class="btn btn" style="background-color:	#00BFFF;">
+								<span class="btn btn"  >
 									{{ " %02d"|format(prospects|filter(p => p.team is not null and p.team == team  )|length )}}
 								</span>
 							</td>
+							{# Contrats    #}
 							<td>
-								<span class="btn btn" style="background-color: rgb(122, 213, 255);">
+								<span class="btn btn"  >
 									{{ " %02d"|format(
                     contrats|filter(c => c.user is not null  and c.status == 1 and team.users.contains(c.user))|length 
                 ) }}
 								</span>
 							</td>
-
+                          {# cotisation    #}
 							<td>
-								<span class="btn btn-primary">
+								<span class="btn btn ">
 									{{ contrats|filter(c => c.status == 1 and team.users.contains(c.user))|reduce((carry, c) => carry + (c.cotisation ?? 0), 0)|number_format(2, ',', ' ') }}
 									€
 								</span>
-							</td>
-
-
-							<td>
-								<span class="btn btn" style="background-color:	#FFA07A;">
+							</td> 
+							{# Source #}
+							{# Saisir #} 
+							<td data-col="source">
+								<span class="btn btn"  >
 									{{ " %02d"|format(prospects|filter(p => p.source == 1 and p.team == team)|length) }}
 								</span>
 							</td>
-							<td>
-								<span class="btn btn" style="background-color:	#FFA07A;">
+							{# Site Pub #}
+							<td data-col="source">
+								<span class="btn btn"  >
 									{{ " %02d"|format(prospects|filter(p => p.source is null and p.team == team)|length) }}
 								</span>
 							</td>
-							<td>
-								<span class="btn btn" style="background-color:	#FFA07A;">
+							{# Revendeur #}
+							<td data-col="source">
+								<span class="btn btn"  >
 									{{ " %02d"|format(prospects|filter(p => p.source == 2 and p.team == team)|length) }}
 								</span>
 							</td>
-							<td>
-								<span class="btn btn" style="background-color:	#98FB98;">
+							{# Fin Source #}
+							{# Type Prospect #}
+							{# Particulier #}
+							<td data-col="type-prospect">
+								<span class="btn btn"  >
 									{{ " %02d"|format(prospects|filter(p => p.typeProspect == 1 and p.team == team)|length) }}
 								</span>
 							</td>
-							<td style="background-color:warning;">
-								<span class="btn btn" style="background-color:	#98FB98;">
-									{{ " %02d"|format(prospects|filter(p => p.typeProspect == 2 and p.team == team)|length) }}
+							{# Professionel #}
+							<td data-col="type-prospect" style="background-color:warning;">
+								<span class="btn btn"  >
+									{{ " %02d"|format(prospects|filter(p => p.typeProspect == 2 and p.team == team)|length) }} 
 								</span>
 							</td>
+							{# Fin Type Prospect #}
+							{# Motive de saisir #}
+							{# Parrainage #}
 							<td data-col="extra">
-								<span class="btn btn" style="background-color: #cde4e2;">{{ " %02d"|format( prospects|filter(p => p.motifSaise == 1 and p.team == team )|length ) }}
-								</span>
+								<span class="btn btn"  >{{ " %02d"|format( prospects|filter(p => p.motifSaise == 1 and p.team == team )|length ) }}
+								 </span>
 							</td>
+							{# Appel #}
 							<td data-col="extra">
-								<span class="btn btn" style="background-color:#cde4e2;">{{ " %02d"|format( prospects|filter(p => p.motifSaise == 2 and p.team == team )|length ) }}
-								</span>
+								<span class="btn btn"  >{{ " %02d"|format( prospects|filter(p => p.motifSaise == 2 and p.team == team )|length ) }}
+								 </span>
 							</td>
+							{# Avenant #}
 							<td data-col="extra">
-								<span class="btn btn" style="background-color:#cde4e2;">{{ " %02d"|format( prospects|filter(p => p.motifSaise == 3 and p.team == team )|length ) }}</span>
+								<span class="btn btn"  >{{ " %02d"|format( prospects|filter(p => p.motifSaise == 3 and p.team == team )|length ) }}</span>
 							</td>
+							{# Ancienne #}
 							<td data-col="extra">
-								<span class="btn btn" style="background-color:#cde4e2;">{{ " %02d"|format( prospects|filter(p => p.motifSaise == 4 and p.team == team )|length ) }}</span>
+								<span class="btn btn"  >{{ " %02d"|format( prospects|filter(p => p.motifSaise == 4 and p.team == team )|length ) }} </span>
 							</td>
+							{# Propre site #}
 							<td data-col="extra">
-								<span class="btn btn" style="background-color:#cde4e2;">{{ " %02d"|format( prospects|filter(p => p.motifSaise == 5 and p.team == team )|length ) }}</span>
+								<span class="btn btn"  >{{ " %02d"|format( prospects|filter(p => p.motifSaise == 5 and p.team == team )|length ) }} </span>
 							</td>
+							{# Revendeur #}
 							<td data-col="extra">
-								<span class="btn btn" style="background-color:#cde4e2;">{{ " %02d"|format( prospects|filter(p => p.motifSaise == 6 and p.team == team )|length ) }}</span>
+								<span class="btn btn"  >{{ " %02d"|format( prospects|filter(p => p.motifSaise == 6 and p.team == team )|length ) }} </span>
 							</td>
+							{# Fin Motive de saisir #}
+							{# Activites #}
+							{# TPM #}
 							<td data-col="activites">
-								<span class='btn btn-warning'>{{ " %02d"|format( prospects|filter(p => p.activites == 1 and p.team == team )|length ) }}</span>
+								<span class='btn btn'>{{ " %02d"|format( prospects|filter(p => p.activites == 1 and p.team == team )|length ) }}</span>
 							</td>
+							{# VTC #}
 							<td data-col="activites">
-								<span class='btn btn-warning'>{{ " %02d"|format( prospects|filter(p => p.activites == 2 and p.team == team )|length ) }}</span>
+								<span class='btn btn'>{{ " %02d"|format( prospects|filter(p => p.activites == 2 and p.team == team )|length ) }}</span>
 							</td>
+							{# Sociéte #}
 							<td data-col="activites">
-								<span class='btn btn-warning'>{{ " %02d"|format( prospects|filter(p => p.activites == 3 and p.team == team )|length ) }}</span>
+								<span class='btn btn'>{{ " %02d"|format( prospects|filter(p => p.activites == 3 and p.team == team )|length ) }}</span>
 							</td>
+							{# Décenale #}
 							<td data-col="activites">
-								<span class='btn btn-warning'>{{ " %02d"|format( prospects|filter(p => p.activites == 4 and p.team == team )|length ) }}</span>
+								<span class='btn btn'>{{ " %02d"|format( prospects|filter(p => p.activites == 4 and p.team == team )|length ) }}</span>
 							</td>
+							{# Dommage #}
 							<td data-col="activites">
-								<span class='btn btn-warning'>{{ " %02d"|format( prospects|filter(p => p.activites == 5 and p.team == team )|length ) }}</span>
+								<span class='btn btn'>{{ " %02d"|format( prospects|filter(p => p.activites == 5 and p.team == team )|length ) }}</span>
 							</td>
+							{# Marchandise #}
 							<td data-col="activites">
-								<span class='btn btn-warning'>{{ " %02d"|format( prospects|filter(p => p.activites == 6  and p.team == team )|length ) }}</span>
+								<span class='btn btn'>{{ " %02d"|format( prospects|filter(p => p.activites == 6  and p.team == team )|length ) }}</span>
 							</td>
+							{# Négociant #}
 							<td data-col="activites">
-								<span class='btn btn-warning'>{{ " %02d"|format( prospects|filter(p => p.activites == 7 and p.team == team )|length ) }}</span>
+								<span class='btn btn'>{{ " %02d"|format( prospects|filter(p => p.activites == 7 and p.team == team )|length ) }}</span>
 							</td>
+							{# Prof Auto #}
 							<td data-col="activites">
-								<span class='btn btn-warning'>{{ " %02d"|format( prospects|filter(p => p.activites == 8 and p.team == team )|length ) }}</span>
+								<span class='btn btn'>{{ " %02d"|format( prospects|filter(p => p.activites == 8 and p.team == team )|length ) }}</span>
+							</td>
+							{# Ecole #}
+							<td data-col="activites">
+								<span class='btn btn'>{{ " %02d"|format( prospects|filter(p => p.activites == 9 and p.team == team )|length ) }}</span>
+							</td>
+							{# Garage #}
+							<td data-col="activites">
+								<span class='btn btn'>{{ " %02d"|format( prospects|filter(p => p.activites == 10 and p.team == team )|length ) }}</span>
+							</td>
+							{# Location #}
+							<td data-col="activites">
+								<span class='btn btn'>{{ " %02d"|format( prospects|filter(p => p.activites == 11 and p.team == team )|length ) }}</span>
+							</td>
+							{# Retraite #}
+							<td data-col="activites">
+								<span class='btn btn'>{{ " %02d"|format( prospects|filter(p => p.activites == 12 and p.team == team )|length ) }}</span>
+							</td>
+							{# Taxi #}
+							<td data-col="activites">
+								<span class='btn btn'>{{ " %02d"|format( prospects|filter(p => p.activites == 13 and p.team == team )|length ) }}</span>
 							</td>
 						</tr>
 						{# les comercials #}
 						{% for  user in team.users %}
 							<tr class="expanded-content">
-
+                            
 								<td>
 									<button class="btn btn ">
 										{{ user.username }}
 									</button>
 								</td>
+									{# prospects #}
 								<td>
 
-									<span class="btn btn" style="background-color:	#00BFFF;">
+									<span class="btn btn"  >
 										{{ " %02d"|format(prospects|filter(p => p.comrcl is not null and p.comrcl == user)|length) }}
 									</span>
 								</td>
+									{# contrats #}
 								<td>
-									<span class="btn btn" style="background-color:rgb(122, 213, 255);">
+									<span class="btn btn"  >
 										{{ " %02d"|format(
                     contrats|filter(c => c.user is same as(user) and c.status == 1)|length 
                 ) }}
 									</span>
 								</td>
-
+                                {# cotisation #}
 								<td>
-									<span class="btn btn-primary">
+									<span class="btn btn ">
 										{{ contrats|filter(c => c.user is same as(user) and c.status == 1)|reduce((carry, c) => carry + (c.cotisation ?? 0), 0)|number_format(2, ',', ' ') }}
 										€
 									</span>
 								</td>
-
-								<td>
-									<span class="btn btn" style="background-color:	#FFA07A;">
+								{# Source #}
+								{# Saisire #} 
+								 <td data-col="source">
+									<span class="btn btn"  >
 										{{ " %02d"|format(prospects|filter(p => p.source == 1 and p.comrcl == user)|length) }}
 									</span>
 								</td>
-								<td>
-									<span class="btn btn" style="background-color:	#FFA07A;">
+								{# Site Pub #}
+								 <td data-col="source">
+									<span class="btn btn" >
 										{{ " %02d"|format(prospects|filter(p => p.source is null and p.comrcl == user)|length) }}
 									</span>
 								</td>
-								<td>
-									<span class="btn btn" style="background-color:	#FFA07A;">
+								{# Revendeur #}
+								 <td data-col="source">
+									<span class="btn btn"  >
 										{{ " %02d"|format(prospects|filter(p => p.source == 2  and p.comrcl == user)|length) }}
 									</span>
 								</td>
-								<td>
-									<span class="btn btn" style="background-color:	#98FB98;">
+								{# Type Prospect #}
+								{# Particulier #}
+								<td data-col="type-prospect">
+									<span class="btn btn"  >
 										{{ " %02d"|format(prospects|filter(p => p.typeProspect == 1 and p.comrcl == user)|length) }}
 									</span>
 								</td>
-								<td style="background-color:warnig;">
-									<span class="btn btn" style="background-color:	#98FB98;">
+								{# Professionel #}
+								<td data-col="type-prospect" style="background-color:warnig;">
+									<span class="btn btn"  >
 										{{ " %02d"|format(prospects|filter(p => p.typeProspect == 2 and p.comrcl == user)|length) }}
 									</span>
 								</td>
+								{# Motive de saisir #}
+								{# Parrainage #}
 								<td data-col="extra">
-									<span class="btn btn" style="background-color: #cde4e2;">{{ " %02d"|format( prospects|filter(p => p.motifSaise == 1 and p.comrcl == user )|length ) }}</span>
+									<span class="btn btn" >{{ " %02d"|format( prospects|filter(p => p.motifSaise == 1 and p.comrcl == user )|length ) }}</span>
 								</td>
+								{# Appel #}
 								<td data-col="extra">
-									<span class="btn btn" style="background-color:#cde4e2;">{{ " %02d"|format( prospects|filter(p => p.motifSaise == 2 and p.comrcl == user )|length ) }}</span>
+									<span class="btn btn"  >{{ " %02d"|format( prospects|filter(p => p.motifSaise == 2 and p.comrcl == user )|length ) }}</span>
 								</td>
+								{# Avenant #}
 								<td data-col="extra">
-									<span class="btn btn" style="background-color:#cde4e2;">{{ " %02d"|format( prospects|filter(p => p.motifSaise == 3 and p.comrcl == user )|length ) }}</span>
+									<span class="btn btn"  >{{ " %02d"|format( prospects|filter(p => p.motifSaise == 3 and p.comrcl == user )|length ) }}</span>
 								</td>
+								{# Ancienne #}
 								<td data-col="extra">
-									<span class="btn btn" style="background-color:#cde4e2;">{{ " %02d"|format( prospects|filter(p => p.motifSaise == 4 and p.comrcl == user )|length ) }}</span>
+									<span class="btn btn"  >{{ " %02d"|format( prospects|filter(p => p.motifSaise == 4 and p.comrcl == user )|length ) }}</span>
 								</td>
+								{# Propre site #}
 								<td data-col="extra">
-									<span class="btn btn" style="background-color:#cde4e2;">{{ " %02d"|format( prospects|filter(p => p.motifSaise == 5 and p.comrcl == user )|length ) }}</span>
+									<span class="btn btn"  >{{ " %02d"|format( prospects|filter(p => p.motifSaise == 5 and p.comrcl == user )|length ) }}</span>
 								</td>
+								{# Revendeur #}
 								<td data-col="extra">
-									<span class="btn btn" style="background-color:#cde4e2;">{{ " %02d"|format( prospects|filter(p => p.motifSaise == 6 and p.comrcl == user )|length ) }}</span>
+									<span class="btn btn"  >{{ " %02d"|format( prospects|filter(p => p.motifSaise == 6 and p.comrcl == user )|length ) }}</span>
 								</td>
+								{# Activites #}
+								{# TPM #}
 								<td data-col="activites">
-									<span class='btn btn-warning'>{{ " %02d"|format( prospects|filter(p => p.activites == 1 and p.comrcl == user )|length ) }}</span>
+									<span class='btn btn '>{{ " %02d"|format( prospects|filter(p => p.activites == 1 and p.comrcl == user )|length ) }}</span>
 								</td>
+								{# VTC #}
 								<td data-col="activites">
-									<span class='btn btn-warning'>{{ " %02d"|format( prospects|filter(p => p.activites == 2 and p.comrcl == user )|length ) }}</span>
+									<span class='btn btn '>{{ " %02d"|format( prospects|filter(p => p.activites == 2 and p.comrcl == user )|length ) }}</span>
 								</td>
+								{# Sociéte #}
 								<td data-col="activites">
-									<span class='btn btn-warning'>{{ " %02d"|format( prospects|filter(p => p.activites == 3 and p.comrcl == user )|length ) }}</span>
+									<span class='btn btn'>{{ " %02d"|format( prospects|filter(p => p.activites == 3 and p.comrcl == user )|length ) }}</span>
 								</td>
+								{# Décenale #}
 								<td data-col="activites">
-									<span class='btn btn-warning'>{{ " %02d"|format( prospects|filter(p => p.activites == 4 and p.comrcl == user )|length ) }}</span>
+									<span class='btn btn'>{{ " %02d"|format( prospects|filter(p => p.activites == 4 and p.comrcl == user )|length ) }}</span>
 								</td>
+								{# Dommage #}
 								<td data-col="activites">
-									<span class='btn btn-warning'>{{ " %02d"|format( prospects|filter(p => p.activites == 5 and p.comrcl == user )|length ) }}</span>
+									<span class='btn btn'>{{ " %02d"|format( prospects|filter(p => p.activites == 5 and p.comrcl == user )|length ) }}</span>
 								</td>
+								{# Marchandise #}
 								<td data-col="activites">
-									<span class='btn btn-warning'>{{ " %02d"|format( prospects|filter(p => p.activites == 6  and p.comrcl == user )|length ) }}</span>
+									<span class='btn btn'>{{ " %02d"|format( prospects|filter(p => p.activites == 6  and p.comrcl == user )|length ) }}</span>
 								</td>
+								{# Négociant #}
 								<td data-col="activites">
-									<span class='btn btn-warning'>{{ " %02d"|format( prospects|filter(p => p.activites == 7 and p.comrcl == user )|length ) }}</span>
+									<span class='btn btn'>{{ " %02d"|format( prospects|filter(p => p.activites == 7 and p.comrcl == user )|length ) }}</span>
 								</td>
+								{# Prof Auto #}
 								<td data-col="activites">
-									<span class='btn btn-warning'>{{ " %02d"|format( prospects|filter(p => p.activites == 8 and p.comrcl == user )|length ) }}</span>
+									<span class='btn btn'>{{ " %02d"|format( prospects|filter(p => p.activites == 8 and p.comrcl == user )|length ) }}</span>
 								</td>
+								{# Ecole #}
+								<td data-col="activites">
+									<span class='btn btn'>{{ " %02d"|format( prospects|filter(p => p.activites == 9 and p.comrcl == user )|length ) }}</span>
+								</td>
+								{# Garage #}
+								<td data-col="activites">
+									<span class='btn btn'>{{ " %02d"|format( prospects|filter(p => p.activites == 10 and p.comrcl == user )|length ) }}</span>
+								</td>
+								{# Location #}
+								<td data-col="activites">
+									<span class='btn btn'>{{ " %02d"|format( prospects|filter(p => p.activites == 11 and p.comrcl == user )|length ) }}</span>
+								</td>
+								{# Retraite #}
+								<td data-col="activites">
+									<span class='btn btn'>{{ " %02d"|format( prospects|filter(p => p.activites == 12 and p.comrcl == user )|length ) }}</span>
+								</td>
+								{# Taxi #}
+								<td data-col="activites">
+									<span class='btn btn'>{{ " %02d"|format( prospects|filter(p => p.activites == 13 and p.comrcl == user )|length ) }}</span>
+								</td>
+   
 							</tr>
 						{% endfor %}
 					{% endfor %}
@@ -466,31 +610,50 @@
 			<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
 
 			<script>
-				{# Hide all rows comercials #}
 $(document).ready(function () {
-$('.expandable-row').click(function () {
-$('.expanded-content').not($(this).nextAll('.expanded-content')).hide();
-$(this).nextUntil('.expandable-row').toggle();
-});
+    // Hide all rows comercials
+    $('.expandable-row').click(function () {
+        $('.expanded-content').not($(this).nextAll('.expanded-content')).hide();
+        $(this).nextUntil('.expandable-row').toggle();
+    });
+    
+    // Hide all expanded content on page load
+    $('.expanded-content').hide();
 });
 
-// Hide all rows with the class 'expanded-content' on page load
-$('.expanded-content').hide();
+// Bouton "Saisir" - Affiche Motive de saisir et cache Type Prospect
 document.getElementById('toggleColumns').addEventListener('click', function () {
-const extraCols = document.querySelectorAll('[data-col="extra"]');
-extraCols.forEach(col => {
-col.style.display = (col.style.display === 'none' || col.style.display === '') ? 'table-cell' : 'none';
-});
+    const extraCols = document.querySelectorAll('[data-col="extra"]');
+    const typeProspectCols = document.querySelectorAll('[data-col="type-prospect"]');
+    
+    // Toggle les colonnes Motive de saisir
+    extraCols.forEach(col => {
+        col.style.display = (col.style.display === 'none' || col.style.display === '') ? 'table-cell' : 'none';
+    });
+    
+    // Si on affiche Motive, on cache Type Prospect
+    const isExtraVisible = extraCols[0].style.display === 'table-cell';
+    typeProspectCols.forEach(col => {
+        col.style.display = isExtraVisible ? 'none' : 'table-cell';
+    });
 });
 
-// Hide all rows with the class 'expanded-content' on page load
-$('.expanded-content').hide();
+// Bouton "Professionel" - Affiche Activites et cache Source
 document.getElementById('toggleColumnsActivite').addEventListener('click', function () {
-const extraCols = document.querySelectorAll('[data-col="activites"]');
-extraCols.forEach(col => {
-col.style.display = (col.style.display === 'none' || col.style.display === '') ? 'table-cell' : 'none';
+    const activitesCols = document.querySelectorAll('[data-col="activites"]');
+    const sourceCols = document.querySelectorAll('[data-col="source"]');
+    
+    // Toggle les colonnes Activites
+    activitesCols.forEach(col => {
+        col.style.display = (col.style.display === 'none' || col.style.display === '') ? 'table-cell' : 'none';
+    });
+    
+    // Si on affiche Activites, on cache Source
+    const isActivitesVisible = activitesCols[0].style.display === 'table-cell';
+    sourceCols.forEach(col => {
+        col.style.display = isActivitesVisible ? 'none' : 'table-cell';
+    });
 });
-});
-			</script>
+</script>
 
 		{% endblock %}

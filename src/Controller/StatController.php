@@ -63,7 +63,7 @@ final class StatController extends AbstractController
 
         // Initialisation
         $contrats = [];
-        $teams = $this->teamRepository->findAll();
+        $teams = $this->teamRepository->findAllWithActiveUsers();
         $prospects = [];
         $searchExecuted = false;
 

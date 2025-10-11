@@ -337,6 +337,7 @@ final class ProspectController extends AbstractController
         return $this->render('partials/_affect_modal.html.twig', [
             'prospect' => $prospect,
             'form' => $form->createView(),
+            'team' => $teamRepository->findAllWithActiveUsers(),
         ]);
     }
 

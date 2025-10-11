@@ -419,6 +419,8 @@ class StatsService
         $qb = $this->manager->createQueryBuilder();
         $qb->select('COUNT(DISTINCT p.id)')  //  En utilisant COUNT(DISTINCT p.id), vous comptez les prospects uniques, en ignorant les doublons dans les relances pour chaque prospect
             ->from(Prospect::class, 'p')
+            ->andWhere('p.relance NOT IN (:motifs)')
+            ->setParameter('motifs', [6, 7, 8, 9, 10, 11, 12, 13])
             ->andWhere('p.relanceAt <= :endOfYesterday')
             ->setParameter('endOfYesterday', $yesterday);
 
@@ -447,7 +449,8 @@ class StatsService
             ->andwhere('p.team IN (:teams)')
             ->setParameter('teams', $teams)
 
-
+            ->andWhere('p.relance NOT IN (:motifs)')
+            ->setParameter('motifs', [6, 7, 8, 9, 10, 11, 12, 13])
 
             ->andWhere('p.relanceAt <= :endOfYesterday')
             ->setParameter('endOfYesterday', $yesterday);
@@ -472,6 +475,8 @@ class StatsService
 
             ->andWhere('p.comrcl = :val')
             ->setParameter('val', $id)
+            ->andWhere('p.relance NOT IN (:motifs)')
+            ->setParameter('motifs', [6, 7, 8, 9, 10, 11, 12, 13])
             ->andWhere('p.relanceAt <= :endOfYesterday')
 
             ->setParameter('endOfYesterday', $yesterday);

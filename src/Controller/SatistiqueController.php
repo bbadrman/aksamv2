@@ -218,6 +218,13 @@ class SatistiqueController extends AbstractController
                 6 => count(array_filter($teamProspects, fn($p) => $p->getActivites() == 6)),
                 7 => count(array_filter($teamProspects, fn($p) => $p->getActivites() == 7)),
                 8 => count(array_filter($teamProspects, fn($p) => $p->getActivites() == 8)),
+                9 => count(array_filter($teamProspects, fn($p) => $p->getActivites() == 9)),
+                10 => count(array_filter($teamProspects, fn($p) => $p->getActivites() == 10)),
+                11 => count(array_filter($teamProspects, fn($p) => $p->getActivites() == 11)),
+                12 => count(array_filter($teamProspects, fn($p) => $p->getActivites() == 12)),
+                13 => count(array_filter($teamProspects, fn($p) => $p->getActivites() == 13)),
+               
+                
             ]
         ];
     }

@@ -317,7 +317,8 @@ class ProspectRepository extends ServiceEntityRepository
             ->addSelect('t, f')
             ->leftJoin('p.team', 't')
             ->leftJoin('p.comrcl', 'f')
-
+            ->andWhere('p.relance NOT IN (:motifs)') 
+            ->setParameter('motifs', [6, 7, 8, 9, 10, 11, 12, 13]) 
             ->Where('p.relanceAt >= :tomorrow')
             ->setParameter('tomorrow', $tomorrow)
 
@@ -354,7 +355,8 @@ class ProspectRepository extends ServiceEntityRepository
             ->andWhere('p.relanceAt >= :tomorrow')
             ->andwhere('p.team IN (:teams)')
             ->setParameter('teams', $teams)
-
+            ->andWhere('p.relance NOT IN (:motifs)') 
+            ->setParameter('motifs', [6, 7, 8, 9, 10, 11, 12, 13]) 
             ->setParameter('tomorrow', $tomorrow)
             ->orderBy('p.relanceAt', 'ASC');
 
@@ -382,7 +384,8 @@ class ProspectRepository extends ServiceEntityRepository
             ->andWhere('p.relanceAt >= :tomorrow')
             ->andWhere('p.comrcl = :val')
             ->setParameter('val', $id)
-
+            ->andWhere('p.relance NOT IN (:motifs)') 
+            ->setParameter('motifs', [6, 7, 8, 9, 10, 11, 12, 13]) 
             ->setParameter('tomorrow', $tomorrow)
             ->orderBy('p.relanceAt', 'ASC');
 
@@ -407,7 +410,7 @@ class ProspectRepository extends ServiceEntityRepository
         $yesterday = clone $now;
         $yesterday->modify('-24 hours');
         $yesterday->setTime(23, 59, 59);  // il depacer un jour a partir de minuit
-
+        $excludedEmail = 'service.technique@aksam-assurances.fr';
         $query = $this->createQueryBuilder('p')
             ->addSelect('f, t ')
             ->andWhere('p.team IS NOT NULL')  // deja Affecté à une équipe  
@@ -415,6 +418,9 @@ class ProspectRepository extends ServiceEntityRepository
             // il faut changer creatAt par affectAt 
             ->leftJoin('p.comrcl', 'f')
             ->leftJoin('p.team', 't')
+            ->andwhere('p.email != :excludedEmail')
+            ->setParameter('excludedEmail', $excludedEmail)
+
             ->andWhere('p.AffectAt <= :yesterday')
             ->setParameter('yesterday', $yesterday)
             ->orderBy('p.id', 'DESC');
@@ -616,6 +622,9 @@ class ProspectRepository extends ServiceEntityRepository
             ->leftJoin('p.team', 't')
             ->leftJoin('p.comrcl', 'f')
 
+
+            ->andWhere('p.relance NOT IN (:motifs)') 
+            ->setParameter('motifs', [6, 7, 8, 9, 10, 11, 12, 13]) 
             // ->andWhere('p.comrcl is NOT NULL')
             // ->andWhere('p.team is NOT NULL')
             //les dates de relance ne doit pas plus que date d'hier (les prospers qui ont la date de relaced haujourdhui et plus, n'afficher pas )
@@ -655,7 +664,8 @@ class ProspectRepository extends ServiceEntityRepository
             ->leftJoin('p.comrcl', 'f')
             ->andwhere('p.team IN (:teams)')
             ->setParameter('teams', $teams)
-
+             ->andWhere('p.relance NOT IN (:motifs)') 
+            ->setParameter('motifs', [6, 7, 8, 9, 10, 11, 12, 13]) 
             // ->andWhere('p.comrcl is NOT NULL')
             // ->andWhere('p.team is NOT NULL')
 
@@ -692,10 +702,11 @@ class ProspectRepository extends ServiceEntityRepository
 
             // ->andWhere('p.comrcl is NOT NULL')
             // ->andWhere('p.team is NOT NULL') 
-
+            ->andWhere('p.relance NOT IN (:motifs)') 
+            ->setParameter('motifs', [6, 7, 8, 9, 10, 11, 12, 13]) 
             ->andWhere('p.relanceAt <= :endOfYesterday')
             ->setParameter('endOfYesterday', $yesterday)
-
+ 
             ->orderBy('p.relanceAt', 'desc');
 
 
@@ -821,6 +832,12 @@ class ProspectRepository extends ServiceEntityRepository
             $query = $query
                 ->andWhere('f.username LIKE :r')
                 ->setParameter('r', "%{$search->r}%");
+        }
+
+        if (!empty($search->l)) {
+            $query = $query
+                ->andWhere('p.phone LIKE :l')
+                ->setParameter('l', "%{$search->l}%");
         }
 
         if (!empty($search->g)) {

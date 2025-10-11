@@ -64,6 +64,20 @@ class TeamRepository extends ServiceEntityRepository
 
         return $qb->getQuery()->getResult();
     }
+
+
+    //pour filtrer les teams avec les users actifs (status = 1) 
+    public function findAllWithActiveUsers(): array
+{
+    return $this->createQueryBuilder('t')
+        ->leftJoin('t.users', 'u')
+        ->addSelect('u')
+        ->where('u.status = :status')
+        ->setParameter('status', 1)
+        ->getQuery()
+        ->getResult();
+}
+
     //    /**
     //     * @return Team[] Returns an array of Team objects
     //     */

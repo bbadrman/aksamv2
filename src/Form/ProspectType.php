@@ -60,25 +60,25 @@ class ProspectType extends AbstractType
                 ]
             ])
              
-            ->add('city', Type\TextType::class, [
-                'label' => 'Ville ',
-                'required' => false,
-                'attr' => [
-                    'placeholder' => 'Ville du client',
-                ]
-            ])
-            ->add('adress', Type\TextareaType::class, [
-                'label' => 'Addresse complét (obligatoir)',
-                'required' => false,
-                'attr' => [
-                    'placeholder' => 'Address compltét du client',
-                ]
-            ])
-            ->add('brithAt', BirthdayType::class, [
-                'label' => 'Date de Naissance ',
-                'widget' => 'single_text',
-                'required' => false,
-            ])
+            // ->add('city', Type\TextType::class, [
+            //     'label' => 'Ville ',
+            //     'required' => false,
+            //     'attr' => [
+            //         'placeholder' => 'Ville du client',
+            //     ]
+            // ])
+            // ->add('adress', Type\TextareaType::class, [
+            //     'label' => 'Addresse complét (obligatoir)',
+            //     'required' => false,
+            //     'attr' => [
+            //         'placeholder' => 'Address compltét du client',
+            //     ]
+            // ])
+            // ->add('brithAt', BirthdayType::class, [
+            //     'label' => 'Date de Naissance ',
+            //     'widget' => 'single_text',
+            //     'required' => false,
+            // ])
             // ->add('source', Type\TextType::class, [
             //     'label' => 'Source',
             //     'required' => true,
@@ -105,13 +105,13 @@ class ProspectType extends AbstractType
                     'placeholder' => 'Raison sociale',
                 ]
             ])
-            ->add('codePost', TextType::class, [
-                'label' => 'Code Postal (obligatoir)',
-                'constraints' => new Length(['min' => 5,  'minMessage' => 'le code postale doit etre quatre caactaire mini', 'max' => 5, 'maxMessage' => 'le code postale doite etre 5 caractaire max']),
-                'attr' => [
-                    'placeholder' => 'Merci de saisir le Code Postal',
-                ]
-            ])
+            // ->add('codePost', TextType::class, [
+            //     'label' => 'Code Postal (obligatoir)',
+            //     'constraints' => new Length(['min' => 5,  'minMessage' => 'le code postale doit etre quatre caactaire mini', 'max' => 5, 'maxMessage' => 'le code postale doite etre 5 caractaire max']),
+            //     'attr' => [
+            //         'placeholder' => 'Merci de saisir le Code Postal',
+            //     ]
+            // ])
              
             ->add('assurer', Type\ChoiceType::class, [
                 'label' => 'Assuré actuellement',
